@@ -1,0 +1,125 @@
+#ifndef	__I2C_ADC_CTRL_H_
+#define __I2C_ADC_CTRL_H_
+
+#include "CommThread.h"
+
+#define	STX		0x02
+#define	ETX		0x03
+
+#define	START_C		0x3e		// '>'
+#define ZERO_C		0x0
+#define ADDR_C		0x04		//Address
+#define	END_C		0x0d		//Enter
+
+#define T_NOTEST	-1
+#define T_FAIL		0
+#define T_PASS		1
+#define T_ABORT		2
+#define T_TIMEOUT	3
+
+class CI2cAdcCtrl : public CObject
+{
+public : 
+
+	BOOL			m_bPortOpen;
+
+	CCommThread		m_ctrlI2cAdcCtrl;
+	BYTE			m_strReceive[225];
+
+//	CString			m_strCmd1;
+//	CString			m_strCmd2;
+//	int			m_nSetId;
+//	CString			m_strData;
+
+//	int 			m_nWaitLimit;
+//	int			m_nPortID;
+//	BOOL			m_bThreadRunning;
+//	int			m_nResult;
+//	BOOL			m_bExitThread;
+
+//	HANDLE			m_hAdcThreadKillEvent;
+//	HANDLE			m_hThread;
+//	CString			m_strSendStr;
+//	CString			m_strErrMsg;		// TVCommPort Test Error Message
+	
+	// RS232C Command Array
+//	CStringArray	m_aCmd1;
+//	CStringArray	m_aCmd2;
+//	CUIntArray		m_aSetId;
+//	CStringArray	m_aData;
+//	CUIntArray		m_aWaitLimit;
+
+//	UINT			m_nCheckType;		// 1 : Offset1 Check, 2 : Offset2 Check, 3 : Gain Check
+//	CString			m_strTargetAvg;		// Avg Data Target Value
+//	UINT			m_nAvgMargin;		// Avg Data Margin(+-)
+
+	//+add kwmoon 080318
+//	CTypedPtrList<CPtrList, CTvCommI2CData*>	m_TvCommI2CData;
+	
+	BYTE			m_nAdcI2cData[256];
+
+	//+add kwmoon 080329
+	CString			m_szI2cAdcReadString;
+	UINT			m_nI2cAdcSeqNo;
+	int				m_nData1;
+	int				m_nData2;
+	int				m_nData3;
+
+	//+add PSH 080417
+//	CString			m_strVersion;
+//	int				m_nVersionItem;
+public :
+
+	CI2cAdcCtrl();
+	~CI2cAdcCtrl();
+	
+	BOOL Create(CString sComPort, DWORD nBaudRate);
+//	BOOL SendRun(CString sData);
+
+	void PortClose();
+	BOOL Init();
+	BOOL SendByte(BYTE Data);
+	BOOL SendCommString(CString str);
+	BOOL SendRun(CString sCmd1, CString sCmd2, int nSetId, CString sData);
+//	BOOL ReceiveCommString(int nRev, CString& sReadString);
+
+	BOOL ReceiveCommString(int nRev, CString sWaitLimit, CString& sReadString);
+	BOOL ReceiveCommString(int nRev, int nWaitLimit, CString& sReadString);
+//	void RunAdc();
+//	static UINT StartAdcThread(LPVOID pParam); 
+	UINT AdcTest(CString sCmd1, CString sCmd2, int nSetId, CString sData, int nMaxDelay, CString sTargetAvg = _T("") , int nAvgMargin = 0);
+//	void ResetArray();
+
+	//+add kwmoon 080318
+//	BOOL AdcTestI2C();
+//	BOOL AdcTestI2C(CString szInputSource, CString szAddress,CString szResultAddress,CString szExpectedValue);
+
+	//+add kwmoon 080318
+	BOOL SendI2cCmd(CString szCmdString);
+
+	//+add kwmoon 080409
+	void ClearI2cAdcData();
+
+	//+add PSH 080417
+//	BOOL ADC_AdjConfirmation();
+//	BOOL DefineFirmware_Version(int nIndex, CString sVersion);
+//	BOOL Firmware_VersionCheck();
+	//+add PSH 080520
+//	BOOL ADC_Adj_ModeIn();
+//	BOOL ADC_Adj_Start(int nItem, int nWait);
+//	BOOL ADC_Adj_ModeOut();
+//	BOOL ADC_Adj_ResultCheck(int &nAdjItem);
+//	BOOL EDID_Download_ModeIn();
+//	BOOL EDID_Download_Start(int nIdex, int nWait);
+//	BOOL EDID_Download_ModeOut();
+//	BOOL EDID_Download_ResultCheck(int &nAdjItem);
+//	BOOL TVLink_SetChannel_PAL(int nRFSource, int nCH, int nWait);
+//	BOOL Send_TVControl_Command(CString sCommand,int nWait);
+private:
+	void Delay();
+};
+
+
+extern CI2cAdcCtrl I2cAdcCtrl;
+
+#endif	// __I2C_ADC_CTRL_H_
