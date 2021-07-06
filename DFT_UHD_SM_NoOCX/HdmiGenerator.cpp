@@ -502,7 +502,6 @@ BOOL CHdmiGenerator::SetDDCLine_OpenClose(BOOL bFlag)
 	m_bDDCLineMode = !bFlag;
 	return TRUE;
 
-
 }
 
 BOOL CHdmiGenerator::SetOut(int nModel, int nPattern)
@@ -520,11 +519,13 @@ BOOL CHdmiGenerator::SetOut(int nModel, int nPattern)
 		}
 	}
 
-
 	if (m_bResetPatternModel == 1)//HDMIGeneratorCtrl
 	{
 		bReturn = SetModel_Pattern(nModel, nPattern);
-		m_bResetPatternModel = 0;
+		if (bReturn == TRUE)
+		{
+			m_bResetPatternModel = 0;
+		}		
 	}
 	else
 	{

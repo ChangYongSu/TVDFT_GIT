@@ -7256,7 +7256,15 @@ BOOL _HDMIGen_SetOut()
 		return FALSE;
 	}
 
-	if(pCurStep->m_bStepRetryFlag || pCurStep->m_bStepInternalRetryFlag)
+	if (HDMIGeneratorCtrl.m_bResetPatternModel == 1)//HDMIGeneratorCtrl
+	{
+		bReturn = HDMIGeneratorCtrl.SetModel_Pattern(nModel, nPattern);
+		if (bReturn == TRUE)
+		{
+			HDMIGeneratorCtrl.m_bResetPatternModel = 0;
+		}
+	}
+	else if(pCurStep->m_bStepRetryFlag || pCurStep->m_bStepInternalRetryFlag)
 	{
 		return TRUE;
 	}
@@ -7270,7 +7278,7 @@ BOOL _HDMIGen_SetOut()
 		{
 			bReturn = HDMIGeneratorCtrl.SetModel(nModel); 
 		}
-		else
+		else if ((HDMIGeneratorCtrl.m_nModelNo != nModel) && (HDMIGeneratorCtrl.m_nPatternNo != nPattern))
 		{
 			bReturn = HDMIGeneratorCtrl.SetModel_Pattern(nModel, nPattern); 
 		}
