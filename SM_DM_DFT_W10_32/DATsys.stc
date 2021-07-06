@@ -1,0 +1,5 @@
+[Instrumentation]
+Inlines=Yes
+Level=Line
+[General]
+Target=DATsys - Win32 Debug

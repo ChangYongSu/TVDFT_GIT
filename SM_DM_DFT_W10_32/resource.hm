@@ -1,0 +1,11 @@
+// Microsoft Visual C++ generated Help ID include file.
+// Used by DATsys.rc
+//
+#define HIDC_BTN_COPY                   0x814105be    // IDD_SELECT_CHASSIS_MODEL_DLG
+#define HIDC_BTN_EDIT                   0x814105bd    // IDD_SELECT_CHASSIS_MODEL_DLG
+#define HIDC_BTN_OPEN_MODELINFO_FOLDER  0x81280439    // IDD_OPT_FOLDER_PAGE
+#define HIDC_BTN_REMOTE_DLG_28          0x810e05ff    // IDD_REMOTE_DLG
+#define HIDC_BTN_REMOTE_DLG_51          0x810e0616    // IDD_REMOTE_DLG
+#define HIDC_BTN_RETRY2                 0x80ff05c2    // IDD_STOP_STEP_DLG
+#define HIDC_BUTTON_SET                 0x814e0432    // IDD_USBDIO_DLG
+#define HIDC_CHK_USE_TH                 0x80e604f0    // IDD_OPT_COMPORT_PAGE

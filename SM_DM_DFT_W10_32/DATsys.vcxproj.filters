@@ -1,0 +1,969 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{23c6c8e6-8fb6-4a9c-93c4-5bc1a11d0857}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{7ca61660-7441-4f72-958a-ef2c0b3a637e}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{dd88fc93-28d0-4aff-80fa-cc8c70856a30}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Main Class">
+      <UniqueIdentifier>{94f322e7-7ee3-44c9-8eeb-e636025afa8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Image Process">
+      <UniqueIdentifier>{f89f8424-0a48-4a02-b0c9-f9ce905cc527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IniAccess">
+      <UniqueIdentifier>{3df96eaf-9dde-476d-a0ee-0dfa8a290873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ProgressControl">
+      <UniqueIdentifier>{94c5b8fa-5e86-40c2-a3a6-6b3fa59eff89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ProgressControl\ProgressXControl">
+      <UniqueIdentifier>{46533c0d-007e-42e2-bd29-f5ef6b40b2dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GrabberControl">
+      <UniqueIdentifier>{05765cab-cc92-46d4-84e1-91cbcfa1c60a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ColorStatic">
+      <UniqueIdentifier>{9df68002-f6e5-4a85-9a19-6cdfb17994ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageProcessingDlg">
+      <UniqueIdentifier>{8b358533-e176-45ec-8286-b26d064fee09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternGenControl">
+      <UniqueIdentifier>{9b12e977-bdd1-470f-b98a-645c864b1e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parsor_Sequence">
+      <UniqueIdentifier>{a5b9a1b3-3669-4a82-addd-55b509d4392b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LabelControl_MSFlex">
+      <UniqueIdentifier>{866c2e3a-f982-48d4-b6a0-716659e7a1fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RS232">
+      <UniqueIdentifier>{7cebe584-89d6-4b8d-958c-99b2892a9805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence">
+      <UniqueIdentifier>{781cd2c9-7bd8-4c89-aaf7-0d48be8b7bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AvSwitchBoxControl">
+      <UniqueIdentifier>{1ea9dc13-5a65-432a-88ea-345125f34303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MMTools">
+      <UniqueIdentifier>{2644e6d8-3dd9-4d60-98c1-b54ad3e25892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OptionDlg">
+      <UniqueIdentifier>{74d426b9-881c-42c2-a340-8c7c440e19eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{87c87005-71c9-4aa6-a211-cc310af7115a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AddModelDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurrentSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTreeCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlexUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FullSeqDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Gmes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HdmiGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InitDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IrCheckerCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonST\LedButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTestResultInputDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Markup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmbevelx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmconnectorx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmdspcomponentx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmhitimerx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmledlabelx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmledpanelx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmoscopex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmpeakdetectx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmspectrumx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmwaveinx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mmwaveoutx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelInfoCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelInfoCreate_GraberOption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyEchoSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NoDifferentPointDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OptFolderPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PciDio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressMsgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rs232cAdcManualCheckDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScannerCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectChassisModelDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SeqRemoteDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetAudioSpecDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetDateDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetModelDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalTestResultDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Splash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StopProcessingDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StopStepDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Support.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextOutCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thermometer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrueColorToolBarCtrl_src\TrueColorToolBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UsbDio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UsbdioTestDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserMsgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vsflexdatasource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vsflexgrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vsflexnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DATsys.cpp">
+      <Filter>Main Class</Filter>
+    </ClCompile>
+    <ClCompile Include="DATsysDoc.cpp">
+      <Filter>Main Class</Filter>
+    </ClCompile>
+    <ClCompile Include="DATsysView.cpp">
+      <Filter>Main Class</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Main Class</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseImage.cpp">
+      <Filter>Image Process</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageProc.cpp">
+      <Filter>Image Process</Filter>
+    </ClCompile>
+    <ClCompile Include="IniAccess.cpp">
+      <Filter>IniAccess</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressCtrlX.cpp">
+      <Filter>ProgressControl\ProgressXControl</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorStaticST.cpp">
+      <Filter>ColorStatic</Filter>
+    </ClCompile>
+    <ClCompile Include="GrabPage.cpp">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageTotalDlg.cpp">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="ParmAdjPage.cpp">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="ReviewPage.cpp">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternGeneratorCtl.cpp">
+      <Filter>PatternGenControl</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpStep.cpp">
+      <Filter>Parsor_Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Parsor_Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="Realfunc_New2.cpp">
+      <Filter>Parsor_Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="StepMeasFunc.cpp">
+      <Filter>Parsor_Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="StringTokenizer.cpp">
+      <Filter>Parsor_Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="font1.cpp">
+      <Filter>LabelControl_MSFlex</Filter>
+    </ClCompile>
+    <ClCompile Include="labelcontrol.cpp">
+      <Filter>LabelControl_MSFlex</Filter>
+    </ClCompile>
+    <ClCompile Include="picture.cpp">
+      <Filter>LabelControl_MSFlex</Filter>
+    </ClCompile>
+    <ClCompile Include="TVCommCtrl.cpp">
+      <Filter>RS232</Filter>
+    </ClCompile>
+    <ClCompile Include="SeqEditorDlg.cpp">
+      <Filter>Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="SeqRoiDlg.cpp">
+      <Filter>Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="AvSwitchBoxCtrl.cpp">
+      <Filter>AvSwitchBoxControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Register.cpp">
+      <Filter>MMTools</Filter>
+    </ClCompile>
+    <ClCompile Include="OptComportPage.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="OptEtcPage.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="OptGrabberPage.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionDlg.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="OptMesPage.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="OptSpecPage.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="OptUserInfoPage.cpp">
+      <Filter>OptionDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="ListCtrlEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnalogGrabber.cpp">
+      <Filter>GrabberControl</Filter>
+    </ClCompile>
+    <ClCompile Include="XLAutomation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XLEzAutomation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PtrFifo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="errorprint.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundBase.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundFile.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundIn.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundOut.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SM_SoundControl.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="FFT_SM.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="label_text.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CSelectGenerateModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpreadSheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLControlSub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DATsys.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileTreeCtrl.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManualTestResultInputDlg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortedArray.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddModelDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpreadSheet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CurrentSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlexUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FullSeqDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Gmes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HdmiGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Icmpdefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InitDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IrCheckerCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keydll1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keydll2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonST\LedButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Markup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MemDC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmbevelx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmconnectorx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmdspcomponentx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmhitimerx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmledlabelx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmledpanelx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmoscopex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmpeakdetectx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmspectrumx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmwaveinx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mmwaveoutx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelInfoCreate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelInfoCreate_GraberOption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MSVIDDRV.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MSVIDEO.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyEchoSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NoDifferentPointDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OptFolderPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PciDio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressMsgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RemoteDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rs232cAdcManualCheckDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScannerCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectChassisModelDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SeqRemoteDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetAudioSpecDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetDateDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetModelDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalTestResultDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Splash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StopProcessingDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StopStepDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Support.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextOutCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thermometer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TrueColorToolBarCtrl_src\TrueColorToolBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsbDio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsbdioTestDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserMsgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vsflexdatasource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vsflexgrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vsflexnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DATsys.h">
+      <Filter>Main Class</Filter>
+    </ClInclude>
+    <ClInclude Include="DATsysDoc.h">
+      <Filter>Main Class</Filter>
+    </ClInclude>
+    <ClInclude Include="DATsysView.h">
+      <Filter>Main Class</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Main Class</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Main Class</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Main Class</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseImage.h">
+      <Filter>Image Process</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageProc.h">
+      <Filter>Image Process</Filter>
+    </ClInclude>
+    <ClInclude Include="IniAccess.h">
+      <Filter>IniAccess</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawgdix.h">
+      <Filter>ProgressControl\ProgressXControl</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCtrlX.h">
+      <Filter>ProgressControl\ProgressXControl</Filter>
+    </ClInclude>
+    <ClInclude Include="DXEXT.H">
+      <Filter>GrabberControl</Filter>
+    </ClInclude>
+    <ClInclude Include="HwCtrl\perifunc_gui.h">
+      <Filter>GrabberControl</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorStaticST.h">
+      <Filter>ColorStatic</Filter>
+    </ClInclude>
+    <ClInclude Include="GrabPage.h">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageTotalDlg.h">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="ParmAdjPage.h">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="ReviewPage.h">
+      <Filter>ImageProcessingDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternGeneratorCtl.h">
+      <Filter>PatternGenControl</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpStep.h">
+      <Filter>Parsor_Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Parsor_Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="RealMeas.h">
+      <Filter>Parsor_Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="Step.h">
+      <Filter>Parsor_Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="StepMeasFunc.h">
+      <Filter>Parsor_Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="StringTokenizer.h">
+      <Filter>Parsor_Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="font1.h">
+      <Filter>LabelControl_MSFlex</Filter>
+    </ClInclude>
+    <ClInclude Include="labelcontrol.h">
+      <Filter>LabelControl_MSFlex</Filter>
+    </ClInclude>
+    <ClInclude Include="picture.h">
+      <Filter>LabelControl_MSFlex</Filter>
+    </ClInclude>
+    <ClInclude Include="TVCommCtrl.h">
+      <Filter>RS232</Filter>
+    </ClInclude>
+    <ClInclude Include="SeqEditorDlg.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="SeqRoiDlg.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="AvSwitchBoxCtrl.h">
+      <Filter>AvSwitchBoxControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Register.h">
+      <Filter>MMTools</Filter>
+    </ClInclude>
+    <ClInclude Include="OptComportPage.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="OptEtcPage.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="OptGrabberPage.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionDlg.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="OptMesPage.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="OptSpecPage.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="OptUserInfoPage.h">
+      <Filter>OptionDlg</Filter>
+    </ClInclude>
+    <ClInclude Include="ListCtrlEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnalogGrabber.h">
+      <Filter>GrabberControl</Filter>
+    </ClInclude>
+    <ClInclude Include="XLAutomation.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XLEzAutomation.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLControl.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PtrFifo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="errorprint.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundBase.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundFile.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundIn.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundOut.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SM_SoundControl.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="FFT_SM.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="COCX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="label_text.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CSelectGenerateModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLControlSub.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmap3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap_f.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap_n.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap_p.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00002.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00003.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00004.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\CHECK.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="dat_logo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="DatLog.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DatLog.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DATsys.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DATsysDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DefaultPattern.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DFT.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\dtv3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DTVSplashWindow.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\FAIL.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\FAIL2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\LedOff.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\LedOn.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\logo_2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\manual_check.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MixerControls.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\NGbmp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\OKbmp.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\PASS.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\PASS1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\PASS2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\smallico.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\smallicon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Splsh16.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\start.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StartBtn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Status.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\stop.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StopBtn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ToolbarDraw.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ToolbarDraw256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ToolbarDrawDisabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ToolbarDrawDisabled256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ToolbarDummy.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\xcanvas.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DFT_Update.txt" />
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\FINISH.wav" />
+    <Media Include="res\FINISH_NG.WAV" />
+    <Media Include="res\Msg.wav" />
+    <Media Include="res\NG.WAV" />
+    <Media Include="res\SOUND136.WAV" />
+    <Media Include="res\SOUND7.WAV" />
+    <Media Include="res\User Msg.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\cur00001.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\cur00002.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\DATsys.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\idr_tree.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\tfdropcopy.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\tfnodropcopy.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\tfnodropmove.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource.hm">
+      <Filter>Header Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

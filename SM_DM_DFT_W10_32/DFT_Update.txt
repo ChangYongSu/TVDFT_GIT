@@ -1,0 +1,337 @@
+[09.02.03]
+
+1.Assert Error When clicking Exit button
+  -> CDATsysView::OnDestroy(), move position of Analog-Grabber CardClose code
+
+2.Check NULL String in WipID
+
+3.If there's no xls file
+  -> 
+   if(g_pView->m_pImageInfo->nUseExtAnalogGrabber == 0)
+-> if(g_pView->m_pImageInfo != NULL && g_pView->m_pImageInfo->nUseExtAnalogGrabber == 0) 
+
+4.HwInit is processed before HwIF recognizes grabber type.
+  -> move position of Analog-Grabber initialization Code. (in DFT.exe)
+  -> move position of code for setting nUseExtAnalogGrabber value. (in HwIF.exe)
+
+5.Add Progress bar in DeviceInit Dialog
+
+[09.02.05]
+ 
+1. Run SetGrabInfo() when user clicks [Run]->[Image Grab Start menu].
+
+2. If there's no system image, program is crashed.
+  -> add variable initialization code 
+
+	m_pImageInfo		= NULL;
+	m_hImageDataFileMapping = NULL;
+	m_hImageInfoFileMapping = NULL;
+
+     in CDATsysView::CDATsysView()
+
+3. Set analog signal type for external grabber such as NTSC, PAL or SECAM.
+
+[09.02.06]
+1. set nVbackPorch and nHbackPorch to default value 10
+
+	m_pImageInfo->nVbackPorch	= DEFAULT_V_BPCH;
+	m_pImageInfo->nHbackPorch	= DEFAULT_H_BPCH;
+
+2. If there is no PCBA_LineList.ini file, program is crashed.
+   -> Display error message and check if m_saLineList is NULL.
+
+3. In the image analysis dialog, if user clicks radio button for NTSC/PAL selection,
+   it does not effect on grabbing immediately.
+
+   -> call SetGrabInfo() function after radio button is clicked.
+
+[09.02.10]
+1. Call SetGrabInfo() in StepInit_AvSwitchBox() when video source is analog.
+
+[09.02.11]
+1. Add RefImage_DirectLoad() for external analog grabber in Grab_Image_2in1().
+
+[09.02.16]
+1.Modlue Voltage 측정기능을 추가함 
+
+[09.02.18]
+1. 신규동영상검사 알고리즘을 적용함
+2. Change the in/out queue size of ComPort. (2KB -> 32KB)
+
+[09.02.19]
+1.Make-Ref 실행시, RF와 HDMI에 대한 ColorTest Step인 경우, Repaint를 안하도록 되어 있음
+  최근에 소스종류에 ATV를 추가하였으므로, ATV인 경우에도 Repaint를 안하도록 추가함파일명을 
+
+2.Generate Log File
+
+3.Analog Grab시, Size Error 발생
+  Ref는 700*480인데 Grab 768*576이라고 표시됨->수정완료
+
+4.Failed to save Image File 에러 발생 
+  -> 파일명을 표시하도록 처리, 이미지가 정상적으로 캡쳐되지 않은 경우에 발생하는 것 같음
+
+[09.02.20]
+1.DFT 메인화면에서 기본으로 보여주는 것을 H/W Log에서 Com Log로 변경함
+
+2. SetTimer(TIMER_UPDATE_ALL_SCREEN, 5000, NULL); 는 이제 사용하지 않으므로 삭제함
+
+3. 테스트 종료후 메인화면에 LvdsGrabThread가 시작되지 않는 경우가 간혹 발생함
+   StartTestThread 내에서 다시 LvdsGrabThread를 호출하면서 문제가 생기는가 하여,
+   PostMessage로 LvdsGrabThread가 실행되도록 변경함
+4. PCBA_LineList.ini 파일이 없을 경우, 프로그램을 종료하게 되어있는데,
+   이때 Hw Init대화상자가 여전히 살아있는 상황이라 Assert Error를 발생하게 됨
+   Afxcmn2.inl -> 수정필요함
+
+[09.02.24]
+1. 테스트 종료후 메인화면에 LvdsGrabThread가 시작되지 않는 경우가 간혹 발생함
+   -> GrabImageThread(LPVOID pParam) 함수내에 화면Update를 위한 SendMessage를 PostMessage로 변경함
+
+2. Thread 종료시, Thread에 대한 Pointer변수를 NULL로 초기화함
+
+[09.02.26]
+1. Memory Leak관련처리
+
+2. COM 포트가 Open된 경우에 한해서 Close하도록 처리
+   void CCommThread::ClosePort() 함수 내 If문 추가
+
+3. JoyStickThead를 종료하기 위해 UserControlInit(FALSE)를 호출해서
+   m_pJoyStickThread->m_bDone = TRUE;로 설정해도, int CBaseThread::Run() 함수내에
+   이 변수값을 보고 탈출하는 부분이 없어 이를 추가함
+
+[09.03.06]
+1. Input별 해상도/Pattern 자동전환 대응 
+ ▶ DFT 표준 Pattern Sheet 기준
+ ▶ P/G, HDMI Input Source 자동전환 선택창 대응
+ ▶ ADC 조정은 해상도/Pattern 자동전환 무시 OK 
+
+2. Ref. Audio 동작알고리즘 수정 
+  ▶동일 Seq. File명으로 Update 되도록 수정 OK 
+
+3. MES Upload 관련 Trouble 개선 
+  ▶자동 Upload시 Error 창 
+  ▶검사 완료 후 실행창 무너짐 현상 개선 - PCBA ID조회를 1달기준 및 생산 Line 기준으로 변경하여 시간을단축시켜 위 현상을 개선함 　 
+
+4. 외장형 Grabber "NTSC" Setting시Analog Grab 안됨 개선 - HWIF.EXE 수정 
+
+5. DFT 검사 STEP All "OK", "NG" 판정표시 대응 
+  ▶EDID D/L Command 대응
+  ▶Manual 검사 Command 대응
+
+6. EDID, ADC Ack 값 저장 
+   ▶ Okx , NGx Data 남아있도록 대응 
+
+7. DTV Audio 유/무 판단 
+ ▶ DTV Audio 판정 Command 추가
+  1)Audio Level만 Check시 -  CheckAudio_Level(1, 150,150)
+  2)Audio Frequency만 Check시 - CheckAudio_Freq(1, 150,150) 
+
+8. ADC 조정, EDID D/L 항목 Manual 판단창 수정 
+    ▶ 조정, D/L 항목으로 작업자 임의판단 없도록 수정 →"NG"시 Manual 창은 띄우지만 OK/NG 를 선택할수 없도록 비활성화 
+
+[09.03.11]
+ 1. Input별 해상도, Pattern 자동전환 대응에서 Mode/Pattern동시 전환시 생기는 문제점 수정
+
+ 2. ADC조정 Step에서 Gain/Offset을 읽을때 생기는 트러블 수정
+
+ 3. EDID/ ADC조정 과 같이 OKx/NGx로 return에 되는 경우 발생하는 트러블 수정
+
+ 4. Barcode Scanner사용시 PCBA ID를 검사종료 후 초기화 하는 기능 추가
+
+[09.03.12]
+ 1. Black Pattern 자동 전환 => Sequence에서 Step검사가 "OSD_TEST" 인경우 Pattern만 2번으로 자동 전환
+      - 해상도는 입력 소스 참조하여 자동 전환 함
+
+ 2. P/G Control 통신시 return값(0x06) 확인 기능추가
+
+ 3. P/G Control시 Model No./Pattern No. 기억하는 기능 추가  
+
+ 4. SCART(ID1/ID2) 검사시 Mode/Pattern 자동전환 기능 추가
+     - Sequence에서 Setep의 입력 소스구분을 "SCART1", "SCART2" 로 구분입력
+     - 입력 소스가 "RF"인상태에서 검사하므로 소스 Control은 안함
+
+[09.03.16]
+ 1. H/W, Remocon Key 진행창 Click시 Display 내용 뒤바뀜 수정
+
+ 2. 자동전환순서 변경 : Source전환후  Pattern전환  => pattern 전환후 Source 전환
+
+ 3. SCART(ID1/ID2) 검사시 AV Switch Box 자동전환 기능 추가
+
+ 4. SCART_RGB 모드 자동전환 기능 추가
+     - Source 구분입력 AV1
+     - Mode/Pattern은 SCART RGB 로전환
+
+[09.03.17]
+ 1. 검사종료후 StartLVDSGrabThread 에서 생기는 트러블 수정
+
+ 2. Pattern자동전환  에서 이전 Source와 비교 삭제
+
+ 3. Pattern전환후 500mS Delay 삽입
+
+[09.03.19]
+ 1. Barcode Scanner사용시 PCBA ID를 검사종료 후 초기화 하는 기능 삭제
+    ▶ Barcode Scanner사용시 Menu의 Start 비활성화/Key-Pad Star버튼 비활성화
+
+ 2. Barcode Scanner사용시 Manual검사창에서 "OK"버튼 비활성화
+
+ 3. WaitMessga창 "확인(OK)" 만 적용
+
+ 4. Step NG시 검사를 종료하는 모드 추가
+
+ 5. B+전압 검사시 5회 Loop를 돌며, Loop증가시 delay를 500ms증가
+
+[09.03.24]
+ 1. Audio Level/Frequency만 Check시 동작 이상 수정
+
+ 2. Option 변경후 ToolBar상태가  Update 안되는 문제점 개선
+
+ 3. Make Ref동작시 All검사 항목 동작 하도록 수정
+
+ 4. 검사 결과 Display시 Video/Audio NG 표시 구분 수정
+
+ 5. HDMI Gen(MSG-500) 통신 일부 수정(매 ON-LINE 전송 => return이 없을시만 전송)
+
+ 6. Barcode Scanner사용시 Key-Pad Star버튼 비활성화 동작 트러블 수정
+
+[09.03.25]
+ 1. CUserMsgDlg 클래스를 Manual Test에서만 사용하도록 수정
+    ▶ 프로그램내 사용부분을 AfxMessageBox로 대체
+
+ 2. MAC address/Ping Test 기능 추가 : RS232C Command
+
+ 3. BB TV ESN ESN D/L 여부 확인 기능 추가 : RS232C Command
+
+ 4. Step TestType 재정리 => ContinuousLVDSGrabRunning Step 추가
+
+ 5. 검사 결과 정보(RS232C Command return값)를 검사 Data에 남기는 부분 수정
+
+ 6. Manual검사창(SetStopStepDlgMsg)의 NG 정보 Data 수정
+
+[09.04.07]
+ 1. Analog Grab 문제와 관련하여, 이전에 변경하였던 사항을 원상복귀시킴
+    nAnalogSignalType이 0 또는 1인가에 따라 	AnalogWidth와 nAnalogHeight값을 HwIF에서 Hardcoding하여 설정하고 있음
+    예)	nAnalogWidth  = 640; nAnalogHeight = 480;
+    이를 이 nAnalogWidth, nAnalogHeight값을 DFT.ext에서 Setting해서 HwIF로 넘겨주는 방식으로 원상복귀시킴
+
+[09.04.08]
+ 1. Image분석창에서 Analog Grab을 Manual로 실행할 때, Grabbing이라고 
+    나오면서 더 이상 안되는 문제 발견 & 수정
+	-> OnBtnManualGrab() 함수내에서 Grab실패시 다음번 Grab시도가 실행되도록
+	m_bThreadRunning = FALSE; 로 설정해야하는데 빠져 있었던 것을 수정함
+ 2. 불필요한 코드를 삭제함
+ 3. 외장형 Grabber에서 Analog Grab 이미지 파일 생성하는 사이즈를 예전상태에서
+    새로운 내용으로 Update안 된 부분이 있어서 이를 수정함
+ 4. 이미지분석창에서 Analog에 대한 Manual Grab을 할 때
+    Timeout으로 Grab에 실패한 경우 상태창에는 GRABBING이라고
+	계속 나오던 것을 GRAB-NG!로 변경함  
+
+[09.04.09]
+ 1. 반복 수행중 VSFLEX7L.OCX Access Violation 에러가 발생함
+    메인화면상에 AvSwitchBox/Remote 통신로그 출력부분에서 문제가 발생할 것으로
+    예상되어 이 부분을 변경함
+ 2. StopProcessingDlg 출력시 화면 업데이트 되도록 PeekMessage 추가함
+
+[09.04.14]
+ 1. Analog 영상 Grab시 Grab이 중단되던 문제를 해결하기 위하여, 
+    Analog 관련로직을 Grab할때마다 Reset하도록 Firmware를 수정하였고
+	이와 더불어 DFT도 NTSC일 경우 VBackPorch의 값을 PAL과 마찬가지로 1로 수정함(기존 20)
+
+[09.04.20]
+ 1. Analog 영상 Type에 SECAM을 추가함
+
+[09.04.23]
+ 1. ADC 결과값 저장기능 추가
+ 2. Audio검사에서 Frequency 측정만 실시하면 source전환시 전source값이 측정되는 문제 수정
+   - Step시작시 측정값 Reset 기능 추가
+
+[09.04.24]
+ 1. 검사 결과 MES 전송시 Step NG 결과 Data중 pStep->m_strMsg 전송 삭제
+    - DTV통신 내용중 이상한 문자열이 출력될 경우 트러블 방지
+ 2. Auto UpLoad 부분 수정=> 1번항목 과 같은경우 대처
+
+[09.04.28]
+ 1. Analog 영상 Type에 SECAM을 추가하면서 기존 설정 Analog 해상도(PAL) 불러오기 오류 수정
+
+[09.05.07]
+ 1. 모델변경 및 SYNTAX CHECK 시 정지현상 수정 => MMTools 영향이라고 예상 하여 관련 부분 수정
+ 2. MES Data 전송부분 수정
+    - 결과 Fail시 Step Data 전송 루틴 수정
+    - 점심 시간에 Auto UpLoad하는 기능 삭제
+    - MES Data 전송 시점을 결과창 Display후로 변경
+    - MES Data 전송 시 이전에 Upload되지 않은 Data가있으면 전송함
+[09.05.08]
+ 1. ADC 결과값 Check시 샤시에서 Hex 값이 아닌 decimal값으로 전송되는 경우 대응 추가
+    - Data구분: Hex 경우=> offset1 =1, offset2=2,gain=3/  Decimal경우 offset1 =4, offset2=5,gain=6
+
+[09.05.12]
+ 1. B+ 전압 측정 Step의 Retry Msg에 B+전압 측정값 및 Target 값 표시 기능 추가
+ 
+ 2. MES Data전송시 Seq ID 를 조회하는 Sql문 변경
+
+ 3. MES Data 자동 Upload시 45일 이상이 지난 Data는 삭제 하도록 기능 추가
+[09.08.18]
+1. DrawImage 호출시 중복 호출이 안되게 수정
+
+[09.08.26]
+1. Sequence 표시 Grid Lock기능 추가 
+  - 검사를 시작 하면 자동으로 Lock시킴
+  - Grid가 Shift되어 있는 경우 초기화 시킴
+
+[09.09.10]
+1. 통신 Log표시 통합
+2. Keypad 인터페이스 수정 
+  - 기존 Joystic 사용 삭제
+  - Main Keyboard 사용시 Keypad기능(검사시작)이 동작되지 안게함(단 TAB - Key 제외)
+  - keydll1.dll, keydll2.dll 추가 : 이파일이 없으면 Keypad동작이 안됨
+
+[09.09.22]
+1. ADC Step은  전 Step의 Source상태에 관계없이 무조건 Source전환 실시
+2. Step별 Audio Source설정(AV Switch 설정)/ Auto Source Control/ Auto Pattern Control 오류시 Step Fail 이 나도록 수정
+3. Memory/Resource Leak 의심 부분 다수 수정
+   - File Control 부분, HWIF.EXE Interface 부분 (HWIF.EXE 변경),RS232C 통신 부분등...
+   
+[09.09.24]
+1. HDMI Gen. 통신 오류시 Pattern Gen.의 통신 Port번호로 로 표시하는 오류 수정  
+
+[09.10.14]
+1. I2C 적용 샤시에서 I2C통신이 2AB로 초기화가 안되어 Auto Source 전환에 오류가 발생하는 문제 수정 
+
+[09.10.16]
+1. Tool Option5 Write/Read 기능 추가
+
+[09.11.18]
+1. CI+ Key Download Check 기능 추가
+
+[09.11.24]
+1. RJP  Check 기능 추가
+2. ADC 조정 결과 Check 기능 추가
+3. Wireless Ready Check 기능 추가
+
+[09.12.09]
+1. Version Check에서 3자리에서 4자리까지 Check 가능하도록 수정
+
+[09.12.15]
+1. Grab Option에 Image Rotation기능 추가
+2. HWIF.EXE => Image Rotation기능 추가
+
+[10.01.01]
+1. Comp3에 대한 대응추가 
+  - Source Auto Control
+  - Pattern Auto Control : 67
+  
+[10.03.03]
+1. CPU 점유율이 올라가는 오류 수정
+   - RS232C 통신중 Monitoring 기능부분 수정(Scanner/TV-Link)
+
+[10.03.10] [10.03.16]
+1. HDMI Generator 출력 Option추가
+  - 해상도 : 1080p/ 1080i/ 720p/ 480p
+  - Bits: 8Bit/ 10Bit/ 12Bit ==> 1080p경우만 사용
+
+2.Component & CVBS 통합 Jack 대응 수정 : 신규 Master AV Switch Box 대응
+  * 입력Source 구분 => Component 신호 채널에 CVBS를 인가하기 위해 COMP의 채널 구분이 필요하며
+      자동 Source전환을 위해 AV 채널 구분이 필요함  
+    - "COMP1-AV1" : COMP1 & AV1 통합 Jack인경우 
+    - "COMP1-AV2" : COMP1 & AV2 통합 Jack인경우
+    - "COMP2-AV1" : COMP2 & AV1 통합 Jack인경우
+    - "COMP2-AV2" : COMP2 & AV2 통합 Jack인경우
+      

@@ -1,0 +1,772 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: DATsys - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release/DATsys.res" /d "NDEBUG" "D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsys.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPF01A.tmp" with contents
+[
+/nologo /MTd /W3 /GX /Zi /O2 /I "./EditLog" /I "HwCtrl\Mil" /I "HwCtrl\Mil\MilDyn" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM1" /FR"Release/" /Fp"Release/DATsys.pch" /YX"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\AddModelDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\CommThread.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\CurrentSetting.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\field.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\FileTreeCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\FlexUtil.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\FullSeqDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Gmes.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\HdmiGenerator.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\InitDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\IrCheckerCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ButtonST\LedButton.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ManualTestResultInputDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Markup.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmbevelx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmconnectorx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmdspcomponentx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmhitimerx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmledlabelx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmledpanelx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmoscopex.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmpeakdetectx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmspectrumx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmwaveinx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmwaveoutx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ModelInfoCreate.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ModelInfoCreate_GraberOption.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\MyEchoSocket.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\NoDifferentPointDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptFolderPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\PciDio.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ProgDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ProgressMsgDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\RemoteDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ResultDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Rs232cAdcManualCheckDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ScannerCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SelectChassisModelDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SeqRemoteDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SetAudioSpecDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SetDateDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SetModelDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SignalTestResultDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SoundCard.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Splash.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StaticFilespec.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StopProcessingDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StopStepDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Support.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\TextOutCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Thermometer.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Thread.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\TrueColorToolBarCtrl_src\TrueColorToolBar.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\UsbDio.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\UsbdioTestDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\UserMsgDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\vsflexdatasource.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\vsflexgrid.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\vsflexnode.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsys.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsysDoc.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsysView.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\MainFrm.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\BaseImage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ImageProc.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\IniAccess.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ProgressCtrlX.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\HwCtrl\AnalogGrabber.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ColorStaticST.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\GrabPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ImageTotalDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ParmAdjPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ReviewPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\PatternGeneratorCtl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\JumpStep.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Parser.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Realfunc_New2.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StepMeasFunc.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StringTokenizer.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\font1.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\labelcontrol.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\picture.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\TVCommCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SeqEditorDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SeqRoiDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\AvSwitchBoxCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Register.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptComportPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptEtcPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptGrabberPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptionDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptMesPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptSpecPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptUserInfoPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\EditLog\EditLog.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\EditLog\SubclassWnd.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPF01A.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPF03A.tmp" with contents
+[
+/nologo /MTd /W3 /GX /Zi /O2 /I "./EditLog" /I "HwCtrl\Mil" /I "HwCtrl\Mil\MilDyn" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM1" /FR"Release/" /Fp"Release/DATsys.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPF03A.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPF04A.tmp" with contents
+[
+psapi.lib version.lib winmm.lib dinput.lib mil.lib ApiEtg.lib ws2_32.lib Keydll1.lib Keydll2.lib ftd2xx.lib PCI-Dask.lib /nologo /stack:0x200000 /subsystem:windows /incremental:no /pdb:"Release/DM_DFT1.pdb" /map:"Release/DM_DFT1.map" /debug /machine:I386 /out:"Release/DM_DFT1.exe" /pdbtype:sept /libpath:"HwCtrl\Mil\Lib" /libpath:"PsApi" /MAPINFO:LINES 
+".\Release\AddModelDlg.obj"
+".\Release\CommThread.obj"
+".\Release\CurrentSetting.obj"
+".\Release\field.obj"
+".\Release\FileTreeCtrl.obj"
+".\Release\FlexUtil.obj"
+".\Release\FullSeqDlg.obj"
+".\Release\Gmes.obj"
+".\Release\HdmiGenerator.obj"
+".\Release\InitDlg.obj"
+".\Release\IrCheckerCtrl.obj"
+".\Release\LedButton.obj"
+".\Release\ManualTestResultInputDlg.obj"
+".\Release\Markup.obj"
+".\Release\mmbevelx.obj"
+".\Release\mmconnectorx.obj"
+".\Release\mmdspcomponentx.obj"
+".\Release\mmhitimerx.obj"
+".\Release\mmledlabelx.obj"
+".\Release\mmledpanelx.obj"
+".\Release\mmoscopex.obj"
+".\Release\mmpeakdetectx.obj"
+".\Release\mmspectrumx.obj"
+".\Release\mmwaveinx.obj"
+".\Release\mmwaveoutx.obj"
+".\Release\ModelInfoCreate.obj"
+".\Release\ModelInfoCreate_GraberOption.obj"
+".\Release\MyEchoSocket.obj"
+".\Release\NoDifferentPointDlg.obj"
+".\Release\OptFolderPage.obj"
+".\Release\PciDio.obj"
+".\Release\ProgDlg.obj"
+".\Release\ProgressMsgDlg.obj"
+".\Release\RemoteDlg.obj"
+".\Release\ResultDlg.obj"
+".\Release\Rs232cAdcManualCheckDlg.obj"
+".\Release\ScannerCtrl.obj"
+".\Release\SelectChassisModelDlg.obj"
+".\Release\SeqRemoteDlg.obj"
+".\Release\SetAudioSpecDlg.obj"
+".\Release\SetDateDlg.obj"
+".\Release\SetModelDlg.obj"
+".\Release\SignalTestResultDlg.obj"
+".\Release\SoundCard.obj"
+".\Release\Splash.obj"
+".\Release\StaticFilespec.obj"
+".\Release\StdAfx.obj"
+".\Release\StopProcessingDlg.obj"
+".\Release\StopStepDlg.obj"
+".\Release\Support.obj"
+".\Release\TextOutCtrl.obj"
+".\Release\Thermometer.obj"
+".\Release\Thread.obj"
+".\Release\TrueColorToolBar.obj"
+".\Release\UsbDio.obj"
+".\Release\UsbdioTestDlg.obj"
+".\Release\UserMsgDlg.obj"
+".\Release\vsflexdatasource.obj"
+".\Release\vsflexgrid.obj"
+".\Release\vsflexnode.obj"
+".\Release\DATsys.obj"
+".\Release\DATsysDoc.obj"
+".\Release\DATsysView.obj"
+".\Release\MainFrm.obj"
+".\Release\BaseImage.obj"
+".\Release\ImageProc.obj"
+".\Release\IniAccess.obj"
+".\Release\ProgressCtrlX.obj"
+".\Release\AnalogGrabber.obj"
+".\Release\ColorStaticST.obj"
+".\Release\GrabPage.obj"
+".\Release\ImageTotalDlg.obj"
+".\Release\ParmAdjPage.obj"
+".\Release\ReviewPage.obj"
+".\Release\PatternGeneratorCtl.obj"
+".\Release\JumpStep.obj"
+".\Release\Parser.obj"
+".\Release\Realfunc_New2.obj"
+".\Release\StepMeasFunc.obj"
+".\Release\StringTokenizer.obj"
+".\Release\font1.obj"
+".\Release\labelcontrol.obj"
+".\Release\picture.obj"
+".\Release\TVCommCtrl.obj"
+".\Release\SeqEditorDlg.obj"
+".\Release\SeqRoiDlg.obj"
+".\Release\AvSwitchBoxCtrl.obj"
+".\Release\Register.obj"
+".\Release\OptComportPage.obj"
+".\Release\OptEtcPage.obj"
+".\Release\OptGrabberPage.obj"
+".\Release\OptionDlg.obj"
+".\Release\OptMesPage.obj"
+".\Release\OptSpecPage.obj"
+".\Release\OptUserInfoPage.obj"
+".\Release\EditLog.obj"
+".\Release\SubclassWnd.obj"
+".\Release\DATsys.res"
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPF04A.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AddModelDlg.cpp
+CommThread.cpp
+CurrentSetting.cpp
+field.cpp
+FileTreeCtrl.cpp
+FlexUtil.cpp
+FullSeqDlg.cpp
+Gmes.cpp
+HdmiGenerator.cpp
+InitDlg.cpp
+IrCheckerCtrl.cpp
+LedButton.cpp
+ManualTestResultInputDlg.cpp
+Markup.cpp
+Note: MBCS build (not UTF-8)
+mmbevelx.cpp
+mmconnectorx.cpp
+mmdspcomponentx.cpp
+mmhitimerx.cpp
+mmledlabelx.cpp
+mmledpanelx.cpp
+mmoscopex.cpp
+mmpeakdetectx.cpp
+mmspectrumx.cpp
+mmwaveinx.cpp
+mmwaveoutx.cpp
+ModelInfoCreate.cpp
+ModelInfoCreate_GraberOption.cpp
+MyEchoSocket.cpp
+NoDifferentPointDlg.cpp
+OptFolderPage.cpp
+PciDio.cpp
+ProgDlg.cpp
+ProgressMsgDlg.cpp
+RemoteDlg.cpp
+ResultDlg.cpp
+Rs232cAdcManualCheckDlg.cpp
+ScannerCtrl.cpp
+SelectChassisModelDlg.cpp
+SeqRemoteDlg.cpp
+SetAudioSpecDlg.cpp
+SetDateDlg.cpp
+SetModelDlg.cpp
+SignalTestResultDlg.cpp
+SoundCard.cpp
+Splash.cpp
+StaticFilespec.cpp
+StopProcessingDlg.cpp
+StopStepDlg.cpp
+Support.cpp
+TextOutCtrl.cpp
+Thermometer.cpp
+Thread.cpp
+TrueColorToolBar.cpp
+UsbDio.cpp
+UsbdioTestDlg.cpp
+UserMsgDlg.cpp
+vsflexdatasource.cpp
+vsflexgrid.cpp
+vsflexnode.cpp
+DATsys.cpp
+DATsysDoc.cpp
+DATsysView.cpp
+MainFrm.cpp
+BaseImage.cpp
+ImageProc.cpp
+IniAccess.cpp
+ProgressCtrlX.cpp
+AnalogGrabber.cpp
+ColorStaticST.cpp
+GrabPage.cpp
+ImageTotalDlg.cpp
+ParmAdjPage.cpp
+ReviewPage.cpp
+PatternGeneratorCtl.cpp
+JumpStep.cpp
+Parser.cpp
+Realfunc_New2.cpp
+StepMeasFunc.cpp
+StringTokenizer.cpp
+font1.cpp
+labelcontrol.cpp
+picture.cpp
+TVCommCtrl.cpp
+SeqEditorDlg.cpp
+SeqRoiDlg.cpp
+AvSwitchBoxCtrl.cpp
+Register.cpp
+OptComportPage.cpp
+OptEtcPage.cpp
+OptGrabberPage.cpp
+OptionDlg.cpp
+OptMesPage.cpp
+OptSpecPage.cpp
+OptUserInfoPage.cpp
+EditLog.cpp
+SubclassWnd.cpp
+Linking...
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP11FE.tmp" with contents
+[
+/nologo /o"Release/DATsys.bsc" 
+".\Release\StdAfx.sbr"
+".\Release\AddModelDlg.sbr"
+".\Release\CommThread.sbr"
+".\Release\CurrentSetting.sbr"
+".\Release\field.sbr"
+".\Release\FileTreeCtrl.sbr"
+".\Release\FlexUtil.sbr"
+".\Release\FullSeqDlg.sbr"
+".\Release\Gmes.sbr"
+".\Release\HdmiGenerator.sbr"
+".\Release\InitDlg.sbr"
+".\Release\IrCheckerCtrl.sbr"
+".\Release\LedButton.sbr"
+".\Release\ManualTestResultInputDlg.sbr"
+".\Release\Markup.sbr"
+".\Release\mmbevelx.sbr"
+".\Release\mmconnectorx.sbr"
+".\Release\mmdspcomponentx.sbr"
+".\Release\mmhitimerx.sbr"
+".\Release\mmledlabelx.sbr"
+".\Release\mmledpanelx.sbr"
+".\Release\mmoscopex.sbr"
+".\Release\mmpeakdetectx.sbr"
+".\Release\mmspectrumx.sbr"
+".\Release\mmwaveinx.sbr"
+".\Release\mmwaveoutx.sbr"
+".\Release\ModelInfoCreate.sbr"
+".\Release\ModelInfoCreate_GraberOption.sbr"
+".\Release\MyEchoSocket.sbr"
+".\Release\NoDifferentPointDlg.sbr"
+".\Release\OptFolderPage.sbr"
+".\Release\PciDio.sbr"
+".\Release\ProgDlg.sbr"
+".\Release\ProgressMsgDlg.sbr"
+".\Release\RemoteDlg.sbr"
+".\Release\ResultDlg.sbr"
+".\Release\Rs232cAdcManualCheckDlg.sbr"
+".\Release\ScannerCtrl.sbr"
+".\Release\SelectChassisModelDlg.sbr"
+".\Release\SeqRemoteDlg.sbr"
+".\Release\SetAudioSpecDlg.sbr"
+".\Release\SetDateDlg.sbr"
+".\Release\SetModelDlg.sbr"
+".\Release\SignalTestResultDlg.sbr"
+".\Release\SoundCard.sbr"
+".\Release\Splash.sbr"
+".\Release\StaticFilespec.sbr"
+".\Release\StopProcessingDlg.sbr"
+".\Release\StopStepDlg.sbr"
+".\Release\Support.sbr"
+".\Release\TextOutCtrl.sbr"
+".\Release\Thermometer.sbr"
+".\Release\Thread.sbr"
+".\Release\TrueColorToolBar.sbr"
+".\Release\UsbDio.sbr"
+".\Release\UsbdioTestDlg.sbr"
+".\Release\UserMsgDlg.sbr"
+".\Release\vsflexdatasource.sbr"
+".\Release\vsflexgrid.sbr"
+".\Release\vsflexnode.sbr"
+".\Release\DATsys.sbr"
+".\Release\DATsysDoc.sbr"
+".\Release\DATsysView.sbr"
+".\Release\MainFrm.sbr"
+".\Release\BaseImage.sbr"
+".\Release\ImageProc.sbr"
+".\Release\IniAccess.sbr"
+".\Release\ProgressCtrlX.sbr"
+".\Release\AnalogGrabber.sbr"
+".\Release\ColorStaticST.sbr"
+".\Release\GrabPage.sbr"
+".\Release\ImageTotalDlg.sbr"
+".\Release\ParmAdjPage.sbr"
+".\Release\ReviewPage.sbr"
+".\Release\PatternGeneratorCtl.sbr"
+".\Release\JumpStep.sbr"
+".\Release\Parser.sbr"
+".\Release\Realfunc_New2.sbr"
+".\Release\StepMeasFunc.sbr"
+".\Release\StringTokenizer.sbr"
+".\Release\font1.sbr"
+".\Release\labelcontrol.sbr"
+".\Release\picture.sbr"
+".\Release\TVCommCtrl.sbr"
+".\Release\SeqEditorDlg.sbr"
+".\Release\SeqRoiDlg.sbr"
+".\Release\AvSwitchBoxCtrl.sbr"
+".\Release\Register.sbr"
+".\Release\OptComportPage.sbr"
+".\Release\OptEtcPage.sbr"
+".\Release\OptGrabberPage.sbr"
+".\Release\OptionDlg.sbr"
+".\Release\OptMesPage.sbr"
+".\Release\OptSpecPage.sbr"
+".\Release\OptUserInfoPage.sbr"
+".\Release\EditLog.sbr"
+".\Release\SubclassWnd.sbr"]
+Creating command line "bscmake.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP11FE.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP2F5F.bat" with contents
+[
+@echo off
+copy Release\DM_DFT1.exe D:\DM_DFT
+]
+Creating command line "C:\Users\ADMINI~1\AppData\Local\Temp\RSP2F5F.bat"
+
+        1개 파일이 복사되었습니다.
+
+
+
+<h3>Results</h3>
+DM_DFT1.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: DATsys - Win32 Release_DFT2--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release_DFT2/DATsys.res" /d "NDEBUG" "D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsys.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5C68.tmp" with contents
+[
+/nologo /MTd /W3 /GX /Zi /O2 /I "./EditLog" /I "HwCtrl\Mil" /I "HwCtrl\Mil\MilDyn" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM2" /FR"Release_DFT2/" /Fp"Release_DFT2/DATsys.pch" /YX"stdafx.h" /Fo"Release_DFT2/" /Fd"Release_DFT2/" /FD /c 
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\AddModelDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\CommThread.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\CurrentSetting.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\field.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\FileTreeCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\FlexUtil.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\FullSeqDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Gmes.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\HdmiGenerator.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\InitDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\IrCheckerCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ButtonST\LedButton.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ManualTestResultInputDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Markup.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmbevelx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmconnectorx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmdspcomponentx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmhitimerx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmledlabelx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmledpanelx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmoscopex.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmpeakdetectx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmspectrumx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmwaveinx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\mmwaveoutx.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ModelInfoCreate.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ModelInfoCreate_GraberOption.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\MyEchoSocket.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\NoDifferentPointDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptFolderPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\PciDio.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ProgDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ProgressMsgDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\RemoteDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ResultDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Rs232cAdcManualCheckDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ScannerCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SelectChassisModelDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SeqRemoteDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SetAudioSpecDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SetDateDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SetModelDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SignalTestResultDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SoundCard.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Splash.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StaticFilespec.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StopProcessingDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StopStepDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Support.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\TextOutCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Thermometer.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Thread.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\TrueColorToolBarCtrl_src\TrueColorToolBar.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\UsbDio.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\UsbdioTestDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\UserMsgDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\vsflexdatasource.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\vsflexgrid.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\vsflexnode.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsys.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsysDoc.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\DATsysView.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\MainFrm.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\BaseImage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ImageProc.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\IniAccess.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ProgressCtrlX.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\HwCtrl\AnalogGrabber.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ColorStaticST.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\GrabPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ImageTotalDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ParmAdjPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\ReviewPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\PatternGeneratorCtl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\JumpStep.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Parser.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Realfunc_New2.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StepMeasFunc.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StringTokenizer.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\font1.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\labelcontrol.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\picture.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\TVCommCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SeqEditorDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\SeqRoiDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\AvSwitchBoxCtrl.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\Register.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptComportPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptEtcPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptGrabberPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptionDlg.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptMesPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptSpecPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\OptUserInfoPage.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\EditLog\EditLog.cpp"
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\EditLog\SubclassWnd.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5C68.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5C88.tmp" with contents
+[
+/nologo /MTd /W3 /GX /Zi /O2 /I "./EditLog" /I "HwCtrl\Mil" /I "HwCtrl\Mil\MilDyn" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM2" /FR"Release_DFT2/" /Fp"Release_DFT2/DATsys.pch" /Yc"stdafx.h" /Fo"Release_DFT2/" /Fd"Release_DFT2/" /FD /c 
+"D:\Work\DM_DFT\GMES\UART\PCIe DIO\[2015.11.27.01] DM_DFT(WIN7)\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5C88.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5C99.tmp" with contents
+[
+psapi.lib version.lib winmm.lib dinput.lib mil.lib ApiEtg.lib ws2_32.lib Keydll1.lib Keydll2.lib ftd2xx.lib PCI-Dask.lib /nologo /stack:0x200000 /subsystem:windows /incremental:no /pdb:"Release_DFT2/DM_DFT2.pdb" /machine:I386 /out:"Release_DFT2/DM_DFT2.exe" /pdbtype:sept /libpath:"HwCtrl\Mil\Lib" /libpath:"PsApi" 
+".\Release_DFT2\AddModelDlg.obj"
+".\Release_DFT2\CommThread.obj"
+".\Release_DFT2\CurrentSetting.obj"
+".\Release_DFT2\field.obj"
+".\Release_DFT2\FileTreeCtrl.obj"
+".\Release_DFT2\FlexUtil.obj"
+".\Release_DFT2\FullSeqDlg.obj"
+".\Release_DFT2\Gmes.obj"
+".\Release_DFT2\HdmiGenerator.obj"
+".\Release_DFT2\InitDlg.obj"
+".\Release_DFT2\IrCheckerCtrl.obj"
+".\Release_DFT2\LedButton.obj"
+".\Release_DFT2\ManualTestResultInputDlg.obj"
+".\Release_DFT2\Markup.obj"
+".\Release_DFT2\mmbevelx.obj"
+".\Release_DFT2\mmconnectorx.obj"
+".\Release_DFT2\mmdspcomponentx.obj"
+".\Release_DFT2\mmhitimerx.obj"
+".\Release_DFT2\mmledlabelx.obj"
+".\Release_DFT2\mmledpanelx.obj"
+".\Release_DFT2\mmoscopex.obj"
+".\Release_DFT2\mmpeakdetectx.obj"
+".\Release_DFT2\mmspectrumx.obj"
+".\Release_DFT2\mmwaveinx.obj"
+".\Release_DFT2\mmwaveoutx.obj"
+".\Release_DFT2\ModelInfoCreate.obj"
+".\Release_DFT2\ModelInfoCreate_GraberOption.obj"
+".\Release_DFT2\MyEchoSocket.obj"
+".\Release_DFT2\NoDifferentPointDlg.obj"
+".\Release_DFT2\OptFolderPage.obj"
+".\Release_DFT2\PciDio.obj"
+".\Release_DFT2\ProgDlg.obj"
+".\Release_DFT2\ProgressMsgDlg.obj"
+".\Release_DFT2\RemoteDlg.obj"
+".\Release_DFT2\ResultDlg.obj"
+".\Release_DFT2\Rs232cAdcManualCheckDlg.obj"
+".\Release_DFT2\ScannerCtrl.obj"
+".\Release_DFT2\SelectChassisModelDlg.obj"
+".\Release_DFT2\SeqRemoteDlg.obj"
+".\Release_DFT2\SetAudioSpecDlg.obj"
+".\Release_DFT2\SetDateDlg.obj"
+".\Release_DFT2\SetModelDlg.obj"
+".\Release_DFT2\SignalTestResultDlg.obj"
+".\Release_DFT2\SoundCard.obj"
+".\Release_DFT2\Splash.obj"
+".\Release_DFT2\StaticFilespec.obj"
+".\Release_DFT2\StdAfx.obj"
+".\Release_DFT2\StopProcessingDlg.obj"
+".\Release_DFT2\StopStepDlg.obj"
+".\Release_DFT2\Support.obj"
+".\Release_DFT2\TextOutCtrl.obj"
+".\Release_DFT2\Thermometer.obj"
+".\Release_DFT2\Thread.obj"
+".\Release_DFT2\TrueColorToolBar.obj"
+".\Release_DFT2\UsbDio.obj"
+".\Release_DFT2\UsbdioTestDlg.obj"
+".\Release_DFT2\UserMsgDlg.obj"
+".\Release_DFT2\vsflexdatasource.obj"
+".\Release_DFT2\vsflexgrid.obj"
+".\Release_DFT2\vsflexnode.obj"
+".\Release_DFT2\DATsys.obj"
+".\Release_DFT2\DATsysDoc.obj"
+".\Release_DFT2\DATsysView.obj"
+".\Release_DFT2\MainFrm.obj"
+".\Release_DFT2\BaseImage.obj"
+".\Release_DFT2\ImageProc.obj"
+".\Release_DFT2\IniAccess.obj"
+".\Release_DFT2\ProgressCtrlX.obj"
+".\Release_DFT2\AnalogGrabber.obj"
+".\Release_DFT2\ColorStaticST.obj"
+".\Release_DFT2\GrabPage.obj"
+".\Release_DFT2\ImageTotalDlg.obj"
+".\Release_DFT2\ParmAdjPage.obj"
+".\Release_DFT2\ReviewPage.obj"
+".\Release_DFT2\PatternGeneratorCtl.obj"
+".\Release_DFT2\JumpStep.obj"
+".\Release_DFT2\Parser.obj"
+".\Release_DFT2\Realfunc_New2.obj"
+".\Release_DFT2\StepMeasFunc.obj"
+".\Release_DFT2\StringTokenizer.obj"
+".\Release_DFT2\font1.obj"
+".\Release_DFT2\labelcontrol.obj"
+".\Release_DFT2\picture.obj"
+".\Release_DFT2\TVCommCtrl.obj"
+".\Release_DFT2\SeqEditorDlg.obj"
+".\Release_DFT2\SeqRoiDlg.obj"
+".\Release_DFT2\AvSwitchBoxCtrl.obj"
+".\Release_DFT2\Register.obj"
+".\Release_DFT2\OptComportPage.obj"
+".\Release_DFT2\OptEtcPage.obj"
+".\Release_DFT2\OptGrabberPage.obj"
+".\Release_DFT2\OptionDlg.obj"
+".\Release_DFT2\OptMesPage.obj"
+".\Release_DFT2\OptSpecPage.obj"
+".\Release_DFT2\OptUserInfoPage.obj"
+".\Release_DFT2\EditLog.obj"
+".\Release_DFT2\SubclassWnd.obj"
+".\Release_DFT2\DATsys.res"
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5C99.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AddModelDlg.cpp
+CommThread.cpp
+CurrentSetting.cpp
+field.cpp
+FileTreeCtrl.cpp
+FlexUtil.cpp
+FullSeqDlg.cpp
+Gmes.cpp
+HdmiGenerator.cpp
+InitDlg.cpp
+IrCheckerCtrl.cpp
+LedButton.cpp
+ManualTestResultInputDlg.cpp
+Markup.cpp
+Note: MBCS build (not UTF-8)
+mmbevelx.cpp
+mmconnectorx.cpp
+mmdspcomponentx.cpp
+mmhitimerx.cpp
+mmledlabelx.cpp
+mmledpanelx.cpp
+mmoscopex.cpp
+mmpeakdetectx.cpp
+mmspectrumx.cpp
+mmwaveinx.cpp
+mmwaveoutx.cpp
+ModelInfoCreate.cpp
+ModelInfoCreate_GraberOption.cpp
+MyEchoSocket.cpp
+NoDifferentPointDlg.cpp
+OptFolderPage.cpp
+PciDio.cpp
+ProgDlg.cpp
+ProgressMsgDlg.cpp
+RemoteDlg.cpp
+ResultDlg.cpp
+Rs232cAdcManualCheckDlg.cpp
+ScannerCtrl.cpp
+SelectChassisModelDlg.cpp
+SeqRemoteDlg.cpp
+SetAudioSpecDlg.cpp
+SetDateDlg.cpp
+SetModelDlg.cpp
+SignalTestResultDlg.cpp
+SoundCard.cpp
+Splash.cpp
+StaticFilespec.cpp
+StopProcessingDlg.cpp
+StopStepDlg.cpp
+Support.cpp
+TextOutCtrl.cpp
+Thermometer.cpp
+Thread.cpp
+TrueColorToolBar.cpp
+UsbDio.cpp
+UsbdioTestDlg.cpp
+UserMsgDlg.cpp
+vsflexdatasource.cpp
+vsflexgrid.cpp
+vsflexnode.cpp
+DATsys.cpp
+DATsysDoc.cpp
+DATsysView.cpp
+MainFrm.cpp
+BaseImage.cpp
+ImageProc.cpp
+IniAccess.cpp
+ProgressCtrlX.cpp
+AnalogGrabber.cpp
+ColorStaticST.cpp
+GrabPage.cpp
+ImageTotalDlg.cpp
+ParmAdjPage.cpp
+ReviewPage.cpp
+PatternGeneratorCtl.cpp
+JumpStep.cpp
+Parser.cpp
+Realfunc_New2.cpp
+StepMeasFunc.cpp
+StringTokenizer.cpp
+font1.cpp
+labelcontrol.cpp
+picture.cpp
+TVCommCtrl.cpp
+SeqEditorDlg.cpp
+SeqRoiDlg.cpp
+AvSwitchBoxCtrl.cpp
+Register.cpp
+OptComportPage.cpp
+OptEtcPage.cpp
+OptGrabberPage.cpp
+OptionDlg.cpp
+OptMesPage.cpp
+OptSpecPage.cpp
+OptUserInfoPage.cpp
+EditLog.cpp
+SubclassWnd.cpp
+Linking...
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP7A38.bat" with contents
+[
+@echo off
+copy Release_DFT2\DM_DFT2.exe D:\DM_DFT
+]
+Creating command line "C:\Users\ADMINI~1\AppData\Local\Temp\RSP7A38.bat"
+
+        1개 파일이 복사되었습니다.
+
+
+
+<h3>Results</h3>
+DM_DFT2.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
