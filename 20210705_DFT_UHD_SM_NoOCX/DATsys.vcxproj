@@ -1,0 +1,1087 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_2in1_DFT2|Win32">
+      <Configuration>Debug_2in1_DFT2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_2IN1|Win32">
+      <Configuration>Debug_2IN1</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_DFT2|Win32">
+      <Configuration>Debug_DFT2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_DFT3|Win32">
+      <Configuration>Debug_DFT3</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Reeasse_2IN1_1|Win32">
+      <Configuration>Reeasse_2IN1_1</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_2IN1_2|Win32">
+      <Configuration>Release_2IN1_2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_DFT2|Win32">
+      <Configuration>Release_DFT2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_DFT3|Win32">
+      <Configuration>Release_DFT3</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{62DE560E-73BC-ECA1-0845-24EE51266D9F}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <TargetName>DFT1_3in1</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'">
+    <OutDir>.\Release_DFT3\</OutDir>
+    <IntDir>.\Release_DFT3\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <TargetName>DFT3_3in1</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'">
+    <OutDir>.\Release_2in1_1\</OutDir>
+    <IntDir>.\Release_2in1_1\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <TargetName>DFT1</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'">
+    <OutDir>.\Release_2in1_2\</OutDir>
+    <IntDir>.\Release_2in1_2\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <TargetName>DFT2</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'">
+    <OutDir>.\Release_DFT2\</OutDir>
+    <IntDir>.\Release_DFT2\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <TargetName>DFT2_3in1</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib;$(LibraryPath)</LibraryPath>
+    <TargetName>DFT1_3IN1_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'">
+    <OutDir>.\Debug_2IN1\</OutDir>
+    <IntDir>.\Debug_2IN1\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib;$(LibraryPath)</LibraryPath>
+    <TargetName>DFT1_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'">
+    <OutDir>.\Debug_DFT3\</OutDir>
+    <IntDir>.\Debug_DFT3\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>DFT3_3IN1_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'">
+    <OutDir>.\Debug_DFT2\</OutDir>
+    <IntDir>.\Debug_DFT2\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>DFT2_3IN1_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'">
+    <OutDir>.\Debug_DFT2\</OutDir>
+    <IntDir>.\Debug_DFT2\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>DFT2_D</TargetName>
+    <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir);$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>
+      </StringPooling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM1;_DFT_3IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Release\DFT1_3in1.exe D:\DFT\DFT1_3in1.exe</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0009</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Release/DFT1_3in1.exe</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>
+      </StringPooling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM3;_DFT_3IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release_DFT3\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release_DFT3\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release_DFT3\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release_DFT3\</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Release_DFT3\DFT3_3in1.exe D:\DFT\DFT3_3in1.exe</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release_DFT3\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release_DFT3\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Release_DFT3/DFT3_3in1.exe</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>
+      </StringPooling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM1;_DFT_2IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release_2in1_1\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release_2in1_1\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release_2in1_1\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release_2in1_1\</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Release_2in1_1\DFT1.exe D:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release_DFT3\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release_DFT3\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Release_2in1_1/DFT1.exe</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>
+      </StringPooling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM2;_DFT_2IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release_2in1_2\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release_2in1_2\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release_2in1_2\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release_2in1_2\</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Release_2in1_2\DFT2.exe D:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release_DFT3\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release_DFT3\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Release_2in1_2/DFT2.exe</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>
+      </StringPooling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM2;_DFT_3IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release_DFT2\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release_DFT2\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release_DFT2\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release_DFT2\</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Release_DFT2\DFT2_3in1.exe D:\DFT\DFT2_3in1.exe</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release_DFT2\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release_DFT2\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Release_DFT2/DFT2_3in1.exe</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>4194304</StackReserveSize>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_AFXDLL;_WINDOWS;_DFT_SYSTEM1;_DFT_3IN1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <MinimalRebuild>false</MinimalRebuild>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Debug\DFT1_3IN1_D.exe D:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Debug/DFT1_3IN1_D.exe</OutputFile>
+      <AdditionalLibraryDirectories>PsApi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <StackReserveSize>4194304</StackReserveSize>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_DFT_SYSTEM1;_DFT_2IN1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug_2IN1\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug_2IN1\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug_2IN1\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug_2IN1\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Debug_2IN1\DFT1_D.exe D:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Debug_2IN1/DFT1_D.exe</OutputFile>
+      <AdditionalLibraryDirectories>PsApi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <StackReserveSize>4194304</StackReserveSize>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>HwCtrl\Mil;HwCtrl\Mil\MilDyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_DFT_SYSTEM3;_DFT_3IN1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug_DFT3\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug_DFT3\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug_DFT3\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug_DFT3\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Debug_DFT3\DFT3_3in1_D.exe d:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug_DFT3\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug_DFT3\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Debug_DFT3/DFT3_3in1_D.exe</OutputFile>
+      <AdditionalLibraryDirectories>HwCtrl\Mil\Lib;PsApi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>psapi.lib;version.lib;winmm.lib;dinput.lib;mil.lib;ApiEtg.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>2097152</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>HwCtrl\Mil;HwCtrl\Mil\MilDyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_DFT_SYSTEM2;_DFT_3IN1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug_DFT2\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug_DFT2\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug_DFT2\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug_DFT2\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Debug_DFT2\DFT2_3in1_D.exe d:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug_DFT2\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug_DFT2\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Debug_DFT2/DFT2_3in1_D.exe</OutputFile>
+      <AdditionalLibraryDirectories>HwCtrl\Mil\Lib;PsApi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>psapi.lib;version.lib;winmm.lib;dinput.lib;mil.lib;ApiEtg.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>2097152</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>false</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_DFT_SYSTEM2;_DFT_2IN1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug_DFT2\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug_DFT2\DATsys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug_DFT2\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug_DFT2\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>copy Debug_DFT2\DFT2_D.exe D:\DFT</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug_DFT2\DATsys.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug_DFT2\DATsys.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>Debug_DFT2/DFT2_D.exe</OutputFile>
+      <AdditionalLibraryDirectories>HwCtrl\Mil\Lib;PsApi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>2097152</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AddModelDlg.cpp" />
+    <ClCompile Include="AvConvertorCtrl.cpp" />
+    <ClCompile Include="CDlgParmAutoRobotPage.cpp" />
+    <ClCompile Include="CommThread.cpp" />
+    <ClCompile Include="CSelectGenerateModel.cpp" />
+    <ClCompile Include="CSpreadSheet.cpp" />
+    <ClCompile Include="CurrentSetting.cpp" />
+    <ClCompile Include="Curvefit.cpp" />
+    <ClCompile Include="Digistring.cpp" />
+    <ClCompile Include="Dmmdlg.cpp" />
+    <ClCompile Include="FileTreeCtrl.cpp" />
+    <ClCompile Include="FlexUtil.cpp" />
+    <ClCompile Include="font1.cpp" />
+    <ClCompile Include="FullSeqDlg.cpp" />
+    <ClCompile Include="GetToolOptionDlg.cpp" />
+    <ClCompile Include="Gmes.cpp" />
+    <ClCompile Include="HdmiGenerator.cpp" />
+    <ClCompile Include="I2cAdcManualCheckDlg.cpp" />
+    <ClCompile Include="IcmpEcho.cpp" />
+    <ClCompile Include="InitDlg.cpp" />
+    <ClCompile Include="InputDetectCheckDlg.cpp" />
+    <ClCompile Include="JigCtl.cpp" />
+    <ClCompile Include="Jpegfile.cpp" />
+    <ClCompile Include="KeyDownloadCheckDlg.cpp" />
+    <ClCompile Include="ButtonST\LedButton.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ListCtrlColor.cpp" />
+    <ClCompile Include="ListCtrlEx.cpp" />
+    <ClCompile Include="LnbDetectorCtl.cpp" />
+    <ClCompile Include="ManualTestResultInputDlg.cpp" />
+    <ClCompile Include="Markup.cpp" />
+    <ClCompile Include="mmbevelx.cpp" />
+    <ClCompile Include="mmconnectorx.cpp" />
+    <ClCompile Include="mmdspcomponentx.cpp" />
+    <ClCompile Include="mmledlabelx.cpp" />
+    <ClCompile Include="mmledpanelx.cpp" />
+    <ClCompile Include="mmoscopex.cpp" />
+    <ClCompile Include="mmpeakdetectx.cpp" />
+    <ClCompile Include="mmspectrumx.cpp" />
+    <ClCompile Include="mmwaveinx.cpp" />
+    <ClCompile Include="ModelInfoCreate.cpp" />
+    <ClCompile Include="ModelInfoCreate_GraberOption.cpp" />
+    <ClCompile Include="MyEchoSocket.cpp" />
+    <ClCompile Include="NoDifferentPointDlg.cpp" />
+    <ClCompile Include="OptFolderPage.cpp" />
+    <ClCompile Include="OptVoltMeasureDlg.cpp" />
+    <ClCompile Include="picture.cpp" />
+    <ClCompile Include="PING.cpp" />
+    <ClCompile Include="PLC_Ctrl.cpp" />
+    <ClCompile Include="ProgDlg.cpp" />
+    <ClCompile Include="RemoteDlg.cpp" />
+    <ClCompile Include="ResultDlg.cpp" />
+    <ClCompile Include="Rs232cAdcManualCheckDlg.cpp" />
+    <ClCompile Include="ScannerCtrl.cpp" />
+    <ClCompile Include="SelectChassisModelDlg.cpp" />
+    <ClCompile Include="SeqRemoteDlg.cpp" />
+    <ClCompile Include="Server_Ctrl.cpp" />
+    <ClCompile Include="SetAudioSpecDlg.cpp" />
+    <ClCompile Include="SetDateDlg.cpp" />
+    <ClCompile Include="SignalTestResultDlg.cpp" />
+    <ClCompile Include="SoundCard.cpp" />
+    <ClCompile Include="Splash.cpp" />
+    <ClCompile Include="StaticFilespec.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="StopProcessingDlg.cpp" />
+    <ClCompile Include="StopStepDlg.cpp" />
+    <ClCompile Include="Support.cpp" />
+    <ClCompile Include="TextOutCtrl.cpp" />
+    <ClCompile Include="TrueColorToolBarCtrl_src\TrueColorToolBar.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UserMsgDlg.cpp" />
+    <ClCompile Include="DATsys.cpp" />
+    <ClCompile Include="DATsysDoc.cpp" />
+    <ClCompile Include="DATsysView.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="BaseImage.cpp" />
+    <ClCompile Include="ImageProc.cpp" />
+    <ClCompile Include="IniAccess.cpp" />
+    <ClCompile Include="ProgressCtrlX.cpp" />
+    <ClCompile Include="ColorStaticST.cpp" />
+    <ClCompile Include="GrabPage.cpp" />
+    <ClCompile Include="ImageTotalDlg.cpp" />
+    <ClCompile Include="ParmAdjPage.cpp" />
+    <ClCompile Include="ReviewPage.cpp" />
+    <ClCompile Include="PatternGeneratorCtl.cpp" />
+    <ClCompile Include="JumpStep.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Realfunc_New2.cpp" />
+    <ClCompile Include="StepMeasFunc.cpp" />
+    <ClCompile Include="StringTokenizer.cpp" />
+    <ClCompile Include="TVCommCtrl.cpp" />
+    <ClCompile Include="SeqEditorDlg.cpp" />
+    <ClCompile Include="SeqRoiDlg.cpp" />
+    <ClCompile Include="AvSwitchBoxCtrl.cpp" />
+    <ClCompile Include="Register.cpp" />
+    <ClCompile Include="I2cAdcCtrl.cpp" />
+    <ClCompile Include="OptComportPage.cpp" />
+    <ClCompile Include="OptEtcPage.cpp" />
+    <ClCompile Include="OptGrabberPage.cpp" />
+    <ClCompile Include="OptionDlg.cpp" />
+    <ClCompile Include="OptMesPage.cpp" />
+    <ClCompile Include="OptSpecPage.cpp" />
+    <ClCompile Include="OptUserInfoPage.cpp" />
+    <ClCompile Include="VF1000.cpp" />
+    <ClCompile Include="VFDischargeDlg.cpp" />
+    <ClCompile Include="VfMeasureCheckDlg.cpp" />
+    <ClCompile Include="VfMeasureDlg.cpp" />
+    <ClCompile Include="vsflexgrid.cpp" />
+    <ClCompile Include="XDischargDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DATsys.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CDlgParmAutoRobotPage.h" />
+    <ClInclude Include="CSelectGenerateModel.h" />
+    <ClInclude Include="Curvefit.h" />
+    <ClInclude Include="Digistring.h" />
+    <ClInclude Include="Dmmdlg.h" />
+    <ClInclude Include="FileTreeCtrl.h" />
+    <ClInclude Include="IcmpEcho.h" />
+    <ClInclude Include="InputDetectCheckDlg.h" />
+    <ClInclude Include="JigCtl.h" />
+    <ClInclude Include="ListCtrlColor.h" />
+    <ClInclude Include="ListCtrlEx.h" />
+    <ClInclude Include="ManualTestResultInputDlg.h" />
+    <ClInclude Include="OptVoltMeasureDlg.h" />
+    <ClInclude Include="ping.h" />
+    <ClInclude Include="PingThread.h" />
+    <ClInclude Include="PLC_Ctrl.h" />
+    <ClInclude Include="Server_Ctrl.h" />
+    <ClInclude Include="SortedArray.h" />
+    <ClInclude Include="AddModelDlg.h" />
+    <ClInclude Include="AvConvertorCtrl.h" />
+    <ClInclude Include="CommThread.h" />
+    <ClInclude Include="CSpreadSheet.h" />
+    <ClInclude Include="CurrentSetting.h" />
+    <ClInclude Include="FlexUtil.h" />
+    <ClInclude Include="font1.h" />
+    <ClInclude Include="FullSeqDlg.h" />
+    <ClInclude Include="GetToolOptionDlg.h" />
+    <ClInclude Include="Gmes.h" />
+    <ClInclude Include="HdmiGenerator.h" />
+    <ClInclude Include="I2cAdcManualCheckDlg.h" />
+    <ClInclude Include="Icmpdefs.h" />
+    <ClInclude Include="InitDlg.h" />
+    <ClInclude Include="Jpegfile.h" />
+    <ClInclude Include="keydll1.h" />
+    <ClInclude Include="keydll2.h" />
+    <ClInclude Include="keydll3.h" />
+    <ClInclude Include="KeyDownloadCheckDlg.h" />
+    <ClInclude Include="ButtonST\LedButton.h" />
+    <ClInclude Include="LnbDetectorCtl.h" />
+    <ClInclude Include="Markup.h" />
+    <ClInclude Include="MemDC.h" />
+    <ClInclude Include="mmbevelx.h" />
+    <ClInclude Include="mmconnectorx.h" />
+    <ClInclude Include="mmdspcomponentx.h" />
+    <ClInclude Include="mmledlabelx.h" />
+    <ClInclude Include="mmledpanelx.h" />
+    <ClInclude Include="mmoscopex.h" />
+    <ClInclude Include="mmpeakdetectx.h" />
+    <ClInclude Include="mmspectrumx.h" />
+    <ClInclude Include="mmwaveinx.h" />
+    <ClInclude Include="ModelInfoCreate.h" />
+    <ClInclude Include="ModelInfoCreate_GraberOption.h" />
+    <ClInclude Include="MSVIDDRV.H" />
+    <ClInclude Include="MSVIDEO.H" />
+    <ClInclude Include="MyEchoSocket.h" />
+    <ClInclude Include="NoDifferentPointDlg.h" />
+    <ClInclude Include="OptFolderPage.h" />
+    <ClInclude Include="PciExpWrapper.h" />
+    <ClInclude Include="picture.h" />
+    <ClInclude Include="ProgDlg.h" />
+    <ClInclude Include="RemoteDlg.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResultDlg.h" />
+    <ClInclude Include="Rs232cAdcManualCheckDlg.h" />
+    <ClInclude Include="ScannerCtrl.h" />
+    <ClInclude Include="SelectChassisModelDlg.h" />
+    <ClInclude Include="SeqRemoteDlg.h" />
+    <ClInclude Include="SetAudioSpecDlg.h" />
+    <ClInclude Include="SetDateDlg.h" />
+    <ClInclude Include="SignalTestResultDlg.h" />
+    <ClInclude Include="SoundCard.h" />
+    <ClInclude Include="Splash.h" />
+    <ClInclude Include="StaticFilespec.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StopProcessingDlg.h" />
+    <ClInclude Include="StopStepDlg.h" />
+    <ClInclude Include="Support.h" />
+    <ClInclude Include="TextOutCtrl.h" />
+    <ClInclude Include="TrueColorToolBarCtrl_src\TrueColorToolBar.h" />
+    <ClInclude Include="UserMsgDlg.h" />
+    <ClInclude Include="DATsys.h" />
+    <ClInclude Include="DATsysDoc.h" />
+    <ClInclude Include="DATsysView.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="BaseImage.h" />
+    <ClInclude Include="ImageProc.h" />
+    <ClInclude Include="IniAccess.h" />
+    <ClInclude Include="Drawgdix.h" />
+    <ClInclude Include="ProgressCtrlX.h" />
+    <ClInclude Include="ColorStaticST.h" />
+    <ClInclude Include="GrabPage.h" />
+    <ClInclude Include="ImageTotalDlg.h" />
+    <ClInclude Include="ParmAdjPage.h" />
+    <ClInclude Include="ReviewPage.h" />
+    <ClInclude Include="PatternGeneratorCtl.h" />
+    <ClInclude Include="JumpStep.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="RealMeas.h" />
+    <ClInclude Include="Step.h" />
+    <ClInclude Include="StepMeasFunc.h" />
+    <ClInclude Include="StringTokenizer.h" />
+    <ClInclude Include="TVCommCtrl.h" />
+    <ClInclude Include="SeqEditorDlg.h" />
+    <ClInclude Include="SeqRoiDlg.h" />
+    <ClInclude Include="AvSwitchBoxCtrl.h" />
+    <ClInclude Include="Register.h" />
+    <ClInclude Include="I2cAdcCtrl.h" />
+    <ClInclude Include="OptComportPage.h" />
+    <ClInclude Include="OptEtcPage.h" />
+    <ClInclude Include="OptGrabberPage.h" />
+    <ClInclude Include="OptionDlg.h" />
+    <ClInclude Include="OptMesPage.h" />
+    <ClInclude Include="OptSpecPage.h" />
+    <ClInclude Include="OptUserInfoPage.h" />
+    <ClInclude Include="VF1000.h" />
+    <ClInclude Include="VFDischargeDlg.h" />
+    <ClInclude Include="VfMeasureCheckDlg.h" />
+    <ClInclude Include="VfMeasureDlg.h" />
+    <ClInclude Include="vsflexgrid.h" />
+    <ClInclude Include="XDischargDlg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\bitmap3.bmp" />
+    <CustomBuild Include="res\bitmap_f.bmp" />
+    <CustomBuild Include="res\bitmap_n.bmp" />
+    <CustomBuild Include="res\bitmap_p.bmp" />
+    <CustomBuild Include="res\bmp00001.bmp" />
+    <CustomBuild Include="res\bmp00002.bmp" />
+    <CustomBuild Include="res\bmp00003.bmp" />
+    <CustomBuild Include="res\bmp00004.bmp" />
+    <CustomBuild Include="res\CHECK.bmp" />
+    <CustomBuild Include="res\cur00001.cur" />
+    <CustomBuild Include="res\cur00002.cur" />
+    <CustomBuild Include="dat_logo.bmp" />
+    <CustomBuild Include="DatLog.bmp" />
+    <CustomBuild Include="res\DatLog.bmp" />
+    <CustomBuild Include="res\DATsys.ico" />
+    <CustomBuild Include="res\DATsys.rc2">
+      <FileType>RC</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\DATsysDoc.ico" />
+    <CustomBuild Include="res\DefaultPattern.bmp" />
+    <CustomBuild Include="res\DFT.ico" />
+    <CustomBuild Include="res\dtv3.bmp" />
+    <CustomBuild Include="res\DTVSplashWindow.BMP" />
+    <CustomBuild Include="res\FAIL.bmp" />
+    <CustomBuild Include="res\FAIL2.bmp" />
+    <CustomBuild Include="res\idr_tree.cur" />
+    <CustomBuild Include="res\LedOff.ico" />
+    <CustomBuild Include="res\LedOn.ico" />
+    <CustomBuild Include="res\logo_2.bmp" />
+    <CustomBuild Include="res\manual_check.bmp" />
+    <CustomBuild Include="res\MixerControls.ico" />
+    <CustomBuild Include="res\NGbmp.bmp" />
+    <CustomBuild Include="res\OKbmp.bmp" />
+    <CustomBuild Include="res\PASS.bmp" />
+    <CustomBuild Include="res\PASS1.bmp" />
+    <CustomBuild Include="res\PASS2.bmp" />
+    <CustomBuild Include="res\smallico.bmp" />
+    <CustomBuild Include="res\smallicon.bmp" />
+    <CustomBuild Include="res\Splsh16.bmp" />
+    <CustomBuild Include="res\start.bmp" />
+    <CustomBuild Include="res\StartBtn.bmp" />
+    <CustomBuild Include="res\Status.bmp" />
+    <CustomBuild Include="res\stop.bmp" />
+    <CustomBuild Include="res\StopBtn.bmp" />
+    <CustomBuild Include="res\tfdropcopy.cur" />
+    <CustomBuild Include="res\tfnodropcopy.cur" />
+    <CustomBuild Include="res\tfnodropmove.cur" />
+    <CustomBuild Include="res\Toolbar.bmp" />
+    <CustomBuild Include="res\toolbar_.bmp" />
+    <CustomBuild Include="res\ToolbarDraw.bmp" />
+    <CustomBuild Include="res\ToolbarDraw256.bmp" />
+    <CustomBuild Include="res\ToolbarDrawDisabled.bmp" />
+    <CustomBuild Include="res\ToolbarDrawDisabled256.bmp" />
+    <CustomBuild Include="res\ToolbarDummy.bmp" />
+    <CustomBuild Include="res\xcanvas.bmp" />
+    <CustomBuild Include="DFT_Update.txt" />
+    <CustomBuild Include="res\FINISH.wav">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\Msg.wav">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\NG.WAV">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="ReadMe.txt" />
+    <CustomBuild Include="res\SOUND136.WAV">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\User Msg.wav">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="resource.hm" />
+    <None Include="res\bmp00004_2IN1.bmp" />
+    <None Include="res\ToolbarDraw256_2IN1.bmp" />
+    <None Include="res\ToolbarDrawDisabled256_2IN1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="icmp.Lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmap4.bmp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="DATsys.rc" _x007B_0F026C11-5A66-4C2B-87B5-88DDEBAE72A1_x007D_="CVsflexgridl1" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

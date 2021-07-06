@@ -1,0 +1,34 @@
+<EIF VERSION = "1.4" ID = "S6F1" NAME = "Inspection(Processing) Data Send">
+		<ELEMENT>
+		<TID / >
+		<WOID / >
+		<ORGID / >
+		<LINEID / >
+		<EQPID>KRGM - 02MLQI020< / EQPID>
+		<PROCID / >
+		<SETID>KO_SCAN< / SETID>
+		<MODEL>
+		<ID / >
+		<NAME / >
+		<SUFFIX / >
+		< / MODEL>
+		< / ELEMENT>
+		<ITEM>
+		<SUBITEMLIST COUNT = "6">
+		<NAME>RESULT< / NAME>
+		<VALUE>OK< / VALUE>
+		<NAME>KEYCHECK_LOG< / NAME>
+		<VALUE>KEY00000000< / VALUE>
+		<NAME>SEQ< / NAME>
+		< VALUE>1 < / VALUE >
+		<NAME>MACHINE_NO< / NAME>
+		< VALUE>1 < / VALUE >
+		<NAME>TOTAL_TIME< / NAME>
+		<VALUE>  1.8< / VALUE>
+		<NAME>CHASSIS< / NAME>
+		<VALUE>EA92B< / VALUE>
+		<NAME>A_CAS_ID< / NAME>
+		< VALUE>0100 4000 1088 0872 4004 < / VALUE >
+		< / SUBITEMLIST>
+		< / ITEM>
+		< / EIF>
