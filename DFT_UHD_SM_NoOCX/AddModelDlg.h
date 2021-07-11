@@ -24,6 +24,7 @@ public:
 	CString	m_szModelName;
 	//CString	m_szRefFolderPath;
 	CString	m_szSeqPath;
+	
 
 	
 //	CString	m_szSeqPath;
@@ -49,6 +50,7 @@ public:
 	CString	m_szVFConfigPath;
 	CString	m_szRefFolderPath;
 	
+	
 // Implementation
 protected:
 
@@ -63,6 +65,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CComboBox m_cComboDivision;
+	CString m_szModelSuffix;
 };
 
 //{{AFX_INSERT_LOCATION}}

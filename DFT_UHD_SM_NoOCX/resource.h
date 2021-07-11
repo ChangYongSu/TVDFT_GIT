@@ -2516,6 +2516,9 @@
 #define IDC_BUTTON_170_WRITE2           3449
 #define IDC_BUTTON_170_READ             3449
 #define IDC_BUTTON_BAT_VER              3449
+#define IDC_BUTTON_SERARCH_MODEL        3451
+#define IDC_LIST_SEL_CHASSIS            3452
+#define IDC_LIST_SEL_MODEL              3453
 #define ID_AC_ONOFF                     32768
 #define ID_ACPOWER_                     32769
 #define ID_ACPOWER_ALL                  32770
@@ -2637,9 +2640,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        1249
+#define _APS_NEXT_RESOURCE_VALUE        1250
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3451
+#define _APS_NEXT_CONTROL_VALUE         3454
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

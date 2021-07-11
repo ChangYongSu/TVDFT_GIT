@@ -32,6 +32,7 @@ CSelectGenerateModel::CSelectGenerateModel(CWnd* pParent /*=nullptr*/)
 	, m_szRefImagePath(_T(""))
 	//, m_szModelInfoPath(_T(""))
 	, m_szModelListPath(_T(""))
+	, m_szModelSuffix(_T(""))
 {
 
 }
@@ -57,6 +58,7 @@ void CSelectGenerateModel::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_LIST_CHASSIS, m_cListChassis);
 	DDX_Control(pDX, IDC_LIST_MODEL, m_cListModel);
+	DDX_Text(pDX, IDC_EDIT_MODEL_SUFFIX, m_szModelSuffix);
 }
 
 
@@ -529,6 +531,7 @@ void CSelectGenerateModel::OnClickModelGrid()
 				m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
 				m_szRefImgFolder = pModelData->m_szRefImgFolder;
 				m_szDivision = pModelData->m_szDivision;
+				m_szModelSuffix = pModelData->m_szModelSuffix;
 
 				break;
 			}
@@ -653,6 +656,12 @@ BOOL CSelectGenerateModel::ModelListOpen()
 	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
 	ModelList.RemoveAll();
 
+	SS.ReadRow(Rows, 1);
+	CString strTmp = Rows.GetAt(0);
+	int lModelNewList = 0;
+	if (strTmp.Find("Model.Suffix") >= 0)
+		lModelNewList = 1;
+
 	for (i = 2; i <= SS.GetTotalRows(); i++)
 	{
 		// Read row
@@ -661,14 +670,18 @@ BOOL CSelectGenerateModel::ModelListOpen()
 		if (Rows.GetAt(0).GetLength() > 2)
 		{
 			CModelData* pModel = new CModelData;
-
-			pModel->m_szDivision = Rows.GetAt(0);
-			pModel->m_szChassisName = Rows.GetAt(1);
-			pModel->m_szModelName = Rows.GetAt(2);
-			pModel->m_szSeqFilePath = Rows.GetAt(3);
-			pModel->m_szModelInfoFilePath = Rows.GetAt(4);
-			pModel->m_szRefImgFolder = Rows.GetAt(5);
-
+			
+				
+				pModel->m_szDivision = Rows.GetAt(0);
+				pModel->m_szChassisName = Rows.GetAt(1);
+				pModel->m_szModelName = Rows.GetAt(2);
+				pModel->m_szSeqFilePath = Rows.GetAt(3);
+				pModel->m_szModelInfoFilePath = Rows.GetAt(4);
+				pModel->m_szRefImgFolder = Rows.GetAt(5);
+				if (Rows.GetSize() > 6) {
+					pModel->m_szModelSuffix = Rows.GetAt(6);
+				}
+		
 			ModelList.AddTail(pModel);
 		}
 		else
@@ -779,6 +792,7 @@ BOOL CSelectGenerateModel::CheckModel(CString sChassis, CString sModel)
 void CSelectGenerateModel::OnBtnAdd()
 {
 #if 1
+	POSITION	Pos = NULL;
 	CStringArray Rows;
 	CString lFileName;
 	lFileName = CurrentSet->sModelListPath; // +"ModelList.xls";
@@ -800,6 +814,7 @@ void CSelectGenerateModel::OnBtnAdd()
 	{
 		CModelData* pModel = new CModelData;
 
+		pModel->m_szModelSuffix = dlg.m_szModelSuffix;
 		pModel->m_szChassisName = dlg.m_szChassisName;
 		pModel->m_szModelName = dlg.m_szModelName;
 		pModel->m_szSeqFilePath = dlg.m_szSeqPath;
@@ -809,12 +824,15 @@ void CSelectGenerateModel::OnBtnAdd()
 		pModel->m_szRefImgFolder = dlg.m_szRefFolderPath;
 		pModel->m_szDivision = dlg.m_sDivision;
 
+		
+			
 		Rows.Add(pModel->m_szDivision);
 		Rows.Add(pModel->m_szChassisName);
 		Rows.Add(pModel->m_szModelName);
 		Rows.Add(pModel->m_szSeqFilePath);
 		Rows.Add(pModel->m_szModelInfoFilePath);
 		Rows.Add(pModel->m_szRefImgFolder);
+		Rows.Add(pModel->m_szModelSuffix);
 
 		if (CheckModel(pModel->m_szChassisName, pModel->m_szModelName))
 		{
@@ -825,12 +843,14 @@ void CSelectGenerateModel::OnBtnAdd()
 			{
 				CStringArray sampleArray;
 
+					
 				sampleArray.Add("Division");
 				sampleArray.Add("Chassis_Name");
 				sampleArray.Add("Model_Name");
 				sampleArray.Add("Sequence");
 				sampleArray.Add("ModelInfo");
 				sampleArray.Add("RefImgFolder");
+				sampleArray.Add("Model.Suffix");
 
 				SS.AddHeaders(sampleArray, true);
 			}
@@ -842,6 +862,7 @@ void CSelectGenerateModel::OnBtnAdd()
 			CString sTmp = _T("Error : ChassisName & ModelName");
 			AfxMessageBox(sTmp);
 		}
+		
 	}
 #endif
 	//CStringArray Rows;
@@ -962,6 +983,7 @@ void CSelectGenerateModel::OnBtnEdit()
 	GetWindowRect(&lDlg.m_ParentWndRect);
 
 	//pDlg->m_sWinText = _T("Edit Model");
+	lDlg.m_szModelSuffix = m_szModelSuffix;
 	lDlg.m_szChassisName = szChassisName;
 	lDlg.m_szModelName = szModelName;
 	lDlg.m_szSeqPath = m_szSeqFilePath;
@@ -977,6 +999,7 @@ void CSelectGenerateModel::OnBtnEdit()
 	{
 		CModelData* pModel = new CModelData;
 
+		pModel->m_szModelSuffix = lDlg.m_szModelSuffix;
 		pModel->m_szChassisName = lDlg.m_szChassisName;
 		pModel->m_szModelName = lDlg.m_szModelName;
 		pModel->m_szSeqFilePath = lDlg.m_szSeqPath;
@@ -989,6 +1012,7 @@ void CSelectGenerateModel::OnBtnEdit()
 		ModelList.SetAt(CurrentPos, pModel);
 		UpdateGrid();
 
+		NewRowValues.Add(pModel->m_szModelSuffix);
 		NewRowValues.Add(pModel->m_szDivision);
 		NewRowValues.Add(pModel->m_szChassisName);
 		NewRowValues.Add(pModel->m_szModelName);
@@ -1048,6 +1072,7 @@ void CSelectGenerateModel::OnBtnCopy()
 
 	CString szChassisName = _T("");
 	CString szModelName = _T("");
+	
 	CStringArray NewRowValues;
 	int nDivision;
 
@@ -1072,6 +1097,7 @@ void CSelectGenerateModel::OnBtnCopy()
 	GetWindowRect(&pDlg->m_ParentWndRect);
 
 	pDlg->m_sWinText = _T("Edit Model(Copy)");
+	pDlg->m_szModelSuffix = m_szModelSuffix;
 	pDlg->m_szChassisName = szChassisName;
 	pDlg->m_szModelName = szModelName;
 	pDlg->m_szSeqPath = m_szSeqFilePath;
@@ -1084,7 +1110,8 @@ void CSelectGenerateModel::OnBtnCopy()
 	if (pDlg->DoModal() == IDOK)
 	{
 		CModelData* pModel = new CModelData;
-
+		
+		pModel->m_szModelSuffix = pDlg->m_szModelSuffix;
 		pModel->m_szChassisName = pDlg->m_szChassisName;
 		pModel->m_szModelName = pDlg->m_szModelName;
 		pModel->m_szSeqFilePath = pDlg->m_szSeqPath;
@@ -1099,12 +1126,14 @@ void CSelectGenerateModel::OnBtnCopy()
 
 			UpdateGrid();
 
+			
 			NewRowValues.Add(pModel->m_szDivision);
 			NewRowValues.Add(pModel->m_szChassisName);
 			NewRowValues.Add(pModel->m_szModelName);
 			NewRowValues.Add(pModel->m_szSeqFilePath);
 			NewRowValues.Add(pModel->m_szModelInfoFilePath);
 			NewRowValues.Add(pModel->m_szRefImgFolder);
+			NewRowValues.Add(pModel->m_szModelSuffix);
 
 			SS.AddRow(NewRowValues);
 			//SaveModelListFile();
@@ -1557,6 +1586,7 @@ void CSelectGenerateModel::OnBtnDel()
 			Rows.Add(pModelData->m_szSeqFilePath);
 			Rows.Add(pModelData->m_szModelInfoFilePath);
 			Rows.Add(pModelData->m_szRefImgFolder);
+			Rows.Add(pModelData->m_szModelSuffix);
 
 			ModelList.RemoveAt(CurrentPos);
 			delete pModelData;

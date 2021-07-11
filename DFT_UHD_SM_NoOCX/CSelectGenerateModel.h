@@ -91,7 +91,7 @@ public:
 	CString  m_szModelInfoFilePath;
 	CString   m_szRefImgFolder;
 	CString   m_szSeqFilePath;
-	CString   m_szDivision;
+	CString   m_szDivision;	
 
 	afx_msg void OnBnClickedOk();
 	CString m_szModelListPath;
@@ -104,4 +104,5 @@ public:
 	afx_msg void OnNMCustomdrawListModel(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedCancel();
+	CString m_szModelSuffix;
 };

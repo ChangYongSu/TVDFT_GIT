@@ -25,6 +25,7 @@ extern CStringArray g_Divisions;
 
 CSelectChassisModelDlg::CSelectChassisModelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSelectChassisModelDlg::IDD, pParent)
+	, m_szModelSuffix(_T(""))
 {
 	//{{AFX_DATA_INIT(CSelectChassisModelDlg)
 	m_szCurrentSeqFilePath = _T("");
@@ -41,14 +42,17 @@ void CSelectChassisModelDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CSelectChassisModelDlg)
 	DDX_Control(pDX, IDC_COMBO1, m_ctrlDivisionCmb);
-	DDX_Control(pDX, IDC_CHASSIS_GRID, m_gridChassis);
-	DDX_Control(pDX, IDC_MODEL_GRID, m_gridModel);
+//	DDX_Control(pDX, IDC_CHASSIS_GRID, m_gridChassis);
+//	DDX_Control(pDX, IDC_MODEL_GRID, m_gridModel);
 	DDX_Text(pDX, IDC_EDIT_CURRENT_SEQ, m_szCurrentSeqFilePath);
 	DDX_Text(pDX, IDC_EDIT_MODEL_INFO, m_szModelInfoFilePath);
 	DDX_Text(pDX, IDC_EDIT_REF_FOLDER, m_szRefImgFolder);
 	DDX_Text(pDX, IDC_EDIT_SEQ, m_szSeqFilePath);
 	DDX_Text(pDX, IDC_EDIT_CURRENT_REF, m_szCurrentRefFilePath);
 	//}}AFX_DATA_MAP
+	DDX_Text(pDX, IDC_EDIT_MODEL_SUFFIX, m_szModelSuffix);
+	DDX_Control(pDX, IDC_LIST_SEL_CHASSIS, m_cListChassis);
+	DDX_Control(pDX, IDC_LIST_SEL_MODEL, m_cListModel);
 }
 
 
@@ -60,6 +64,13 @@ BEGIN_MESSAGE_MAP(CSelectChassisModelDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_COPY, OnBtnCopy)
 	ON_CBN_SELCHANGE(IDC_COMBO1, OnSelchangeCombo1)
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_BUTTON_SERARCH_MODEL, &CSelectChassisModelDlg::OnBnClickedButtonSerarchModel)
+	ON_NOTIFY(NM_CLICK, IDC_LIST_SEL_CHASSIS, &CSelectChassisModelDlg::OnNMClickListChassis)
+	ON_NOTIFY(NM_CLICK, IDC_LIST_SEL_MODEL, &CSelectChassisModelDlg::OnNMClickListModel)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_SEL_CHASSIS, &CSelectChassisModelDlg::OnNMCustomdrawListChassis)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_SEL_MODEL, &CSelectChassisModelDlg::OnNMCustomdrawListModel)
+	ON_MESSAGE(UM_UPDATE_SUFFIX_SCAN, GetModelSuffix)
+
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -74,6 +85,74 @@ END_EVENTSINK_MAP()
 
 void CSelectChassisModelDlg::OnClickChassisGrid() 
 {
+#if 1
+	POSITION	Pos = NULL;
+	CModelData* pModelData = NULL;
+
+	//int			nChassisRow = (int)m_cListChassis.GetFirstSelectedItemPosition()- 1; //  m_gridChassis.GetRow();
+	//int			nCurModelRow = (int)m_cListModel.GetFirstSelectedItemPosition()-1;// //m_gridModel.GetRow();
+	int			nChassisRow = m_nChaassis_SelectRow;
+	int			nCurModelRow = m_nModel_SelectRow;// //m_gridModel.GetRow();
+
+	int			nModelRow = 0;
+
+	CString szChassisName = _T("");
+	CString szModelName = _T("");
+
+	if ((nChassisRow <= 0) && (m_cListChassis.GetItemCount() > 1))
+	{
+		//m_gridChassis.SetRow(1); 
+		nChassisRow = 0;
+	}
+	else if ((nChassisRow >= m_cListChassis.GetItemCount()) && (m_cListChassis.GetItemCount() > 1))
+	{
+		//m_gridChassis.SetRow(m_gridChassis.GetRows() - 1); 
+		nChassisRow = m_cListChassis.GetItemCount() - 1;
+	}
+
+
+	szChassisName = m_cListChassis.GetItemText(nChassisRow, 0);// m_gridChassis.GetTextMatrix(nChassisRow,0);
+
+	Pos = CurrentSet->ModelList.GetHeadPosition();
+	m_cListModel.DeleteAllItems();
+	while (Pos)
+	{
+		pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+		if (pModelData->m_szChassisName != _T(""))
+		{
+			if (pModelData->m_szChassisName.Compare(szChassisName) == NULL)
+			{
+				szModelName = pModelData->m_szModelName;
+
+				//m_gridModel.SetRows(nModelRow + 1);
+				m_cListModel.InsertItem(nModelRow++, szModelName); //m_cListModel.SetItemText(nModelRow++, 0, szModelName);// //m_gridModel.SetTextMatrix(nModelRow++, 0, szModelName);
+				//SetItem(m_nCurrentNumber, 2, LVIF_TEXT, "OK", NULL, NULL, NULL, NULL);
+			}
+		}
+	}
+	ChangeRowColor(nChassisRow, CHASSIS_GRID);
+	if (m_sSelChassis != szChassisName)
+	{
+		m_sSelChassis = szChassisName;
+		m_cListModel.SetSelectionMark(0);//m_cListModelEx.SetCellBackColor(); //m_gridModel.SetRow(1);
+	}
+	else {
+		if (nCurModelRow <= 0) {
+			m_cListModel.SetSelectionMark(0);//m_gridModel.SetRow(1);
+		}
+		else if (nCurModelRow >= m_cListModel.GetItemCount())//m_gridModel.GetRows())
+		{
+			m_cListModel.SetSelectionMark(m_cListModel.GetItemCount() - 1);//mm_gridModel.SetRow(m_gridModel.GetRows() -1);
+		}
+		else {
+			m_cListModel.SetSelectionMark(m_nModel_SelectRow);//m_gridModel.SetRow(m_nModel_SelectRow);
+}
+	}
+	m_nChaassis_SelectRow = nChassisRow;
+	m_cListChassis.Invalidate();
+	OnClickModelGrid();
+#else
 	POSITION	Pos				= NULL;
 	CModelData* pModelData		= NULL;
 	int			nChassisRow		= m_gridChassis.GetRow();
@@ -131,10 +210,73 @@ void CSelectChassisModelDlg::OnClickChassisGrid()
 	}
 	m_nChaassis_SelectRow = nChassisRow;
 	OnClickModelGrid();
+
+#endif
 }
 
 void CSelectChassisModelDlg::OnClickModelGrid() 
 {
+
+#if 1
+
+	POSITION	Pos = NULL;
+	CModelData* pModelData = NULL;
+
+	//int			nChassisRow = (int)m_cListChassis.GetFirstSelectedItemPosition() - 1; //  m_gridChassis.GetRow();
+	//int			nModelRow = (int)m_cListModel.GetFirstSelectedItemPosition() - 1;// //m_gridModel.GetRow();
+	int			nChassisRow = m_nChaassis_SelectRow;
+	int			nModelRow = m_nModel_SelectRow;// //m_gridModel.GetRow();
+
+	CString szChassisName = _T("");
+	CString szModelName = _T("");
+
+	//	if((nModelRow <= 0) &&  (m_gridModel.GetRows() > 1))
+	if ((nModelRow <= 0) && (m_cListModel.GetItemCount() > 1))//.GetRows() > 1))
+	{
+		//m_gridModel.SetRow(1); 
+		m_cListModel.SetSelectionMark(0);
+		nModelRow = 0;
+	}
+	else if ((nModelRow >= m_cListModel.GetItemCount()) && (m_cListModel.GetItemCount() > 1))
+	{
+		m_cListModel.SetSelectionMark(m_cListModel.GetItemCount() - 1);//m_gridModel.SetRow(m_gridModel.GetRows() - 1); 
+		nModelRow = m_cListModel.GetItemCount() - 1;
+	}
+
+	szChassisName = m_cListChassis.GetItemText(nChassisRow, 0);// m_gridChassis.GetTextMatrix(nChassisRow, 0);
+	szModelName = m_cListModel.GetItemText(nModelRow, 0);//m_gridModel.GetTextMatrix(nModelRow,0);
+	m_sSelModel = szModelName;
+
+	Pos = CurrentSet->ModelList.GetHeadPosition();
+
+	while (Pos)
+	{
+		pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+		if (pModelData->m_szModelName != _T(""))
+		{
+			if ((pModelData->m_szChassisName.Compare(szChassisName) == NULL) &&
+				(pModelData->m_szModelName.Compare(szModelName) == NULL))
+			{
+				m_szSeqFilePath = pModelData->m_szSeqFilePath;
+				m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				m_szRefImgFolder = pModelData->m_szRefImgFolder;
+				//m_szDivision = pModelData->m_szDivision;
+				m_szModelSuffix = pModelData->m_szModelSuffix;
+
+				break;
+			}
+		}
+	}
+
+	UpdateData(FALSE);
+	m_nModel_SelectRow = nModelRow;
+	ChangeRowColor(nModelRow, MODEL_GRID);
+
+	m_cListModel.Invalidate();
+#else
+
+
 	POSITION	Pos				= NULL;
 	CModelData* pModelData		= NULL;
 	int			nModelRow		= m_gridModel.GetRow();
@@ -172,7 +314,7 @@ void CSelectChassisModelDlg::OnClickModelGrid()
 				m_szSeqFilePath		  = pModelData->m_szSeqFilePath;
 				m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
 				m_szRefImgFolder	  = pModelData->m_szRefImgFolder;
-
+				m_szModelSuffix =  pModelData->m_szModelSuffix;
 				break;
 			}
 		}
@@ -182,6 +324,8 @@ void CSelectChassisModelDlg::OnClickModelGrid()
 	m_nModel_SelectRow = nModelRow; 
 	ChangeRowColor(nModelRow,MODEL_GRID);
 //	delete pModelData;
+
+#endif
 }
 
 BOOL CSelectChassisModelDlg::OnInitDialog() 
@@ -192,6 +336,7 @@ BOOL CSelectChassisModelDlg::OnInitDialog()
 
 	CDialog::OnInitDialog();
 	
+	m_bActivate = 1;
 	CString sTemp;
 	// TODO: Add extra initialization here
 
@@ -215,13 +360,13 @@ BOOL CSelectChassisModelDlg::OnInitDialog()
 	m_ctrlDivisionCmb.SetCurSel(0);
 //	m_nSelDivision = 0;
 	m_nDivision_Sel = 0;
-	m_nChaassis_SelectRow = 1;
-	m_nModel_SelectRow = 1;
+	m_nChaassis_SelectRow = 0;
+	m_nModel_SelectRow = 0;
 	UpdateGrid();
 
-	if(m_gridChassis.GetRows() > 1)
+	if(m_cListChassis.GetItemCount() > 1)
 	{
-		m_gridChassis.SetRow(1);
+		//m_gridChassis.SetRow(1);
 		OnClickChassisGrid();
 	}
 //	else{
@@ -240,6 +385,20 @@ BOOL CSelectChassisModelDlg::OnInitDialog()
 
 void CSelectChassisModelDlg::InitGrid()
 {
+#if 1
+	m_cListChassis.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);// 리스트 컨트롤 초기화: 열 추가
+
+	m_cListChassis.InsertColumn(0, _T("CHASSIS LIST"), LVCFMT_CENTER, 255);
+	m_cListChassis.InsertItem(0, _T("1"));   // 첫째행(0), 첫째열에 삽입
+	m_cListChassis.Invalidate();
+
+	m_cListModel.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);// 리스트 컨트롤 초기화: 열 추가
+
+	m_cListModel.InsertColumn(0, _T("MODEL LIST"), LVCFMT_CENTER, 270);
+	m_cListModel.InsertItem(0, _T("1"));   // 첫째행(0), 첫째열에 삽입
+	m_cListModel.Invalidate();
+
+#else
 	m_gridChassis.SetRedraw(FALSE);
 	m_gridChassis.SetAllowBigSelection(FALSE);
 	m_gridChassis.SetExtendLastCol(TRUE);
@@ -276,10 +435,55 @@ void CSelectChassisModelDlg::InitGrid()
 	m_gridModel.SetBackColor(RGB(247,247,231));
 	m_gridModel.SetGridColor(RGB(210,216,176));
 	m_gridModel.SetColAlignment(0, flexAlignCenterCenter);
+
+#endif
 }
 
 void CSelectChassisModelDlg::UpdateGrid()
 {
+#if 1
+	POSITION	Pos = NULL;
+	CModelData* pModelData = NULL;
+	CString		szChassisName = _T("");
+	int			nChassisRow = 0;
+	CString sTemp;
+
+	//m_cListChassis);	
+	//m_cListModel);
+	m_cListChassis.DeleteAllItems();//  m_gridChassis.SetRedraw(FALSE);
+	//m_gridChassis.Clear(COleVariant(long(flexClearScrollable)), COleVariant(long(flexClearEverything))); 
+
+	Pos = CurrentSet->ModelList.GetHeadPosition();
+
+	while (Pos)
+	{
+		pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+		szChassisName = pModelData->m_szChassisName;
+
+		if (IsSameChassis(szChassisName) != TRUE)
+		{
+
+			//m_gridChassis.SetRows(nChassisRow + 1);
+			//m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
+			m_cListChassis.InsertItem(nChassisRow++, szChassisName);   // 첫째행(0), 첫째열에 삽입
+
+			//if (nChassisRow > 50)
+			//	break;
+		}
+	}
+
+	m_cListChassis.Invalidate();//m_gridChassis.SetRedraw(TRUE);
+	//m_gridChassis.Refresh();
+	if (m_cListChassis.GetItemCount() >= 1)
+	{
+		m_cListChassis.SetSelectionMark(m_nChaassis_SelectRow + 1);// GetFirstSelectedItemPosition(); //m_gridChassis.SetRow(m_nChaassis_SelectRow);
+		OnClickChassisGrid();
+	}
+	//	SetTimer(1, 300, NULL);
+
+
+#else
 	POSITION	Pos				= NULL;
 	CModelData* pModelData		= NULL;
 	CString		szChassisName	= _T("");
@@ -323,10 +527,146 @@ void CSelectChassisModelDlg::UpdateGrid()
 		m_gridChassis.SetRow(m_nChaassis_SelectRow);
 		OnClickChassisGrid();
 	}
+
+#endif
+}
+void CSelectChassisModelDlg::UpdateGridLast()
+{
+	KillTimer(1);
+	return;
+#if 1
+	POSITION	Pos = NULL;
+	CModelData* pModelData = NULL;
+	CString		szChassisName = _T("");
+	int			nChassisRow = 0;
+	CString sTemp;
+	int lFlagBreak = 0;
+
+	//m_cListChassis);	
+	//m_cListModel);
+	//m_cListChassis.DeleteAllItems();//  m_gridChassis.SetRedraw(FALSE);
+	//m_gridChassis.Clear(COleVariant(long(flexClearScrollable)), COleVariant(long(flexClearEverything))); 
+
+	Pos = CurrentSet->ModelList.GetHeadPosition();
+	int lPos = m_cListChassis.GetItemCount();
+	int lMpos = CurrentSet->ModelList.GetCount();
+
+	if (lPos >= lMpos)
+	{
+		KillTimer(1);
+	}
+
+	while (Pos)
+	{
+		pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+		szChassisName = pModelData->m_szChassisName;
+		if (nChassisRow < lPos)
+		{
+			nChassisRow++;
+		}
+		else
+		{
+			if (IsSameChassis(szChassisName) != TRUE)
+			{
+				//m_gridChassis.SetRows(nChassisRow + 1);
+				//m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
+				m_cListChassis.InsertItem(nChassisRow++, szChassisName);   // 첫째행(0), 첫째열에 삽입
+
+				if (nChassisRow > 50 + lPos)
+				{
+					lFlagBreak = 1;
+					break;
+				}
+			}
+		}
+	}
+
+	if (lFlagBreak)
+	{
+
+	}
+	else
+	{
+		KillTimer(1);
+	}
+
+	m_cListChassis.Invalidate();//m_gridChassis.SetRedraw(TRUE);
+	//m_gridChassis.Refresh();
+	//if (m_cListChassis.GetItemCount() > 1)
+	//{
+	//	m_cListChassis.SetSelectionMark(m_nChaassis_SelectRow + 1);// GetFirstSelectedItemPosition(); //m_gridChassis.SetRow(m_nChaassis_SelectRow);
+	//	OnClickChassisGrid();
+	//}
+
+
+
+#else
+	//POSITION	Pos = NULL;
+	//CModelData* pModelData = NULL;
+	//CString		szChassisName = _T("");
+	//int			nChassisRow = 1;
+	//long        nRows;
+	//m_gridChassis.SetRedraw(FALSE);
+	//m_gridChassis.Clear(COleVariant(long(flexClearScrollable)), COleVariant(long(flexClearEverything)));
+
+	//Pos = ModelList.GetHeadPosition();
+
+	//while (Pos)
+	//{
+	//	pModelData = ModelList.GetNext(Pos);
+
+	//	szChassisName = pModelData->m_szChassisName;
+
+	//	if (IsSameChassis(szChassisName) != TRUE)
+	//	{
+	//		m_gridChassis.SetRows(nChassisRow + 1);
+	//		m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
+	//	}
+	//}
+	//if (nChassisRow == 1)
+	//{
+	//	m_gridChassis.SetRows(1);
+	//	m_gridModel.SetRows(1);
+	//}
+	//m_gridChassis.SetRedraw(TRUE);
+	//m_gridChassis.Refresh();
+
+	//nRows = m_gridChassis.GetRows();
+	//if (nRows > 1)
+	//{
+	//	if (m_nChaassis_SelectRow >= nRows) m_nChaassis_SelectRow = nRows - 1;
+
+	//	m_gridChassis.SetRow(m_nChaassis_SelectRow);
+	//	OnClickChassisGrid();
+	//}
+
+#endif
 }
 
 BOOL CSelectChassisModelDlg::IsSameChassis(CString szChassisName)
 {
+
+#if 1
+	CString	szRegisteredChassisName = _T("");
+	//	POSITION lpos = m_cListChassis.GetFirstSelectedItemPosition();
+	//	int	nNoChassis = (int)lpos;   //m_gridChassis.GetRows() - 1;
+	int	nNoChassis = m_cListChassis.GetItemCount();
+	szChassisName.MakeUpper();
+
+	for (int i = 0; i < nNoChassis; i++)
+	{
+		szRegisteredChassisName = m_cListChassis.GetItemText(i, 0); // .GetTextMatrix(i+1, 0);
+
+		szRegisteredChassisName.MakeUpper();
+
+		if (szChassisName.Compare(szRegisteredChassisName) == NULL)
+		{
+			return TRUE;
+		}
+	}
+#else
+
 	CString	szRegisteredChassisName	= _T("");
 	
 	int	nNoChassis	= m_gridChassis.GetRows() - 1;
@@ -345,10 +685,14 @@ BOOL CSelectChassisModelDlg::IsSameChassis(CString szChassisName)
 		 }
 	}
 	return FALSE;
+
+#endif
 }
 
 void CSelectChassisModelDlg::ChangeRowColor(int nRow, int nGridType)
 {
+
+#if 0
 	//===============
 	// Chassis Grid
 	//===============
@@ -389,11 +733,13 @@ void CSelectChassisModelDlg::ChangeRowColor(int nRow, int nGridType)
 		m_gridModel.SetCellBackColor(RGB(255, 0,   255 ));
 //		m_gridModel.SetCellForeColor(RGB(255,255,255));
 	}
+
+#endif
 }
 
 void CSelectChassisModelDlg::OnBtnAdd() 
 {
-	
+#if 0
 	if((CurrentSet->nAuthority != AUTHORITY_DEV) && (CurrentSet->nAuthority != AUTHORITY_ADMIN))
 	{
 		CString sTmp = _T("");
@@ -430,10 +776,13 @@ void CSelectChassisModelDlg::OnBtnAdd()
 	
 //		delete pModel;
 	}
+
+#endif
 }
 
 void CSelectChassisModelDlg::OnBtnDel() 
 {
+#if 0
 	// TODO: Add your control notification handler code here
 	if((CurrentSet->nAuthority != AUTHORITY_DEV) && (CurrentSet->nAuthority != AUTHORITY_ADMIN))
 	{
@@ -476,6 +825,7 @@ void CSelectChassisModelDlg::OnBtnDel()
 	UpdateGrid();
 
 	SaveModelListFile();
+#endif
 }
 
 void CSelectChassisModelDlg::OnOK() 
@@ -504,6 +854,7 @@ void CSelectChassisModelDlg::OnOK()
 
 void CSelectChassisModelDlg::OnBtnEdit() 
 {
+#if 0
 	if((CurrentSet->nAuthority != AUTHORITY_DEV) && (CurrentSet->nAuthority != AUTHORITY_ADMIN))
 	{
 		CString sTmp = _T("");
@@ -573,10 +924,14 @@ void CSelectChassisModelDlg::OnBtnEdit()
 	//	delete pModel;
 	}
 	delete pDlg;
+
+#endif
 }
 
 void CSelectChassisModelDlg::OnBtnCopy() 
 {
+
+#if 0
 	if((CurrentSet->nAuthority != AUTHORITY_DEV) && (CurrentSet->nAuthority != AUTHORITY_ADMIN))
 	{
 		CString sTmp = _T("");
@@ -639,10 +994,12 @@ void CSelectChassisModelDlg::OnBtnCopy()
 	//	delete pModel;
 	}
 	delete pDlg;	
+#endif
 }
 
 BOOL CSelectChassisModelDlg::CheckModel(CString sChassis, CString sModel)
 {
+#if 0
 	POSITION	Pos				= NULL;
 	CModelData* pModelData		= NULL;
 	int			nChassisRow		= m_gridChassis.GetRow();
@@ -688,7 +1045,7 @@ BOOL CSelectChassisModelDlg::CheckModel(CString sChassis, CString sModel)
 				return FALSE;
 			}
 	}
-
+#endif
 	return TRUE;
 }
 
@@ -697,4 +1054,506 @@ void CSelectChassisModelDlg::OnSelchangeCombo1()
 {
 	m_nDivision_Sel = m_ctrlDivisionCmb.GetCurSel();
 	UpdateGrid();	
+}
+
+
+void CSelectChassisModelDlg::OnBnClickedButtonSerarchModel()
+{
+
+#if 1
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	POSITION	Pos = NULL;
+	CModelData* pModelData = NULL;
+
+	int			nModelRow = 0;// m_gridModel.GetRow();
+	int			nChassisRow = 0;// m_gridChassis.GetRow();
+	int			nChassisRowNum = m_cListChassis.GetItemCount();
+//	CListCtrl m_cListChassis;
+//	CListCtrl m_cListModel;
+
+	CString lfind_szModelSuffix;
+	CString lfind_szSeqFilePath;;
+	CString lfind_szModelInfoFilePath;
+	CString lfind_szRefImgFolder;
+	CString lfind_szChassisName;
+	CString lfind_szModelName;
+
+	CString szChassisName = _T("");
+	CString szModelName = _T("");
+
+
+
+	UpdateData(TRUE);
+
+
+	Pos = CurrentSet->ModelList.GetHeadPosition();
+
+	while (Pos)
+	{
+		pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+		if (pModelData->m_szModelName != _T(""))
+		{
+			if (pModelData->m_szModelSuffix.Compare(m_szModelSuffix) == NULL)
+			{
+				//m_szSeqFilePath = pModelData->m_szSeqFilePath;
+				//m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				//m_szRefImgFolder = pModelData->m_szRefImgFolder;
+
+				// szChassisName = pModelData->m_szChassisName;
+				// szModelName = pModelData->m_szModelName;
+				//m_szModelSuffix = pModelData->m_szModelSuffix;
+
+				lfind_szSeqFilePath = pModelData->m_szSeqFilePath;
+				lfind_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				lfind_szRefImgFolder = pModelData->m_szRefImgFolder;
+
+				lfind_szChassisName = pModelData->m_szChassisName;
+				lfind_szModelName = pModelData->m_szModelName;
+				lfind_szModelSuffix = pModelData->m_szModelSuffix;
+
+				//UpdateData(FALSE);
+				break;
+			}
+		}
+	}
+	CString szReadChassisName;
+
+	if (lfind_szChassisName.GetLength() > 0)
+		for (int i = 0; i < nChassisRowNum; i++)
+		{
+			szReadChassisName = m_cListChassis.GetItemText(i , 0);
+			//szModelName = m_gridModel.GetTextMatrix(nModelRow, 0);
+				//if (szReadChassisName.Compare(szChassisName) == NULL)
+			if (szReadChassisName == lfind_szChassisName)
+			{
+				nChassisRow = i ;
+				//m_gridChassis.SetRow(nChassisRow);
+				//ChangeRowColor(nChassisRow, CHASSIS_GRID);
+				m_nChaassis_SelectRow = nChassisRow;
+				//OnClickModelGrid();
+				ChangeRowColor(nChassisRow, CHASSIS_GRID);
+				break;
+			}
+		}
+
+	if (m_nChaassis_SelectRow >= 0)
+	{
+		//GetItemText(nChassisRow, 0);//m_gridChassis.SetRow(m_nChaassis_SelectRow);
+		OnClickChassisGrid();
+	}
+	//Pos = CurrentSet->ModelList.GetHeadPosition();
+	//nModelRow = 0;
+	//while (Pos)
+	//{
+	//	pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+	//	if (pModelData->m_szChassisName != _T(""))
+	//	{
+	//		if (pModelData->m_szChassisName == szChassisName)
+	//		{
+	//			szModelName = pModelData->m_szModelName;
+	//			m_gridModel.SetRows(nModelRow + 1);
+	//			m_gridModel.SetTextMatrix(nModelRow++, 0, szModelName);
+	//		}
+	//	}
+	//}
+
+	CString szReadModelName;
+	int			nModelRowNum = m_cListModel.GetItemCount();
+	for (int i = 0; i < nModelRowNum; i++)
+	{
+		szReadModelName = m_cListModel.GetItemText(i, 0);
+		//szModelName = m_gridModel.GetTextMatrix(nModelRow, 0);
+		if (szReadModelName == lfind_szModelName)
+		{
+			nModelRow = i ;
+			//m_gridModel.SetRow(nModelRow);
+			//ChangeRowColor(nChassisRow, CHASSIS_GRID);
+			m_nModel_SelectRow = nModelRow;
+			//OnClickModelGrid();
+			ChangeRowColor(nModelRow, MODEL_GRID);
+			break;
+		}
+	}
+
+	//m_szSeqFilePath = pModelData->m_szSeqFilePath;
+				//m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				//m_szRefImgFolder = pModelData->m_szRefImgFolder;
+
+				// szChassisName = pModelData->m_szChassisName;
+				// szModelName = pModelData->m_szModelName;
+				//m_szModelSuffix = pModelData->m_szModelSuffix;
+
+	m_szSeqFilePath = lfind_szSeqFilePath;
+	m_szModelInfoFilePath = lfind_szModelInfoFilePath;
+	m_szRefImgFolder = lfind_szRefImgFolder;
+
+	m_sSelChassis = lfind_szChassisName;
+	m_sSelModel = lfind_szModelName;
+	m_szModelSuffix = lfind_szModelSuffix;
+
+	UpdateData(FALSE);
+
+#else
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	POSITION	Pos = NULL;
+	CModelData* pModelData = NULL;
+
+	int			nModelRow = m_gridModel.GetRow();
+	int			nChassisRow = m_gridChassis.GetRow();
+	int			nChassisRowNum = m_gridChassis.GetRows();
+
+
+	CString lfind_szModelSuffix;
+	CString lfind_szSeqFilePath;;
+	CString lfind_szModelInfoFilePath;
+	CString lfind_szRefImgFolder;
+	CString lfind_szChassisName;
+	CString lfind_szModelName;
+
+	CString szChassisName = _T("");
+	CString szModelName = _T("");
+
+	
+
+	UpdateData(TRUE);
+
+
+	Pos = CurrentSet->ModelList.GetHeadPosition();
+
+	while (Pos)
+	{
+		pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+		if (pModelData->m_szModelName != _T(""))
+		{
+			if (pModelData->m_szModelSuffix.Compare(m_szModelSuffix) == NULL)
+			{
+				//m_szSeqFilePath = pModelData->m_szSeqFilePath;
+				//m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				//m_szRefImgFolder = pModelData->m_szRefImgFolder;
+
+				// szChassisName = pModelData->m_szChassisName;
+				// szModelName = pModelData->m_szModelName;
+				//m_szModelSuffix = pModelData->m_szModelSuffix;
+
+				lfind_szSeqFilePath = pModelData->m_szSeqFilePath;
+				lfind_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				lfind_szRefImgFolder = pModelData->m_szRefImgFolder;
+
+				lfind_szChassisName = pModelData->m_szChassisName;
+				lfind_szModelName = pModelData->m_szModelName;
+				lfind_szModelSuffix = pModelData->m_szModelSuffix;
+
+			//UpdateData(FALSE);
+				break;
+			}
+		}
+	}
+	CString szReadChassisName;
+
+	if(lfind_szChassisName.GetLength() > 0)
+	for (int i = 0; i < nChassisRowNum; i++)
+	{
+		szReadChassisName = m_gridChassis.GetTextMatrix(i+1, 0);
+	//szModelName = m_gridModel.GetTextMatrix(nModelRow, 0);
+		//if (szReadChassisName.Compare(szChassisName) == NULL)
+		if (szReadChassisName == lfind_szChassisName)
+		{
+			nChassisRow = i + 1;
+			m_gridChassis.SetRow(nChassisRow);
+			//ChangeRowColor(nChassisRow, CHASSIS_GRID);
+			m_nChaassis_SelectRow = nChassisRow;
+			//OnClickModelGrid();
+			ChangeRowColor(nChassisRow, CHASSIS_GRID);
+			break;
+		}
+	}
+	
+	if (m_gridChassis.GetRows() > 1)
+	{
+		m_gridChassis.SetRow(m_nChaassis_SelectRow);
+		OnClickChassisGrid();
+	}
+	//Pos = CurrentSet->ModelList.GetHeadPosition();
+	//nModelRow = 0;
+	//while (Pos)
+	//{
+	//	pModelData = CurrentSet->ModelList.GetNext(Pos);
+
+	//	if (pModelData->m_szChassisName != _T(""))
+	//	{
+	//		if (pModelData->m_szChassisName == szChassisName)
+	//		{
+	//			szModelName = pModelData->m_szModelName;
+	//			m_gridModel.SetRows(nModelRow + 1);
+	//			m_gridModel.SetTextMatrix(nModelRow++, 0, szModelName);
+	//		}
+	//	}
+	//}
+
+	CString szReadModelName;
+	int			nModelRowNum = m_gridModel.GetRows();
+	for (int i = 0; i < nModelRowNum; i++)
+	{
+		szReadModelName = m_gridModel.GetTextMatrix(i + 1, 0);
+		//szModelName = m_gridModel.GetTextMatrix(nModelRow, 0);
+		if (szReadModelName == lfind_szModelName)
+		{
+			nModelRow = i + 1;
+			m_gridModel.SetRow(nModelRow);
+			//ChangeRowColor(nChassisRow, CHASSIS_GRID);
+			//m_nChaassis_SelectRow = nModelRow;
+			//OnClickModelGrid();
+			ChangeRowColor(nModelRow, MODEL_GRID);
+			break;
+		}
+	}
+	
+	//m_szSeqFilePath = pModelData->m_szSeqFilePath;
+				//m_szModelInfoFilePath = pModelData->m_szModelInfoFilePath;
+				//m_szRefImgFolder = pModelData->m_szRefImgFolder;
+
+				// szChassisName = pModelData->m_szChassisName;
+				// szModelName = pModelData->m_szModelName;
+				//m_szModelSuffix = pModelData->m_szModelSuffix;
+
+	m_szSeqFilePath = lfind_szSeqFilePath;
+	m_szModelInfoFilePath = lfind_szModelInfoFilePath;
+	m_szRefImgFolder = lfind_szRefImgFolder;
+
+	m_sSelChassis = lfind_szChassisName;
+	m_sSelModel = lfind_szModelName ;
+	m_szModelSuffix = lfind_szModelSuffix ;
+
+	UpdateData(FALSE);
+#endif
+}
+
+void CSelectChassisModelDlg::OnNMClickListChassis(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	m_nChaassis_SelectRow = (int)m_cListChassis.GetFirstSelectedItemPosition() - 1; //  m_gridChassis.GetRow();
+	//int			nModelRow = (int)m_cListModel.GetFirstSelectedItemPosition() - 1;// //m_gridModel.GetRow();
+	//int			nChassisRow = m_nChaassis_SelectRow;
+	//int			nModelRow = m_nModel_SelectRow;// //m_gridModel.GetRow();
+	m_cListChassis.Invalidate();
+	OnClickChassisGrid();
+	*pResult = 0;
+}
+
+
+void CSelectChassisModelDlg::OnNMClickListModel(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	m_nChaassis_SelectRow = (int)m_cListChassis.GetFirstSelectedItemPosition() - 1; //  m_gridChassis.GetRow();
+	m_nModel_SelectRow = (int)m_cListModel.GetFirstSelectedItemPosition() - 1;// //m_gridModel.GetRow();
+	m_cListModel.Invalidate();
+	//int			nChassisRow = m_nChaassis_SelectRow;
+	//int			nModelRow = m_nModel_SelectRow;// //m_gridModel.GetRow();
+	OnClickModelGrid();
+	*pResult = 0;
+}
+
+
+void CSelectChassisModelDlg::OnNMCustomdrawListChassis(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	//	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+		// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	NMLVCUSTOMDRAW* pLVCD = (NMLVCUSTOMDRAW*)pNMHDR;
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+
+	//int nRow=0;
+	//int nCol=0;
+	CString strCol = _T("");
+
+
+
+	switch (pLVCD->nmcd.dwDrawStage)
+	{
+	case CDDS_PREPAINT:
+	{
+		*pResult = CDRF_NOTIFYITEMDRAW;
+		return;
+	}
+	case CDDS_ITEMPREPAINT:
+	{
+		*pResult = CDRF_NOTIFYSUBITEMDRAW;
+		return;
+	}
+	case CDDS_SUBITEM | CDDS_ITEMPREPAINT:
+	{
+		COLORREF crText, crBkgnd;
+
+		//	nCol= m_CtrlListMainProcess.getse.GetSelectedColumn();
+		//	nRow= m_CtrlListMainProcess.GetItemCount();
+
+		int l_nItem = static_cast<int>(pLVCD->nmcd.dwItemSpec); //row
+		int l_nSubItem = (int)(pLVCD->iSubItem);
+
+
+		if (l_nItem == m_nChaassis_SelectRow)
+		{
+			crText = RGB(0, 0, 0); ////m_cListChassisEx.nSelForeColor[l_nItem][l_nSubItem];// RGB(0, 0, 0); //글자색
+			crBkgnd = RGB(255, 0, 255); ////m_cListChassisEx.nSelBackColor[l_nItem][l_nSubItem];// = RGB(255, 0, 0); //배경색으로 한다   
+		}
+		else
+		{
+			crText = RGB(0, 0, 0); ////m_cListChassisEx.nSelForeColor[l_nItem][l_nSubItem];// RGB(0, 0, 0); //글자색
+			crBkgnd = RGB(255, 255, 255); ////m_cListChassisEx.nSelBackColor[l_nItem][l_nSubItem];// = RGB(255, 0, 0); //배경색으로 한다   
+		}
+
+
+		//		if (2 == (int)(pLVCD->iSubItem))
+		//		{
+		//			strCol = m_CtrlListMainProcess.GetItemText(pLVCD->nmcd.dwItemSpec, 2);
+		//			if (strCol == "NG") // 두번째열의 값이 "10"일 때, 그 값 부분만			
+		//			{
+		//				crText = RGB(0, 0, 0); //글자색
+		//				crBkgnd = RGB(255, 0, 0); //배경색으로 한다    
+		//			}
+		//			else if (2 == (int)(pLVCD->iSubItem) && strCol == "OK")
+		//			{
+		//				crText = RGB(0, 0, 0);
+		//				crBkgnd = RGB(0, 255, 0);
+		//			}
+		//			else
+		//			{
+		//				if ((nItem == m_nCurrentNumber) && (m_TaskRun != TASK_RUN_IDLE))//else if(nItem == m_Process_Index)          
+		//				{
+		//					crText = RGB(0, 0, 0);
+		//					crBkgnd = RGB(255, 255, 100);
+		//				}
+		//				else
+		//				{
+		//					crText = RGB(0, 0, 0);
+		//					crBkgnd = RGB(255, 255, 255);
+		//				}
+		//			}
+		//
+		//		}
+		//		else
+		//		{
+		//			//int nItem = static_cast<int>( pLVCD->nmcd.dwItemSpec ); //row
+		//			//m_TaskRun;m_Process_Index
+		////int		m_nCurrentNumber;
+		//			if ((nItem == m_nCurrentNumber) && (m_TaskRun != TASK_RUN_IDLE))
+		//			{
+		//				//if(pLVCD->iSubItem >= 1)
+		//				{
+		//					crText = RGB(0, 0, 0);
+		//					crBkgnd = RGB(255, 255, 100);
+		//				}
+		//
+		//			}
+		//			else
+		//			{
+		//
+		//				crText = RGB(0, 0, 0);
+		//				crBkgnd = RGB(255, 255, 255);
+		//			}
+		//		}
+		//
+		pLVCD->clrText = crText;
+		pLVCD->clrTextBk = crBkgnd;
+
+
+		*pResult = CDRF_DODEFAULT;
+		return;
+	}
+	}
+	*pResult = 0;
+}
+
+
+void CSelectChassisModelDlg::OnNMCustomdrawListModel(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	NMLVCUSTOMDRAW* pLVCD = (NMLVCUSTOMDRAW*)pNMHDR;
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+
+	//int nRow=0;
+	//int nCol=0;
+	CString strCol = _T("");
+
+
+
+	switch (pLVCD->nmcd.dwDrawStage)
+	{
+	case CDDS_PREPAINT:
+	{
+		*pResult = CDRF_NOTIFYITEMDRAW;
+		return;
+	}
+	case CDDS_ITEMPREPAINT:
+	{
+		*pResult = CDRF_NOTIFYSUBITEMDRAW;
+		return;
+	}
+	case CDDS_SUBITEM | CDDS_ITEMPREPAINT:
+	{
+		COLORREF crText, crBkgnd;
+
+
+
+		int l_nItem = static_cast<int>(pLVCD->nmcd.dwItemSpec); //row
+		int l_nSubItem = (int)(pLVCD->iSubItem);
+
+
+		if (l_nItem == m_nModel_SelectRow)
+		{
+			crText = RGB(0, 0, 0); ////m_cListChassisEx.nSelForeColor[l_nItem][l_nSubItem];// RGB(0, 0, 0); //글자색
+			crBkgnd = RGB(255, 0, 255); ////m_cListChassisEx.nSelBackColor[l_nItem][l_nSubItem];// = RGB(255, 0, 0); //배경색으로 한다   
+		}
+		else
+		{
+			crText = RGB(0, 0, 0); ////m_cListChassisEx.nSelForeColor[l_nItem][l_nSubItem];// RGB(0, 0, 0); //글자색
+			crBkgnd = RGB(255, 255, 255); ////m_cListChassisEx.nSelBackColor[l_nItem][l_nSubItem];// = RGB(255, 0, 0); //배경색으로 한다   
+		}
+
+
+		//if ((l_nItem >= 0) && (l_nItem < 500) && (l_nSubItem >= 0) && (l_nSubItem < 20))
+		//{
+		//	crText = m_cListModelEx.nSelForeColor[l_nItem][l_nSubItem];// RGB(0, 0, 0); //글자색
+		//	crBkgnd = m_cListModelEx.nSelBackColor[l_nItem][l_nSubItem];// = RGB(255, 0, 0); //배경색으로 한다   
+		//}
+
+
+		pLVCD->clrText = crText;
+		pLVCD->clrTextBk = crBkgnd;
+
+
+		*pResult = CDRF_DODEFAULT;
+		return;
+	}
+	}
+
+
+	*pResult = 0;
+}
+
+
+
+LRESULT CSelectChassisModelDlg::GetModelSuffix(WPARAM wParam, LPARAM lParam)
+{
+
+
+	
+
+	m_szModelSuffix = CurrentSet->sModelSuffixName;
+	UpdateData(FALSE);
+
+	OnBnClickedButtonSerarchModel();
+
+	return 0;
 }

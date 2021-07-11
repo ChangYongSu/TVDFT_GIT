@@ -21,6 +21,7 @@ int CALLBACK BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpDa
 
 CAddModelDlg::CAddModelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CAddModelDlg::IDD, pParent)
+	, m_szModelSuffix(_T(""))
 {
 	//{{AFX_DATA_INIT(CAddModelDlg)
 	m_szChassisName = _T("");
@@ -46,6 +47,7 @@ void CAddModelDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_SEQ_FILE, m_szSeqPath);
 	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_COMBO_DIVISION1, m_cComboDivision);
+	DDX_Text(pDX, IDC_EDIT_MODEL_SUFFIX, m_szModelSuffix);
 }
 
 

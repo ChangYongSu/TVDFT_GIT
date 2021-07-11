@@ -21,7 +21,8 @@ public:
 	bool DeleteSheet(); // Clear text delimited file content
 	bool DeleteSheet(CString SheetName); // Clear entire Excel spreadsheet content. The sheet itself is not deleted
 	bool AddRow(CStringArray &RowValues, long row = 0, bool replace = false); // Insert or replace a row into spreadsheet. Default is add new row. 
-	bool DeleteRow(CStringArray &RowValues);  
+	bool AddRowFast(CStringArray &RowValues, long row = 0, bool replace = false); // Insert or replace a row into spreadsheet. Default is add new row. 
+	bool DeleteRow(CStringArray &RowValues);
 	bool AddCell(CString CellValue, CString column, long row = 0, bool Auto = true); // Replace or add a cell into Excel spreadsheet using header row or column alphabet. Default is add cell into new row. Set Auto to false if want to force column to be used as header name
 	bool AddCell(CString CellValue, short column, long row = 0); // Replace or add a cell into spreadsheet using column number. Default is add cell into new row. 
 	bool ReplaceRows(CStringArray &NewRowValues, CStringArray &OldRowValues); // Search and replace rows in Excel spreadsheet

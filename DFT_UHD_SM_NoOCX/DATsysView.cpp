@@ -1957,18 +1957,22 @@ void CDATsysView::OnModelOpen()
 	}
 
 	//m_pFrame->OnUpdateGrabStart();
-	CSelectChassisModelDlg dlg;
-	dlg.m_nNoModel = nNoModel;
+	//CSelectChassisModelDlg dlg;
+	m_SelectChassisModelDlg.m_nNoModel = nNoModel;
 
-	if(dlg.DoModal() == IDOK)
+#ifdef			DEBUG_MD5_CODE__
+	SetTimer(TIMER_CHECK_DEBUG_TEST, 10000, NULL);
+#endif
+
+	if(m_SelectChassisModelDlg.DoModal() == IDOK)
 	{
 		//+move kwmoon 080818
-		CurrentSet->sSeqPath		= CurrentSet->sServerFolder + dlg.m_szSeqFilePath;
-		CurrentSet->sModelIni		= CurrentSet->sModelInfoFolder + dlg.m_szModelInfoFilePath;
+		CurrentSet->sSeqPath		= CurrentSet->sServerFolder + m_SelectChassisModelDlg.m_szSeqFilePath;
+		CurrentSet->sModelIni		= CurrentSet->sModelInfoFolder + m_SelectChassisModelDlg.m_szModelInfoFilePath;
 
 #ifdef SM_MODIFY_CODE__
 
-		sTmp.Format(_T("%s_VF.cfg"), dlg.m_szModelInfoFilePath.Left(dlg.m_szModelInfoFilePath.ReverseFind('.')));
+		sTmp.Format(_T("%s_VF.cfg"), m_SelectChassisModelDlg.m_szModelInfoFilePath.Left(m_SelectChassisModelDlg.m_szModelInfoFilePath.ReverseFind('.')));
 		CurrentSet->sVFTestIni = CurrentSet->sModelVFConfigFolder + sTmp;
 
 #else	
@@ -1980,8 +1984,8 @@ void CDATsysView::OnModelOpen()
 #endif
 
 
-		CurrentSet->sModelFolder	= CurrentSet->sServerFolder + dlg.m_szModelInfoFilePath.Left(dlg.m_szModelInfoFilePath.ReverseFind('\\'));
-		CurrentSet->sRefFolder		= CurrentSet->sRefRootFolder + dlg.m_szRefImgFolder;
+		CurrentSet->sModelFolder	= CurrentSet->sServerFolder + m_SelectChassisModelDlg.m_szModelInfoFilePath.Left(m_SelectChassisModelDlg.m_szModelInfoFilePath.ReverseFind('\\'));
+		CurrentSet->sRefFolder		= CurrentSet->sRefRootFolder + m_SelectChassisModelDlg.m_szRefImgFolder;
 		CurrentSet->sMaskFolder		= CurrentSet->sRefFolder + "\\Mask";
 //AUTO
 /*		sTmp = dlg.m_szSeqFilePath2;
@@ -1989,8 +1993,10 @@ void CDATsysView::OnModelOpen()
 			CurrentSet->sSeqPath_EM		= CurrentSet->sServerFolder + sTmp;
 		} */
 //		
-		CurrentSet->sChassisName 	= dlg.m_sSelChassis;
-		CurrentSet->sModelName 	= dlg.m_sSelModel;
+		CurrentSet->sChassisName 	= m_SelectChassisModelDlg.m_sSelChassis;
+		CurrentSet->sModelName 	= m_SelectChassisModelDlg.m_sSelModel;
+
+		CurrentSet->sModelSuffixName = m_SelectChassisModelDlg.m_szModelSuffix;
 
 		//add PSH 20091019
 		if(!FileExists(CurrentSet->sRefFolder)){
@@ -2213,7 +2219,10 @@ void CDATsysView::OnModelOpen()
 			}
 		}	
 	}
-//UHD
+
+	m_SelectChassisModelDlg.m_bActivate = 0;
+	
+	//UHD
 	if(g_nGrabberType == UHD_GRABBER)
 	{
 		StartLVDSGrabThread();
@@ -6501,7 +6510,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 						if(pCurStep->GetResult() == FALSE)
 						{
 							if(g_nSysType == AUTO_SYS){
-								pView->m_nCurrentResetExecution = 1;
+								//pView->m_nCurrentResetExecution = 1;
 								if(!pView->RunUserRetry(nStepResult)) goto END_WHILE_LOOP;
 							}
 							else{
@@ -7534,7 +7543,7 @@ int CDATsysView::StepRun()
 #endif
 					if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
 					{					
-						g_pView->m_BlackPictureFlag = _Dark_Test();
+						g_pView->m_BlackPictureFlag =  _Dark_Test();
 						if (g_pView->m_BlackPictureFlag == 1)
 						{
 						}
@@ -7563,7 +7572,7 @@ int CDATsysView::StepRun()
 									else
 									{
 										AddStringToStatus("Gender_Reset!!");
-										_Wait(1000);
+										Sleep(1000);
 										localRetryResult = (*pCurFunc->m_pFunc)();
 										if (localRetryResult == TEST_PASS)
 										{
@@ -7586,7 +7595,7 @@ int CDATsysView::StepRun()
 									OnImgRotate();
 								}
 
-								_Wait(1000);
+								Sleep(1000);
 								localRetryResult = (*pCurFunc->m_pFunc)();
 								if (localRetryResult == TEST_PASS)
 								{
@@ -7595,23 +7604,16 @@ int CDATsysView::StepRun()
 								}
 #else
 
-								for (int i = 0; i < 3; i++)
+								for (int i = 0; i < 2; i++)
 								{
-									if (!g_pView->GrabberReset())
+									Sleep(500);
+									ResetGrabStartThread();
+									Sleep(500);
+									localRetryResult = (*pCurFunc->m_pFunc)();
+									if (localRetryResult == TEST_PASS)
 									{
-										_Wait(500);
-										continue;
-									}
-									else
-									{
-										AddStringToStatus("Grabber Reset!!");
-										_Wait(1000);
-										localRetryResult = (*pCurFunc->m_pFunc)();
-										if (localRetryResult == TEST_PASS)
-										{
-											break;
-										}
-									}
+										break;
+									}									
 								}
 								if (localRetryResult == TEST_PASS)
 								{								
@@ -7627,18 +7629,9 @@ int CDATsysView::StepRun()
 								Sleep(2000);	
 
 								g_pView->ResetGrabStartThread();
-								Sleep(1000);
+								Sleep(1000);								
 								
-								if (!g_pView->GrabberReset())
-								{
-									;
-								}
-								else
-								{
-									AddStringToStatus("Grabber Reset!!");
-									_Wait(1000);
-									localRetryResult = (*pCurFunc->m_pFunc)();										
-								}
+								localRetryResult = (*pCurFunc->m_pFunc)();
 								
 								if (localRetryResult == TEST_PASS)
 								{
@@ -7653,14 +7646,15 @@ int CDATsysView::StepRun()
 
 									Sleep(1000);
 									g_pView->OnImgRotate();
-								}
 
-								_Wait(1000);
-								localRetryResult = (*pCurFunc->m_pFunc)();
-								if (localRetryResult == TEST_PASS)
-								{
-									//	gPLC_Ctrl.m_nUserRetry = 0;
-									continue;
+
+									Sleep(1000);
+									localRetryResult = (*pCurFunc->m_pFunc)();
+									if (localRetryResult == TEST_PASS)
+									{
+										//	gPLC_Ctrl.m_nUserRetry = 0;
+										continue;
+									}
 								}
 #endif
 								
@@ -7672,7 +7666,7 @@ int CDATsysView::StepRun()
 								{
 									gJigCtrl.Set_Gender_Reset(0);
 									AddStringToStatus("Gender_Reset!!");
-									_Wait(1000);
+									Sleep(1000);
 									localRetryResult = (*pCurFunc->m_pFunc)();
 									if (localRetryResult == TEST_PASS)
 									{
@@ -7743,7 +7737,7 @@ int CDATsysView::StepRun()
 											g_pView->OnImgRotate();
 										}
 
-										_Wait(1000);
+										Sleep(1000);
 										localRetryResult = (*pCurFunc->m_pFunc)();
 										if (localRetryResult == TEST_PASS)
 										{
@@ -8095,7 +8089,7 @@ void CDATsysView::OnTimer(UINT nIDEvent)
 	CString szString;
 
 	//AddStringToStatusLocal();
-	SystemMonitorLog_Write();
+	//SystemMonitorLog_Write();
 
 	switch(nIDEvent)
 	{
@@ -8282,9 +8276,23 @@ void CDATsysView::OnTimer(UINT nIDEvent)
 		}		
 		case TIMER_CHECK_LIST_UPDATEDELAY:
 		{
-			
+
 			KillTimer(nIDEvent);
 			UpdateSeqCheck();
+
+		}
+		break;	
+		case TIMER_CHECK_DEBUG_TEST:
+		{
+
+			KillTimer(nIDEvent);
+#ifdef			DEBUG_MD5_CODE__
+			if (m_SelectChassisModelDlg.m_bActivate == 1)
+			{
+				CurrentSet->sModelSuffixName = "A123.459";
+				::SendMessage(m_SelectChassisModelDlg, UM_UPDATE_SUFFIX_SCAN, 0, 0);
+			}
+#endif
 
 		}
 		break;
@@ -10908,20 +10916,22 @@ BOOL CDATsysView::AutoControlProcess()
 				{
 					if (gPLC_Ctrl.m_nCurrentVideoNG == 1)
 					{
+
+						AddStringToStatus("(sWaitCount > 280)");
 						g_AutoVideoRetry = 1;
-					//	Sleep(2000);
-					//	ResetGrabStartThread();
-						if (g_AutoVideoRetry != 1)
-						{
-							if (!GrabberReset())
-							{
-								Sleep(1000);
-								if (!GrabberReset())
-								{
-									AddStringToStatus("Grabber Not Connected");
-								}
-							}
-						}
+						Sleep(1000);
+						ResetGrabStartThread();
+						//if (g_AutoVideoRetry != 1)
+						//{
+						//	if (!GrabberReset())
+						//	{
+						//		Sleep(1000);
+						//		if (!GrabberReset())
+						//		{
+						//			AddStringToStatus("Grabber Not Connected");
+						//		}
+						//	}
+						//}
 					//	AddStringToStatus("Grabber Reset");
 						if (CurrentSet->bCheckRotateReset == 1)
 						{
@@ -12582,7 +12592,24 @@ BOOL CDATsysView::PreTranslateMessage(MSG* pMsg)
 		if(TranslateAccelerator(this->m_hWnd, m_hAccel, pMsg))
 			return TRUE;
     }
-
+//	if (pMsg->message == WM_KEYDOWN)//m_sModelSuffix
+//	{
+//	
+//		if (pMsg->wParam == VK_RETURN)
+//		{
+//#ifdef			DEBUG_MD5_CODE__
+//			if (m_SelectChassisModelDlg.m_bActivate == 1)
+//			{
+//				CurrentSet->sModelSuffixName = "A123.459";
+//				SendMessage(UM_UPDATE_SUFFIX_SCAN, 0, 0);
+//			}
+//#endif
+//			
+//			return TRUE;
+//		}
+//	
+//	}
+//
 	//if (pMsg->message == WM_KEYDOWN)//m_sModelSuffix
 	//{
 	//	ProcessKeyPad(pMsg->wParam, pMsg->lParam);
@@ -13311,6 +13338,10 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 							CurrentSet->sModelSuffixName = strWId;
 							::SendMessage(m_GetToolOptiondlg, UM_UPDATE_TOOL_OPTION, 0, 0);
 						}
+						else if (m_SelectChassisModelDlg.m_bActivate == 1) {
+							CurrentSet->sModelSuffixName = strWId;
+							::SendMessage(m_SelectChassisModelDlg, UM_UPDATE_SUFFIX_SCAN, 0, 0);
+						}
 					}
 				}
 
@@ -13396,6 +13427,10 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 								CurrentSet->sModelSuffixName = strWId;
 								::SendMessage(m_GetToolOptiondlg, UM_UPDATE_TOOL_OPTION, 0, 0);
 							}
+							else if (m_SelectChassisModelDlg.m_bActivate == 1) {
+								CurrentSet->sModelSuffixName = strWId;
+								::SendMessage(m_SelectChassisModelDlg, UM_UPDATE_SUFFIX_SCAN, 0, 0);
+							}
 						}
 					}
 				}
@@ -13438,6 +13473,10 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 							if (m_GetToolOptiondlg.m_bActivate) {
 								CurrentSet->sModelSuffixName = strWId;
 								::SendMessage(m_GetToolOptiondlg, UM_UPDATE_TOOL_OPTION, 0, 0);
+							}
+							else if (m_SelectChassisModelDlg.m_bActivate == 1) {
+								CurrentSet->sModelSuffixName = strWId;
+								::SendMessage(m_SelectChassisModelDlg, UM_UPDATE_SUFFIX_SCAN, 0, 0);
 							}
 						}
 						else {
@@ -13544,7 +13583,7 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 						ScannerCtrl.m_ctrlScannerCtrl.m_QueueRead.Clear();
 						return 1;
 					}
-					if (m_GetToolOptiondlg.m_bActivate)
+					if ((m_GetToolOptiondlg.m_bActivate)&& (m_SelectChassisModelDlg.m_bActivate == 1))
 					{
 						//if (CurrentSet->bIsRunning)
 						//{
@@ -13582,6 +13621,10 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 									if (m_GetToolOptiondlg.m_bActivate) {
 										CurrentSet->sModelSuffixName = strWId;
 										::SendMessage(m_GetToolOptiondlg, UM_UPDATE_TOOL_OPTION, 0, 0);
+									}
+									else if (m_SelectChassisModelDlg.m_bActivate == 1) {
+										CurrentSet->sModelSuffixName = strWId;
+										::SendMessage(m_SelectChassisModelDlg, UM_UPDATE_SUFFIX_SCAN, 0, 0);
 									}
 								}
 								else {
@@ -13643,6 +13686,10 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 							if (m_GetToolOptiondlg.m_bActivate) {
 								CurrentSet->sModelSuffixName = strWId;
 								::SendMessage(m_GetToolOptiondlg, UM_UPDATE_TOOL_OPTION, 0, 0);
+							}
+							else if (m_SelectChassisModelDlg.m_bActivate == 1) {
+								CurrentSet->sModelSuffixName = strWId;
+								::SendMessage(m_SelectChassisModelDlg, UM_UPDATE_SUFFIX_SCAN, 0, 0);
 							}
 						}					
 					}		
@@ -13833,7 +13880,6 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 					sTmp.Format("While : %02X %02X %02X %02X", gJigCtrl.m_strReceive[0], gJigCtrl.m_strReceive[1], gJigCtrl.m_strReceive[2], gJigCtrl.m_strReceive[3]);
 					SystemMonitorLog_Save(sTmp);
 					_Wait(30);
-
 				}
 			}
 		}
@@ -21108,7 +21154,7 @@ void CDATsysView::DeleteResultDataFromDetailedGrid(int nStepNo)
 BOOL CDATsysView::GetResultFromDetailedGrid(int nStepNo, CString& sMsg)
 {
 	if ((nStepNo > (m_CtrlListMainProcess.GetItemCount() - 1)) || (nStepNo <= 0)) return FALSE;
-
+	nStepNo -= 1;
 	sMsg = m_CtrlListMainProcess.GetItemText(nStepNo, 12);
 
 	return TRUE;

@@ -423,13 +423,13 @@ LRESULT GetToolOptionDlg::GetToolOption(WPARAM wParam, LPARAM lParam)
 		if (bRetryResult == 1)
 		{
 			m_nRetryCount++;
-			if (m_nRetryCount < 2)
+			if (m_nRetryCount <= 2)
 			{
 				SetTimer(1, 500, NULL);
 			}
 			else
 			{
-				AfxMessageBox("GetToolOption RETRY Error!!");
+				AfxMessageBox("GetToolOption RETRY Error!!");//AddStringToStatus("GetToolOption RETRY Error!!");//	
 			}
 
 		}

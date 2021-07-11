@@ -92,13 +92,13 @@ double	_Color_Test()
 
 	g_ImageProc.SetColorLimit((float)pCurStep->m_fLowLimit,(float)pCurStep->m_fHighLimit);
 	g_ImageProc.SetAvgMaskSize(0,0,0); 
-
+	SystemMonitorLog_Save("_Color_Test1"); 
 	if(g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
 	{
 		nResult = g_ImageProc.RGBTest(NORMAL_IMAGE_TEST,g_GrabImage,g_RefImage,g_MaskImage,
 									  ptResultPosition, fMaxDifference,nTotalNoErrorPixel,g_MaskImage.m_bImageLoaded,ctrlImgProg);
 	
-
+		SystemMonitorLog_Save("_Color_Test2");
 		if(nResult == TEST_FAIL)
 		{
 			CRect nImageRect;
@@ -130,7 +130,7 @@ double	_Color_Test()
 									  ptResultPosition, fMaxDifference,nTotalNoErrorPixel,g_MaskImage.m_bImageLoaded,ctrlImgProg);
 			}
 		}
-
+		SystemMonitorLog_Save("_Color_Test3");
 		pCurStep->m_nTestType = RGB_TEST;
 		pCurStep->m_nTotalNoErrorPixel = nTotalNoErrorPixel;
 	
@@ -163,7 +163,7 @@ double	_Color_Test()
 
 		g_GrabImage.m_bSaveProcessedImage = TRUE; 
 
-		
+		SystemMonitorLog_Save("_Color_Test4");
 		if((CurrentSet->bSaveGrabImg)
 		|| (!CurrentSet->bSaveGrabImg && (nResult == TEST_FAIL)))
 		{
@@ -190,7 +190,7 @@ double	_Color_Test()
 				g_GrabImage.SaveJpgImage(pCurStep->m_strProcPath, INTERNAL_PROC_IMAGE,ctrlImgProg);
 			}
 		}
-
+		SystemMonitorLog_Save("_Color_Test5");
 		//================
 		// Save Test Data 
 		//================
@@ -273,7 +273,7 @@ double	_Color_Test()
 				if(fMaxDifference > -100) fMaxDifference -= 1;
 			}
 		}
-	
+		SystemMonitorLog_Save("_Color_Test6");
 		return fMaxDifference; 	
 	}
 	else
@@ -700,11 +700,14 @@ int	_Dark_Test()
 		nResult = g_ImageProc.DarknessTest(g_GrabImage, g_MaskImage);
 
 		// Initialization
-		
+		szMsg.Format("_Dark_Test Result: %d", nResult);
+		SystemMonitorLog_Save(szMsg);
 		return nResult;
 	}
 	else
 	{
+		szMsg.Format("_Dark_Test Result: No Test", nResult);
+		SystemMonitorLog_Save(szMsg);
 		return nResult;
 	}	
 }

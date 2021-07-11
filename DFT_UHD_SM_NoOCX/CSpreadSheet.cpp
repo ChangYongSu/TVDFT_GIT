@@ -397,6 +397,186 @@ bool CSpreadSheet::AddRow(CStringArray &RowValues, long row, bool replace)
 	}
 	return true;
 }
+bool CSpreadSheet::AddRowFast(CStringArray &RowValues, long row, bool replace)
+{
+	long tempRow;
+	
+	if (row == 1)
+	{
+		if (m_bExcel) 
+		{
+			// Check for duplicate header row field for Excel spreadsheet
+			for (int i = 0; i < RowValues.GetSize(); i++)
+			{
+				for (int j = 0; j < RowValues.GetSize(); j++)
+				{
+					if ((i != j) && (RowValues.GetAt(i) == RowValues.GetAt(j)))
+					{
+						m_sLastError.Format("Duplicate header row field:%s\n", RowValues.GetAt(i));
+						return false;
+					}
+				}
+			}
+			
+			// Check for reduced header row columns
+			if (RowValues.GetSize() < m_dTotalColumns)
+			{
+				m_sLastError = "Number of columns in new header row cannot be less than the number of columns in previous header row";
+				return false;
+			}
+			m_dTotalColumns = RowValues.GetSize();
+		}
+
+		// Update header row
+		m_aFieldNames.RemoveAll();
+		m_aFieldNames.Copy(RowValues);
+	}
+	else
+	{
+		if (m_bExcel)
+		{
+			if (m_dTotalColumns == 0)
+			{
+				m_sLastError = "No header row. Add header row first\n";
+				return false;
+			}
+		}
+	}
+
+	if (m_bExcel) // For Excel spreadsheet
+	{
+		if (RowValues.GetSize() > m_aFieldNames.GetSize())
+		{
+			m_sLastError = "Number of columns to be added cannot be greater than the number of fields\n";
+			return false;
+		}
+	}
+	else // For text delimited spreadsheet
+	{
+		// Update largest number of columns if necessary
+		if (RowValues.GetSize() > m_dTotalColumns)
+		{
+			m_dTotalColumns = RowValues.GetSize();
+		}
+	}
+
+	// Convert row values
+	m_stempString.Empty();
+	for (int i = 0; i < RowValues.GetSize(); i++)
+	{
+		if (i != RowValues.GetSize()-1) // Not last column
+		{
+			m_stempSql.Format("\"%s\"%s", RowValues.GetAt(i), m_sSeparator);
+			m_stempString += m_stempSql;
+		}
+		else // Last column
+		{
+			m_stempSql.Format("\"%s\"", RowValues.GetAt(i));
+			m_stempString += m_stempSql;
+		}
+	}
+	
+	if (row)
+	{
+		if (row <= m_dTotalRows) // Not adding new rows
+		{
+			if (replace) // Replacing row
+			{
+				m_aRows.SetAt(row-1, m_stempString);
+			}
+			else // Inserting row
+			{
+				m_aRows.InsertAt(row-1, m_stempString);
+				m_dTotalRows++;
+			}
+
+			if (!m_bTransaction)
+			{
+			//	if(m_dTotalRows == 0) m_bAppend = true;
+				Commit();
+			}
+			return true;
+		}
+		else // Adding new rows
+		{
+			// Insert null rows until specified row
+			m_dCurrentRow = m_dTotalRows;
+			m_stempSql.Empty();
+			CString nullString;
+			for (int i = 1; i <= m_dTotalColumns; i++)
+			{
+				if (i != m_dTotalColumns)
+				{
+					if (m_bExcel)
+					{
+						nullString.Format("\" \"%s", m_sSeparator);
+					}
+					else
+					{
+						nullString.Format("\"\"%s", m_sSeparator);
+					}
+					m_stempSql += nullString;
+				}
+				else
+				{
+					if (m_bExcel)
+					{
+						m_stempSql += "\" \"";
+					}
+					else
+					{
+						m_stempSql += "\"\"";
+					}
+				}
+			}
+			for (int j = m_dTotalRows + 1; j < row; j++)
+			{
+				m_dCurrentRow++;
+				m_aRows.Add(m_stempSql);
+			}
+		}
+	}
+	else
+	{
+		tempRow = m_dCurrentRow;
+		m_dCurrentRow = m_dTotalRows;
+	}
+
+	// Insert new row
+	m_dCurrentRow++;
+	m_aRows.Add(m_stempString);
+	
+	if (row > m_dTotalRows)
+	{
+		m_dTotalRows = row;
+	}
+	else if (!row)
+	{
+		m_dTotalRows = m_dCurrentRow;
+		m_dCurrentRow = tempRow;
+	}
+
+	if (!m_bTransaction)
+	{
+		if(m_dTotalRows == 1) {
+			WIN32_FIND_DATA FindFileData;
+			HANDLE hFind;  // file handle
+			
+			// 090909
+			hFind = FindFirstFile(m_sFile, &FindFileData);
+			if( INVALID_HANDLE_VALUE != hFind )
+			{
+				::DeleteFile(m_sFile);
+				FindClose(hFind);
+			}
+		}
+//		if(m_dTotalRows == 1) m_bAppend = true;
+
+
+		//Commit();
+	}
+	return true;
+}
 
 bool CSpreadSheet::DeleteRow(CStringArray &RowValues)
 {

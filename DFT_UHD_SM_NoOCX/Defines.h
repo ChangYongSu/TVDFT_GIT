@@ -278,6 +278,7 @@ typedef struct ProcessInformationStructure
 #define UM_UPDATE_TOOL_OPTION			WM_USER + 0x250
 #define UM_CLOSE_TOOL_OPTION			WM_USER + 0x251
 #define UM_MESSAGE_CLEAR			WM_USER + 0x252
+#define UM_UPDATE_SUFFIX_SCAN			WM_USER + 0x253
 
 
 //=================================
@@ -308,6 +309,7 @@ typedef struct ProcessInformationStructure
 #define TIMER_MES_DATA_UPLOAD				0x600	
 #define TIMER_CHECK_LIST_UPDATE				0x601	
 #define TIMER_CHECK_LIST_UPDATEDELAY			0x602
+#define TIMER_CHECK_DEBUG_TEST			0x603
 
 //=================
 // I2C ADC KEYWORD 

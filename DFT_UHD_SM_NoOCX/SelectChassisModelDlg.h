@@ -25,11 +25,12 @@ public:
 	//{{AFX_DATA(CSelectChassisModelDlg)
 	enum { IDD = IDD_SELECT_CHASSIS_MODEL_DLG };
 	CComboBox	m_ctrlDivisionCmb;
-	CVSFlexGrid	m_gridChassis;
-	CVSFlexGrid	m_gridModel;
+	//CVSFlexGrid	m_gridChassis;
+	//CVSFlexGrid	m_gridModel;
 	CString	m_szCurrentSeqFilePath;
 	CString	m_szModelInfoFilePath;
 	CString	m_szRefImgFolder;
+	//CString	m_szModelSuffix;
 	CString	m_szSeqFilePath;
 	CString	m_szCurrentRefFilePath;
 	//}}AFX_DATA
@@ -43,9 +44,12 @@ public:
 
 	void	InitGrid();
 	void	UpdateGrid();
+	void	UpdateGridLast();
 	BOOL	IsSameChassis(CString szChassisName);
 	void	ChangeRowColor(int nRow, int nGridType);
 	BOOL	CheckModel(CString sChassis, CString sModel);
+
+	BOOL	m_bActivate;
 
 
 
@@ -74,6 +78,16 @@ protected:
 	DECLARE_EVENTSINK_MAP()
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButtonSerarchModel();
+	afx_msg void OnNMClickListChassis(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMClickListModel(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawListChassis(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawListModel(NMHDR *pNMHDR, LRESULT *pResult);
+	CString m_szModelSuffix;
+	CListCtrl m_cListChassis;
+	CListCtrl m_cListModel;
+	LRESULT	GetModelSuffix(WPARAM wParam, LPARAM lParam);
 };
 
 //{{AFX_INSERT_LOCATION}}

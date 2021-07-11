@@ -93,6 +93,7 @@ public:
 	// Variable
 	CString m_szChassisName;
 	CString m_szModelName;
+	CString m_szModelSuffix;
 	CString m_szSeqFilePath;
 	CString m_szModelInfoFilePath;
 	CString m_szRefImgFolder;
@@ -1494,8 +1495,8 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime);
 BOOL OpenModelListFile(CString sModelListPath,int& nNoModel,CStringArray &Divisions);
 BOOL SaveModelListFile();
 
-BOOL CSelectGenerateModel_ModelListOpen(CString sModelListPath, int& nNoModel, CStringArray &Divisions);
-BOOL CSelectGenerateModel_SaveModelListFile(CString sModelListPath);
+//BOOL CSelectGenerateModel_ModelListOpen(CString sModelListPath, int& nNoModel, CStringArray &Divisions);
+//BOOL CSelectGenerateModel_SaveModelListFile(CString sModelListPath);
 
 //+add kwmoon 081028
 BOOL CreateModelListFile(CString sModelListPath);

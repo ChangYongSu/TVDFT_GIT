@@ -3862,7 +3862,6 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 
 BOOL OpenModelListFile(CString sModelListPath,int& nNoModel,CStringArray &Divisions)
 {
-
 	POSITION PosStep = NULL;
 	CString sSection = _T("");
 	CString sTmp	 = _T("");
@@ -3890,26 +3889,43 @@ BOOL OpenModelListFile(CString sModelListPath,int& nNoModel,CStringArray &Divisi
 
 	Divisions.RemoveAll();
 
+	tempSS.ReadRow(Rows, 1);
+	CString strTmp = Rows.GetAt(0);
+	int lModelNewList = 0;
+	if (strTmp.Find("Model.Suffix") >= 0)
+		lModelNewList = 1;
+
+	
 	for (int i = 2; i <= nNoModel; i++)
 	{
 		CModelData* pModel = new CModelData;
-
 		// Read row
 		tempSS.ReadRow(Rows, i);
 
-		if(Rows.GetSize() < 6){ continue;}
+		
+			if (Rows.GetSize() < 6) { continue; }
 
-		pModel->m_szDivision          = Rows.GetAt(0);
-		pModel->m_szDivision = pModel->m_szDivision.Left(4);
-		pModel->m_szChassisName		  = Rows.GetAt(1);
-		pModel->m_szModelName		  = Rows.GetAt(2);
-		pModel->m_szSeqFilePath		  = Rows.GetAt(3);
-		pModel->m_szModelInfoFilePath = Rows.GetAt(4);
-		pModel->m_szRefImgFolder	  = Rows.GetAt(5);
+			
+			pModel->m_szDivision = Rows.GetAt(0);
+			pModel->m_szDivision = pModel->m_szDivision.Left(4);
+			pModel->m_szChassisName = Rows.GetAt(1);
+			pModel->m_szModelName = Rows.GetAt(2);
+			pModel->m_szSeqFilePath = Rows.GetAt(3);
+			pModel->m_szModelInfoFilePath = Rows.GetAt(4);
+			pModel->m_szRefImgFolder = Rows.GetAt(5);
+			if (Rows.GetSize() > 6) {
+				pModel->m_szModelSuffix = Rows.GetAt(6);
+			}
+			//if (Rows.GetSize() > 7) {
+			//	pModel->m_szSeqFilePath2 = Rows.GetAt(7);
+			//}
 
-		if(Rows.GetSize() > 6){
-			pModel->m_szSeqFilePath2 = Rows.GetAt(6);
-		}	
+		
+
+		
+
+
+
 		CurrentSet->ModelList.AddTail(pModel);
 
 		int lFlag = 0;
@@ -3931,135 +3947,135 @@ BOOL OpenModelListFile(CString sModelListPath,int& nNoModel,CStringArray &Divisi
 		}
 
 	}
-	//tempSS.GetDivisions(Divisions);
 
 	return TRUE;
 }
+
 
 
 extern CTypedPtrList<CPtrList, CModelData*>	ModelList;
-BOOL CSelectGenerateModel_ModelListOpen(CString sModelListPath, int& nNoModel, CStringArray &Divisions)
-{
+//BOOL CSelectGenerateModel_ModelListOpen(CString sModelListPath, int& nNoModel, CStringArray &Divisions)
+//{
+//
+//#if 1
+//
+//
+//
+//	CStringArray Rows;
+//	int i;
+//	CString lFileName;
+//	lFileName = sModelListPath;// +"ModelList.xls";
+//	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
+//	ModelList.RemoveAll();
+//
+//	for (i = 2; i <= SS.GetTotalRows(); i++)
+//	{
+//		// Read row
+//		SS.ReadRow(Rows, i);
+//
+//		if (Rows.GetAt(0).GetLength() > 2)
+//		{
+//			CModelData* pModel = new CModelData;
+//
+//			pModel->m_szDivision = Rows.GetAt(0);
+//			pModel->m_szDivision = pModel->m_szDivision.Left(4);
+//			pModel->m_szChassisName = Rows.GetAt(1);
+//			pModel->m_szModelName = Rows.GetAt(2);
+//			pModel->m_szSeqFilePath = Rows.GetAt(3);
+//			pModel->m_szModelInfoFilePath = Rows.GetAt(4);
+//			pModel->m_szRefImgFolder = Rows.GetAt(5);
+//
+//			ModelList.AddTail(pModel);
+//		}
+//		else
+//		{
+//			continue;
+//		}
+//
+//	}
+//	
+//#else
+//
+//
+//	CStringArray Rows;
+//	int i;
+//	CString lFileName;
+//	lFileName = sModelInfoFolder + "ModelList.xls";
+//	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
+//	ModelList.RemoveAll();
+//
+//	for (i = 2; i <= SS.GetTotalRows(); i++)
+//	{
+//		// Read row
+//		SS.ReadRow(Rows, i);
+//
+//		if (Rows.GetAt(0).GetLength() > 2)
+//		{
+//			CModelData* pModel = new CModelData;
+//
+//			pModel->m_szDivision = Rows.GetAt(0);
+//			pModel->m_szChassisName = Rows.GetAt(1);
+//			pModel->m_szModelName = Rows.GetAt(2);
+//			pModel->m_szSeqFilePath = Rows.GetAt(3);
+//			pModel->m_szModelInfoFilePath = Rows.GetAt(4);
+//			pModel->m_szRefImgFolder = Rows.GetAt(5);
+//
+//			ModelList.AddTail(pModel);
+//		}
+//		else
+//		{
+//			continue;
+//		}
+//
+//	}
+//#endif
+//	return TRUE;
+//}
 
-#if 1
-
-
-
-	CStringArray Rows;
-	int i;
-	CString lFileName;
-	lFileName = sModelListPath;// +"ModelList.xls";
-	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
-	ModelList.RemoveAll();
-
-	for (i = 2; i <= SS.GetTotalRows(); i++)
-	{
-		// Read row
-		SS.ReadRow(Rows, i);
-
-		if (Rows.GetAt(0).GetLength() > 2)
-		{
-			CModelData* pModel = new CModelData;
-
-			pModel->m_szDivision = Rows.GetAt(0);
-			pModel->m_szDivision = pModel->m_szDivision.Left(4);
-			pModel->m_szChassisName = Rows.GetAt(1);
-			pModel->m_szModelName = Rows.GetAt(2);
-			pModel->m_szSeqFilePath = Rows.GetAt(3);
-			pModel->m_szModelInfoFilePath = Rows.GetAt(4);
-			pModel->m_szRefImgFolder = Rows.GetAt(5);
-
-			ModelList.AddTail(pModel);
-		}
-		else
-		{
-			continue;
-		}
-
-	}
-	
-#else
-
-
-	CStringArray Rows;
-	int i;
-	CString lFileName;
-	lFileName = sModelInfoFolder + "ModelList.xls";
-	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
-	ModelList.RemoveAll();
-
-	for (i = 2; i <= SS.GetTotalRows(); i++)
-	{
-		// Read row
-		SS.ReadRow(Rows, i);
-
-		if (Rows.GetAt(0).GetLength() > 2)
-		{
-			CModelData* pModel = new CModelData;
-
-			pModel->m_szDivision = Rows.GetAt(0);
-			pModel->m_szChassisName = Rows.GetAt(1);
-			pModel->m_szModelName = Rows.GetAt(2);
-			pModel->m_szSeqFilePath = Rows.GetAt(3);
-			pModel->m_szModelInfoFilePath = Rows.GetAt(4);
-			pModel->m_szRefImgFolder = Rows.GetAt(5);
-
-			ModelList.AddTail(pModel);
-		}
-		else
-		{
-			continue;
-		}
-
-	}
-#endif
-	return TRUE;
-}
-
-BOOL CSelectGenerateModel_SaveModelListFile(CString sModelListPath)
-{
-
-	CStringArray FieldNames, Rows;
-	POSITION	Pos = NULL;
-	CModelData* pModelData = NULL;
-	CString lFileName;
-	lFileName = sModelListPath;// +"ModelList.xls";
-	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
-
-	SS.GetFieldNames(FieldNames);
-	SS.DeleteSheet();
-
-	SS.BeginTransaction();
-	SS.RollBack();
-
-	SS.AddHeaders(FieldNames);
-
-	Pos = ModelList.GetHeadPosition();
-	while (Pos)
-	{
-		Rows.RemoveAll();
-		pModelData = ModelList.GetNext(Pos);
-
-		Rows.Add(pModelData->m_szChassisName);
-		Rows.Add(pModelData->m_szModelName);
-		Rows.Add(pModelData->m_szSeqFilePath);
-		Rows.Add(pModelData->m_szModelInfoFilePath);
-		Rows.Add(pModelData->m_szRefImgFolder);
-
-		//Rows.Add(pModel->m_szDivision);
-		//Rows.Add(pModel->m_szChassisName);
-		//Rows.Add(pModel->m_szModelName);
-		//Rows.Add(pModel->m_szSeqFilePath);
-		//Rows.Add(pModel->m_szModelInfoFilePath);
-		//Rows.Add(pModel->m_szRefImgFolder);
-
-		SS.AddRow(Rows); // append test row to spreadsheet
-	}
-
-	SS.Commit();
-
-	return TRUE;
-}
+//BOOL CSelectGenerateModel_SaveModelListFile(CString sModelListPath)
+//{
+//
+//	CStringArray FieldNames, Rows;
+//	POSITION	Pos = NULL;
+//	CModelData* pModelData = NULL;
+//	CString lFileName;
+//	lFileName = sModelListPath;// +"ModelList.xls";
+//	CSpreadSheet SS(lFileName, "ModelList");//sModelInfoFolder
+//
+//	SS.GetFieldNames(FieldNames);
+//	SS.DeleteSheet();
+//
+//	SS.BeginTransaction();
+//	SS.RollBack();
+//
+//	SS.AddHeaders(FieldNames);
+//
+//	Pos = ModelList.GetHeadPosition();
+//	while (Pos)
+//	{
+//		Rows.RemoveAll();
+//		pModelData = ModelList.GetNext(Pos);
+//
+//		Rows.Add(pModelData->m_szChassisName);
+//		Rows.Add(pModelData->m_szModelName);
+//		Rows.Add(pModelData->m_szSeqFilePath);
+//		Rows.Add(pModelData->m_szModelInfoFilePath);
+//		Rows.Add(pModelData->m_szRefImgFolder);
+//
+//		//Rows.Add(pModel->m_szDivision);
+//		//Rows.Add(pModel->m_szChassisName);
+//		//Rows.Add(pModel->m_szModelName);
+//		//Rows.Add(pModel->m_szSeqFilePath);
+//		//Rows.Add(pModel->m_szModelInfoFilePath);
+//		//Rows.Add(pModel->m_szRefImgFolder);
+//
+//		SS.AddRow(Rows); // append test row to spreadsheet
+//	}
+//
+//	SS.Commit();
+//
+//	return TRUE;
+//}
 
 //+add kwmoon 081024
 BOOL SaveModelListFile()
@@ -6680,7 +6696,7 @@ BOOL SystemMonitorLog_Save(CString sLogString)
 	g_strLogArray.Add(sTemp);
 
 	g_Using = 0;
-
+	SystemMonitorLog_Write();
 	//sTemp = g_pView->m_szExePath;
 	//sTemp3.Format(_T("\\TestResult\\DebugLog\\System_%d"), g_nRunningProcessNo+1);
 	//sTemp += sTemp3;// _T("\\TestResult\\SystemDebug");

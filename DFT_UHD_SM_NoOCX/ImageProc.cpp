@@ -471,7 +471,7 @@ int CImageProc::RGBTest(int nType, CBaseImage& SnapImage, CBaseImage& RefImage, 
 	CString szErrMsg = _T("");
 
 START_TEST :
-
+	SystemMonitorLog_Save("RGBTest");//
 	//=======================
 	// Check Image Attribute
 	//=======================
@@ -505,7 +505,7 @@ START_TEST :
 	}
 
 	Progress.SetPos(10);
-
+	SystemMonitorLog_Save("RGBTest1");//
 	//=========================================
 	// Allocate memory for the processed image
 	//=========================================
@@ -526,7 +526,7 @@ START_TEST :
 		SnapImage.m_pProcessedImageData = (BYTE *)malloc(SnapImage.m_BmInfo->bmiHeader.biSizeImage);
 	}
 	memset(SnapImage.m_pProcessedImageData,0,SnapImage.m_BmInfo->bmiHeader.biSizeImage);
-
+	SystemMonitorLog_Save("RGBTest2");//
 	//============================================
 	// Allocate memory for temporary image buffer
 	//============================================
@@ -545,7 +545,7 @@ START_TEST :
 	{
 		nNoShift = SnapImage.m_InfoHeader.biBitCount/3 - m_nNoUsedColorHighBits;
 	}
-
+	SystemMonitorLog_Save("RGBTest3");//
 	//=======================
 	// Calculate Coordinates
 	//=======================
@@ -577,7 +577,7 @@ START_TEST :
 			AfxMessageBox("Failed to run average-filter"); return TEST_ABORT;	
 		}
 	}
-
+	SystemMonitorLog_Save("RGBTest4");//
 	SnapImage.m_bProcessedImageLoaded = FALSE;
 
 	int nX = 0,nY = 0;
@@ -761,7 +761,7 @@ START_TEST :
 			}
 		}
 	}
-
+	SystemMonitorLog_Save("RGBTest5");//
 	//============================
 	// Store data for spec-adjust
 	//============================
@@ -782,7 +782,7 @@ START_TEST :
 			}
 		}
 	}
-
+	SystemMonitorLog_Save("RGBTest6");//
 	//==============
 	// Invalid Mask
 	//==============
@@ -822,12 +822,12 @@ START_TEST :
 	SnapImage.m_bProcessedImageLoaded = TRUE;
 
 	Progress.SetPos(100);
-
+	SystemMonitorLog_Save("RGBTest7");//
 	//==========================================================
 	// Copy temoporary image to SnapImage.m_pProcessedImageData
 	//==========================================================
 	memcpy((BYTE*)SnapImage.m_pProcessedImageData,(BYTE*)pProcessedImageData,(int)SnapImage.m_InfoHeader.biSizeImage);
-
+	SystemMonitorLog_Save("RGBTest8");//
 	//=======================================
 	// Deallocate memory for temporary image
 	//=======================================
@@ -863,7 +863,7 @@ START_TEST :
 		m_nNoAllowedBandErrorPixel[i]  = (int)((float)m_fAllowedBandErrorPixelPercentage[i] * 0.01 * (float)m_nNoTargetPixel);
 	}
 	m_fGoodPixelPercentage =(float)m_nNoGoodPixel * 100 / (float)m_nNoTargetPixel;
-
+	SystemMonitorLog_Save("RGBTest9");//
 	//===========================
 	// Find Max Difference Value
 	//===========================
@@ -924,6 +924,7 @@ START_TEST :
 		szFuncElapsedTime.Format("     RGBTest [%dms] (%dms)",dwFuncElapsedTime,dwStepElapsedTime);
 		AddTimeData(szFuncElapsedTime);
 	}
+	SystemMonitorLog_Save("RGBTest10");//
 	return nTestResult;
 }
 
@@ -1368,7 +1369,7 @@ int CImageProc::DarknessTest(CBaseImage& SnapImage,  CBaseImage& MaskImage)
 					nGrabBcolor = SnapImage.m_pImageData[nSnapImageIndex];
 
 	
-					if ((nGrabRcolor > 10) || (nGrabRcolor > 10) || (nGrabRcolor > 10))
+					if ((nGrabRcolor > 10) || (nGrabGcolor > 10) || (nGrabBcolor > 10))
 					{		
 
 						nTestResult = TEST_FAIL;
@@ -1387,7 +1388,7 @@ int CImageProc::DarknessTest(CBaseImage& SnapImage,  CBaseImage& MaskImage)
 
 	//Progress.SetPos(100);
 
-	BinaryForMonoImage(NORMAL_BINARY, SnapImage.m_pProcessedImageData, nSnapHeight, nSnapWidth, nSnapBitCount, nColorMargin);
+	//BinaryForMonoImage(NORMAL_BINARY, SnapImage.m_pProcessedImageData, nSnapHeight, nSnapWidth, nSnapBitCount, nColorMargin);
 
 
 	return nTestResult;

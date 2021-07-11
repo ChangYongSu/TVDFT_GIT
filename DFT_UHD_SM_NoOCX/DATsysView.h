@@ -24,6 +24,7 @@
 //+add kwmoon 080904
 #include "Rs232cAdcManualCheckDlg.h"
 #include "GetToolOptionDlg.h"
+#include "SelectChassisModelDlg.h"
 
 //+add kwmoon 071015 : [2in1]
 #include "Defines.h"
@@ -179,6 +180,7 @@ public:
 	CRs232cAdcManualCheckDlg	m_Rs232cAdcManualCheckDlg;
 	
 	GetToolOptionDlg			m_GetToolOptiondlg;
+	CSelectChassisModelDlg		m_SelectChassisModelDlg;
 
 	CColorStaticST	m_ctrLEDTested;
 	CColorStaticST	m_ctrLEDFailed;
