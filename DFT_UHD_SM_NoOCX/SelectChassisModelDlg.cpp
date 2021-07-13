@@ -274,6 +274,7 @@ void CSelectChassisModelDlg::OnClickModelGrid()
 	ChangeRowColor(nModelRow, MODEL_GRID);
 
 	m_cListModel.Invalidate();
+//	AfxMessageBox("Open");
 #else
 
 
@@ -348,7 +349,7 @@ BOOL CSelectChassisModelDlg::OnInitDialog()
 //	if(OpenModelListFile(CurrentSet->sModelListPath,m_nNoModel) == FALSE) return;	
 	
 	InitGrid();
-
+	//AfxMessageBox("InitGrid();");
 //	m_ctrlDivisionCmb.ResetContent();
 	m_ctrlDivisionCmb.AddString("ALL");
 	for(int i=0; i < g_Divisions.GetSize(); i++)
@@ -357,13 +358,14 @@ BOOL CSelectChassisModelDlg::OnInitDialog()
 		sTemp.Left(4);
 		m_ctrlDivisionCmb.AddString(sTemp);
 	}
+	//AfxMessageBox("m_ctrlDivisionCmb.AddString(sTemp);");
 	m_ctrlDivisionCmb.SetCurSel(0);
 //	m_nSelDivision = 0;
 	m_nDivision_Sel = 0;
 	m_nChaassis_SelectRow = 0;
 	m_nModel_SelectRow = 0;
 	UpdateGrid();
-
+	//AfxMessageBox("UpdateGrid();");
 	if(m_cListChassis.GetItemCount() > 1)
 	{
 		//m_gridChassis.SetRow(1);
@@ -372,7 +374,7 @@ BOOL CSelectChassisModelDlg::OnInitDialog()
 //	else{
 //		OnBtnAdd();
 //	}
-
+	//AfxMessageBox("OnClickChassisGrid();");
 	ShowWindow(SW_SHOW);
 	
 	//+add 090219(Modification No2)
@@ -460,7 +462,7 @@ void CSelectChassisModelDlg::UpdateGrid()
 		pModelData = CurrentSet->ModelList.GetNext(Pos);
 
 		szChassisName = pModelData->m_szChassisName;
-
+	//	AfxMessageBox(szChassisName);
 		if (IsSameChassis(szChassisName) != TRUE)
 		{
 
@@ -477,9 +479,14 @@ void CSelectChassisModelDlg::UpdateGrid()
 	//m_gridChassis.Refresh();
 	if (m_cListChassis.GetItemCount() >= 1)
 	{
+		//AfxMessageBox("(m_cListChassis.GetItemCount() >= 1)");
 		m_cListChassis.SetSelectionMark(m_nChaassis_SelectRow + 1);// GetFirstSelectedItemPosition(); //m_gridChassis.SetRow(m_nChaassis_SelectRow);
 		OnClickChassisGrid();
 	}
+	//else
+	//{
+	//	AfxMessageBox("(m_cListChassis.GetItemCount() == 0)");
+	//}
 	//	SetTimer(1, 300, NULL);
 
 
@@ -665,6 +672,7 @@ BOOL CSelectChassisModelDlg::IsSameChassis(CString szChassisName)
 			return TRUE;
 		}
 	}
+	return FALSE;
 #else
 
 	CString	szRegisteredChassisName	= _T("");

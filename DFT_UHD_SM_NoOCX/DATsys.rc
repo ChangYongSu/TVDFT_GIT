@@ -6131,8 +6131,8 @@ IDI_LEDOFF              ICON                    "res\\LedOff.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 21,7,9,247
- PRODUCTVERSION 21,7,9,247
+ FILEVERSION 21,7,12,247
+ PRODUCTVERSION 21,7,12,247
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -6149,13 +6149,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "LG-PRI"
             VALUE "FileDescription", "DFT Application Program"
-            VALUE "FileVersion", "V210709"
+            VALUE "FileVersion", "V210712"
             VALUE "InternalName", "DATsys"
             VALUE "LegalCopyright", "Copyright (C) 2014"
             VALUE "OriginalFilename", "DFT.EXE"
             VALUE "ProductName", "DFT Application Program"
-            VALUE "ProductVersion", "V21.07.09.247"
-            VALUE "SpecialBuild", "2021.07.09.247"
+            VALUE "ProductVersion", "V21.07.12.247"
+            VALUE "SpecialBuild", "2021.07.12.247"
         END
     END
     BLOCK "VarFileInfo"

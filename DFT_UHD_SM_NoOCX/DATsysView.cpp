@@ -1961,7 +1961,7 @@ void CDATsysView::OnModelOpen()
 	m_SelectChassisModelDlg.m_nNoModel = nNoModel;
 
 #ifdef			DEBUG_MD5_CODE__
-	SetTimer(TIMER_CHECK_DEBUG_TEST, 10000, NULL);
+//	SetTimer(TIMER_CHECK_DEBUG_TEST, 10000, NULL);
 #endif
 
 	if(m_SelectChassisModelDlg.DoModal() == IDOK)

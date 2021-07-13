@@ -280,7 +280,7 @@ void CSelectGenerateModel::UpdateGrid()
 				//m_gridChassis.SetRows(nChassisRow + 1);
 				//m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
 				m_cListChassis.InsertItem(nChassisRow++, szChassisName);   // 첫째행(0), 첫째열에 삽입
-
+				
 				//if (nChassisRow > 50)
 				//	break;
 		}
@@ -290,6 +290,7 @@ void CSelectGenerateModel::UpdateGrid()
 	//m_gridChassis.Refresh();
 	if (m_cListChassis.GetItemCount() >= 1)
 	{
+		
 		m_cListChassis.SetSelectionMark(m_nChaassis_SelectRow + 1);// GetFirstSelectedItemPosition(); //m_gridChassis.SetRow(m_nChaassis_SelectRow);
 		OnClickChassisGrid();
 	}
