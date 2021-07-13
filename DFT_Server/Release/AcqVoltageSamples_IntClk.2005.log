@@ -1,0 +1,133 @@
+﻿  Stdafx.cpp
+  AcqVoltageSamples_IntClk.cpp
+  AcqVoltageSamples_IntClkDlg.cpp
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(834): warning C4101: 'ulIP' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(2405): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(2898): warning C4101: 'm_pcLB_DisplayText' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(3548): warning C4101: 'lpos' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(4010): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(4160): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2218): note: 'gethostbyname' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(4164): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1848): note: 'inet_ntoa' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6518): warning C4101: 'RcvData' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6776): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6790): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6797): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6768): warning C4101: 'pbufwrite' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6874): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6892): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6899): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6865): warning C4101: 'pbufwrite' :참조되지 않은 지역 변수입니다.
+  button_model_create.cpp
+  CEditDlg.cpp
+  DlgBarcode.cpp
+  DlgConfig.cpp
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\dlgconfig.cpp(231): warning C4101: 'ArrPort' :참조되지 않은 지역 변수입니다.
+  DlgMessage.cpp
+  DlgNewModelName.cpp
+  DlgPassword.cpp
+  DlgResult.cpp
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\dlgresult.cpp(67): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+  DlgSimpleInform.cpp
+  FileControl.cpp
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(317): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(326): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(359): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(367): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(451): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(459): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'lMaxVolt' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'l_nSel_Input' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'l_nEnable' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'l_nPort' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'lMinVolt' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'lMinFreq' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(285): warning C4101: 'lMaxFreq' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(594): warning C4101: 'lbuf' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(591): warning C4101: 'm_fp' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(706): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(724): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(2263): note: 'sscanf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(736): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(766): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(769): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1076): warning C4473: 'fprintf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+  d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1076): note: 자리 표시자 및 해당 매개 변수에는 variadic 인수가 7개 필요하지만 6개가 제공되었습니다.
+  d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1076): note: 누락된 variadic 인수 7이(가) 서식 문자열 '%d'에 필요합니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1085): warning C4477: 'fprintf' : 서식 문자열 '%Ts'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'CString'입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1067): warning C4101: 'lbuf' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1112): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1123): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1138): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1106): warning C4101: 'pbufwrite' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1269): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1280): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1292): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1362): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1373): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1385): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1455): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1469): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1509): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1447): warning C4101: 'pbufwrite' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1564): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1578): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1618): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1556): warning C4101: 'pbufwrite' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1676): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1677): warning C4101: 'sDate' :참조되지 않은 지역 변수입니다.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1737): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\time.h(506): note: 'localtime' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\filecontrol.cpp(1739): warning C4101: 'sDate' :참조되지 않은 지역 변수입니다.
+  IcmpEcho.cpp
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\icmpecho.cpp(46): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1830): note: 'inet_addr' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\icmpecho.cpp(55): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2218): note: 'gethostbyname' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\icmpecho.cpp(69): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1848): note: 'inet_ntoa' 선언을 참조하십시오.
+  label_text.cpp
+  MesDb.cpp
+  ModelSelectDlg.cpp
+  MyEchoSocket.cpp
+  MySocket.cpp
+  PING.cpp
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\ping.cpp(40): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2218): note: 'gethostbyname' 선언을 참조하십시오.
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\ping.cpp(91): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1848): note: 'inet_ntoa' 선언을 참조하십시오.
+  SerialPort.cpp
+  코드를 생성하고 있습니다...
+d:\a0_project\tv_dft_sw\tvdft_server_monitoring\dft_server210712\acqvoltagesamples_intclkdlg.cpp(6365): warning C4715: 'CAcqVoltageSamples_IntClkDlg::WriteCommand': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  textbox_okng.cpp
+  UdpAsySk.cpp
+  코드를 생성하고 있습니다...
+  AcqVoltageSamples_IntClk.2005.vcxproj -> D:\A0_Project\TV_DFT_SW\TVDFT_Server_Monitoring\DFT_Server210712\Release\DFT_Server.exe
