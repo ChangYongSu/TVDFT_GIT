@@ -14,7 +14,7 @@
 #include "DlgMessage.h"
 #include "DlgSimpleInform.h"
 
-#include <opencv2\opencv.hpp>
+//#include <opencv2\opencv.hpp>
 //#include <allheaders.h>
 //#include <baseapi.h>
 #include "afxcmn.h"
@@ -25,7 +25,7 @@
 #pragma comment(lib, "libtesseract302")
 
 using namespace std;
-using namespace cv;
+//using namespace cv;
 //using namespace tesseract;
 
 
@@ -314,6 +314,8 @@ public:
 
 	void DisplayClear();
 	int SetManualExposureMode();
+	int SetAutoExposureMode();
+	int GetExposureMode();
 	int FactoryReset();
 
 //	int m_TimeID_Reset;
@@ -340,6 +342,8 @@ public:
 	CString		m_PrestrMP_Key;
 
 	CString		m_strUserMessage;
+	CString		m_strButtonMessage1;
+	CString		m_strButtonMessage2;
 	int			m_intUserMessageTime;
 	CString		m_strImageName;
 

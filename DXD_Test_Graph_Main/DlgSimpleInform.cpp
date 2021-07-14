@@ -86,9 +86,9 @@ void CDlgSimpleInform::OnShowWindow(BOOL bShow, UINT nStatus)
 	m_cLabelInformDisplay.put_Caption(m_DisplayString);
 	 //m_Count = 0;
 
-	if(m_Count > 10000)
+	if(m_Count > 50000)
 	{
-		m_Count = 10000;
+		m_Count = 50000;
 	}
 
 }

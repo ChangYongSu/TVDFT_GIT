@@ -69,7 +69,7 @@
 #include "SerialPort.h"
 
 
-#include <opencv2\opencv.hpp>
+//#include <opencv2\opencv.hpp>
 
 #include "afxwin.h"
 
@@ -79,7 +79,7 @@
 
 #include <afxsock.h>
 
-using namespace cv;
+//using namespace cv;
 
 //#define __OK_CHECK_FAST_MODE__
 
@@ -229,6 +229,9 @@ extern DB_Set_DataT CurrentSet;
 #define TEST_SEQ_TYPE_GET_MACADDRESS			33
 #define TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE	34
 #define TEST_SEQ_TYPE_FACTORY_RESET				35
+#define TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE			36
+#define TEST_SEQ_TYPE_SET_MESSAGE_1		37
+#define TEST_SEQ_TYPE_SET_MESSAGE_2		38
 
 
 

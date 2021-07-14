@@ -223,7 +223,7 @@ BOOL CDlgTestPage::OnInitDialog()
 			g_FPGA_Ver_major ,
 			g_FPGA_Ver_minor);
 
-	m_EditDXD_ServerVer.Format( _T("%d.%d%d.%02d"), 
+	m_EditDXD_ServerVer.Format( _T("%d.%d.%d.%02d"), 
 		g_DSERVER_Ver_event, 
 		g_DSERVER_Ver_major ,
 		g_DSERVER_Ver_minor, 
@@ -343,12 +343,16 @@ void CDlgTestPage::OnBnClickedOk()
 	lPos = strTemp.Find(".");
 	strTemp2 = strTemp.Left(lPos);
 	strTemp = strTemp.Mid(lPos+1);
-	strTemp3 = strTemp;
+	lPos = strTemp.Find(".");
+	strTemp3 = strTemp.Left(lPos);
+	strTemp = strTemp.Mid(lPos+1);
+	strTemp4 = strTemp;
+
+
 	g_DSERVER_Ver_event = _ttoi(strTemp1);  
-	lNumber = _ttoi(strTemp2); 
-	g_DSERVER_Ver_major = lNumber/10; 
-	g_DSERVER_Ver_minor = lNumber%10;  
-	g_DSERVER_Ver_release	= _ttoi(strTemp3); 
+	g_DSERVER_Ver_major = _ttoi(strTemp2); 
+	g_DSERVER_Ver_minor = _ttoi(strTemp3);
+	g_DSERVER_Ver_release	= _ttoi(strTemp4); 
 		
 
 	lPos = m_EditMicomVer.Find(".");

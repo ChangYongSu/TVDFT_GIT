@@ -1938,13 +1938,9 @@ void CAcqVoltageSamples_IntClkDlg::OnBnClickedStart()
 		gTestSeqData.TestStepList[i].m_Result = 1;
 		
 	}
+	m_strButtonMessage1 = "Ready 버튼을 누르시오.";
+	m_strButtonMessage2 = "Exposure 버튼을 누르시오.";
 
-	//for(int i = 0; i < 8; i++)
-	//{
-	//			
-	//	m_graph[i].Axes.Item("YAxis-1").Maximum = 1.2;
-	//	m_graph[i].Axes.Item("YAxis-1").Minimum = -1.2;
-	//}
 
 	gTestSeqData.m_TotalResult = 3;
 
@@ -2153,18 +2149,18 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		m_FunctionType = TEST_SEQ_TYPE_CHECK_MESSAGE_MANUAL;
 		int lpos, lendpos;
 
-		lpos = m_FunctionParameter.Find(",");	
+		lpos = m_FunctionParameter.Find("\"");	
 
-		CString str1 = m_FunctionParameter.Left(lpos);
-		CString str2 = m_FunctionParameter.Mid(lpos+1);
-		
+		CString str1 = m_FunctionParameter.Mid(lpos+1);
 		lpos = str1.Find("\"");
-		CString strtemp = str1.Mid(lpos+1);
-		lendpos = strtemp.Find("\"");
+		CString str2 = str1.Left(lpos);
+		m_strUserMessage = str2; 
 
-		strtemp = strtemp.Left(lendpos);
-		m_strUserMessage = strtemp;//Message 
 
+
+		str2 = str1.Mid(lpos+1);		
+		lpos = str2.Find(",");
+		str2 = str2.Mid(lpos+1);
 
 		m_intUserMessageTime = _ttoi(str2);
 
@@ -2174,6 +2170,10 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		//
 		//m_strImageName = strtemp;
 
+		if(m_intUserMessageTime < 50)
+		{
+			m_intUserMessageTime = 1000;
+		}
 
 		if(m_CheckDelayTime < 50)
 		{
@@ -2332,7 +2332,7 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 	}
 	//		TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE	34
 //#define TEST_SEQ_TYPE_FACTORY_RESET				35
-	else if(m_FunctionName.Compare("manual_exposure") == 0)
+	else if(m_FunctionName.Compare("set_manual_exposure") == 0)
 	{
 		m_FunctionType = TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE;
 		m_CheckDelayTime = _ttoi(m_FunctionParameter);
@@ -2341,6 +2341,41 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 			m_CheckDelayTime = 1000;
 		}
 	}//TEST_SEQ_TYPE_BEEP
+	else if(m_FunctionName.Compare("set_auto_exposure") == 0)
+	{
+		m_FunctionType = TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE;
+		m_CheckDelayTime = _ttoi(m_FunctionParameter);
+		if(m_CheckDelayTime < 0)
+		{
+			m_CheckDelayTime = 1000;
+		}
+	}//TEST_SEQ_TYPE_BEEP
+	else if(m_FunctionName.Compare("set_button_message1") == 0)
+	{
+		m_FunctionType = TEST_SEQ_TYPE_SET_MESSAGE_1;
+		int lpos, lendpos;
+
+		lpos = m_FunctionParameter.Find("\"");
+
+		CString str1 = m_FunctionParameter.Mid(lpos+1);
+		lpos = str1.Find("\"");
+		CString str2 = m_FunctionParameter.Left(lpos);		
+
+		m_strButtonMessage1 = str2;//		
+	}	
+	else if(m_FunctionName.Compare("set_button_message2") == 0)
+	{
+		m_FunctionType = TEST_SEQ_TYPE_SET_MESSAGE_2;
+		int lpos, lendpos;
+
+		lpos = m_FunctionParameter.Find("\"");
+
+		CString str1 = m_FunctionParameter.Mid(lpos+1);
+		lpos = str1.Find("\"");
+		CString str2 = m_FunctionParameter.Left(lpos);		
+
+		m_strButtonMessage2 = str2;//	
+	}
 	else if(m_FunctionName.Compare("factory_reset") == 0)
 	{
 		m_FunctionType = TEST_SEQ_TYPE_FACTORY_RESET;
@@ -2349,7 +2384,8 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		{
 			m_CheckDelayTime = 1000;
 		}
-	}//TEST_SEQ_TYPE_BEEP
+	}//TEST_SEQ_TYPE_BEEP	
+	
 	m_OKcnt = 0;
 	SetTimeCheck(1);
 }
@@ -2909,6 +2945,38 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 					m_Deisplay_ErrorName = "\r\nMANUAL EXOSURE MODE ERROR";
 					//m_Deisplay_ErrorName += "MAC ADDRESS Value";
 					m_Deisplay_ErrorDetail = "Manual Exposure Mode Error";
+					
+					gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
+					m_nCurrentStep = 2;		
+				
+				}
+			}		
+		}
+
+		break;
+
+
+		case   TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE:
+		
+		if(m_InterProcess == 0)
+		{
+			sWaitCnt = 50;
+			m_InterProcess = 1;
+		}
+		else if(m_InterProcess == 1)
+		{
+			if(sWaitCnt == 0)
+			{
+				if(SetAutoExposureMode() )
+				{					
+					gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 1;	
+					m_nCurrentStep = 2;	
+				}
+				else
+				{
+					m_Deisplay_ErrorName = "\r\nAUO EXOSURE MODE ERROR";
+					//m_Deisplay_ErrorName += "MAC ADDRESS Value";
+					m_Deisplay_ErrorDetail = "AUTO Exposure Mode Error";
 					
 					gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
 					m_nCurrentStep = 2;		
@@ -8875,6 +8943,8 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Auto(CWTCPClient & tcpCli)
 	else
 		SendACK(tcpCli);
 
+	MessageInformClose();
+
 	return HandShake_PostProcess(tcpCli);
 }
 
@@ -8893,7 +8963,8 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Manual(CWTCPClient & tcpCli)
 	else
 		SendACK(tcpCli);
 
-	MessageInformDisplay("Ready 버튼을 누르시오.", 10000);
+//	MessageInformDisplay("Ready 버튼을 누르시오.", 10000);
+	MessageInformDisplay(m_strButtonMessage1, 10000);
 	Sleep(1000);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_PREPARE_SIGNAL))
 		return FALSE;
@@ -8901,7 +8972,8 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Manual(CWTCPClient & tcpCli)
 		SendACK(tcpCli);
 
 	MessageInformClose();
-	MessageInformDisplay("Exposure 버튼을 누르시오.", 10000);
+//	MessageInformDisplay("Exposure 버튼을 누르시오.", 10000);
+	MessageInformDisplay(m_strButtonMessage2, 10000);
 	Sleep(1000);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_WINDOW_OPEN))
 		return FALSE;
@@ -9370,7 +9442,103 @@ int CAcqVoltageSamples_IntClkDlg::SetManualExposureMode()
 	return TRUE;
 }
 
+
+int CAcqVoltageSamples_IntClkDlg::SetAutoExposureMode()
+{
+
+	SET_FPGA_REGISTER       rData;
+	rData.addr = FPGA_REG_EXPOSURE;
+	rData.data = 0;   // 0 – AED mode, 1 – Manual mode           
+
+	m_detParam.dwExposureMode = rData.data; 
+
+	CWTCPClient      tcpCli;
+	CCommPacket    pktRecv, pktSend;
  
+
+	if (!ConnectToDetector(tcpCli))
+			return FALSE;
+
+	pktSend.SetHeaderData(LDCMD_SET_FPGAREGISTER, 0, sizeof(SET_FPGA_REGISTER));
+	pktSend.AllocDataBuffer();
+	memcpy(pktSend.m_pDataBuf, &rData, pktSend.dwDataSize);		    
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+ 
+	//recv header
+
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	DisconnectToDetector(tcpCli);
+
+	return TRUE;
+}
+
+ int CAcqVoltageSamples_IntClkDlg::GetExposureMode()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CWTCPClient	tcpCli;
+	CCommPacket	pktRecv, pktSend;
+
+	// det param
+	if (!ConnectToDetector(tcpCli))
+		return 3;
+
+	pktSend.SetHeaderData(LDCMD_GET_PARAMETER, 0, 0);
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return 3;
+	}
+
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return 3;
+	}
+
+	DisconnectToDetector(tcpCli);
+
+	if (pktRecv.dwResponseCode != LDRET_SUCCESS)
+	{
+		AfxMessageBox(_T("The detector returned not success."));
+		return 3;
+	}
+	else {
+		//TCHAR str[80];
+		CString strTemp;
+
+		memcpy(&m_detParam, pktRecv.m_pDataBuf, pktRecv.dwDataSize);
+		//strTemp.Format(_T("%d"), m_detParam.dwExposureMode);// wsprintf(str, _T("%d"), m_detParam.dwExposureMode);
+		if(m_detParam.dwExposureMode == 0)
+		{
+			m_cLb_Exposure.put_Caption("AUTO");//
+		}
+		else
+		{
+			m_cLb_Exposure.put_Caption("MAN");//, m_comboExposure.SetCurSel(_ttoi(str));
+		}
+
+		m_nExposure = m_detParam.dwExposureMode;		
+	
+	
+		return m_nExposure;
+	}
+}
+
 
  
 
