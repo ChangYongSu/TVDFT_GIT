@@ -1938,9 +1938,19 @@ void CAcqVoltageSamples_IntClkDlg::OnBnClickedStart()
 		gTestSeqData.TestStepList[i].m_Result = 1;
 		
 	}
+<<<<<<< HEAD
 	m_strButtonMessage1 = "Ready 버튼을 누르시오.";
 	m_strButtonMessage2 = "Exposure 버튼을 누르시오.";
 
+=======
+
+	//for(int i = 0; i < 8; i++)
+	//{
+	//			
+	//	m_graph[i].Axes.Item("YAxis-1").Maximum = 1.2;
+	//	m_graph[i].Axes.Item("YAxis-1").Minimum = -1.2;
+	//}
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 	gTestSeqData.m_TotalResult = 3;
 
@@ -2149,6 +2159,7 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		m_FunctionType = TEST_SEQ_TYPE_CHECK_MESSAGE_MANUAL;
 		int lpos, lendpos;
 
+<<<<<<< HEAD
 		lpos = m_FunctionParameter.Find("\"");	
 
 		CString str1 = m_FunctionParameter.Mid(lpos+1);
@@ -2161,6 +2172,20 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		str2 = str1.Mid(lpos+1);		
 		lpos = str2.Find(",");
 		str2 = str2.Mid(lpos+1);
+=======
+		lpos = m_FunctionParameter.Find(",");	
+
+		CString str1 = m_FunctionParameter.Left(lpos);
+		CString str2 = m_FunctionParameter.Mid(lpos+1);
+		
+		lpos = str1.Find("\"");
+		CString strtemp = str1.Mid(lpos+1);
+		lendpos = strtemp.Find("\"");
+
+		strtemp = strtemp.Left(lendpos);
+		m_strUserMessage = strtemp;//Message 
+
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 		m_intUserMessageTime = _ttoi(str2);
 
@@ -2170,10 +2195,13 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		//
 		//m_strImageName = strtemp;
 
+<<<<<<< HEAD
 		if(m_intUserMessageTime < 50)
 		{
 			m_intUserMessageTime = 1000;
 		}
+=======
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 		if(m_CheckDelayTime < 50)
 		{
@@ -2332,7 +2360,11 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 	}
 	//		TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE	34
 //#define TEST_SEQ_TYPE_FACTORY_RESET				35
+<<<<<<< HEAD
 	else if(m_FunctionName.Compare("set_manual_exposure") == 0)
+=======
+	else if(m_FunctionName.Compare("manual_exposure") == 0)
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	{
 		m_FunctionType = TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE;
 		m_CheckDelayTime = _ttoi(m_FunctionParameter);
@@ -2341,6 +2373,7 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 			m_CheckDelayTime = 1000;
 		}
 	}//TEST_SEQ_TYPE_BEEP
+<<<<<<< HEAD
 	else if(m_FunctionName.Compare("set_auto_exposure") == 0)
 	{
 		m_FunctionType = TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE;
@@ -2376,6 +2409,8 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 
 		m_strButtonMessage2 = str2;//	
 	}
+=======
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	else if(m_FunctionName.Compare("factory_reset") == 0)
 	{
 		m_FunctionType = TEST_SEQ_TYPE_FACTORY_RESET;
@@ -2384,8 +2419,12 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		{
 			m_CheckDelayTime = 1000;
 		}
+<<<<<<< HEAD
 	}//TEST_SEQ_TYPE_BEEP	
 	
+=======
+	}//TEST_SEQ_TYPE_BEEP
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	m_OKcnt = 0;
 	SetTimeCheck(1);
 }
@@ -2955,6 +2994,7 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 
 		break;
 
+<<<<<<< HEAD
 
 		case   TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE:
 		
@@ -2987,6 +3027,8 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 
 		break;
 
+=======
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 		case   TEST_SEQ_TYPE_FACTORY_RESET:
 		
 		if(m_InterProcess == 0)
@@ -8943,8 +8985,11 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Auto(CWTCPClient & tcpCli)
 	else
 		SendACK(tcpCli);
 
+<<<<<<< HEAD
 	MessageInformClose();
 
+=======
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	return HandShake_PostProcess(tcpCli);
 }
 
@@ -8963,8 +9008,12 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Manual(CWTCPClient & tcpCli)
 	else
 		SendACK(tcpCli);
 
+<<<<<<< HEAD
 //	MessageInformDisplay("Ready 버튼을 누르시오.", 10000);
 	MessageInformDisplay(m_strButtonMessage1, 10000);
+=======
+	MessageInformDisplay("Ready 버튼을 누르시오.", 10000);
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	Sleep(1000);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_PREPARE_SIGNAL))
 		return FALSE;
@@ -8972,8 +9021,12 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Manual(CWTCPClient & tcpCli)
 		SendACK(tcpCli);
 
 	MessageInformClose();
+<<<<<<< HEAD
 //	MessageInformDisplay("Exposure 버튼을 누르시오.", 10000);
 	MessageInformDisplay(m_strButtonMessage2, 10000);
+=======
+	MessageInformDisplay("Exposure 버튼을 누르시오.", 10000);
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	Sleep(1000);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_WINDOW_OPEN))
 		return FALSE;
@@ -9442,6 +9495,7 @@ int CAcqVoltageSamples_IntClkDlg::SetManualExposureMode()
 	return TRUE;
 }
 
+<<<<<<< HEAD
 
 int CAcqVoltageSamples_IntClkDlg::SetAutoExposureMode()
 {
@@ -9540,6 +9594,10 @@ int CAcqVoltageSamples_IntClkDlg::SetAutoExposureMode()
 }
 
 
+=======
+ 
+
+>>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
  
 
 int CAcqVoltageSamples_IntClkDlg::FactoryReset()
