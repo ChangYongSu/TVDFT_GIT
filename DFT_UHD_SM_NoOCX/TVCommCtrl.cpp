@@ -1863,26 +1863,21 @@ BOOL CTVCommCtrl::Send_TVControl_Command(CString sCommand, int nWait)
 
 	sReadData.MakeUpper();
 
-	if(sReadData.Find("OK") == -1)
+	if(sReadData.Find("NO") >= 0)
 	{
-		/*if (sCheckStr.Find("aa 00 00") >= 0)
-		{
-			if (g_ID_Check == 0)
-			{
-				
-				AddStringToStatus("Fail to Ready PCB ID: ACK Fail");
-			}
-		}*/
-		return FALSE;
+		AddStringToStatus("ACK [NO] ");
 	}
-	else
+	else if (sReadData.Find("OK") >= 0)
 	{
 		if (g_ID_Check == 1)
 		{
 			g_ID_Check = 2;
 			AddStringToStatus("Ready to Read PCB ID");
-		}
-		
+		}		
+	}
+	else
+	{
+		return FALSE;
 	}
 	
 	return TRUE;
