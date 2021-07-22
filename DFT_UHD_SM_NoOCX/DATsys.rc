@@ -6131,8 +6131,8 @@ IDI_LEDOFF              ICON                    "res\\LedOff.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 21,7,22,247
- PRODUCTVERSION 21,7,22,247
+ FILEVERSION 21,7,22,248
+ PRODUCTVERSION 21,7,22,248
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -6154,8 +6154,8 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2014"
             VALUE "OriginalFilename", "DFT.EXE"
             VALUE "ProductName", "DFT Application Program"
-            VALUE "ProductVersion", "V21.07.22.247"
-            VALUE "SpecialBuild", "2021.07.22.247"
+            VALUE "ProductVersion", "V21.07.22.248"
+            VALUE "SpecialBuild", "2021.07.22.248"
         END
     END
     BLOCK "VarFileInfo"

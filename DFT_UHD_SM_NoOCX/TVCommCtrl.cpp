@@ -442,7 +442,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 
 					if((nPos != -1) && (nPos < (nTemp-3)))
 					{
-						if((m_sReceive.Find("OK") == -1) && (m_sReceive.Find("NG") == -1) && (m_sReceive.Find("NULL") == -1))
+						if((m_sReceive.Find("OK") == -1) && (m_sReceive.Find("NG") == -1) && (m_sReceive.Find("NO") == -1) && (m_sReceive.Find("NULL") == -1))
 						{
 							if ((clock() - start)*1000/CLOCKS_PER_SEC <= nWaitLimit) 
 								continue;
@@ -456,7 +456,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 				nPos1 = m_sReceive.Find(nPos + 1,'x');
 				if(nPos < (nTemp-3))
 				{
-					if((m_sReceive.Find("OK") == -1) && (m_sReceive.Find("NG") == -1) && (m_sReceive.Find("NULL") == -1))
+					if((m_sReceive.Find("OK") == -1) && (m_sReceive.Find("NG") == -1) && (m_sReceive.Find("NO") == -1) && (m_sReceive.Find("NULL") == -1))
 					{
 						if ((clock() - start)*1000/CLOCKS_PER_SEC <= nWaitLimit) 
 							continue;
@@ -486,7 +486,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 
 				}
 
-				if((sTemp.Find("OK") != -1) || (sTemp.Find("NG") != -1) || (sTemp.Find("NULL") != -1))
+				if((sTemp.Find("OK") != -1) || (sTemp.Find("NG") != -1) || (m_sReceive.Find("NO") != -1)||(sTemp.Find("NULL") != -1))
 				{
 					if(sSendData != _T(""))
 					{
