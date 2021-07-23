@@ -466,12 +466,28 @@ void CSelectChassisModelDlg::UpdateGrid()
 		if (IsSameChassis(szChassisName) != TRUE)
 		{
 
-			//m_gridChassis.SetRows(nChassisRow + 1);
-			//m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
-			m_cListChassis.InsertItem(nChassisRow++, szChassisName);   // 첫째행(0), 첫째열에 삽입
+			
 
-			//if (nChassisRow > 50)
-			//	break;
+			
+			if (IsSameChassis(szChassisName) != TRUE)
+			{
+				if (m_nDivision_Sel == 0)
+				{
+					//m_gridChassis.SetRows(nChassisRow + 1);
+					//m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
+					m_cListChassis.InsertItem(nChassisRow++, szChassisName);   // 첫째행(0), 첫째열에 삽입
+
+				}
+				else {
+					m_ctrlDivisionCmb.GetLBText(m_nDivision_Sel, sTemp);
+					if (sTemp == pModelData->m_szDivision)
+					{
+						//m_gridChassis.SetRows(nChassisRow + 1);
+						//m_gridChassis.SetTextMatrix(nChassisRow++, 0, szChassisName);
+						m_cListChassis.InsertItem(nChassisRow++, szChassisName);   // 첫째행(0), 첫째열에 삽입
+					}
+				}
+			}
 		}
 	}
 

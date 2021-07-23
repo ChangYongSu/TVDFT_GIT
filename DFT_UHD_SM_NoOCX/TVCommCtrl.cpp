@@ -415,9 +415,9 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 		{
 			::ResetEvent(m_hReadEvent);
 		}
-//#ifdef DEBUG_MD5_CODE__
-//		m_sReceive = "NULLx";
-//#endif
+#ifdef DEBUG_MD5_CODE__
+		m_sReceive = "a 01 NO91x";
+#endif
 		nTemp = m_sReceive.GetLength();
 		if(nTemp > 0)
 		{	
@@ -486,7 +486,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 
 				}
 
-				if((sTemp.Find("OK") != -1) || (sTemp.Find("NG") != -1) || (m_sReceive.Find("NO") != -1)||(sTemp.Find("NULL") != -1))
+				if((sTemp.Find("OK") != -1) || (sTemp.Find("NG") != -1) || (sTemp.Find("NO") != -1)||(sTemp.Find("NULL") != -1))
 				{
 					if(sSendData != _T(""))
 					{
@@ -511,7 +511,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 						AddStringToStatus("ERROR");
 					}
 #endif
-					s.Format("TV-Com->PC : %s",sTemp);
+					s.Format("TV-Com->PC 1: %s",sTemp);
 					AddStringToStatus(s);
 				}
 				if(CurrentSet->bIsRunning)
@@ -541,7 +541,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 #ifdef TEXT_MSG_EXE_DEBUG_CODE__
 						AddStringToStatus("2");//DEBUG
 #endif
-						s.Format("TV-Com->PC : %s",sTemp);
+						s.Format("TV-Com->PC 2: %s",sTemp);
 						AddStringToStatus(s);
 					}
 					if(CurrentSet->bIsRunning)
@@ -569,7 +569,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 #ifdef TEXT_MSG_EXE_DEBUG_CODE__
 							AddStringToStatus("3");//DEBUG
 #endif
-							s.Format("TV-Com->PC : %s",m_sReceive);
+							s.Format("TV-Com->PC 3: %s",m_sReceive);
 							AddStringToStatus(s);
 						}
 						if(CurrentSet->bIsRunning)
@@ -1195,10 +1195,21 @@ UINT CTVCommCtrl::AdcTest(CString sCmd1, CString sCmd2, int nSetId, CString sDat
 	}
 
 	sReadData.MakeUpper();
-
-	if(sReadData.Find("OK") != -1)		
+	//if (sReadData.Find("NO") >= 0)
+	//{
+	//	AddStringToStatus("ACK [NO] ");
+	//}
+	//else if (sReadData.Find("OK") >= 0)
+	//{
+	if (sReadData.Find("OK") != -1)
 		m_nResult = TEST_PASS;
-	else  
+	else if (sReadData.Find("NO") != -1)
+	{
+		m_nResult = TEST_PASS;
+		AddStringToStatus("ACK [NO] ");
+
+	}
+	else
 		m_nResult = TEST_FAIL;
 
 	goto END_THREAD;
