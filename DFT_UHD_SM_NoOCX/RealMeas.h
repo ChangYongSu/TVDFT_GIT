@@ -200,6 +200,7 @@ BOOL _Grabber_Reset();
 BOOL _AVC_BufferClear();
 BOOL _Set_HdmiGrab();
 BOOL _Read_KeyItem();
+BOOL _Epi_Pack_Reset();
 BOOL _Read_PCBAID_READ();
 BOOL _Set_CylinderComp();
 BOOL _Set_CylinderEarphone();

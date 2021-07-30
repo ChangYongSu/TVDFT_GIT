@@ -890,6 +890,7 @@
 #define IDC_CHECK_PJT_NO_GRAB           1902
 #define IDC_CHK_AUTO_GRAB               1903
 #define IDC_CHECK_FULL_RESET            1903
+#define IDC_CHK_EPI_PACK_RESET          1903
 #define IDC_CHK_AUTO_PATTERN_CONTROL    1904
 #define IDC_CHECK_BAT_VER_OPTION        1904
 #define IDC_CHK_AUTO_SOURCE_CONTROL     1905

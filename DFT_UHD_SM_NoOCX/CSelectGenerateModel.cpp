@@ -857,7 +857,7 @@ void CSelectGenerateModel::OnBtnAdd()
 			}
 
 			SS.AddRow(Rows); // append test row to spreadsheet
-			//SaveModelListFile(); //CSelectGenerateModel_SaveModelListFile(CurrentSet->sModelListPath);
+		//	SaveModelListFile(); //CSelectGenerateModel_SaveModelListFile(CurrentSet->sModelListPath);
 		}
 		else {
 			CString sTmp = _T("Error : ChassisName & ModelName");
@@ -1046,7 +1046,7 @@ void CSelectGenerateModel::OnBtnEdit()
 		//}
 
 		SS.ReplaceRows2(NewRowValues);
-		//SaveModelListFile();;//CSelectGenerateModel_SaveModelListFile(CurrentSet->sModelListPath);
+		SaveModelListFile();;//CSelectGenerateModel_SaveModelListFile(CurrentSet->sModelListPath);
 			//	delete pModel;
 	}
 //	delete pDlg;
@@ -1151,7 +1151,7 @@ void CSelectGenerateModel::OnBtnCopy()
 
 BOOL CSelectGenerateModel::SaveModelListFile()
 {
-	return 0;
+//	return 0;
 	//CStringArray FieldNames, Rows;
 	//POSITION	Pos = NULL;
 	//CModelData* pModelData = NULL;

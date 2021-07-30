@@ -7533,19 +7533,38 @@ int CDATsysView::StepRun()
 			{
 				if (CurrentSet->bPJT_GrabDisable == 1)
 				{
-				}
+				}				
 				else if ((g_nSysType == AUTO_SYS) && (CurrentSet->bUsePLCRobot == TRUE))
-				{
-					
+				{					
 #ifdef				_PLC_COM_SIM_DEBUG__MODE
 					pCurStep->m_bRunVideoTest = 1;
 					//m_nCurrentVideoNG = 1;
 #endif
 					if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
-					{					
+					{		
+						
+
 						g_pView->m_BlackPictureFlag =  _Dark_Test();
 						if (g_pView->m_BlackPictureFlag == 1)
 						{
+						}
+						else if (CurrentSet->bEpiPAckReset == 1)
+						{
+							for (int i = 0; i < 2; i++)
+							{
+								Sleep(100);
+								g_pView->IF_Pack_Reset();
+								Sleep(100);
+								localRetryResult = (*pCurFunc->m_pFunc)();
+								if (localRetryResult == TEST_PASS)
+								{
+									break;
+								}
+							}
+							if (localRetryResult == TEST_PASS)
+							{
+								continue;
+							}
 						}
 						else if(g_pView->m_nCurrentResetExecution == 1)
 						{
@@ -7756,6 +7775,27 @@ int CDATsysView::StepRun()
 							continue;
 						}	
 						
+					}
+				}
+				else
+				{
+					if ((pCurStep->m_bVideoTestResult == FALSE) &&( pCurStep->m_bRunVideoTest) &&(CurrentSet->bEpiPAckReset == 1))
+					{
+						for (int i = 0; i < 1; i++)
+						{
+							Sleep(100);
+							g_pView->IF_Pack_Reset();
+							Sleep(100);
+							localRetryResult = (*pCurFunc->m_pFunc)();
+							if (localRetryResult == TEST_PASS)
+							{
+								break;
+							}
+						}
+						if (localRetryResult == TEST_PASS)
+						{
+							continue;
+						}
 					}
 				}
 			}
@@ -16424,7 +16464,21 @@ int CDATsysView::DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, i
 
 	return lRet;
 }
+int CDATsysView::IF_Pack_Reset()
+{
+	//SW Reset (0x0170[16] active high)
 
+	__int64		Rdata, Wdata;
+	Rdata = 0; Wdata = 0;
+	m_clsPCI.CM_RegisterRead(0x0170, &Rdata);		Sleep(1);	//SW Mode Read
+	Wdata = Rdata | 0x10000;
+	m_clsPCI.CM_RegisterWrite(0x0170, Wdata);		Sleep(1);	//Reset Active
+	Wdata = Rdata & 0x0ffff;
+	m_clsPCI.CM_RegisterWrite(0x0170, Wdata);		Sleep(1);	//Reset Release
+
+
+	return 1;
+}
 void CDATsysView::StartLVDSGrabThread()
 {
 	BOOL bFlag = FALSE;
@@ -19752,7 +19806,8 @@ void CDATsysView::InsertStepData2Grid(int nGridType)
 					m_CtrlListMainProcessEx.SetCellBackColor(nTmp, RGB(255, 255, 255));
 					m_CtrlListMainProcessEx.SetCellForeColor(nTmp, RGB(0, 0, 0));
 				}
-				m_CtrlListMainProcess.SetItem(nTmp, 1, LVIF_TEXT, pStep->GetStepName(), NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nTmp, 2, pStep->GetStepName());
+				m_CtrlListMainProcess.SetItem(nTmp, 1, LVIF_TEXT, pStep->GetStepName(), NULL, NULL, NULL, NULL);
+				// m_ctrlSummaryGrid.SetTextMatrix(nTmp, 2, pStep->GetStepName());
 
 
 				//(Column 4) Measure
@@ -19771,7 +19826,7 @@ void CDATsysView::InsertStepData2Grid(int nGridType)
 					// (Column 5) Target
 					//m_ctrlSummaryGrid.SetCol(5);
 					//m_ctrlSummaryGrid.SetColDataType(5, flexDTString);
-					m_CtrlListMainProcess.SetItem(nTmp, 5, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nTmp, 5, sTmp);
+					m_CtrlListMainProcess.SetItem(nTmp, 4, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nTmp, 5, sTmp);
 
 
 
@@ -19781,19 +19836,19 @@ void CDATsysView::InsertStepData2Grid(int nGridType)
 						sTmp.Format("%4.1f", pStep->GetLowLimit());
 						//m_ctrlSummaryGrid.SetCol(6);
 						//m_ctrlSummaryGrid.SetColDataType(6, flexDTString);
-						m_CtrlListMainProcess.SetItem(nTmp, 6, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 6, sTmp);
+						m_CtrlListMainProcess.SetItem(nTmp, 5, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 6, sTmp);
 
 						// (Column 7) High Limit
 						sTmp.Format("%4.1f", pStep->GetHighLimit());
 						//m_ctrlSummaryGrid.SetCol(7);
 						//m_ctrlSummaryGrid.SetColDataType(7, flexDTString);
-						m_CtrlListMainProcess.SetItem(nTmp, 7, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 7, sTmp);
+						m_CtrlListMainProcess.SetItem(nTmp, 6, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 7, sTmp);
 
 						// (Column 8) Unit
 						sTmp.Format(_T("%s"), pStep->GetUnit());
 						//	m_ctrlSummaryGrid.SetCol(8);
 						//	m_ctrlSummaryGrid.SetColDataType(8, flexDTString);
-						m_CtrlListMainProcess.SetItem(nTmp, 8, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 8, sTmp);
+						m_CtrlListMainProcess.SetItem(nTmp, 7, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 8, sTmp);
 
 
 					}
@@ -19814,7 +19869,7 @@ void CDATsysView::InsertStepData2Grid(int nGridType)
 
 						//m_ctrlSummaryGrid.SetCol(9);
 						//m_ctrlSummaryGrid.SetColDataType(9, flexDTString);
-						m_CtrlListMainProcess.SetItem(nTmp, 9, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 9, sTmp);
+						m_CtrlListMainProcess.SetItem(nTmp, 8, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nTmp, 9, sTmp);
 					}
 					//-
 				}
@@ -20525,7 +20580,7 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 
 		m_CtrlListMainProcessEx.SetCellBackColor(nStepNo, 2, RGB(255, 255, 128));
 		//m_CtrlListMainProcess.SetItem(nStepNo, 2, LVIF_TEXT, "PASS", NULL, NULL, NULL, NULL);
-		m_CtrlListMainProcess.SetItem(nStepNo, 11, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL);
+		m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL);
 		if (pCurStep->m_nStepType == PROCESS_FUNCTION)
 		{
 //			m_CtrlListMainProcess.Invalidate();
@@ -20606,7 +20661,8 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 
 			//m_ctrlSummaryGrid.SetCol(10);
 			//m_ctrlSummaryGrid.SetColDataType(10, flexDTString);
-			m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo , 10, sTmp);
+			m_CtrlListMainProcess.SetItem(nStepNo, 9, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); 
+			// m_ctrlSummaryGrid.SetTextMatrix(nStepNo , 10, sTmp);
 		}
 
 		//+add kwmoon 081013
@@ -20618,7 +20674,8 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 			sTmp = pCurStep->m_szAdcValue;
 			//m_ctrlSummaryGrid.SetCol(10);
 			//m_ctrlSummaryGrid.SetColDataType(10, flexDTString);
-			m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo , 10, sTmp);
+			m_CtrlListMainProcess.SetItem(nStepNo, 9, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); 
+			// m_ctrlSummaryGrid.SetTextMatrix(nStepNo , 10, sTmp);
 		}
 	}
 
@@ -20654,7 +20711,7 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 
 	//m_ctrlSummaryGrid.SetCol(4);
 	//m_ctrlSummaryGrid.SetColDataType(4, flexDTString);
-	m_CtrlListMainProcess.SetItem(nStepNo, 4, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 4, sTmp);
+	m_CtrlListMainProcess.SetItem(nStepNo, 3, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 4, sTmp);
 
 	// (Column 5) Target
 	if (pCurStep->m_nFuncType == MEAS_BOOL)
@@ -20666,7 +20723,7 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 
 	//m_ctrlSummaryGrid.SetCol(5);
 	//m_ctrlSummaryGrid.SetColDataType(5, flexDTString);
-	m_CtrlListMainProcess.SetItem(nStepNo, 5, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 5, sTmp);
+	m_CtrlListMainProcess.SetItem(nStepNo, 4, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 5, sTmp);
 
 
 
@@ -20674,7 +20731,7 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 	sTmp.Format(_T("%5.1f"), pCurStep->m_fElapsedTime);
 	//m_ctrlSummaryGrid.SetCol(11);
 	//m_ctrlSummaryGrid.SetColDataType(11, flexDTString);
-	m_CtrlListMainProcess.SetItem(nStepNo, 11, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, sTmp);
+	m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, sTmp);
 
 	//m_ctrlSummaryGrid.SetRedraw(-1);
 	//m_ctrlSummaryGrid.Refresh();
@@ -20858,7 +20915,8 @@ void CDATsysView::InsertMsg2DetailedGrid(int nStepNo, CString sMsg)
 
 	//	m_ctrlSummaryGrid.SetRedraw(flexRDNone);
 	//	m_ctrlSummaryGrid.SetRow(nStepNo);
-	m_CtrlListMainProcess.SetItem(nStepNo - 1, 12, LVIF_TEXT, szDetailMessage, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 12, szDetailMessage);
+	m_CtrlListMainProcess.SetItem(nStepNo - 1, 11, LVIF_TEXT, szDetailMessage, NULL, NULL, NULL, NULL); 
+	//m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 12, szDetailMessage);
 
 //	m_ctrlSummaryGrid.SetRedraw(-1);
 //	m_ctrlSummaryGrid.Refresh();
@@ -20913,7 +20971,8 @@ void CDATsysView::InsertTotalData2Grid(int nGridType, BOOL bResult, CString sEla
 
 			//	m_ctrlSummaryGrid.SetCol(11);
 				//m_ctrlSummaryGrid.SetColDataType(11, flexDTString);
-			m_CtrlListMainProcess.SetItem(StepList.GetCount(), 11, LVIF_TEXT, sElapsedTime, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(StepList.GetCount() + 1, 11, sElapsedTime);
+			m_CtrlListMainProcess.SetItem(StepList.GetCount(), 10, LVIF_TEXT, sElapsedTime, NULL, NULL, NULL, NULL); 
+			//m_ctrlSummaryGrid.SetTextMatrix(StepList.GetCount() + 1, 11, sElapsedTime);
 
 			m_CtrlListMainProcess.SetItem(StepList.GetCount(), 3, LVIF_TEXT, sElapsedTime, NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(StepList.GetCount() + 1, 11, sElapsedTime);
 
@@ -20971,7 +21030,8 @@ void CDATsysView::InsertPcbid2Grid(CString sWipID)
 	{
 		//m_ctrlSummaryGrid.SetCol(12);
 		//m_ctrlSummaryGrid.SetColDataType(12, flexDTString);
-		m_CtrlListMainProcess.SetItem(StepList.GetCount(), 12, LVIF_TEXT, sWipID, NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(StepList.GetCount() + 1, 12, sWipID);
+		m_CtrlListMainProcess.SetItem(StepList.GetCount(), 11, LVIF_TEXT, sWipID, NULL, NULL, NULL, NULL); 
+		// m_ctrlSummaryGrid.SetTextMatrix(StepList.GetCount() + 1, 12, sWipID);
 
 	//	m_ctrlSummaryGrid.SetRedraw(-1);
 	//	m_ctrlSummaryGrid.Refresh();
@@ -21104,7 +21164,8 @@ void CDATsysView::DeleteResultDataFromDetailedGrid(int nStepNo)
 	{
 		//m_ctrlSummaryGrid.SetCol(11);
 		//m_ctrlSummaryGrid.SetColDataType(11, flexDTString);
-		m_CtrlListMainProcess.SetItem(nStepNo, 11, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, _T(""));
+		m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); 
+		// m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, _T(""));
 
 	//	m_ctrlSummaryGrid.SetRedraw(-1);
 	//	m_ctrlSummaryGrid.Refresh();
@@ -21117,31 +21178,35 @@ void CDATsysView::DeleteResultDataFromDetailedGrid(int nStepNo)
 	//m_ctrlSummaryGrid.SetColDataType(3, flexDTString);
 	m_CtrlListMainProcessEx.SetCellBackColor(StepList.GetCount(), 2, RGB(255, 255, 255));
 	m_CtrlListMainProcessEx.SetCellForeColor(StepList.GetCount(), 2, RGB(255, 255, 255));
-	m_CtrlListMainProcess.SetItem(nStepNo, 2, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 3, _T(""));
+	m_CtrlListMainProcess.SetItem(nStepNo, 2, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); 
+	//m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 3, _T(""));
 
 	if (pCurStep->m_bRunAudioTest)
 	{
 		// (Column 10) Audio Measure
 		//m_ctrlSummaryGrid.SetCol(10);
 		//m_ctrlSummaryGrid.SetColDataType(10, flexDTString);
-		m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo , 10, _T(""));
+		m_CtrlListMainProcess.SetItem(nStepNo, 9, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); 
+		//m_ctrlSummaryGrid.SetTextMatrix(nStepNo , 10, _T(""));
 
 	}
 
 	// (Column 4) Measure
 //	m_ctrlSummaryGrid.SetCol(4);
 //	m_ctrlSummaryGrid.SetColDataType(4, flexDTString);
-	m_CtrlListMainProcess.SetItem(nStepNo, 4, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 4, _T(""));
+	m_CtrlListMainProcess.SetItem(nStepNo, 3, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); 
+	//m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 4, _T(""));
 
 	//m_ctrlSummaryGrid.SetCol(5);
 	//m_ctrlSummaryGrid.SetColDataType(5, flexDTString);
-	m_CtrlListMainProcess.SetItem(nStepNo, 5, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 5, sTmp);
+	m_CtrlListMainProcess.SetItem(nStepNo, 4, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 5, sTmp);
 
 
 	// (Column 11) Elapsed Time
 	//m_ctrlSummaryGrid.SetCol(11);
 	//m_ctrlSummaryGrid.SetColDataType(11, flexDTString);
-	m_CtrlListMainProcess.SetItem(nStepNo, 11, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); //m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, _T(""));
+	m_CtrlListMainProcess.SetItem(nStepNo, 10, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL); 
+	//m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, _T(""));
 
 	//m_ctrlSummaryGrid.SetRow(0);
 	//m_ctrlSummaryGrid.SetCol(0);
@@ -21155,7 +21220,8 @@ BOOL CDATsysView::GetResultFromDetailedGrid(int nStepNo, CString& sMsg)
 {
 	if ((nStepNo > (m_CtrlListMainProcess.GetItemCount() - 1)) || (nStepNo <= 0)) return FALSE;
 	nStepNo -= 1;
-	sMsg = m_CtrlListMainProcess.GetItemText(nStepNo, 12);
+	sMsg = m_CtrlListMainProcess.GetItemText(nStepNo, 11);
+	//sMsg = m_ctrlSummaryGrid.GetTextMatrix(nStepNo, 12);
 
 	return TRUE;
 }

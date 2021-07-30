@@ -34,6 +34,7 @@ COptGrabberPage::COptGrabberPage() : CPropertyPage(COptGrabberPage::IDD)
 , m_bRedBlueSwap(FALSE)
 , m_bDeHsyncEnable(FALSE)
 , m_bHyncEdgeEnable(FALSE)
+, m_bEpiPAckReset(FALSE)
 {
 	//{{AFX_DATA_INIT(COptGrabberPage)
 	m_nAnalogFormat = -1;
@@ -100,6 +101,7 @@ void COptGrabberPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHK_DE_HSYNC, m_bDeHsyncEnable);
 	DDX_Check(pDX, IDC_CHK_HSYNC_EDGE, m_bHyncEdgeEnable);
 	DDX_Control(pDX, IDC_COMBO_Y20_SW_MODE2, m_cComboY20SwMode);
+	DDX_Check(pDX, IDC_CHK_EPI_PACK_RESET, m_bEpiPAckReset);
 }
 
 
@@ -390,6 +392,7 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 		
 		CurrentSet->bHdmiGrab_MaskOsd = m_bMaskOsd;
 	}
+	CurrentSet->bEpiPAckReset = m_bEpiPAckReset;
 
 	if(!CurrentSet->bHdmiOutControl){
 		HDMIGeneratorCtrl.SetOutPort(0);
@@ -633,6 +636,7 @@ BOOL COptGrabberPage::OnInitDialog()
 	m_nHdmiCecControl = CurrentSet->bHdmiCecControl;
 
 	m_nCompResolution = CurrentSet->nCompResolution;
+	m_bEpiPAckReset = CurrentSet->bEpiPAckReset;
 
 	UpdateData(FALSE);
 

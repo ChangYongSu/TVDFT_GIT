@@ -399,6 +399,7 @@ public :
 	void InitStepVariable(); 
 
 	int DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, int nHeight, int nOffset, int nDelay, int nLvdsType);
+	int IF_Pack_Reset();
 	LRESULT  UpdateGrabImage(WPARAM wParam, LPARAM lParam);
 	void StartLVDSGrabThread();
 	void StopLVDSGrabThread();

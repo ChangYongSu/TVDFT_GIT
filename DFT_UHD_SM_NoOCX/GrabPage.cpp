@@ -2718,8 +2718,8 @@ void CGrabPage::ShowUsbDioGroup(BOOL bShow)
 
 		GetDlgItem(IDC_STATIC_GRAB_POWER)->EnableWindow(FALSE);
 		GetDlgItem(IDC_CHECK_GRAB_POWER)->EnableWindow(FALSE);
-		GetDlgItem(IDC_STATIC_IFPACK_RESET)->EnableWindow(FALSE);
-		GetDlgItem(IDC_BTN_RESET_IFPACK)->EnableWindow(FALSE);
+	//	GetDlgItem(IDC_STATIC_IFPACK_RESET)->EnableWindow(FALSE);
+	//	GetDlgItem(IDC_BTN_RESET_IFPACK)->EnableWindow(FALSE);
 		GetDlgItem(IDC_STATIC_GENDER_RESET)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BTN_RESET_GENDER)->EnableWindow(FALSE);
 
@@ -3647,7 +3647,8 @@ void CGrabPage::OnBnClickedCheckGrabPower()
 void CGrabPage::OnBnClickedBtnResetIfpack()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	gJigCtrl.Set_IF_Pack_Reset(0);
+	//gJigCtrl.Set_IF_Pack_Reset(0);
+	g_pView->IF_Pack_Reset();
 }
 
 

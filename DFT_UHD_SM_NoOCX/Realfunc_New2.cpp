@@ -7882,6 +7882,11 @@ BOOL _Read_KeyItem()
 	return TRUE;
 
 }
+BOOL _Epi_Pack_Reset()
+{
+	g_pView->IF_Pack_Reset();
+	return TRUE;
+}
 
 BOOL _RotateDisplay()
 {

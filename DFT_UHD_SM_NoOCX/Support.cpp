@@ -540,7 +540,7 @@ BOOL CreateModelIniFile(CString sModelIni)
 	m_Ini.SetProfileString(INPUT_CHECK_S, "JACK_SMHL",      CurrentSet->sJACK_SMHL);
 
 	m_Ini.SetProfileString(SPEC_CHECK_S, "BAT_VERSION",      CurrentSet->sBatVersion);
-
+	m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", CurrentSet->bEpiPAckReset);
 	return TRUE;
 }
 
@@ -761,6 +761,7 @@ BOOL SaveModelIniFile(CString sIniPath)
 
 
 	m_Ini.SetProfileString(SPEC_CHECK_S, "BAT_VERSION", CurrentSet->sBatVersion);
+	m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET",      CurrentSet->bEpiPAckReset);
 
 
 	return TRUE;
@@ -1097,12 +1098,13 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->sBatVersion = "31";
 	}
 	
+	//m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", CurrentSet->bEpiPAckReset);
+	//CurrentSet->nHDMI1_Port 			= m_Ini.GetProfileInt(HDMI_FORMAT_S, "HDMI1 Port", 1);
+	CurrentSet->bEpiPAckReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", 0);
 	
-
-
-
 	return TRUE;
 }
+
 
 BOOL GetBmpSize(CString sBmpPath, CPoint &pSize)
 {

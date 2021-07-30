@@ -479,6 +479,8 @@ void COptEtcPage::OnBtnEtcOptApply()
 
 	CurrentSet->nARC_Force_OnOffChannel = m_nARC_Force_OnOffChannel.GetCurSel();
 
+	
+
 //	m_nARC_Force_OnOffChannel.SetCurSel(CurrentSet->nARC_Force_OnOffChannel);
 
 	//+move kwmoon 080904

@@ -107,6 +107,7 @@ public:
 	CComboBox m_cComboY20SwMode;
 	afx_msg void OnBnClickedButton170Write();
 	afx_msg void OnBnClickedButton170Read();
+	BOOL m_bEpiPAckReset;
 };
 
 //{{AFX_INSERT_LOCATION}}

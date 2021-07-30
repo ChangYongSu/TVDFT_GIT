@@ -752,6 +752,10 @@ _InternalFunction Predefined[] =
 	{ _T("BaudRate"), _T("") },
 	{ NORMAL_EDIT_TYPE, NULL_TYPE },
 
+	_T("epi_pack_reset"), _Epi_Pack_Reset, // _Read_KeyItem, //_Epi_Pack_Reset,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
 
     NULL, NULL, { TNULL }
 };                      
