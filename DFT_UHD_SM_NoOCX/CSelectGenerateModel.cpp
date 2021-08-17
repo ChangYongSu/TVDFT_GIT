@@ -1013,40 +1013,43 @@ void CSelectGenerateModel::OnBtnEdit()
 		ModelList.SetAt(CurrentPos, pModel);
 		UpdateGrid();
 
-		NewRowValues.Add(pModel->m_szModelSuffix);
 		NewRowValues.Add(pModel->m_szDivision);
 		NewRowValues.Add(pModel->m_szChassisName);
 		NewRowValues.Add(pModel->m_szModelName);
 		NewRowValues.Add(pModel->m_szSeqFilePath);
 		NewRowValues.Add(pModel->m_szModelInfoFilePath);
 		NewRowValues.Add(pModel->m_szRefImgFolder);
+		NewRowValues.Add(pModel->m_szModelSuffix);
 
-		//for (int i = 2; i <= SS.GetTotalRows(); i++)
-		//{
-		//	// Read row
-		//	SS.ReadRow(Rows, i);
+		for (int i = 2; i <= SS.GetTotalRows(); i++)
+		{
+			// Read row
+			SS.ReadRow(Rows, i);
 
-		//	if (Rows.GetAt(0).GetLength() > 2)
-		//	{
-		//		
+			if (Rows.GetAt(0).GetLength() > 2)
+			{
+				CString l_szDivision = Rows.GetAt(0);
+				CString l_szChassisName = Rows.GetAt(1);
+				CString l_szModelName = Rows.GetAt(2);
 
-		//		if((m_szDivision == Rows.GetAt(0))
-		//		&&(szChassisName == Rows.GetAt(1))
-		//			&& (szModelName == Rows.GetAt(2)))
-		//		{
-		//			//pModel->m_szSeqFilePath = Rows.GetAt(3);
-		//			//pModel->m_szModelInfoFilePath = Rows.GetAt(4);
-		//			//pModel->m_szRefImgFolder = Rows.GetAt(5);
+				if((m_szDivision == Rows.GetAt(0))
+				&&(szChassisName == Rows.GetAt(1))
+					&& (szModelName == Rows.GetAt(2)))
+				{
+					//pModel->m_szSeqFilePath = Rows.GetAt(3);
+					//pModel->m_szModelInfoFilePath = Rows.GetAt(4);
+					//pModel->m_szRefImgFolder = Rows.GetAt(5);
 
-		//			SS.ReplaceRows2(NewRowValues); //ModelList.AddTail(pModel);
-		//			break;
-		//		}
-		//	}
-		//
-		//}
+					SS.ReplaceRows(NewRowValues, Rows);// SS.ReplaceRows2(NewRowValues); //ModelList.AddTail(pModel);
+					break;
+				}
+			}
+		
+		}
 
-		SS.ReplaceRows2(NewRowValues);
-		SaveModelListFile();;//CSelectGenerateModel_SaveModelListFile(CurrentSet->sModelListPath);
+	//	SS.ReplaceRows2(NewRowValues);
+		//SS.Commit();
+		//SaveModelListFile();;//CSelectGenerateModel_SaveModelListFile(CurrentSet->sModelListPath);
 			//	delete pModel;
 	}
 //	delete pDlg;
@@ -1151,7 +1154,7 @@ void CSelectGenerateModel::OnBtnCopy()
 
 BOOL CSelectGenerateModel::SaveModelListFile()
 {
-//	return 0;
+	return 0;
 	//CStringArray FieldNames, Rows;
 	//POSITION	Pos = NULL;
 	//CModelData* pModelData = NULL;
