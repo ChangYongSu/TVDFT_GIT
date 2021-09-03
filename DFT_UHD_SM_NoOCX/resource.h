@@ -625,6 +625,7 @@
 #define IDC_BTN_SEND_COMMAND2           1681
 #define IDC_BTN_MAIN_JIG_DOWN           1681
 #define IDC_BTN_SEND_COMMAND3           1682
+#define IDC_BTN_RESET_GRAB              1682
 #define IDC_BTN_SEND_MODEL              1683
 #define IDC_BTN_SEND_MODEL2             1684
 #define IDC_BTN_SEND_COMMAND4           1684
@@ -893,6 +894,7 @@
 #define IDC_CHK_EPI_PACK_RESET          1903
 #define IDC_CHK_AUTO_PATTERN_CONTROL    1904
 #define IDC_CHECK_BAT_VER_OPTION        1904
+#define IDC_CHK_GRAB_BASE_RESET         1904
 #define IDC_CHK_AUTO_SOURCE_CONTROL     1905
 #define IDC_CHECK_OLED_RESET            1905
 #define IDC_CHK_AUTO_UPLOAD_MES         1906

@@ -278,6 +278,7 @@ public:
 		afx_msg void OnBnClickedChkDeHsyncGrab();
 		afx_msg void OnBnClickedChkHsyncEdgeGrab();
 		CComboBox m_cComboY20SwMode;
+		afx_msg void OnBnClickedBtnResetGrab();
 };
 
 //{{AFX_INSERT_LOCATION}}

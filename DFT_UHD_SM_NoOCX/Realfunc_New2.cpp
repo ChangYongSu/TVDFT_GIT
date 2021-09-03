@@ -7716,6 +7716,11 @@ BOOL _Grabber_Reset()
 	
 	g_pView->StopLVDSGrabThread();
 	Sleep(100);
+	if (CurrentSet->bGrabBaseReset == 1)
+	{
+		g_pView->GrabBaseReset();
+	}
+
 	g_pView->StartLVDSGrabThread();
 
 	return TRUE;

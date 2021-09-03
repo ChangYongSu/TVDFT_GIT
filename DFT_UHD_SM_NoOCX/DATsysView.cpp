@@ -7542,7 +7542,20 @@ int CDATsysView::StepRun()
 #endif
 					if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
 					{		
-						
+						if (CurrentSet->bGrabBaseReset == 1)
+						{
+							//WhitenessTest()
+							int lWhiteFlag = _White_Test();
+							if (lWhiteFlag == 1)
+							{
+								g_pView->GrabBaseResetStartThread();
+								localRetryResult = (*pCurFunc->m_pFunc)();
+								if (localRetryResult == TEST_PASS)
+								{
+									continue;
+								}
+							}
+						}
 
 						g_pView->m_BlackPictureFlag =  _Dark_Test();
 						if (g_pView->m_BlackPictureFlag == 1)
@@ -7779,23 +7792,56 @@ int CDATsysView::StepRun()
 				}
 				else
 				{
-					if ((pCurStep->m_bVideoTestResult == FALSE) &&( pCurStep->m_bRunVideoTest) &&(CurrentSet->bEpiPAckReset == 1))
-					{
-						for (int i = 0; i < 1; i++)
+					if ((pCurStep->m_bVideoTestResult == FALSE) &&( pCurStep->m_bRunVideoTest))// &&(CurrentSet->bEpiPAckReset == 1))
+					{						
+						if (CurrentSet->bGrabBaseReset == 1)
 						{
-							Sleep(100);
-							g_pView->IF_Pack_Reset();
-							Sleep(100);
-							localRetryResult = (*pCurFunc->m_pFunc)();
-							if (localRetryResult == TEST_PASS)
+							int lWhiteFlag = _White_Test();
+							if (lWhiteFlag == 1)
 							{
-								break;
+								g_pView->GrabBaseResetStartThread();
+								localRetryResult = (*pCurFunc->m_pFunc)();
+								if (localRetryResult == TEST_PASS)
+								{
+									continue;
+								}
 							}
 						}
-						if (localRetryResult == TEST_PASS)
+
+						if (CurrentSet->bEpiPAckReset == 1)
 						{
-							continue;
+							for (int i = 0; i < 2; i++)
+							{
+								Sleep(100);
+								g_pView->IF_Pack_Reset();
+								Sleep(100);
+								localRetryResult = (*pCurFunc->m_pFunc)();
+								if (localRetryResult == TEST_PASS)
+								{
+									break;
+								}
+							}
+							if (localRetryResult == TEST_PASS)
+							{
+								continue;
+							}
 						}
+
+						//for (int i = 0; i < 1; i++)
+						//{
+						//	Sleep(100);
+						//	g_pView->IF_Pack_Reset();
+						//	Sleep(100);
+						//	localRetryResult = (*pCurFunc->m_pFunc)();
+						//	if (localRetryResult == TEST_PASS)
+						//	{
+						//		break;
+						//	}
+						//}
+						//if (localRetryResult == TEST_PASS)
+						//{
+						//	continue;
+						//}
 					}
 				}
 			}
@@ -16859,6 +16905,64 @@ void CDATsysView::ResetGrabStartThread()
 	}//
 //	if(bFlag) SetTimer(2, 1000, NULL);
 	g_nResetGrabMode = 0;
+}
+
+void CDATsysView::GrabBaseResetStartThread()
+{
+	__int64		Rdata, Wdata;
+	//	BOOL bFlag;
+	if (CurrentSet->bPJT_GrabDisable == 1)
+		return;
+
+	g_nResetGrabMode = 1;
+	//UHD
+	if (g_nGrabberType == UHD_GRABBER)
+	{
+		if (!m_bGrabThreadRunning) {
+
+			StartLVDSGrabThread();
+		}
+		else {
+			StopLVDSGrabThread();
+			Sleep(100);
+
+			GrabBaseReset();
+
+			StartLVDSGrabThread();
+		}
+	}
+	else//FHD
+	{
+		if (!m_bGrabThreadRunning) {
+			SetGrabInfo(&g_GrabImage);
+
+			StartLVDSGrabThread_FHD();
+		}
+		else {
+			StopLVDSGrabThread_FHD();
+			Sleep(100);
+			SetGrabInfo(&g_GrabImage);
+
+			StartLVDSGrabThread_FHD();
+		}
+	}
+//	if(bFlag) SetTimer(2, 1000, NULL);
+	g_nResetGrabMode = 0;
+}
+
+
+void CDATsysView::GrabBaseReset()
+{
+	__int64		Rdata, Wdata;
+	//	BOOL bFlag;
+
+	m_clsPCI.CM_RegisterRead(0x0170, &Rdata);
+	Sleep(1);
+	Wdata = Rdata | 0x20000;
+	m_clsPCI.CM_RegisterWrite(0x0170, Wdata);
+	Sleep(1);
+	Wdata = Rdata & 0x0FFFF;
+	m_clsPCI.CM_RegisterWrite(0x0170, Wdata);
 }
 
 void CDATsysView::OnGrabStop() 

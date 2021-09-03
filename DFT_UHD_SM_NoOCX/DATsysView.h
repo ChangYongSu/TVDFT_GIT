@@ -406,6 +406,8 @@ public :
 	void StartLVDSGrabThread_FHD();
 	void StopLVDSGrabThread_FHD();
 	void ResetGrabStartThread();
+	void GrabBaseResetStartThread();
+	void GrabBaseReset();
 
 	void ShowSystemMsg(int nMgaNo); 
 	void CloseSystemMsg(); 

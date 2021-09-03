@@ -1224,7 +1224,7 @@ int CImageProc::BrightnessTest(CBaseImage& SnapImage, CBaseImage& RefImage, CBas
 }
 
 
-int CImageProc::DarknessTest(CBaseImage& SnapImage,  CBaseImage& MaskImage)
+int CImageProc::DarknessTest(CBaseImage& SnapImage, CBaseImage& MaskImage)
 {
 	// If it's not a true color image, return false
 	if ((SnapImage.m_InfoHeader.biBitCount < 24))
@@ -1331,7 +1331,7 @@ int CImageProc::DarknessTest(CBaseImage& SnapImage,  CBaseImage& MaskImage)
 
 	// Allocate memory (store the processed image into a snapImage object)
 	nImageSize = SnapImage.m_InfoHeader.biSizeImage;
-		
+
 
 	//+change kwmoon 080618
 	CalcTestRange(SnapImage, nStartXposition, nEndXposition, nStartYposition, nEndYposition);
@@ -1368,13 +1368,183 @@ int CImageProc::DarknessTest(CBaseImage& SnapImage,  CBaseImage& MaskImage)
 					nGrabGcolor = SnapImage.m_pImageData[nSnapImageIndex + 1];
 					nGrabBcolor = SnapImage.m_pImageData[nSnapImageIndex];
 
-	
+
 					if ((nGrabRcolor > 10) || (nGrabGcolor > 10) || (nGrabBcolor > 10))
-					{		
+					{
 
 						nTestResult = TEST_FAIL;
 
-					}					
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		return TEST_ABORT;
+	}
+
+	SnapImage.m_bProcessedImageLoaded = TRUE;
+
+	//Progress.SetPos(100);
+
+	//BinaryForMonoImage(NORMAL_BINARY, SnapImage.m_pProcessedImageData, nSnapHeight, nSnapWidth, nSnapBitCount, nColorMargin);
+
+
+	return nTestResult;
+}
+
+int CImageProc::WhitenessTest(CBaseImage& SnapImage, CBaseImage& MaskImage)
+{
+	// If it's not a true color image, return false
+	if ((SnapImage.m_InfoHeader.biBitCount < 24))
+	{
+		AfxMessageBox("Only true color image is supported!"); return TEST_ABORT;
+	}
+
+	int nProgress = 0;
+	int nTestResult = TEST_PASS;
+
+	// Dimension of the Reference Image
+	int nRefWidth = MaskImage.m_InfoHeader.biWidth;
+	int nRefHeight = MaskImage.m_InfoHeader.biHeight;
+
+	// Dimension of the Snap Image
+	int nSnapWidth = SnapImage.m_InfoHeader.biWidth;
+	int nSnapHeight = SnapImage.m_InfoHeader.biHeight;
+	int nSnapBitCount = SnapImage.m_InfoHeader.biBitCount;
+
+	int nDifference = 0;
+	int nMaxPassDifference = 0;
+	int nMaxFailDifference = 0;
+
+	int nGrabRcolor = 0;
+	int nGrabGcolor = 0;
+	int nGrabBcolor = 0;
+
+	int nRefRcolor = 0;
+	int nRefGcolor = 0;
+	int nRefBcolor = 0;
+
+	int nGrabYcolor = 0;
+	int nGrabCbcolor = 0;
+	int nGrabCrcolor = 0;
+
+	int nRefYcolor = 0;
+	int nRefCbcolor = 0;
+	int nRefCrcolor = 0;
+
+	int nShiftedDiff = 0;
+	int nColorMargin = 0;
+
+	int nRefBrightValue = 0;
+	int nSnapBrightValue = 0;
+
+	int nNoShift = 0;
+
+	int nStartXposition = 0;
+	int nStartYposition = 0;
+	int nEndXposition = 0;
+	int nEndYposition = 0;
+
+	int nColorDepth = SnapImage.m_InfoHeader.biBitCount;
+	int nBytesInRow = WIDTHBYTES(nColorDepth*SnapImage.m_InfoHeader.biWidth);
+
+	BYTE* SnapImageBackup = NULL;
+	BYTE* RefImageBackup = NULL;
+
+	int nImageBufferSize = 0;
+	int nImageSize = 0;
+
+	CString szErrMsg = _T("");
+
+	if (SnapImage.m_bImageLoaded == FALSE)
+	{
+		AfxMessageBox("Snap Image is not loaded!"); return TEST_ABORT;
+	}
+
+
+	if (MaskImage.m_bImageLoaded == FALSE)
+	{
+		AfxMessageBox("Mask Image is not loaded!"); return TEST_ABORT;
+	}
+
+	// Compare the size and color depth of images 
+	if ((nRefWidth != nSnapWidth) || (nRefHeight != nSnapHeight))
+	{
+		AfxMessageBox("The size of two images is different!"); return TEST_ABORT;
+	}
+
+	if (MaskImage.m_InfoHeader.biBitCount != SnapImage.m_InfoHeader.biBitCount)
+	{
+		AfxMessageBox("The color depth of two images is different!"); return TEST_ABORT;
+	}
+
+	if ((m_nRoiWidth >= nSnapWidth) || (m_nRoiHeight >= nSnapHeight))
+	{
+		szErrMsg.Format("[ROI Error] Roi with & height should be less than witdh & height of image! (W:%d_%d,H:%d_%d)"
+			, m_nRoiWidth, nSnapWidth, m_nRoiHeight, nSnapHeight);
+
+		AfxMessageBox(szErrMsg); return TEST_ABORT;
+	}
+
+	if ((m_ptRoiPosition.x >= (nSnapWidth - 1)) || (m_ptRoiPosition.y >= (nSnapHeight - 1)))
+	{
+		szErrMsg.Format("[ROI Error] Roi (x,y) should be less than witdh & height of image! (X:%d,Y:%d,W:%d,H:%d)"
+			, m_ptRoiPosition.x, m_ptRoiPosition.y, nSnapWidth, nSnapHeight);
+
+		AfxMessageBox(szErrMsg); return TEST_ABORT;
+	}
+
+	m_nNoErrorInfo = 0;
+
+
+	// Allocate memory (store the processed image into a snapImage object)
+	nImageSize = SnapImage.m_InfoHeader.biSizeImage;
+
+
+	//+change kwmoon 080618
+	CalcTestRange(SnapImage, nStartXposition, nEndXposition, nStartYposition, nEndYposition);
+
+	SnapImage.m_bProcessedImageLoaded = FALSE;
+
+	int nX = 0;
+	int nY = 0;
+	int nColorChannel = 0;
+
+	int nLastErrorXpos = -1;
+	int nLastErrorYpos = -1;
+	int nSnapImageIndex = 0;
+	int nRefImageIndex = 0;
+
+	int nMaskValue = 0;
+
+	if (SnapImage.m_InfoHeader.biBitCount == 24) // If the color depth of image is 24 bits  
+	{
+		for (int nRow = nStartYposition; nRow <= nEndYposition; nRow++)
+		{
+			for (int nColumn = nStartXposition; nColumn <= nEndXposition; nColumn++)
+			{
+				nRefImageIndex = (nRow)*nBytesInRow + 3 * (nColumn);
+				nSnapImageIndex = (nRow - m_ptPositionShift.y)*nBytesInRow + 3 * (nColumn + m_ptPositionShift.x);
+
+				nMaskValue = MaskImage.m_pImageData[nRefImageIndex]
+					| MaskImage.m_pImageData[nRefImageIndex + 1]
+					| MaskImage.m_pImageData[nRefImageIndex + 2];
+
+				if (nMaskValue == 0)
+				{
+					nGrabRcolor = SnapImage.m_pImageData[nSnapImageIndex + 2];
+					nGrabGcolor = SnapImage.m_pImageData[nSnapImageIndex + 1];
+					nGrabBcolor = SnapImage.m_pImageData[nSnapImageIndex];
+
+
+					if ((nGrabRcolor < 250) || (nGrabGcolor < 250) || (nGrabBcolor < 250))
+					{
+
+						nTestResult = TEST_FAIL;
+
+					}
 				}
 			}
 		}

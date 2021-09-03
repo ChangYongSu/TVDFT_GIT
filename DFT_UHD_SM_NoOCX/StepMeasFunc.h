@@ -4,6 +4,7 @@
 double	_Color_Test();
 double	_Bright_Test();
 int	_Dark_Test();
+int _White_Test();
 double	_Position_Test();
 double	_Osd_Test();
 double	_Size_Test();

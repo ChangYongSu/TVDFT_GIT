@@ -696,7 +696,8 @@ public:
 
 	BOOL        bScanNotUse;
 	CString		sBatVersion;
-	BOOL		bEpiPAckReset;
+	BOOL		bEpiPAckReset;	
+	BOOL		bGrabBaseReset;
 };
 
 enum GrabberType

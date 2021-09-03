@@ -285,6 +285,7 @@ public:
 	int BrightnessTest(CBaseImage& SnapImage,CBaseImage& RefImage,CBaseImage& MaskImage,
 				POINT& ptResultPosition,int& nMaxDifference, CProgressCtrl& Progress);
 	int DarknessTest(CBaseImage& SnapImage, CBaseImage& MaskImage);
+	int WhitenessTest(CBaseImage& SnapImage, CBaseImage& MaskImage);
 
 	int BinaryForMaskImage(int nType,CBaseImage& DstImage,int nThreshold,BOOL bOverwrite = FALSE);
 	int BinaryForMonoImage(int nType,BYTE* pImageData,int nHeight,int nWidth,int nBitCount,int nThreshold);

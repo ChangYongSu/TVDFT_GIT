@@ -693,7 +693,7 @@ int	_Dark_Test()
 
 	SystemMonitorLog_Save("_Dark_Test");// , _T(__FILE__), __LINE__);
 
-	if(g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
+	if (g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
 	{
 		//g_ImageProc.SetBrightMargin(nBrightMarginLevel);
 
@@ -709,7 +709,41 @@ int	_Dark_Test()
 		szMsg.Format("_Dark_Test Result: No Test", nResult);
 		SystemMonitorLog_Save(szMsg);
 		return nResult;
-	}	
+	}
+}
+
+int	_White_Test()
+{
+	int nResult = TEST_FAIL;
+
+	int nMaxDifference = 0;
+
+	POINT ptResultPosition;
+	ptResultPosition.x = 0;
+	ptResultPosition.y = 0;
+
+	CString szMsg;
+	CString szPrevMsg;
+
+	SystemMonitorLog_Save("_White_Test");// , _T(__FILE__), __LINE__);
+
+	if (g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
+	{
+		//g_ImageProc.SetBrightMargin(nBrightMarginLevel);
+
+		nResult = g_ImageProc.WhitenessTest(g_GrabImage, g_MaskImage);
+
+		// Initialization
+		szMsg.Format("_White_Test Result: %d", nResult);
+		SystemMonitorLog_Save(szMsg);
+		return nResult;
+	}
+	else
+	{
+		szMsg.Format("_White_Test Result: No Test", nResult);
+		SystemMonitorLog_Save(szMsg);
+		return nResult;
+	}
 }
 
 // Image Processing Function

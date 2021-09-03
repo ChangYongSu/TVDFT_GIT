@@ -108,6 +108,7 @@ public:
 	afx_msg void OnBnClickedButton170Write();
 	afx_msg void OnBnClickedButton170Read();
 	BOOL m_bEpiPAckReset;
+	BOOL m_bGrabBaseReset;
 };
 
 //{{AFX_INSERT_LOCATION}}
