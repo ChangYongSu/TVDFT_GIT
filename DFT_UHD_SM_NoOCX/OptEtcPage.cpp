@@ -44,6 +44,8 @@ COptEtcPage::COptEtcPage() : CPropertyPage(COptEtcPage::IDD)
 , m_bCheckImageFullReset(FALSE)
 , m_bCheckOledReset(FALSE)
 , m_bCheckBatteryCheck(FALSE)
+, m_bEpiPAckReset(FALSE)
+, m_bGrabBaseReset(FALSE)
 {
 	//{{AFX_DATA_INIT(COptEtcPage)
 	m_bSaveProcImg = TRUE; // FALSE;
@@ -184,6 +186,8 @@ void COptEtcPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_FULL_RESET, m_bCheckImageFullReset);
 	DDX_Check(pDX, IDC_CHECK_OLED_RESET, m_bCheckOledReset);
 	DDX_Check(pDX, IDC_CHECK_BAT_VER_OPTION, m_bCheckBatteryCheck);
+	DDX_Check(pDX, IDC_CHK_EPI_PACK_RESET2, m_bEpiPAckReset);
+	DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET2, m_bGrabBaseReset);
 }
 
 
@@ -196,6 +200,8 @@ BEGIN_MESSAGE_MAP(COptEtcPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHK_SAVE_CAPTION_TEST_IMAGE, OnChkSaveCaptionTestImage)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_CHECK_SKIP_FFC, &COptEtcPage::OnBnClickedCheckSkipFfc)
+	ON_BN_CLICKED(IDC_CHK_EPI_PACK_RESET2, &COptEtcPage::OnBnClickedChkEpiPackReset2)
+	ON_BN_CLICKED(IDC_CHK_GRAB_BASE_RESET2, &COptEtcPage::OnBnClickedChkGrabBaseReset2)
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 
@@ -232,8 +238,8 @@ BOOL COptEtcPage::OnInitDialog()
 	m_bCheckUsePcbSensor = CurrentSet->bCheckUsePcbSensor;
 	m_bCheckBatteryCheck = CurrentSet->bCheckBatteryCheck;
 	
-
-
+	m_bEpiPAckReset = CurrentSet->bEpiPAckReset;
+	m_bGrabBaseReset = CurrentSet->bGrabBaseReset;
 
 	m_strViewerPath			 = CurrentSet->sViewerPath;
 	m_bSaveGrabImg			 = CurrentSet->bSaveGrabImg;
@@ -377,6 +383,9 @@ void COptEtcPage::OnBtnEtcOptApply()
 	CurrentSet->bCheckOledReset = m_bCheckOledReset;
 
 	CurrentSet->bCheckBatteryCheck = m_bCheckBatteryCheck;
+
+	CurrentSet->bEpiPAckReset = m_bEpiPAckReset;
+	CurrentSet->bGrabBaseReset = m_bGrabBaseReset;
 	
 	CurrentSet->bRobotSkipFFC = 1;  //cys 200824 m_bRobotSkipFFC ? 0 : 1;
 	CurrentSet->bCheckUsePcbSensor = 1; //cys 200824 m_bCheckUsePcbSensor;
@@ -387,30 +396,7 @@ void COptEtcPage::OnBtnEtcOptApply()
 		if (gPLC_Ctrl.m_cCheckSkipFFC == 0)
 		{
 			gPLC_Ctrl.CommandSkipFFC();
-		}
-		//if ((CurrentSet->nLvdsWidth == 1366) && (CurrentSet->nLvdsHeight == 768))
-		//{
-		//	if (CurrentSet->bRobotSkipFFC == 0)
-		//	{
-		//		MessageBox("Check POGO PIN BLOCK");
-		//	}
-		//}
-		//else
-		//{
-		//	//if (CurrentSet->bRobotSkipFFC == 1)
-		//	//{
-		//	//	MessageBox("Check Robot Skip FFC");
-		//	//}
-		//}
-
-		//if (gPLC_Ctrl.m_cCheckSkipFFC == 1)
-		//{
-		//	gPLC_Ctrl.CommandSkipFFC();
-		//}
-		//else
-		//{
-		//	gPLC_Ctrl.CommandConnectFFC();
-		//}
+		}		
 	}
 	
 
@@ -421,9 +407,6 @@ void COptEtcPage::OnBtnEtcOptApply()
 	CurrentSet->bSaveMovingPicTestImg	= m_bSaveMovingPicTestImg;
 	CurrentSet->bSaveIntermediateImage	= m_bSaveIntermediateImage;
 	
-	//+del kwmoon 080716
-//	CurrentSet->bSaveDistributionTable	= m_bSaveDistributionTable;
-
 	//+add kwmoon 080710
 	CurrentSet->bSaveProcessingTimeData	= m_bSaveProcessingTimeData;
 	CurrentSet->bSaveReviewData			= m_bSaveReviewData;
@@ -450,14 +433,12 @@ void COptEtcPage::OnBtnEtcOptApply()
 	
 	CurrentSet->nFreqMargin		= m_nFreqMargin;
 
-
 	CurrentSet->fAllowedBandErrorPixelPercentage[0] = m_fAllowedBand1ErrorPixelPercentage;
 	CurrentSet->fAllowedBandErrorPixelPercentage[1] = m_fAllowedBand2ErrorPixelPercentage;
 	CurrentSet->fAllowedBandErrorPixelPercentage[2] = m_fAllowedBand3ErrorPixelPercentage;
 	CurrentSet->fAllowedBandErrorPixelPercentage[3] = m_fAllowedBand4ErrorPixelPercentage;
 	CurrentSet->fAllowedBandErrorPixelPercentage[4] = m_fAllowedBand5ErrorPixelPercentage;
 	//-
-
 	//+add kwmoon 080716
 	CurrentSet->nLevelMargin = m_nLevelMargin;
 
@@ -478,6 +459,7 @@ void COptEtcPage::OnBtnEtcOptApply()
 	CurrentSet->nARC_Force_Port_Number = m_nARC_Force_Port_Number.GetCurSel();
 
 	CurrentSet->nARC_Force_OnOffChannel = m_nARC_Force_OnOffChannel.GetCurSel();
+
 
 	
 
@@ -592,6 +574,18 @@ void COptEtcPage::OnChkSaveCaptionTestImage()
 
 
 void COptEtcPage::OnBnClickedCheckSkipFfc()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void COptEtcPage::OnBnClickedChkEpiPackReset2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void COptEtcPage::OnBnClickedChkGrabBaseReset2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

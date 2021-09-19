@@ -2553,7 +2553,14 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	//pApp->WriteProfileInt(_T("Config"), _T(" Battery Check Option"), CurrentSet->bCheckBatteryCheck);
 	pCurrentSet->bCheckUsePcbSensor = pApp->GetProfileInt(_T("Config"), _T("Use PCB Load Sensor"), FALSE);
 	pCurrentSet->bCheckUsePcbSensor = 1;
-	
+
+	pCurrentSet->bEpiPAckReset = pApp->GetProfileInt(_T("Config"), _T("EPI_PACK_RESET"), FALSE);
+	pCurrentSet->bGrabBaseReset = pApp->GetProfileInt(_T("Config"), _T("GRAB_BASE_RESET"), FALSE);
+	//m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", CurrentSet->bEpiPAckReset);
+	//m_Ini.SetProfileInt(SPEC_CHECK_S, "GRAB_BASE_RESET", CurrentSet->bGrabBaseReset);
+	//CurrentSet->bEpiPAckReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", 0);
+	//CurrentSet->bGrabBaseReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "GRAB_BASE_RESET", 0);
+
 
 	pCurrentSet->nRunType				= pApp->GetProfileInt(_T("Run"), _T("Run Type"), STOP);
 	//AUTO
@@ -3436,13 +3443,15 @@ void CDATsysView::SaveRegistrySetting()
 	pApp->WriteProfileInt(_T("Config"), _T("Reset Rotate Reset Option"), CurrentSet->bCheckRotateReset);
 	//pApp->WriteProfileInt(_T("Config"), _T("Image Full Reset Option"), CurrentSet->bCheckImageFullReset);
 	pApp->WriteProfileInt(_T("Config"), _T("Battery Check Option"), CurrentSet->bCheckBatteryCheck);
-
-
-
-
 	pApp->WriteProfileInt(_T("Config"), _T("Use PCB Load Sensor"), CurrentSet->bCheckUsePcbSensor);
 	//pCurrentSet->bCheckRotateReset = pApp->GetProfileInt(_T("Config"), _T("Reset Rotate Reset Option"), FALSE);
 
+	pApp->WriteProfileInt(_T("Config"), _T("EPI_PACK_RESET"), CurrentSet->bEpiPAckReset);
+	pApp->WriteProfileInt(_T("Config"), _T("GRAB_BASE_RESET"), CurrentSet->bGrabBaseReset);
+	//m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", CurrentSet->bEpiPAckReset);
+	//m_Ini.SetProfileInt(SPEC_CHECK_S, "GRAB_BASE_RESET", CurrentSet->bGrabBaseReset);
+	//CurrentSet->bEpiPAckReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", 0);
+	//CurrentSet->bGrabBaseReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "GRAB_BASE_RESET", 0);
 
 	//+add kwmoon 080724
 	pApp->WriteProfileString(_T("File"), _T("Current TestParam"),			CurrentSet->sTestParamIni);
@@ -4928,17 +4937,17 @@ LRESULT CDATsysView::RunTest(WPARAM wParam, LPARAM lParam)
 						}
 					}
 					//if(CurrentSet->bNgCountCheck){
-					//if(!CheckNgCount()){
-					//	sTmp.Format("NG Count Check Error....");
-					//	AfxMessageBox(sTmp);
-					//	CurrentSet->bIsRunMsg = FALSE; return 0;
-					//}
-					//if(CurrentSet->nDftNgCount >= 3){
-					//	ReportSend_NgCount();
-					//	sTmp.Format("%s : NG history is more than 3 times.", m_strWipId);
-					//	AfxMessageBox(sTmp);
-					//	CurrentSet->bIsRunMsg = FALSE; return 0;
-					//}
+					if(!CheckNgCount()){
+						sTmp.Format("NG Count Check Error....");
+						AfxMessageBox(sTmp);
+						CurrentSet->bIsRunMsg = FALSE; return 0;
+					}
+					if(CurrentSet->nDftNgCount >= 3){
+						ReportSend_NgCount();
+						sTmp.Format("%s : NG history is more than 3 times.", m_strWipId);
+						AfxMessageBox(sTmp);
+						CurrentSet->bIsRunMsg = FALSE; return 0;
+					}
 					//}
 				}
 			}
@@ -7373,18 +7382,20 @@ int CDATsysView::StepRun()
 		lRect.left = lRectList.left + lRect.left;*/
 
 #ifdef _DFT_3IN1
-	if (m_CurrentStep > 16)
-	{
-		SetScroll(m_CurrentStep - 17);
-		//	m_CtrlListMainProcess.Invalidate();
-	}
+	//if (m_CurrentStep > 16)
+	//{
+	//	SetScroll(m_CurrentStep - 17);
+	//	//	m_CtrlListMainProcess.Invalidate();
+	//}
+	SetScroll(m_CurrentStep);
 #else
-	if (m_CurrentStep > 30)
-	{
-		SetScroll(m_CurrentStep - 31);
-	//	m_CtrlListMainProcess.Invalidate();
-	}
-
+	//if (m_CurrentStep > 30)
+	//{
+	//	SetScroll(m_CurrentStep - 31);	
+	//}
+	//
+	SetScroll(m_CurrentStep);	
+	
 #endif
 	if(pCurStep->m_bTest == FALSE) 
 	{
@@ -23544,7 +23555,7 @@ void CDATsysView::InitOptionGrid()
 	//m_ctrlOptionGrid.SetColWidth(0, 500); //300
 	//m_ctrlOptionGrid.SetColWidth(1, 1200); //300
 	m_ctrlListOption.InsertColumn(0, _T(" "), LVCFMT_CENTER, 20);
-	m_ctrlListOption.InsertColumn(1, _T("OPTION"), LVCFMT_CENTER, 78);
+	m_ctrlListOption.InsertColumn(1, _T("OPTION"), LVCFMT_CENTER, 88);
 #endif
 
 //	m_ctrlOptionGrid.SetRowHeight(2, 400);
@@ -23691,7 +23702,7 @@ void CDATsysView::InitVersionGrid()
 #ifdef _DFT_3IN1
 //	m_ctrlVersionGrid.SetColWidth(0, 1200);
 	m_ctrlListVersion.InsertColumn(0, _T("NAME"), LVCFMT_CENTER, 55);
-	m_ctrlListVersion.InsertColumn(1, _T("DATA"), LVCFMT_CENTER, 75);
+	m_ctrlListVersion.InsertColumn(1, _T("DATA"), LVCFMT_CENTER, 85);
 #endif
 	//m_ctrlVersionGrid.SetFixedAlignment(0,flexAlignCenterCenter);
 
@@ -26685,7 +26696,7 @@ void CDATsysView::OnNMClickListMainProcess(NMHDR *pNMHDR, LRESULT *pResult)
 			}
 #ifdef _LISTSCROLL_DEBUG__MODE
 
-			SetScroll(l_nItem);
+		//	SetScroll(l_nItem);
 #endif
 
 
@@ -26929,21 +26940,59 @@ void CDATsysView::SetScroll( int lScroll)
 {
 	int lyPos;
 	int lDiffScroll;
-
-
+	
 	CSize lSize;
 
 	//NG_Display(sId); //OK_Display(sId);
+#ifdef _DFT_3IN1
 	lyPos = m_CtrlListMainProcess.GetScrollPos(1);
-	lDiffScroll = (lScroll - lyPos) * 10;
-	lSize.SetSize(0, lDiffScroll);
-	m_CtrlListMainProcess.Scroll(lSize);
+	if ((lScroll - lyPos) > 17)
+	{
+		if (StepList.GetCount() < (lScroll + 17))
+		{
+			lDiffScroll = (StepList.GetCount() - 17 - lyPos) * 18;
+		}
+		else
+		{
+			lDiffScroll = (lScroll-lyPos) * 18;
+		}
 
-	//lyPos = m_cListCtrl_OQA_Monitor_Select.GetScrollPos(1);
+		lSize.SetSize(0, lDiffScroll);
+		m_CtrlListMainProcess.Scroll(lSize);
+	}
+	else if (((lScroll - lyPos) < 0))
+	{
+		lDiffScroll = (lScroll - lyPos) * 18;
+		lSize.SetSize(0, lDiffScroll);
+		m_CtrlListMainProcess.Scroll(lSize);
+	}
+#else
+	lyPos = m_CtrlListMainProcess.GetScrollPos(1);
+	if ((lScroll - lyPos) > 31)
+	{
+		if (StepList.GetCount() < (lScroll + 31))
+		{
+			lDiffScroll = (StepList.GetCount() - 31) * 18;
+		}
+		else
+		{
+			lDiffScroll = (lScroll) * 18;
+		}
+			
+		lSize.SetSize(0, lDiffScroll);
+		m_CtrlListMainProcess.Scroll(lSize);
+	}
+	else if (((lScroll - lyPos) < 0))
+	{
+		lDiffScroll = (lScroll) * 18;
+		lSize.SetSize(0, lDiffScroll);
+		m_CtrlListMainProcess.Scroll(lSize);
+	}
 
-	//lDiffScroll = (lScroll - lyPos - 14) * 10;
-	//lSize.SetSize(0, lDiffScroll);
-	//m_cListCtrl_OQA_Monitor_Select.Scroll(lSize);
+	
+
+#endif
+
 }
 
 void CDATsysView::OnNMCustomdrawListVersionProcess(NMHDR *pNMHDR, LRESULT *pResult)

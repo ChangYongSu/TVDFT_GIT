@@ -127,6 +127,10 @@ public:
 	BOOL m_bCheckOledReset;
 	afx_msg void OnBnClickedCheckSkipFfc();
 	BOOL m_bCheckBatteryCheck;
+	afx_msg void OnBnClickedChkEpiPackReset2();
+	BOOL m_bEpiPAckReset;
+	afx_msg void OnBnClickedChkGrabBaseReset2();
+	BOOL m_bGrabBaseReset;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -34,8 +34,8 @@ COptGrabberPage::COptGrabberPage() : CPropertyPage(COptGrabberPage::IDD)
 , m_bRedBlueSwap(FALSE)
 , m_bDeHsyncEnable(FALSE)
 , m_bHyncEdgeEnable(FALSE)
-, m_bEpiPAckReset(FALSE)
-, m_bGrabBaseReset(FALSE)
+//, m_bEpiPAckReset(FALSE)
+//, m_bGrabBaseReset(FALSE)
 {
 	//{{AFX_DATA_INIT(COptGrabberPage)
 	m_nAnalogFormat = -1;
@@ -102,8 +102,8 @@ void COptGrabberPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHK_DE_HSYNC, m_bDeHsyncEnable);
 	DDX_Check(pDX, IDC_CHK_HSYNC_EDGE, m_bHyncEdgeEnable);
 	DDX_Control(pDX, IDC_COMBO_Y20_SW_MODE2, m_cComboY20SwMode);
-	DDX_Check(pDX, IDC_CHK_EPI_PACK_RESET, m_bEpiPAckReset);
-	DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET, m_bGrabBaseReset);
+	//DDX_Check(pDX, IDC_CHK_EPI_PACK_RESET, m_bEpiPAckReset);
+	//DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET, m_bGrabBaseReset);
 }
 
 
@@ -394,8 +394,8 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 		
 		CurrentSet->bHdmiGrab_MaskOsd = m_bMaskOsd;
 	}
-	CurrentSet->bEpiPAckReset = m_bEpiPAckReset;
-	CurrentSet->bGrabBaseReset = m_bGrabBaseReset;
+	//CurrentSet->bEpiPAckReset = m_bEpiPAckReset;
+	//CurrentSet->bGrabBaseReset = m_bGrabBaseReset;
 
 
 	if(!CurrentSet->bHdmiOutControl){
@@ -640,8 +640,8 @@ BOOL COptGrabberPage::OnInitDialog()
 	m_nHdmiCecControl = CurrentSet->bHdmiCecControl;
 
 	m_nCompResolution = CurrentSet->nCompResolution;
-	m_bEpiPAckReset = CurrentSet->bEpiPAckReset;
-	m_bGrabBaseReset = CurrentSet->bGrabBaseReset;
+	//m_bEpiPAckReset = CurrentSet->bEpiPAckReset;
+	//m_bGrabBaseReset = CurrentSet->bGrabBaseReset;
 
 	UpdateData(FALSE);
 

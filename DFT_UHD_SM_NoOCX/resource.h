@@ -899,8 +899,10 @@
 #define IDC_CHECK_OLED_RESET            1905
 #define IDC_CHK_AUTO_UPLOAD_MES         1906
 #define IDC_CHK_SCAN_NO_USE             1906
+#define IDC_CHK_EPI_PACK_RESET2         1906
 #define IDC_CHK_AVERAGE_PAGE            1907
 #define IDC_CHK_AUTO_PLC_ROBOT          1907
+#define IDC_CHK_GRAB_BASE_RESET2        1907
 #define IDC_CHK_CROP_PAGE               1908
 #define IDC_CHK_AUTO_PLC_ROBOT2         1908
 #define IDC_CHK_SERVER_CTRL_CONNECT     1908
