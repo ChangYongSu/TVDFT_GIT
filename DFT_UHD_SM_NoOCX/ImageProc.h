@@ -257,6 +257,7 @@ public:
 	void SW_MODE_Mapping(unsigned char *pImgBufIn, unsigned char *pImgBufOut, int nWidth, int nHeight, int nSW_Mode);
 	void P60_CEDS20Y_Mapping(unsigned char *pImgBufOut, unsigned char *pImgBufIn, int nWidth, int nHeight);
 	void P68_70_UPQO_Sharp_CEDS_DPT(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
+	void P22Y8K_TCONLESS(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 	void P68_50_UPQO_VA_CEDS_HKC(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 	void P68_55UP77_CSOT(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 

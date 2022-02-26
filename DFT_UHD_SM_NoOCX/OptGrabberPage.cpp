@@ -348,7 +348,7 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 	CurrentSet->nHDMIResolution = m_nHDMI_Resolution;
 	CurrentSet->nHDMIBitSpec = m_ctrlHDMI_BitSpec.GetCurSel();
 
-	CurrentSet->bHdmiOutControl = m_nHdmiOutControl;
+	CurrentSet->bHdmiOutControl = 0;//  m_nHdmiOutControl;
 
 	if(g_nGrabberType == UHD_GRABBER)//UHD
 	{
@@ -358,10 +358,10 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 		CurrentSet->nHDMI4_Model = m_ctrlHdmi4Model.GetCurSel();
 	}
 
-	CurrentSet->nHDMI1_Port = m_ctrlHdmi1Port.GetCurSel() + 1;
-	CurrentSet->nHDMI2_Port = m_ctrlHdmi2Port.GetCurSel() + 1;
-	CurrentSet->nHDMI3_Port = m_ctrlHdmi3Port.GetCurSel() + 1;
-	CurrentSet->nHDMI4_Port = m_ctrlHdmi4Port.GetCurSel() + 1;
+	CurrentSet->nHDMI1_Port = 1;// m_ctrlHdmi1Port.GetCurSel() + 1;
+	CurrentSet->nHDMI2_Port = 2;// m_ctrlHdmi2Port.GetCurSel() + 1;
+	CurrentSet->nHDMI3_Port = 3;// m_ctrlHdmi3Port.GetCurSel() + 1;
+	CurrentSet->nHDMI4_Port = 4;// m_ctrlHdmi4Port.GetCurSel() + 1;
 
 	CurrentSet->bHdmiCecControl = m_nHdmiCecControl;
 	HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
@@ -573,6 +573,7 @@ BOOL COptGrabberPage::OnInitDialog()
 		
 		m_ctrlGrabMode.AddString("14. Type15 : HKC 966 Pixel");
 		m_ctrlGrabMode.AddString("15. Type16 : CSOT 68P 55UP77");
+		m_ctrlGrabMode.AddString("16. Type17 : 8K T-CONLESS");
 		//m_ctrlGrabMode.AddString(" 16. Type17 : Y20_SW_Mode_02");
 		//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 		m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
@@ -631,7 +632,7 @@ BOOL COptGrabberPage::OnInitDialog()
 		}	
 	}
 
-	m_nHdmiOutControl = CurrentSet->bHdmiOutControl;
+	m_nHdmiOutControl = 0;// CurrentSet->bHdmiOutControl;
 	m_ctrlHdmi1Port.SetCurSel(CurrentSet->nHDMI1_Port -1);
 	m_ctrlHdmi2Port.SetCurSel(CurrentSet->nHDMI2_Port -1);
 	m_ctrlHdmi3Port.SetCurSel(CurrentSet->nHDMI3_Port -1);

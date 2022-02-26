@@ -757,6 +757,18 @@ _InternalFunction Predefined[] =
 	{ _T("") },
 	{ NULL_TYPE },
 
+	
+	_T("checkaudio_time_level"), _CheckAudio_Time_Level,
+	{ LP, INTEGER, COMMA, INTEGER, COMMA, INTEGER, COMMA, INTEGER, RP, TNULL },
+	{ _T("Audio Source"), _T("Left Level"), _T("Right Level"),_T("Max Delay"),_T("") },
+	{ AUDIO_SRC_SEL_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NULL_TYPE },
+
+	_T("checkaudio_time_freq"), _CheckAudio_Time_Frequency,
+	{ LP, INTEGER, COMMA, INTEGER, COMMA, INTEGER, COMMA, INTEGER, RP, TNULL },
+	{ _T("Audio Source"), _T("Left Freq."), _T("Right Freq."),_T("Max Delay"),_T("") },
+	{ AUDIO_SRC_SEL_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NULL_TYPE },
+
+
     NULL, NULL, { TNULL }
 };                      
 
@@ -4477,7 +4489,9 @@ void GetAudioValue(CStep* pStep)
 	int nCheckAudioNo	= -1;
 	int nCheckAudioNo_Level	= -1;
 	int nCheckAudioNo_Freq	= -1;
-	int nCheckAudioNo_Level_NoFreq	= -1;
+	int nCheckAudioNo_Level_NoFreq = -1;
+	int nCheckAudioNo_Time_Level = -1;
+	int nCheckAudioNo_Time_Freq	= -1;
 
 	BOOL bAudioTest = FALSE;
 
@@ -4502,130 +4516,142 @@ void GetAudioValue(CStep* pStep)
 		{
 			nCheckAudioNo_Level_NoFreq = nTmp;
 		}
+		if (strcmp(Predefined[nTmp].pszFunc, "checkaudio_time_level") == NULL)
+		{
+			nCheckAudioNo_Time_Level = nTmp;
+		}
+		if (strcmp(Predefined[nTmp].pszFunc, "checkaudio_time_freq") == NULL)
+		{
+			nCheckAudioNo_Time_Freq = nTmp;
+		}
+		
 	}
-
 
 	POSITION Pos = pStep->m_InstructionList.GetHeadPosition();
 	
-	while(Pos != NULL)
-	{	
+	while (Pos != NULL)
+	{
 		CFunction* pFunction = pStep->m_InstructionList.GetNext(Pos);
-	
+
 		//==============
 		// CheckAudio
 		//==============
-		if(pFunction->m_pFunc == Predefined[nCheckAudioNo].pFunc)
+		if (pFunction->m_pFunc == Predefined[nCheckAudioNo].pFunc)
 		{
 			bAudioTest = TRUE;
-			
+
 			pStep->m_bRunAudioTest = TRUE;
 			pStep->m_nMeasureAudioType = FREQ_LEVEL_CHECK;
 			POSITION ArgPos = pFunction->m_ArgumentList.GetHeadPosition();
-			
+
 			int nTmp = 0;
-			
-			while(nTmp < 6)
+
+			while (nTmp < 6)
 			{
 				Argument* pArgument = pFunction->m_ArgumentList.GetNext(ArgPos);
-			
-				if(nTmp == 0)
+
+				if (nTmp == 0)
 				{
-					pStep->m_nAudioSource = pArgument->Integer;	 
+					pStep->m_nAudioSource = pArgument->Integer;
 				}
-				else if(nTmp == 1)
+				else if (nTmp == 1)
 				{
-					pStep->m_nLeftFreq[0] =  pArgument->Integer;
+					pStep->m_nLeftFreq[0] = pArgument->Integer;
 				}
-				else if(nTmp == 2)
+				else if (nTmp == 2)
 				{
-					pStep->m_nRightFreq[0] =  pArgument->Integer;
+					pStep->m_nRightFreq[0] = pArgument->Integer;
 				}
-				else if(nTmp == 3)
+				else if (nTmp == 3)
 				{
-					pStep->m_nLeftLevel[0] =  pArgument->Integer;
+					pStep->m_nLeftLevel[0] = pArgument->Integer;
 				}
-				else if(nTmp == 4)
+				else if (nTmp == 4)
 				{
-					pStep->m_nRightLevel[0] =  pArgument->Integer;
+					pStep->m_nRightLevel[0] = pArgument->Integer;
 				}
-				else if(nTmp == 5)
+				else if (nTmp == 5)
 				{
 					pStep->m_nAudioMargin = pArgument->Integer;
 				}
 				nTmp++;
 			}
+
+			pStep->m_nCheckTimeLimit = 0;
 		}
 		//==============
 		// CheckAudio_Level
 		//==============
-		if(pFunction->m_pFunc == Predefined[nCheckAudioNo_Level].pFunc)
+		if (pFunction->m_pFunc == Predefined[nCheckAudioNo_Level].pFunc)
 		{
 			bAudioTest = TRUE;
-			
+
 			pStep->m_bRunAudioTest = TRUE;
 			pStep->m_nMeasureAudioType = LEVEL_CHECK;
 			POSITION ArgPos = pFunction->m_ArgumentList.GetHeadPosition();
-			
+
 			int nTmp = 0;
-			
-			while(nTmp < 3)
+
+			while (nTmp < 3)
 			{
 				Argument* pArgument = pFunction->m_ArgumentList.GetNext(ArgPos);
-			
-				if(nTmp == 0)
+
+				if (nTmp == 0)
 				{
-					pStep->m_nAudioSource = pArgument->Integer;	 
+					pStep->m_nAudioSource = pArgument->Integer;
 				}
-				else if(nTmp == 1)
+				else if (nTmp == 1)
 				{
-					pStep->m_nLeftLevel[0] =  pArgument->Integer;
+					pStep->m_nLeftLevel[0] = pArgument->Integer;
 				}
-				else if(nTmp == 2)
+				else if (nTmp == 2)
 				{
-					pStep->m_nRightLevel[0] =  pArgument->Integer;
+					pStep->m_nRightLevel[0] = pArgument->Integer;
 				}
 				nTmp++;
 			}
-			pStep->m_nLeftFreq[0]	= 0;
-			pStep->m_nRightFreq[0]	= 0;
+			pStep->m_nLeftFreq[0] = 0;
+			pStep->m_nRightFreq[0] = 0;
+			pStep->m_nCheckTimeLimit =  0;
 
 		}
 		//add psh 090306
 		//==============
 		// CheckAudio_Freq
 		//==============
-		if(pFunction->m_pFunc == Predefined[nCheckAudioNo_Freq].pFunc)
+		if (pFunction->m_pFunc == Predefined[nCheckAudioNo_Freq].pFunc)
 		{
 			bAudioTest = TRUE;
-			
+
 			pStep->m_bRunAudioTest = TRUE;
 			pStep->m_nMeasureAudioType = FREQUENCY_CHECK;
 			POSITION ArgPos = pFunction->m_ArgumentList.GetHeadPosition();
-			
+
 			int nTmp = 0;
-			
-			while(nTmp < 3)
+
+			while (nTmp < 3)
 			{
 				Argument* pArgument = pFunction->m_ArgumentList.GetNext(ArgPos);
-			
-				if(nTmp == 0)
+
+				if (nTmp == 0)
 				{
-					pStep->m_nAudioSource = pArgument->Integer;	 
+					pStep->m_nAudioSource = pArgument->Integer;
 				}
-				else if(nTmp == 1)
+				else if (nTmp == 1)
 				{
-					pStep->m_nLeftFreq[0] =  pArgument->Integer;
+					pStep->m_nLeftFreq[0] = pArgument->Integer;
 				}
-				else if(nTmp == 2)
+				else if (nTmp == 2)
 				{
-					pStep->m_nRightFreq[0] =  pArgument->Integer;
+					pStep->m_nRightFreq[0] = pArgument->Integer;
 				}
 				nTmp++;
 			}
-			pStep->m_nLeftLevel[0]	= 0;
+			pStep->m_nLeftLevel[0] = 0;
 			pStep->m_nRightLevel[0] = 0;
+			pStep->m_nCheckTimeLimit = 0;
 		}
-		
+
 		if (pFunction->m_pFunc == Predefined[nCheckAudioNo_Level_NoFreq].pFunc)
 		{
 			bAudioTest = TRUE;
@@ -4666,9 +4692,89 @@ void GetAudioValue(CStep* pStep)
 				}
 				nTmp++;
 			}
+			pStep->m_nCheckTimeLimit = 0;
 		}//
 
-}
+
+		 // CheckAudioTime_Level
+		//==============
+		if (pFunction->m_pFunc == Predefined[nCheckAudioNo_Time_Level].pFunc)
+		{
+			bAudioTest = TRUE;
+
+			pStep->m_bRunAudioTest = TRUE;
+			pStep->m_nMeasureAudioType = LEVEL_CHECK;
+			POSITION ArgPos = pFunction->m_ArgumentList.GetHeadPosition();
+
+			int nTmp = 0;
+
+			while (nTmp < 4)
+			{
+				Argument* pArgument = pFunction->m_ArgumentList.GetNext(ArgPos);
+
+				if (nTmp == 0)
+				{
+					pStep->m_nAudioSource = pArgument->Integer;
+				}
+				else if (nTmp == 1)
+				{
+					pStep->m_nLeftLevel[0] = pArgument->Integer;
+				}
+				else if (nTmp == 2)
+				{
+					pStep->m_nRightLevel[0] = pArgument->Integer;
+				}
+				else if (nTmp == 3)
+				{
+					pStep->m_nCheckTimeLimit = pArgument->Integer;
+				}
+				nTmp++;
+			}
+			pStep->m_nLeftFreq[0] = 0;
+			pStep->m_nRightFreq[0] = 0;
+
+		}
+		//add psh 090306
+		//==============
+		// CheckAudioTime_Freq
+		//==============
+		if (pFunction->m_pFunc == Predefined[nCheckAudioNo_Time_Freq].pFunc)
+		{
+			bAudioTest = TRUE;
+
+			pStep->m_bRunAudioTest = TRUE;
+			pStep->m_nMeasureAudioType = FREQUENCY_CHECK;
+			POSITION ArgPos = pFunction->m_ArgumentList.GetHeadPosition();
+
+			int nTmp = 0;
+
+			while (nTmp < 4)
+			{
+				Argument* pArgument = pFunction->m_ArgumentList.GetNext(ArgPos);
+
+				if (nTmp == 0)
+				{
+					pStep->m_nAudioSource = pArgument->Integer;
+				}
+				else if (nTmp == 1)
+				{
+					pStep->m_nLeftFreq[0] = pArgument->Integer;
+				}
+				else if (nTmp == 2)
+				{
+					pStep->m_nRightFreq[0] = pArgument->Integer;
+				}
+				else if (nTmp == 3)
+				{
+					pStep->m_nCheckTimeLimit = pArgument->Integer;
+				}
+				nTmp++;
+			}
+			pStep->m_nLeftLevel[0] = 0;
+			pStep->m_nRightLevel[0] = 0;
+		}
+
+	}
 	
 	if(bAudioTest == FALSE)
 	{
@@ -4680,6 +4786,7 @@ void GetAudioValue(CStep* pStep)
 		pStep->m_nLeftLevel[0]	= 0;
 		pStep->m_nRightLevel[0] = 0;
 		pStep->m_nAudioMargin	= 0;
+		pStep->m_nCheckTimeLimit = 0;
 	}
 }
 
@@ -5158,10 +5265,11 @@ BOOL MakeSubStep(CStep* pStep, CStringArray& aArray)
 {
 	CString sTmp, sSubStep;
 	int nSelNo = 0;
-	int nLeftFreq = 0, nLeftLevel = 0, nRightFreq = 0, nRightLevel = 0, nMargin = 0;
+	int nLeftFreq = 0, nLeftLevel = 0, nRightFreq = 0, nRightLevel = 0, nTimeLimit = 0, nMargin = 0;
 	
 	BOOL bIsCheckAudio = FALSE;
 	int  nCheckAudioType = -1;
+	int  nCheckAudioTypeEx = -1;
 
 		//+add psh 080809
 	int nArgumentNo	  	   = 0;
@@ -5180,6 +5288,7 @@ BOOL MakeSubStep(CStep* pStep, CStringArray& aArray)
 			nRightFreq	= pStep->m_nRightFreq[1];
 			nLeftLevel	= pStep->m_nLeftLevel[1];
 			nRightLevel = pStep->m_nRightLevel[1];
+			nTimeLimit = pStep->m_nCheckTimeLimit;
 			nMargin		= pStep->m_nAudioMargin;
 		}
 	}
@@ -5357,7 +5466,19 @@ BOOL MakeSubStep(CStep* pStep, CStringArray& aArray)
 					{
 						bIsCheckAudio = TRUE;
 						nCheckAudioType = FREQUENCY_CHECK;
-					}	
+					}
+					else if (Predefined[nTmp1].pszFunc == _T("checkaudio_time_level"))
+					{
+						bIsCheckAudio = TRUE;
+						nCheckAudioType = LEVEL_CHECK;
+						nCheckAudioTypeEx = LEVEL_CHECK;
+					}
+					else if (Predefined[nTmp1].pszFunc == _T("checkaudio_time_freq"))
+					{
+						bIsCheckAudio = TRUE;
+						nCheckAudioType = FREQUENCY_CHECK;
+						nCheckAudioTypeEx = FREQUENCY_CHECK;
+					}
 					else if(Predefined[nTmp1].pszFunc == _T("checkaudio_level_nofreq"))
 					{
 						bIsCheckAudio = TRUE;
@@ -5380,11 +5501,26 @@ BOOL MakeSubStep(CStep* pStep, CStringArray& aArray)
 
 				//Value Change
 				if(nCheckAudioType == LEVEL_CHECK){
-					sTmp.Format("%d , %d )",  nLeftLevel, nRightLevel);
+					if (nCheckAudioTypeEx == LEVEL_CHECK) {
+						sTmp.Format("%d , %d, %d )", nLeftLevel, nRightLevel, nTimeLimit);
+					}
+					else
+					{
+						sTmp.Format("%d , %d )", nLeftLevel, nRightLevel);
+					}
 					sSubStep += sTmp;
 				}
-				else if(nCheckAudioType == FREQUENCY_CHECK){
-					sTmp.Format("%d , %d )", nLeftFreq, nRightFreq);
+				else if(nCheckAudioType == FREQUENCY_CHECK)
+				{
+					if (nCheckAudioTypeEx == FREQUENCY_CHECK)
+					{
+						sTmp.Format("%d , %d, %d )", nLeftFreq, nRightFreq, nTimeLimit);
+					}
+					else
+					{
+						sTmp.Format("%d , %d )", nLeftFreq, nRightFreq);
+					}
+					
 					sSubStep += sTmp;
 				}
 				else{

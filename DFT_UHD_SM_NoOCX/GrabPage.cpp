@@ -503,7 +503,8 @@ BOOL CGrabPage::OnInitDialog()
 	m_ctrlGrabMode.AddString(" 12. Type13 : 21Y50 68P HKC CEDS UPQO VA");
 	m_ctrlGrabMode.AddString(" 13. Type14 : 21Y70 68P SharpCEDS DPT UPQO");
 	m_ctrlGrabMode.AddString(" 14. Type15 : HKC 966 Pixel");
-	m_ctrlGrabMode.AddString(" 15. Type16 : CSOT 68P 55UP77");//m_ctrlGrabMode.AddString(" 15. Type16 : Y20_SW_Mode_00");
+	m_ctrlGrabMode.AddString(" 15. Type16 : CSOT 68P 55UP77");//
+	m_ctrlGrabMode.AddString(" 16. Type17 : 8K T-CONLESS");
 	//m_ctrlGrabMode.AddString(" 16. Type17 : Y20_SW_Mode_02");
 	//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 	m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
@@ -851,8 +852,14 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
 						g_ImageProc.P68_70_UPQO_Sharp_CEDS_DPT(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
 						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
-					//	lRotateProcess = 1;
-					}		
+						//	lRotateProcess = 1;
+					}
+					else if (CurrentSet->nUHD_Grab_Mode == 16) {
+						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
+						g_ImageProc.P22Y8K_TCONLESS(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
+						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
+						
+					}
 					else {
 
 #ifdef SM_MODIFY_CODE__	
@@ -865,6 +872,9 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 
 #endif
 					}
+
+					//g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
+
 					if (CurrentSet->nRedBlueSwap)
 					{
 						g_ImageProc.RedBlueSwap(g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nRedBlueSwap);

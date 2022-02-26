@@ -3591,8 +3591,10 @@ BOOL _CheckAudio_Level()
 			AvSwitchBoxCtrl.m_bMeasureAudioType = LEVEL_CHECK;
 			AvSwitchBoxCtrl.m_fTargetLeftLevel	= (float)GetInteger();
 			AvSwitchBoxCtrl.m_fTargetRightLevel	= (float)GetInteger();
+			AvSwitchBoxCtrl.m_nCheckTimeLimit = 0;
 
-			AvSwitchBoxCtrl.m_fLevelMargin		= (float)CurrentSet->nLevelMargin;
+			AvSwitchBoxCtrl.m_fLevelMargin = (float)CurrentSet->nLevelMargin;
+			
 		}
 		else
 		{
@@ -3600,6 +3602,7 @@ BOOL _CheckAudio_Level()
 			g_SoundCard.m_bMeasureAudioType = LEVEL_CHECK;
 			g_SoundCard.m_fTargetLeftLevel	= (float)GetInteger();
 			g_SoundCard.m_fTargetRightLevel	= (float)GetInteger();
+			g_SoundCard.m_nCheckTimeLimit = 0;
 
 			g_SoundCard.m_fLevelMargin		= (float)CurrentSet->nLevelMargin;
 		}
@@ -3657,6 +3660,7 @@ BOOL _CheckAudio_Frequency()
 			AvSwitchBoxCtrl.m_bMeasureAudioType = FREQUENCY_CHECK;
 			AvSwitchBoxCtrl.m_fTargetLeftFreq	= (float)GetInteger();
 			AvSwitchBoxCtrl.m_fTargetRightFreq	= (float)GetInteger();
+			AvSwitchBoxCtrl.m_nCheckTimeLimit = 0;
 
 			AvSwitchBoxCtrl.m_fFreqMargin		= (float)CurrentSet->nFreqMargin;
 		}
@@ -3666,6 +3670,7 @@ BOOL _CheckAudio_Frequency()
 			g_SoundCard.m_bMeasureAudioType = FREQUENCY_CHECK;
 			g_SoundCard.m_fTargetLeftFreq	= (float)GetInteger();
 			g_SoundCard.m_fTargetRightFreq	= (float)GetInteger();
+			g_SoundCard.m_nCheckTimeLimit = 0;
 
 			g_SoundCard.m_fFreqMargin		= (float)CurrentSet->nFreqMargin;			
 		}
@@ -3694,6 +3699,142 @@ BOOL _CheckAudio_Frequency()
 
 
 //	pCurStep->m_bRunAudioTest = TRUE;
+
+	return TRUE;
+}
+
+//+add 090305
+BOOL _CheckAudio_Time_Level()
+{
+	CString sCmd = _T("");
+	CString sMsg = _T("");
+
+	int nAudioSource = 0;
+	int nAudioCHchangeDelay = 0;
+	int nTemp = 0;
+
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+
+
+	//	g_SoundCard.m_bMeasureAudio = FALSE;
+
+	if (pos != NULL)
+	{
+		nAudioSource = GetInteger();
+
+		if (CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
+		{
+			//+add PSH 090305
+			AvSwitchBoxCtrl.m_bMeasureAudioType = LEVEL_CHECK;
+			AvSwitchBoxCtrl.m_fTargetLeftLevel = (float)GetInteger();
+			AvSwitchBoxCtrl.m_fTargetRightLevel = (float)GetInteger();
+			AvSwitchBoxCtrl.m_nCheckTimeLimit = GetInteger();
+
+			AvSwitchBoxCtrl.m_fLevelMargin = (float)CurrentSet->nLevelMargin;
+		}
+		else
+		{
+			//+add PSH 090305
+			g_SoundCard.m_bMeasureAudioType = LEVEL_CHECK;
+			g_SoundCard.m_fTargetLeftLevel = (float)GetInteger();
+			g_SoundCard.m_fTargetRightLevel = (float)GetInteger();
+			g_SoundCard.m_nCheckTimeLimit = GetInteger();
+
+			g_SoundCard.m_fLevelMargin = (float)CurrentSet->nLevelMargin;
+		}
+	}
+	else
+	{
+		return FALSE;
+	}
+
+	//+add kwmoon 080507
+	if (g_pView->m_bMakeReferenceMode)
+	{
+		return TRUE;
+	}
+
+	//+add kwmoon 070929
+	if ((pCurStep->m_bStepRetryFlag) || !g_CurSetting.IsSameAudioSource(nAudioSource))
+	{
+		SetAudioSource(nAudioSource);
+		g_pView->AudioMeasureStop();
+		//_Wait(150);
+		g_pView->AudioMeasureStart();
+
+		//_Wait(1000);
+	}
+
+
+	//	pCurStep->m_bRunAudioTest = TRUE;
+
+	return TRUE;
+}
+
+//+add 220222
+BOOL _CheckAudio_Time_Frequency()
+{
+	CString sCmd = _T("");
+	CString sMsg = _T("");
+
+	int nAudioSource = 0;
+	int nAudioCHchangeDelay = 0;
+	int nTemp = 0;
+
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+
+
+	//	g_SoundCard.m_bMeasureAudio = FALSE;
+
+	if (pos != NULL)
+	{
+		nAudioSource = GetInteger();
+
+		if (CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
+		{
+			//+add PSH 090305
+			AvSwitchBoxCtrl.m_bMeasureAudioType = FREQUENCY_CHECK;
+			AvSwitchBoxCtrl.m_fTargetLeftFreq = (float)GetInteger();
+			AvSwitchBoxCtrl.m_fTargetRightFreq = (float)GetInteger();
+			AvSwitchBoxCtrl.m_nCheckTimeLimit = GetInteger();
+
+			AvSwitchBoxCtrl.m_fFreqMargin = (float)CurrentSet->nFreqMargin;
+		}
+		else
+		{
+			//+add PSH 090305
+			g_SoundCard.m_bMeasureAudioType = FREQUENCY_CHECK;
+			g_SoundCard.m_fTargetLeftFreq = (float)GetInteger();
+			g_SoundCard.m_fTargetRightFreq = (float)GetInteger();
+			g_SoundCard.m_nCheckTimeLimit = GetInteger();
+
+			g_SoundCard.m_fFreqMargin = (float)CurrentSet->nFreqMargin;
+		}
+	}
+	else
+	{
+		return FALSE;
+	}
+
+	//+add kwmoon 080507
+	if (g_pView->m_bMakeReferenceMode)
+	{
+		return TRUE;
+	}
+
+	//+add kwmoon 070929
+	if ((pCurStep->m_bStepRetryFlag) || !g_CurSetting.IsSameAudioSource(nAudioSource))
+	{
+		SetAudioSource(nAudioSource);
+
+		g_pView->AudioMeasureStop();
+		//_Wait(150);
+		g_pView->AudioMeasureStart();
+		//_Wait(1000);
+	}
+
+
+	//	pCurStep->m_bRunAudioTest = TRUE;
 
 	return TRUE;
 }

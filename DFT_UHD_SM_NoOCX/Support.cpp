@@ -834,14 +834,14 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->nUHD_Type = m_Ini.GetProfileInt(GRAB_S, "UHD Type");
 		CurrentSet->nUHD_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "UHD Grab BitShift");
 		CurrentSet->nUHD_Grab_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Mode");
-		if(CurrentSet->nUHD_Grab_Mode > 15){CurrentSet->nUHD_Grab_Mode = 13;}
+		if(CurrentSet->nUHD_Grab_Mode > 16){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
 		if (CurrentSet->nUHD_Y20_SW_Mode > 7) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
 
 		CurrentSet->nHDMI_Grab_Resolution = m_Ini.GetProfileInt(GRAB_S, "HDMI Grab Resolution");
 		CurrentSet->nHDMI_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "HDMI Grab BitShift");
-		CurrentSet->bHdmiOutControl = m_Ini.GetProfileInt(GRAB_S, "HDMI Out Port Control");
+		CurrentSet->bHdmiOutControl = 0;// m_Ini.GetProfileInt(GRAB_S, "HDMI Out Port Control");
 		CurrentSet->bHdmiGrab_MaskOsd = m_Ini.GetProfileInt(GRAB_S, "HDMI Grab Mask OSD");
 
 		switch(CurrentSet->nHDMI_Grab_Resolution) 

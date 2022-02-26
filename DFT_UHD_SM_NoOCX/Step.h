@@ -132,6 +132,7 @@ public :
 		}
 		
 		m_nAudioMargin = 0;
+		m_nCheckTimeLimit = 0;
 
 		
 		m_nBitCount				= 0;
@@ -235,6 +236,7 @@ public :
 	BOOL			m_bVideoTestResult;
 	//+add psh 090306
 	BOOL			m_nMeasureAudioType;
+	BOOL			m_nMeasureAudioTypeEx;
 
 	//+ 2007.12.5 Add BY USY
 	BOOL			m_bRunAdcTest;
@@ -251,6 +253,7 @@ public :
 	int				m_nLeftLevel[2];		// 0 : Left Level Target, 1 : Left Level Measure
 	int				m_nRightLevel[2];		// 0 : Right Level Target, 1 : Right Level Measure
 	int				m_nAudioMargin;
+	int m_nCheckTimeLimit;
 	//-
 
 	int m_aNoDifferentPoint[3][NO_DIFFERENT_POINT_BLOCK];

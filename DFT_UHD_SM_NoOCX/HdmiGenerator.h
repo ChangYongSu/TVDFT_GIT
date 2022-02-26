@@ -33,6 +33,7 @@ public:
 	//Variable
 	BOOL			m_bPortOpen;
 	BOOL			m_bResetPatternModel;
+	BOOL			m_bResetHDCP_EDID;
 	CCommThread		m_ctrlPatternGenerator;
 	BYTE			m_strReceive[225];
 	CString			m_strErrMsg;

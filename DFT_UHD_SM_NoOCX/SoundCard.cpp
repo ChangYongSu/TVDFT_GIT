@@ -708,6 +708,8 @@ BOOL CSoundCard::AudioMeasure()
 	double nCorrectionValue = 0.97;
 	double dLevel_L = 0;
 	double dLevel_R = 0;
+	DWORD dwElapsedTime = 0;
+	DWORD dwTickCount = GetTickCount();
 
 	int aResult[4] = {0,0,0,0};
 
@@ -773,6 +775,8 @@ BOOL CSoundCard::AudioMeasure()
 	m_fRightLevelLowerLimit = m_fTargetRightLevel * fLevelLowerMargin;
 #endif
 	int TestCount = 1;
+
+	
 	if ((m_fTargetLeftFreq < 15) && (m_fTargetRightFreq < 15))
 	{
 		if ((m_bMeasureAudioType == FREQ_LEVEL_CHECK) || (m_bMeasureAudioType == FREQUENCY_CHECK))
@@ -780,193 +784,214 @@ BOOL CSoundCard::AudioMeasure()
 			TestCount = 5;
 		}
 	}
+	
+
 
 	m_bResult = FALSE;
-
-	for (int i = 0; i < TestCount; i++)
+	while (m_bResult == FALSE)
 	{
-
-		if (m_bResult == TRUE)
+		for (int i = 0; i < TestCount; i++)
 		{
-			_Wait(100);
+
+			if (m_bResult == TRUE)
+			{
+				_Wait(100);
+			}
+
+			if (!wIn_Flag) { WaveRead_Start(); _Wait(100); }
+
+			EnterCriticalSection(&g_cs);
+
+			//g_CriticalSection.Lock();
+			// LEFT
+
+			ctrlPeakDetect.Invalidate();
+			ctrlSpectrum_L.Invalidate();
+			GetWavePeak_L(&freq, &amp, &dbamp);
+			GetPeackDetectorPeak_L(&dLevel_L);
+
+			m_fMeasuredLeftFreq = (float)freq;
+			m_fMeasuredLeftLevel = (float)(dLevel_L / (2 * 1.4142)*0.1*nCorrectionValue);
+			// RIGHT
+			ctrlSpectrum_R.Invalidate();
+			GetWavePeak_R(&freq, &amp, &dbamp);
+			GetPeackDetectorPeak_R(&dLevel_R);
+
+			m_fMeasuredRightFreq = (float)freq;
+			m_fMeasuredRightLevel = (float)(dLevel_R / (2 * 1.4142)*0.1*nCorrectionValue);
+
+			LeaveCriticalSection(&g_cs);
+			//g_CriticalSection.Unlock(); 
+
+			switch (m_bMeasureAudioType)
+			{
+			case FREQ_LEVEL_CHECK://checkaudio_level_nofreq
+				sTemp.Format(_T("F:%d,%d/ L:%d,%d"), (int)m_fMeasuredLeftFreq, (int)m_fMeasuredRightFreq, (int)m_fMeasuredLeftLevel, (int)m_fMeasuredRightLevel);
+				if ((m_fMeasuredLeftFreq >= m_fLeftFreqLowerLimit) && (m_fMeasuredLeftFreq <= m_fLeftFreqUpperLimit)) {
+					aResult[0] = TEST_PASS;
+				}
+				else {
+					aResult[0] = TEST_FAIL;
+				}
+
+				if ((m_fMeasuredRightFreq >= m_fRightFreqLowerLimit) && (m_fMeasuredRightFreq <= m_fRightFreqUpperLimit)) {
+					aResult[1] = TEST_PASS;
+				}
+				else {
+					aResult[1] = TEST_FAIL;
+				}
+
+				if (m_fMeasuredLeftLevel >= m_fLeftLevelLowerLimit) {
+					aResult[2] = TEST_PASS;
+				}
+				else {
+					aResult[2] = TEST_FAIL;
+				}
+
+				if (m_fMeasuredRightLevel >= m_fRightLevelLowerLimit) {
+					aResult[3] = TEST_PASS;
+				}
+				else {
+					aResult[3] = TEST_FAIL;
+				}
+
+				if ((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS) && (aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
+				{
+					m_bResult = TRUE;
+
+
+				}
+				else {
+					m_bResult = FALSE;
+				}
+				break;
+
+			case FREQUENCY_CHECK:
+				sTemp.Format(_T("F:%d,%d"), (int)m_fMeasuredLeftFreq, (int)m_fMeasuredRightFreq);
+				if ((m_fMeasuredLeftFreq >= m_fLeftFreqLowerLimit) && (m_fMeasuredLeftFreq <= m_fLeftFreqUpperLimit)) {
+					aResult[0] = TEST_PASS;
+				}
+				else {
+					aResult[0] = TEST_FAIL;
+				}
+
+				if ((m_fMeasuredRightFreq >= m_fRightFreqLowerLimit) && (m_fMeasuredRightFreq <= m_fRightFreqUpperLimit)) {
+					aResult[1] = TEST_PASS;
+				}
+				else {
+					aResult[1] = TEST_FAIL;
+				}
+
+				// add 20101222
+				if ((fabs(m_fMeasuredLeftLevel) < (m_fMeasuredRightLevel*0.1)) || (fabs(m_fMeasuredRightLevel) < fabs(m_fMeasuredLeftLevel*0.1))) {
+					aResult[2] = TEST_FAIL;
+				}
+				else {
+					aResult[2] = TEST_PASS;
+				}
+				//-
+
+				if ((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS) && (aResult[2] == TEST_PASS))
+				{
+					m_bResult = TRUE;
+				}
+				else {
+					m_bResult = FALSE;
+				}
+				break;
+
+			case LEVEL_CHECK:
+				sTemp.Format(_T("L:%d,%d"), (int)m_fMeasuredLeftLevel, (int)m_fMeasuredRightLevel);
+				if (m_fMeasuredLeftLevel >= m_fLeftLevelLowerLimit) {
+					aResult[2] = TEST_PASS;
+				}
+				else {
+					aResult[2] = TEST_FAIL;
+				}
+
+				if (m_fMeasuredRightLevel >= m_fRightLevelLowerLimit) {
+					aResult[3] = TEST_PASS;
+				}
+				else {
+					aResult[3] = TEST_FAIL;
+				}
+
+				if ((aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
+				{
+					m_bResult = TRUE;
+				}
+				else {
+					m_bResult = FALSE;
+				}
+				break;
+
+			case FREQ_LEVEL_CHECK_MOVING://checkaudio_level_nofreq
+				sTemp.Format(_T("F:%d,%d/ L:%d,%d"), (int)m_fMeasuredLeftFreq, (int)m_fMeasuredRightFreq, (int)m_fMeasuredLeftLevel, (int)m_fMeasuredRightLevel);
+				if ((m_fMeasuredLeftFreq >= m_fLeftFreqLowerLimit) && (m_fMeasuredLeftFreq <= m_fLeftFreqUpperLimit)) {
+					aResult[0] = TEST_FAIL;
+				}
+				else {
+					aResult[0] = TEST_PASS;
+				}
+
+				if ((m_fMeasuredRightFreq >= m_fRightFreqLowerLimit) && (m_fMeasuredRightFreq <= m_fRightFreqUpperLimit)) {
+					aResult[1] = TEST_FAIL;
+				}
+				else {
+					aResult[1] = TEST_PASS;
+				}
+
+				if (m_fMeasuredLeftLevel >= m_fLeftLevelLowerLimit) {
+					aResult[2] = TEST_PASS;
+				}
+				else {
+					aResult[2] = TEST_FAIL;
+				}
+
+				if (m_fMeasuredRightLevel >= m_fRightLevelLowerLimit) {
+					aResult[3] = TEST_PASS;
+				}
+				else {
+					aResult[3] = TEST_FAIL;
+				}
+
+				if ((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS) && (aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
+				{
+					m_bResult = TRUE;
+
+
+				}
+				else {
+					m_bResult = FALSE;
+				}
+				break;
+			}
+			ctrlStepMeasur_A.SetWindowText(sTemp);
+			ctrlStepMeasur_A.Invalidate();
+			ctrlStepMeasur_A.UpdateWindow();
+
+
+			if (m_bResult == FALSE)
+			{
+
+				break;
+
+			}
 		}
-		
-		if (!wIn_Flag) { WaveRead_Start(); _Wait(100); }
-
-		EnterCriticalSection(&g_cs);
-
-		//g_CriticalSection.Lock();
-		// LEFT
-
-		ctrlPeakDetect.Invalidate();
-		ctrlSpectrum_L.Invalidate();
-		GetWavePeak_L(&freq, &amp, &dbamp);
-		GetPeackDetectorPeak_L(&dLevel_L);
-
-		m_fMeasuredLeftFreq = (float)freq;
-		m_fMeasuredLeftLevel = (float)(dLevel_L / (2 * 1.4142)*0.1*nCorrectionValue);
-		// RIGHT
-		ctrlSpectrum_R.Invalidate();
-		GetWavePeak_R(&freq, &amp, &dbamp);
-		GetPeackDetectorPeak_R(&dLevel_R);
-
-		m_fMeasuredRightFreq = (float)freq;
-		m_fMeasuredRightLevel = (float)(dLevel_R / (2 * 1.4142)*0.1*nCorrectionValue);
-
-		LeaveCriticalSection(&g_cs);
-		//g_CriticalSection.Unlock(); 
-		
-		switch (m_bMeasureAudioType)
-		{
-		case FREQ_LEVEL_CHECK://checkaudio_level_nofreq
-			sTemp.Format(_T("F:%d,%d/ L:%d,%d"), (int)m_fMeasuredLeftFreq, (int)m_fMeasuredRightFreq, (int)m_fMeasuredLeftLevel, (int)m_fMeasuredRightLevel);
-			if ((m_fMeasuredLeftFreq >= m_fLeftFreqLowerLimit) && (m_fMeasuredLeftFreq <= m_fLeftFreqUpperLimit)) {
-				aResult[0] = TEST_PASS;
-			}
-			else {
-				aResult[0] = TEST_FAIL;
-			}
-
-			if ((m_fMeasuredRightFreq >= m_fRightFreqLowerLimit) && (m_fMeasuredRightFreq <= m_fRightFreqUpperLimit)) {
-				aResult[1] = TEST_PASS;
-			}
-			else {
-				aResult[1] = TEST_FAIL;
-			}
-
-			if (m_fMeasuredLeftLevel >= m_fLeftLevelLowerLimit) {
-				aResult[2] = TEST_PASS;
-			}
-			else {
-				aResult[2] = TEST_FAIL;
-			}
-
-			if (m_fMeasuredRightLevel >= m_fRightLevelLowerLimit) {
-				aResult[3] = TEST_PASS;
-			}
-			else {
-				aResult[3] = TEST_FAIL;
-			}
-
-			if ((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS) && (aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
-			{
-				m_bResult = TRUE;
-				
-
-			}
-			else {
-				m_bResult = FALSE;
-			}
-			break;
-
-		case FREQUENCY_CHECK:
-			sTemp.Format(_T("F:%d,%d"), (int)m_fMeasuredLeftFreq, (int)m_fMeasuredRightFreq);
-			if ((m_fMeasuredLeftFreq >= m_fLeftFreqLowerLimit) && (m_fMeasuredLeftFreq <= m_fLeftFreqUpperLimit)) {
-				aResult[0] = TEST_PASS;
-			}
-			else {
-				aResult[0] = TEST_FAIL;
-			}
-
-			if ((m_fMeasuredRightFreq >= m_fRightFreqLowerLimit) && (m_fMeasuredRightFreq <= m_fRightFreqUpperLimit)) {
-				aResult[1] = TEST_PASS;
-			}
-			else {
-				aResult[1] = TEST_FAIL;
-			}
-
-			// add 20101222
-			if ((fabs(m_fMeasuredLeftLevel) < (m_fMeasuredRightLevel*0.1)) || (fabs(m_fMeasuredRightLevel) < fabs(m_fMeasuredLeftLevel*0.1))) {
-				aResult[2] = TEST_FAIL;
-			}
-			else {
-				aResult[2] = TEST_PASS;
-			}
-			//-
-
-			if ((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS) && (aResult[2] == TEST_PASS))
-			{
-				m_bResult = TRUE;
-			}
-			else {
-				m_bResult = FALSE;
-			}
-			break;
-
-		case LEVEL_CHECK:
-			sTemp.Format(_T("L:%d,%d"), (int)m_fMeasuredLeftLevel, (int)m_fMeasuredRightLevel);
-			if (m_fMeasuredLeftLevel >= m_fLeftLevelLowerLimit) {
-				aResult[2] = TEST_PASS;
-			}
-			else {
-				aResult[2] = TEST_FAIL;
-			}
-
-			if (m_fMeasuredRightLevel >= m_fRightLevelLowerLimit) {
-				aResult[3] = TEST_PASS;
-			}
-			else {
-				aResult[3] = TEST_FAIL;
-			}
-
-			if ((aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
-			{
-				m_bResult = TRUE;
-			}
-			else {
-				m_bResult = FALSE;
-			}
-			break;
-
-		case FREQ_LEVEL_CHECK_MOVING://checkaudio_level_nofreq
-			sTemp.Format(_T("F:%d,%d/ L:%d,%d"), (int)m_fMeasuredLeftFreq, (int)m_fMeasuredRightFreq, (int)m_fMeasuredLeftLevel, (int)m_fMeasuredRightLevel);
-			if ((m_fMeasuredLeftFreq >= m_fLeftFreqLowerLimit) && (m_fMeasuredLeftFreq <= m_fLeftFreqUpperLimit)) {
-				aResult[0] = TEST_FAIL;
-			}
-			else {
-				aResult[0] = TEST_PASS;
-			}
-
-			if ((m_fMeasuredRightFreq >= m_fRightFreqLowerLimit) && (m_fMeasuredRightFreq <= m_fRightFreqUpperLimit)) {
-				aResult[1] = TEST_FAIL;
-			}
-			else {
-				aResult[1] = TEST_PASS;
-			}
-
-			if (m_fMeasuredLeftLevel >= m_fLeftLevelLowerLimit) {
-				aResult[2] = TEST_PASS;
-			}
-			else {
-				aResult[2] = TEST_FAIL;
-			}
-
-			if (m_fMeasuredRightLevel >= m_fRightLevelLowerLimit) {
-				aResult[3] = TEST_PASS;
-			}
-			else {
-				aResult[3] = TEST_FAIL;
-			}
-
-			if ((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS) && (aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
-			{
-				m_bResult = TRUE;
-
-
-			}
-			else {
-				m_bResult = FALSE;
-			}
-			break;
-		}
-		ctrlStepMeasur_A.SetWindowText(sTemp);
-		ctrlStepMeasur_A.Invalidate();
-		ctrlStepMeasur_A.UpdateWindow();
 		if (m_bResult == FALSE)
 		{
+			dwElapsedTime = GetTickCount() - dwTickCount;
+
+			if ((dwElapsedTime > (DWORD)m_nCheckTimeLimit) || (dwElapsedTime > 30000))//if ((100 < (DWORD)m_nCheckTimeLimit) && (dwElapsedTime > (DWORD)m_nCheckTimeLimit))
+			{
+				break;
+			}			
+			_Wait(100);
+		}
+		else
+		{
 			break;
 		}
-		//_Wait(100);
 	}
 
 	return m_bResult;

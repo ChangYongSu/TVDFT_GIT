@@ -1509,7 +1509,8 @@ double _Moving_Pic_Test()
 	pCurStep->m_strGrabPath  = sGrabPath;
 	pCurStep->m_strProcPath  = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".rst";
 	g_GrabImage.m_szFilePath = sGrabPath;
-pCurStep->m_bRunVideoTest = TRUE;
+
+	pCurStep->m_bRunVideoTest = TRUE;
 	//090324
 	
 	CString szMsg1 = _T("");
@@ -1527,7 +1528,7 @@ pCurStep->m_bRunVideoTest = TRUE;
 
 	float fRightFreqArry[50];
 	float fLeftFreqArry[50];
-
+#if 0
 	for (int i = 0; i < 50; i++)
 	{
 		if (CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
@@ -1622,7 +1623,9 @@ pCurStep->m_bRunVideoTest = TRUE;
 		}
 		//return 0.0;
 	}
-	
+#else
+	nFreqMovingResult = TRUE;
+#endif	
 
 	for (int i = 0; i < nNoGrab; i++)
 	{
@@ -4161,13 +4164,13 @@ double _Drm_Key_DL_Check()
 			{
 				return 1.0;
 			}
-			else
-			{
-				TVCommCtrl.Send_TVControl_Command("aa 00 00", 700);
-				TVCommCtrl.Send_TVControl_Command("ai 00 30", 700);
-				TVCommCtrl.Send_TVControl_Command("aa 00 20", 700);
-				TVCommCtrl.Send_TVControl_Command("ar 00 30", 700);
-			}
+			//else
+			//{
+			//	TVCommCtrl.Send_TVControl_Command("aa 00 00", 700);
+			//	TVCommCtrl.Send_TVControl_Command("ai 00 30", 700);
+			//	TVCommCtrl.Send_TVControl_Command("aa 00 20", 700);
+			//	TVCommCtrl.Send_TVControl_Command("ar 00 30", 700);
+			//}
 		}
 
 	}

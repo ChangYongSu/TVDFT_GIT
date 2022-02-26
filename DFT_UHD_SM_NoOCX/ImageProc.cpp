@@ -6086,3 +6086,172 @@ for (i = 0; i < nHeight / 2; i = i + 1) {
 
 
 }
+
+void CImageProc::P22Y8K_TCONLESS(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight)
+{
+	//g_ImageProc.P60_CEDS20Y_Mapping(bufTmp, g_GrabDisplayImage.m_pImageData, nWidth, nHeight);
+
+	//int nProgress = 0;
+
+	int nImageSize = nWidth * nHeight * 3;
+	int nNewImageSize = nImageSize;//
+
+	//int nRow = 0;
+	//int nCol = 0;
+
+	//float fRow = 0;
+	//float fCol = 0;
+
+	//BYTE nNewValue = 0;
+
+	//float fSr = 0.0f;
+	//float fSc = 0.0f;
+
+	//float fI1, fI2, fI3, fI4;
+
+	BYTE* bufOut = (BYTE *)malloc(nNewImageSize);
+	memset(bufOut, 0, nNewImageSize);
+
+	//BYTE* bufTmp = (BYTE *)malloc(nNewImageSize);
+	//memset(bufTmp, 0, nNewImageSize);
+
+
+	int i, j,k;
+
+
+	//for (i = 0; i < nHeight; i = i + 1) {
+	//	for (j = 0; j < nWidth / 8; j = j + 1) {
+	//		for (k = 0; k < 2; k = k + 1) {
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + 6 * j + k * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + k * 3 + 0]; //CH0_BLUE
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + 6 * j + k * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + k * 3 + 1]; //CH0_GREEN
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + 6 * j + k * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + k * 3 + 2]; //CH0_RED
+	//		}
+	//		for (k = 0; k < 2; k = k + 1) {
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (k + 2) * 3 + 0];
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (k + 2) * 3 + 1];
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (k + 2) * 3 + 2];
+	//		}
+	//	}
+	//	for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+	//		for (k = 0; k < 2; k = k + 1) {
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + k * 3 + 0];
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + k * 3 + 1];
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + k * 3 + 2];
+	//		}
+	//		for (k = 0; k < 2; k = k + 1) {
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (k + 2) * 3 + 0];
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (k + 2) * 3 + 1];
+	//			bufTmp[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (k + 2) * 3 + 2];
+	//		}
+	//	}
+	//}
+
+	//8K TCONLESS
+	for (i = 0; i < nHeight / 2; i = i + 1) {
+		for (j = 0; j < nWidth / 16; j = j + 1)
+		{
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 1) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 3) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 5) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 0) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 7) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 2) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 4) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 9) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 6) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 8) * 3 + 1];
+
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 0] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 0];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 1] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 1];
+			bufOut[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 2] = bufTmp[(i * 2 + 0) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 2];
+
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 0] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 2];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 1] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 0];
+			bufOut[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 11) * 3 + 2] = bufTmp[(i * 2 + 1) * nWidth * 3 + (j + (nWidth / 16) * 10) * 3 + 1];
+		}
+	}
+
+	memcpy(pImgBufOut, bufOut, nNewImageSize);
+	if (bufOut != NULL) delete bufOut; bufOut = NULL;
+
+
+	//if (bufTmp != NULL) delete bufTmp; bufTmp = NULL;
+
+}

@@ -2883,8 +2883,15 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 
 	sBaudRate							= pApp->GetProfileString(_T("Config"), _T("HDMI Generator Baud Rate"), "19200");
 	pCurrentSet->wHDMIBaudRate			= (DWORD)(atoi(sBaudRate));
-	pCurrentSet->nHDMIGenType			= pApp->GetProfileInt(_T("Config"), _T("HDMI Generator Type"), 0);
-
+	//pCurrentSet->nHDMIGenType			= pApp->GetProfileInt(_T("Config"), _T("HDMI Generator Type"), 0);
+	if (g_nGrabberType == FHD_GRABBER)
+	{
+		pCurrentSet->nHDMIGenType = 1;
+	}
+	else
+	{
+		pCurrentSet->nHDMIGenType = 0;
+	}
 	sBaudRate							= pApp->GetProfileString(_T("Config"), _T("AVC Baud Rate"), "19200");
 	pCurrentSet->wAvcBaudRate			= (DWORD)(atoi(sBaudRate));
 
@@ -3015,7 +3022,7 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		pCurrentSet->nToolOptionSetMethod = 0;
 	}
 
-	pCurrentSet->bHdmiOutControl		= pApp->GetProfileInt(_T("Config"), _T("HDMI Out Port Control"), 0);
+	pCurrentSet->bHdmiOutControl = 0;// pApp->GetProfileInt(_T("Config"), _T("HDMI Out Port Control"), 0);
 	pCurrentSet->nHDMI1_Port			= pApp->GetProfileInt(_T("Config"), _T("HDMI1 Port"), 1);
 	pCurrentSet->nHDMI2_Port			= pApp->GetProfileInt(_T("Config"), _T("HDMI2 Port"), 2);
 	pCurrentSet->nHDMI3_Port			= pApp->GetProfileInt(_T("Config"), _T("HDMI3 Port"), 3);
@@ -5798,6 +5805,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	pView->m_BatVerReadOnly = 1;
 
 	HDMIGeneratorCtrl.m_bResetPatternModel = 1;
+	HDMIGeneratorCtrl.m_bResetHDCP_EDID = 1;
 
 	SystemMonitorLog_Save("StartTestThread(LPVOID pParam) ");
 	// RunMode : CONT = 0, ERRORSTEP = 1, STOP = 2, STEP = 3, AUTO = 4
@@ -5836,6 +5844,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	}
 	return 0;
 #endif
+
 //	BOOL bRunAdcTest	= FALSE;
 //#ifdef ERR_DEBUG	
 //	g_pView->m_bWriteMassageFlag = 0;
@@ -6537,7 +6546,28 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 		}
 
 		//////////////////////////////godtech
-	
+		if (HDMIGeneratorCtrl.m_bResetHDCP_EDID == 1)
+		{
+			HDMIGeneratorCtrl.m_bResetHDCP_EDID = 0;
+			if (CurrentSet->nHDMIGenType == 0) {
+				HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE);
+			}
+			else {
+				HDMIGeneratorCtrl.SetEDID_PassCheck(FALSE);
+			}
+
+			Sleep(100);
+			
+			
+			if (CurrentSet->nHDMIGenType == 0) {
+				HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE);
+			}
+			else {
+				HDMIGeneratorCtrl.SetHDCP_OnOff(FALSE);
+			}
+			Sleep(100);
+			
+		}
 //
 //#define FORCED_CHECK_ID_HEADPHONE		0
 //#define FORCED_CHECK_ID_GREENEYE		1
@@ -6599,6 +6629,8 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 			}
 			g_ForcedInputCheck = 0;
 		}
+
+
 	}
 
 END_WHILE_LOOP :
@@ -7560,10 +7592,13 @@ int CDATsysView::StepRun()
 							if (lWhiteFlag == 1)
 							{
 								g_pView->GrabBaseResetStartThread();
-								localRetryResult = (*pCurFunc->m_pFunc)();
-								if (localRetryResult == TEST_PASS)
+								if (g_pView->Grab_UHD())
 								{
-									continue;
+									localRetryResult = (*pCurFunc->m_pFunc)();
+									if (localRetryResult == TEST_PASS)
+									{
+										continue;
+									}
 								}
 							}
 						}
@@ -7571,6 +7606,7 @@ int CDATsysView::StepRun()
 						g_pView->m_BlackPictureFlag =  _Dark_Test();
 						if (g_pView->m_BlackPictureFlag == 1)
 						{
+							AddStringToStatus("Black Screen Check!!");
 						}
 						else if (CurrentSet->bEpiPAckReset == 1)
 						{
@@ -7579,10 +7615,13 @@ int CDATsysView::StepRun()
 								Sleep(100);
 								g_pView->IF_Pack_Reset();
 								Sleep(100);
-								localRetryResult = (*pCurFunc->m_pFunc)();
-								if (localRetryResult == TEST_PASS)
+								if (g_pView->Grab_UHD())
 								{
-									break;
+									localRetryResult = (*pCurFunc->m_pFunc)();
+									if (localRetryResult == TEST_PASS)
+									{
+										break;
+									}
 								}
 							}
 							if (localRetryResult == TEST_PASS)
@@ -7652,11 +7691,26 @@ int CDATsysView::StepRun()
 									Sleep(500);
 									ResetGrabStartThread();
 									Sleep(500);
-									localRetryResult = (*pCurFunc->m_pFunc)();
-									if (localRetryResult == TEST_PASS)
+									if (g_pView->Grab_UHD())
 									{
-										break;
-									}									
+										localRetryResult = (*pCurFunc->m_pFunc)();
+										if (localRetryResult == TEST_PASS)
+										{
+											break;
+										}
+										else
+										{
+											if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
+											{
+												AddStringToStatus("Video Test NG");
+											}
+											if ((pCurStep->m_bAudioTestResult == FALSE) && pCurStep->m_bRunAudioTest)
+											{
+												AddStringToStatus("Audio Test NG");
+											}
+
+										}
+									}
 								}
 								if (localRetryResult == TEST_PASS)
 								{								
@@ -7672,13 +7726,34 @@ int CDATsysView::StepRun()
 								Sleep(2000);	
 
 								g_pView->ResetGrabStartThread();
-								Sleep(1000);								
-								
-								localRetryResult = (*pCurFunc->m_pFunc)();
+
+								for (int i = 0; i < 3; i++)
+								{
+									Sleep(1000);
+									if (g_pView->Grab_UHD())
+									{
+										localRetryResult = (*pCurFunc->m_pFunc)();
+										AddStringToStatus("Video Check !!");
+										if (localRetryResult == TEST_PASS)
+										{
+											break;
+										}
+										else
+										{
+											if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
+											{
+												AddStringToStatus("Video Test NG");
+											}
+											if ((pCurStep->m_bAudioTestResult == FALSE) && pCurStep->m_bRunAudioTest)
+											{
+												AddStringToStatus("Audio Test NG");
+											}
+										}
+									}
+								}
 								
 								if (localRetryResult == TEST_PASS)
-								{
-									//gPLC_Ctrl.m_nUserRetry = 0;
+								{								
 									continue;
 								}
 								
@@ -7699,8 +7774,7 @@ int CDATsysView::StepRun()
 										continue;
 									}
 								}
-#endif
-								
+#endif								
 							}
 							else
 							{
@@ -10776,63 +10850,12 @@ BOOL CDATsysView::AutoControlProcess()
 		}
 		else if (sInterProcess == 1)
 		{	
-			/*if (gPLC_Ctrl.m_nCurrentVideoNG == 1)
-			{
-				if (CurrentSet->nAuto_Grab_Reset == 1)
-				{
-					if (CurrentSet->bCheckGrabACPower == 1)
-					{
-						AddStringToStatus("Grabber Power OFF");
-						gJigCtrl.Set_Grabber_Power(0);
-						Sleep(1000);
-
-						AddStringToStatus("Grabber Power ON");
-						gJigCtrl.Set_Grabber_Power(1);
-						Sleep(2000);
-					}
-
-					if (CurrentSet->bCheckIFPackReset == 1)
-					{
-						gJigCtrl.Set_IF_Pack_Reset(0);
-						AddStringToStatus("IF Pack Reset");
-						Sleep(1000);
-					}
-					if (CurrentSet->bCheckGenderReset == 1)
-					{
-
-						AddStringToStatus("Gender Reset");
-						gJigCtrl.Set_Gender_Reset(0);
-					}
-
-					Sleep(1000);
-				}
-			}*/
+			
 #ifdef				_PLC_COM_SIM_DEBUG__MODE
 
 			gPLC_Ctrl.m_nCurrentVideoNG = 1;
 #endif
-			//if (gPLC_Ctrl.m_nCurrentVideoNG == 1)
-			//{				
-			//	if (CurrentSet->bCheckImageFullReset == 1)
-			//	{
-			//		AddStringToStatus("Grabber Power OFF");
-			//		gJigCtrl.Set_Grabber_Power(0);
-			//		Sleep(5000);
 
-			//		AddStringToStatus("Grabber Power ON");
-			//		gJigCtrl.Set_Grabber_Power(1);
-			//		//Sleep(2000);
-			//	}
-			//	else if ((gPLC_Ctrl.m_NG_StepNoOld == gPLC_Ctrl.m_NG_StepNo) && (gPLC_Ctrl.m_nTestStepNGCount == 1))
-			//	{
-			//		AddStringToStatus("Grabber Power OFF");
-			//		gJigCtrl.Set_Grabber_Power(0);
-			//		Sleep(5000);
-
-			//		AddStringToStatus("Grabber Power ON");
-			//		gJigCtrl.Set_Grabber_Power(1);
-			//	}
-			//}
 			sInterProcess = 2;
 
 		}
@@ -16223,6 +16246,12 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 					else if (CurrentSet->nUHD_Grab_Mode == 13) {
 						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
 						g_ImageProc.P68_70_UPQO_Sharp_CEDS_DPT(bufTmp, g_GrabDisplayImage.m_pImageData, nWidth, nHeight);
+						g_ImageProc.Rotate(g_GrabDisplayImage, (float)CurrentSet->nImageRotation);
+						//	lRotateProcess = 1;
+					}
+					else if (CurrentSet->nUHD_Grab_Mode == 16) {
+						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
+						g_ImageProc.P22Y8K_TCONLESS(bufTmp, g_GrabDisplayImage.m_pImageData, nWidth, nHeight);
 						g_ImageProc.Rotate(g_GrabDisplayImage, (float)CurrentSet->nImageRotation);
 						//	lRotateProcess = 1;
 					}

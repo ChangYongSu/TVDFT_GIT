@@ -655,7 +655,7 @@ void COptComportPage::OnBtnComportOptApply()
 
 
 
-	CurrentSet->nHDMIGenType = m_nHdmiType;
+	//CurrentSet->nHDMIGenType = m_nHdmiType;
 
 
 

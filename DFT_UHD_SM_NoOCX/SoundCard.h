@@ -67,6 +67,8 @@ public:
 	float		m_fRightLevelLowerLimit;
 	float		m_fRightLevelUpperLimit;
 
+	int		m_nCheckTimeLimit;
+
 	//+change kwmoon 080724
 //	float		m_fPercentMargin;
 	float		m_fFreqMargin;

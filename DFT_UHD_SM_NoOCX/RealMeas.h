@@ -104,6 +104,8 @@ BOOL _TV_3DMode_Off();
 BOOL _CheckAudio_Level();
 BOOL _CheckAudio_Frequency();
 BOOL _CheckAudio_Level_NoFrequency();
+BOOL _CheckAudio_Time_Level();
+BOOL _CheckAudio_Time_Frequency();
 
 //+add 110610
 BOOL _TV_HeadPhone_On();
