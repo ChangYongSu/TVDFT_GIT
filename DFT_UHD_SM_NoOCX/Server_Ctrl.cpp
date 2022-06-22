@@ -504,6 +504,12 @@ void CServer_Ctrl::SendStatus() //S2F101
 		m_strMesSend += str1;
 		m_strMesSend += _T("</SETID>\r\n");
 
+		g_pView->m_stcChassisName.GetWindowText(str1);
+		m_strMesSend += _T("    <CHASSIS NAME>");
+		m_strMesSend += str1;
+		m_strMesSend += _T("</CHASSIS NAME>\r\n");
+
+
 		g_pView->m_stcSeqName.GetWindowText(str1);
 		m_strMesSend += _T("    <MODEL NAME>");
 		m_strMesSend += str1;
@@ -1014,6 +1020,15 @@ void CServer_Ctrl::ServerReportTestResult(int lOk)//S2F101
 	CString str1;
 	CString str2;	
 
+
+	//POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
+
+	//CStep* pStep = StepList.GetAt(PosStep);
+	//CString str;
+	//str.Format("ERROR STEP[%d]: ", gPLC_Ctrl.m_NG_StepNo + 1);
+	//str += pStep->m_sName;
+
+
 	if (g_pView->m_pMonitorServerSocketClient.m_SerConnected == 1)
 	{
 		m_strMesSend = _T("<EIF VERSION=\"1.4\" ID=\"S2F111\" NAME=\"Report Test Result\">\r\n");
@@ -1023,7 +1038,18 @@ void CServer_Ctrl::ServerReportTestResult(int lOk)//S2F101
 		if (lOk)
 			str1 = "OK";
 		else
+		{
 			str1 = "NG";
+#if 0
+			POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
+
+			CStep* pStep = StepList.GetAt(PosStep);
+			CString str;
+			str.Format(":%d:", gPLC_Ctrl.m_NG_StepNo );
+			str += pStep->m_sName;
+			str1 += str;
+#endif
+		}
 		m_strMesSend += str1;//  gSaveInfo[i].strEQPID;//
 		m_strMesSend += _T("</RESULT>\r\n");	
 

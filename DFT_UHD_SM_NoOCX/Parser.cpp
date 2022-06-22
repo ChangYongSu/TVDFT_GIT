@@ -769,6 +769,11 @@ _InternalFunction Predefined[] =
 	{ AUDIO_SRC_SEL_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NULL_TYPE },
 
 
+	_T("grabber_hw_test"), _Grabber_HW_Reset,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
+
     NULL, NULL, { TNULL }
 };                      
 

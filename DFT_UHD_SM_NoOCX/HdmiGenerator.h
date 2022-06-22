@@ -23,6 +23,8 @@
 #define HSYNC_ONOFF			0x0b
 #define VSYNC_ONOFF			0x0c
 #define SET_OUT_PORT		0x1c
+#define CHECK_FW_VER		0x1A//#define CHECK_FW_VER		0x1A
+
 
 class CHdmiGenerator : public CObject 
 {
@@ -72,6 +74,10 @@ public:
 	BOOL SetMHL_Control(BOOL bFlag);
 
 	BOOL SetDFT_Mode(int nData);
+
+	CString			m_FW_Ver;
+	int			m_nReceiveCount;
+	BOOL CheckVer();
 };
 
 extern CHdmiGenerator HDMIGeneratorCtrl;

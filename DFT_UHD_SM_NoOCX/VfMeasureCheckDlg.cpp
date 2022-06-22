@@ -595,7 +595,7 @@ void CVfMeasureCheckDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CVfMeasureCheckDlg::OnBnClickedBtnEnter()
 {
-	OnOK();	
+	//OnOK();	
 }
 
 

@@ -3842,9 +3842,16 @@ void CDATsysView::OnRunRun()
 			if(!gJigCtrl.Get_JigReady()){
 				Sleep(500);
 				if(!gJigCtrl.Get_JigReady()){
+#if 1 //220428
+					CString sTemp;
+					sTemp = "Move down jig before starting test.";
+					AddStringToStatus(sTemp);
+#else
 					AfxMessageBox(IDS_JIG_DOWN); 
 					CurrentSet->bIsRunMsg = FALSE;	
 					return;
+
+#endif
 				}
 			}
 		}
@@ -3978,7 +3985,8 @@ BOOL CDATsysView::Read_PCBAID_READ()
 			AddStringToStatus(sTmp);
 			if (CurrentSet->bGMES_Connection && CurrentSet->bUploadMes)
 			{
-				if (CurrentSet->bUsePLCRobot == TRUE)
+				//godtech 220324
+//				if (CurrentSet->bUsePLCRobot == TRUE)
 				{
 					if (CurrentSet->nToolOptionSetMethod == 0) {
 						Sleep(500);
@@ -6035,6 +6043,8 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	//gStrTmpLog.Format("InsertStepData2Grid(int nGridType) (%Ts:%d)", _T(__FILE__), __LINE__);
 	SystemMonitorLog_Save("Position", _T(__FILE__), __LINE__);
 
+	pView->CheckFWVer();
+
 	if(!HDMIGeneratorCtrl.m_bEDIDMode){
 		if(CurrentSet->nHDMIGenType == 0){
 			HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE) ;
@@ -6045,6 +6055,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	
 		Sleep(100);
 	}
+	AddStringToStatus("Debug Check EDID");
 	if(!HDMIGeneratorCtrl.m_bHDCPMode){
 		if(CurrentSet->nHDMIGenType == 0){
 			HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE) ;
@@ -6054,6 +6065,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 		}
 		Sleep(100);
 	}
+	AddStringToStatus("Debug Check HDCP");
 	if(HDMIGeneratorCtrl.m_bCECMode != CurrentSet->bHdmiCecControl){
 		HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
 		Sleep(100);
@@ -6133,7 +6145,6 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 			{
 
 				if ((g_nUseNoScanType == TRUE) && (m_strWipId.Find("NO_SCAN") >= 0))
-
 				{
 					if (g_pView->Read_PCBAID_READ())
 					{
@@ -6500,6 +6511,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 				// Run Current Step 
 				//==================
 				pView->m_nCurrentResetExecution = 1;
+				pView->m_WhiteResetFlag = 0;
 				if((nStepResult = pView->StepRun()) == TEST_ABORT) // TEST_ABORT
 				{
 					pView->m_nNoCurrentRepeatExecution = 1; goto END_WHILE_LOOP;
@@ -6517,6 +6529,33 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 						{
 							ScannerCtrl.SendNG();
 						}
+
+						if (pView->m_WhiteResetFlag == 1)
+						{
+							if (pCurStep->GetResult() == FALSE)
+							{
+								goto END_WHILE_LOOP;
+							}
+							else
+							{
+								g_pView->m_WhiteResetCount = 0;
+							}
+							//else if (g_pView->m_WhiteResetCount >= 3)
+							//{
+							//	gJigCtrl.Set_CylinderUP();
+							//	AddStringToStatus("Jig Up!");
+							//	Sleep(1000);
+							//	for (int i = 0; i < 10; i++)
+							//	{
+							//		if (gJigCtrl.m_bJigUpStatus)
+							//			break;
+							//		Sleep(500);
+							//	}
+							//}							
+							//pView->m_WhiteResetFlag = 0;
+							
+						}
+
 						// Internal Retry
 						pView->m_nCurrentResetExecution = 0;
 						if(CurrentSet->nNoRetry > 0)
@@ -6866,7 +6905,9 @@ END_EXIT:
 	//===============================
 	// Create Elpased Time Data File 
 	//===============================
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	//===================
 	// Show Result Diaog
 	//===================
@@ -6891,6 +6932,10 @@ END_EXIT:
 		else{
 			pView->m_szResultMsg1.Format("PCBA ID : %s",m_strWipId);
 			pView->SendMessage(UM_RESULT_DISPLAY,2,0);
+//#ifdef	DEBUG_MD5_CODE__
+//			Sleep(2000);
+//			Sleep(1000);
+//#endif
 		}
 	}
 	//======================
@@ -6927,7 +6972,9 @@ END_EXIT:
 #endif
 	pView->PlayWavSound(IDR_WAVE_FINISH);
 
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	if(CurrentSet->bRunAbort)
 	{
 		szMsg.Format(_T("%s : User Stop"), m_strWipId);
@@ -6939,8 +6986,13 @@ END_EXIT:
 #ifdef 	TEXT_MSG_EXE_DEBUG_CODE__
 	AddStringToStatus("smcheck6 ....");
 #endif
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	TestCountSave(g_pView->m_szExePath);
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 #ifdef 	TEXT_MSG_EXE_DEBUG_CODE__
 	AddStringToStatus("smcheck7 ....");
 #endif
@@ -6955,6 +7007,9 @@ END_EXIT:
 #ifdef 	TEXT_MSG_EXE_DEBUG_CODE__
 	AddStringToStatus("smcheck8 pView->SaveResult2File(....");
 #endif
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	//=========================
 	// Create Result HTML File 
 	//=========================
@@ -6962,7 +7017,9 @@ END_EXIT:
 //	pView->SaveResult2File(CurrentSet->sResultPath, TRUE, FALSE, TRUE);
 
 	AddStringToStatus("Result Save....");
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	CurrentSet->nRunType   = nRunMode;
 	CurrentSet->bIsRunning = FALSE;
 //	CurrentSet->bRunAbort  = FALSE;
@@ -7027,7 +7084,9 @@ END_EXIT:
 
 		}
 	}
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	//====================
 	// Upload Data to MES
 	//====================
@@ -7068,9 +7127,19 @@ END_EXIT:
 				}
 			}
 		////godtech 190530 if(CurrentSet->bGMES_Connection && CurrentSet->bUploadMes && CurrentSet->bUseScanner)
-			if(CurrentSet->bGMES_Connection && CurrentSet->bUploadMes)// && CurrentSet->bUseScanner)
+			if(CurrentSet->bGMES_Connection && CurrentSet->bUploadMes )
 			{
-				pView->SendMessage(UM_UPLOAD_MES_DATA,0,0);
+				if (CurrentSet->nDftNgCount > 0)
+				{
+					AddStringToStatus("Not Upload Mes NG Count....");
+				}
+				else
+				{
+					pView->SendMessage(UM_UPLOAD_MES_DATA, 0, 0);
+
+					
+				}
+				
 			}
 
 			if (g_nUseNoScanType == TRUE)//ScannerCtrl
@@ -7079,15 +7148,17 @@ END_EXIT:
 			}
 		}
 	}
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(3000);
+//#endif
 	if (m_strWipId.Find("NO_SCAN") >= 0)
 	{
-		AddStringToStatus("NO S/N Do Not Upload Mes....");
-		
+		AddStringToStatus("NO S/N Do Not Upload Mes....");		
 	}
 	else
 	{
-		AddStringToStatus("Upload Mes....");
+		AddStringToStatus("Upload Mes....");	
+		
 	}
 
 	pView->LogDataSave(CurrentSet->sResultPath);
@@ -7480,7 +7551,8 @@ int CDATsysView::StepRun()
 		nResult = StepInit_SourceAutoControl();
 		if(!nResult){
 			Sleep(500);
-			if(!StepInit_SourceAutoControl())
+			nResult = StepInit_SourceAutoControl();
+			if(!nResult)
 			{
 				pCurStep->SetElapsedTime((double)(clock() - StepStart) / CLOCKS_PER_SEC);
 				g_pView->InsertResultData2Grid(CurrentSet->nDisplayType,pCurStep->m_nStep);
@@ -7580,7 +7652,7 @@ int CDATsysView::StepRun()
 				else if ((g_nSysType == AUTO_SYS) && (CurrentSet->bUsePLCRobot == TRUE))
 				{					
 #ifdef				_PLC_COM_SIM_DEBUG__MODE
-					pCurStep->m_bRunVideoTest = 1;
+				//	pCurStep->m_bRunVideoTest = 1;
 					//m_nCurrentVideoNG = 1;
 #endif
 					if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
@@ -7592,7 +7664,7 @@ int CDATsysView::StepRun()
 							if (lWhiteFlag == 1)
 							{
 								g_pView->GrabBaseResetStartThread();
-								if (g_pView->Grab_UHD())
+								if (Grab_Image_UHD("", 0))//g_pView->Grab_UHD())
 								{
 									localRetryResult = (*pCurFunc->m_pFunc)();
 									if (localRetryResult == TEST_PASS)
@@ -7935,9 +8007,27 @@ int CDATsysView::StepRun()
 			{
 			}
 			gPLC_Ctrl.m_NG_StepNo = pCurStep->GetStepNo();
-
-			return nResult;
+			if ((g_nSysType == AUTO_SYS) && (CurrentSet->bUsePLCRobot == TRUE) 
+				&& (gPLC_Ctrl.m_nUserRetry == 1)
+				&& (gPLC_Ctrl.m_nCheckAbortRetry == 0))
+			{			
+				CurrentSet->bRunAbort = 1;
+				gPLC_Ctrl.m_nCheckAbortRetry = 1;
+				return  TEST_ABORT;
+			}
+			else
+			{
+				return nResult;
+			}
 		} 
+		else
+		{
+			int lStepNo = pCurStep->GetStepNo();
+			if (gPLC_Ctrl.m_NG_StepNo3Times == lStepNo)
+			{
+				gPLC_Ctrl.m_NG_StepNo3Times = -1;
+			}
+		}
 		
 	}
 	nPosition =(int)((double)((++g_nProgressPos)*100)/(double)g_nStepSize);
@@ -10266,6 +10356,7 @@ BOOL CDATsysView::AutoControlProcess()
 				gPLC_Ctrl.m_nFirstVideoNG = 0;
 				gPLC_Ctrl.m_nTestVideoCount = 0;
 				gPLC_Ctrl.m_nCurrentVideoNG = 0;
+				gPLC_Ctrl.m_nCheckAbortRetry = 0;
 				
 				//PLC_OK_MODE
 								//PLC_NG_MODE
@@ -10314,22 +10405,72 @@ BOOL CDATsysView::AutoControlProcess()
 					else// if (gPLC_Ctrl.m_nTestResult == PLC_NG_MODE)
 					{
 						gServer_Ctrl.ServerReportTestResult(PLC_NG_MODE);
-						if (gPLC_Ctrl.m_nUserRetry >= 2)
+						AddStringToStatus("Jig Up!");
+						///////////////
+						if (m_WhiteResetFlag)
 						{
-//							////m_ResultDlg->SetContinue();
-//							////if (gPLC_Ctrl.m_nTestResult == PLC_CHECK_MODE)
-//							//{
-//							//	m_ResultDlg->SetClose();
-//							//}
-//							///*	else
-//							//	{
-//							//		
-///*
-//								}*/*/
-							sInterProcess = 3;
-							sWaitCount = 0;
-						//	ProcessAutokey(STOP_BTN);
-							gPLC_Ctrl.m_nTestResult = PLC_NG_MODE;
+							if (g_pView->m_WhiteResetCount >= 3)
+							{
+								gJigCtrl.Set_CylinderUP();
+								
+								Sleep(1000);
+								for (int i = 0; i < 10; i++)
+								{
+									if (gJigCtrl.m_bJigUpStatus)
+										break;
+									Sleep(500);
+								}
+
+								AddStringToStatus("Grab HW Test Fail 3 Times!!!");
+							//	gJigCtrl.Set_CylinderUP();
+								CurrentSet->nRunStartType = MANUAL_START;
+								//	g_pView->KillTimer(TIMER_AUTO_CONTROL_ID);
+
+								g_AutoControlProcess = _AUTO_ROBOT_CTRL_MANUAL;
+								ctrlPLC_COM_Status.SetWindowText(_T("MANUAL"));
+								ctrlPLC_COM_Status.SetBkColor(RGB(200, 200, 0)); //ctrlPLC_COM_Status.SetBkColor(RGB(128, 128, 128));
+								gPLC_Ctrl.Command3TimesError();
+								g_Pause_AutoControlProcess = _AUTO_ROBOT_CTRL_IDLE;
+								AfxMessageBox("Grab HW Test Fail !!");
+								gPLC_Ctrl.Command3TimesErrorClear();
+							}
+							else
+							{
+								sInterProcess = 3;
+								sWaitCount = 0;
+								//	ProcessAutokey(STOP_BTN);
+								gPLC_Ctrl.m_nTestResult = PLC_NG_MODE;
+							}
+						}
+						else if (gPLC_Ctrl.m_nUserRetry >= 2)
+						{
+							if (gPLC_Ctrl.m_nCheckAbortRetry == 1)
+							{
+								gPLC_Ctrl.m_nUserRetry = 0;
+								gPLC_Ctrl.m_nCheckAbortRetry = 2;
+
+								g_AutoControlProcess = _AUTO_ROBOT_CTRL_UPDOWN_RETRY;
+								ctrlPLC_COM_Status.SetWindowText(_T("RTY UP"));
+								ctrlPLC_COM_Status.SetBkColor(RGB(255, 255, 0));
+								sInterProcess = 0;
+								sWaitCount = 0;
+							}
+							//gPLC_Ctrl
+							//if ((gPLC_Ctrl.m_nTestResult == PLC_CHECK_MODE) && (g_ID_Check != 4))
+							//{
+							//	g_AutoControlProcess = _AUTO_ROBOT_CTRL_UPDOWN_RETRY;
+							//	ctrlPLC_COM_Status.SetWindowText(_T("RTY UP"));
+							//	ctrlPLC_COM_Status.SetBkColor(RGB(255, 255, 0));
+							//	sInterProcess = 0;
+							//	sWaitCount = 0;
+							//}
+							else
+							{
+								sInterProcess = 3;
+								sWaitCount = 0;
+								//	ProcessAutokey(STOP_BTN);
+								gPLC_Ctrl.m_nTestResult = PLC_NG_MODE;
+							}
 
 							//#define _AUTO_ROBOT_CTRL_FFC_RETRY		17
 							//#define _AUTO_ROBOT_CTRL_UPDOWN_RETRY	18
@@ -10498,8 +10639,20 @@ BOOL CDATsysView::AutoControlProcess()
 						gPLC_Ctrl.m_nUserRetry++;
 						if (gPLC_Ctrl.m_nUserRetry >= 2)
 						{
-							ProcessAutokey(NG_BTN);
+#if 1
 
+							gJigCtrl.Set_CylinderUP();
+							CurrentSet->nRunStartType = MANUAL_START;
+							//	g_pView->KillTimer(TIMER_AUTO_CONTROL_ID);
+
+							g_AutoControlProcess = _AUTO_ROBOT_CTRL_MANUAL;
+							ctrlPLC_COM_Status.SetWindowText(_T("MANUAL"));
+							ctrlPLC_COM_Status.SetBkColor(RGB(200, 200, 0)); //ctrlPLC_COM_Status.SetBkColor(RGB(128, 128, 128));
+							gPLC_Ctrl.Command3TimesError();
+							g_Pause_AutoControlProcess = _AUTO_ROBOT_CTRL_IDLE;
+#else
+							ProcessAutokey(NG_BTN);
+#endif
 							//sInterProcess = 3;
 							sWaitCount = 0;
 						}
@@ -10718,32 +10871,53 @@ BOOL CDATsysView::AutoControlProcess()
 					
 					if ((gPLC_Ctrl.m_NG_StepNo > 0)&&(gPLC_Ctrl.m_NG_StepNo < 499))
 					{
-						if (gPLC_Ctrl.m_NG_StepNoOld == gPLC_Ctrl.m_NG_StepNo)
+
+						if (gPLC_Ctrl.m_NG_StepNo3Times == gPLC_Ctrl.m_NG_StepNo)
 						{
-							gPLC_Ctrl.m_nTestStepNGCount++;
-							if (gPLC_Ctrl.m_nTestStepNGCount >= 2)
+							int nTotalCnt = StepList.GetCount();
+							if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < nTotalCnt))
 							{
-								int nTotalCnt = StepList.GetCount();
-								if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < nTotalCnt))
-								{
 
-									POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo-1);
+								POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
 
-									CStep* pStep = StepList.GetAt(PosStep);
-									CString str;
-									str.Format("ERROR STEP[%d]: ", gPLC_Ctrl.m_NG_StepNo+1);
-									str += pStep->m_sName;
-									gPLC_Ctrl.Command3TimesError();
-									MessageBox(str, "Continue Error Step!!");
-									gPLC_Ctrl.Command3TimesErrorClear();
-								}
+								CStep* pStep = StepList.GetAt(PosStep);
+								CString str;
+								str.Format("ERROR STEP[%d]: ", gPLC_Ctrl.m_NG_StepNo );
+								str += pStep->m_sName;
+								gPLC_Ctrl.Command3TimesError();
+								MessageBox(str, "Continue Error Step!! \r\n Not Fixed!! Check Again!!");
+								gPLC_Ctrl.Command3TimesErrorClear();
 							}
-							
 						}
 						else
 						{
-							
-							gPLC_Ctrl.m_nTestStepNGCount = 0;
+							if (gPLC_Ctrl.m_NG_StepNoOld == gPLC_Ctrl.m_NG_StepNo)
+							{
+								gPLC_Ctrl.m_nTestStepNGCount++;
+								if (gPLC_Ctrl.m_nTestStepNGCount >= 2)
+								{
+									gPLC_Ctrl.m_NG_StepNo3Times = gPLC_Ctrl.m_NG_StepNo;
+									int nTotalCnt = StepList.GetCount();
+									if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < nTotalCnt))
+									{
+
+										POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
+
+										CStep* pStep = StepList.GetAt(PosStep);
+										CString str;
+										str.Format("ERROR STEP[%d]: ", gPLC_Ctrl.m_NG_StepNo );
+										str += pStep->m_sName;
+										gPLC_Ctrl.Command3TimesError();
+										MessageBox(str, "Continue Error Step!!");
+										gPLC_Ctrl.Command3TimesErrorClear();
+									}
+								}
+							}
+							else
+							{
+
+								gPLC_Ctrl.m_nTestStepNGCount = 0;
+							}
 						}
 						gPLC_Ctrl.m_NG_StepNoOld = gPLC_Ctrl.m_NG_StepNo;
 					}
@@ -10752,12 +10926,15 @@ BOOL CDATsysView::AutoControlProcess()
 			else
 			{
 				sWaitCount++;
-				if (sWaitCount > 1250)
-				{
+				
 #ifdef _PLC_COM_SIM_DEBUG__MODE
+				if (sWaitCount > 5000)
+				{
 					gPLC_Ctrl.m_cCheckUnLoadFinish = 1;
 
 #else
+				if (sWaitCount > 1250)
+				{
 					g_Pause_AutoControlProcess = g_AutoControlProcess;
 					g_AutoControlProcess = _AUTO_ROBOT_CTRL_TIMEOUT;
 					ctrlPLC_COM_Status.SetWindowText(_T("TIMEOUT(UL)"));
@@ -10925,7 +11102,7 @@ BOOL CDATsysView::AutoControlProcess()
 			sInterProcess = 4;
 
 #ifdef		_PLC_COM_SIM_DEBUG__MODE
-			 sInterProcess = 6;
+			 sInterProcess = 5;
 #endif
 
 		}
@@ -10961,10 +11138,35 @@ BOOL CDATsysView::AutoControlProcess()
 			if (gJigCtrl.m_bJigDownStatus)
 			{
 				sWaitCount = 0;
-				sInterProcess = 6;
 				gPLC_Ctrl.CommandClear();
-				gJigCtrl.Set_ACPower(1);
-				ctrlPLC_COM_Status.SetWindowText(_T("POWER ON"));
+				if (gPLC_Ctrl.m_nTestResult == PLC_CHECK_MODE)
+				{
+					gPLC_Ctrl.m_nTestResult = PLC_INIT_MODE;
+					gPLC_Ctrl.m_nCurrentVideoNG = 0;
+
+					sRetryCount = 0;
+
+					sWaitCount = 0;
+					sInterProcess = 1;
+					g_AutoControlProcess = _AUTO_ROBOT_CTRL_TEST_RUN;
+					ctrlPLC_COM_Status.SetWindowText(_T("TEST RUN"));
+					if (m_bResultDlgActivate == 1)
+					{
+						m_ResultDlg->SetContinue();
+					}
+					else
+					{
+						ProcessAutokey(RETRY_BTN);
+					}
+				}
+				else
+				{
+					sInterProcess = 6;
+					gJigCtrl.Set_ACPower(1);
+					ctrlPLC_COM_Status.SetWindowText(_T("POWER ON"));
+				}
+
+
 			}
 			else
 			{
@@ -11016,6 +11218,15 @@ BOOL CDATsysView::AutoControlProcess()
 
 					sRetryCount = 0;
 
+
+					if (m_pVfMeasureCheckDlg.m_bActivate == TRUE)
+					{
+						TVCommCtrl.Send_TVControl_Command("aa 00 00", 500);
+						TVCommCtrl.Send_TVControl_Command("ai 00 30", 500);
+						TVCommCtrl.Send_TVControl_Command("aa 00 20", 500);
+						TVCommCtrl.Send_TVControl_Command("ar 00 30", 500);
+					}
+
 					sWaitCount = 0;
 					sInterProcess = 1;
 					g_AutoControlProcess = _AUTO_ROBOT_CTRL_TEST_RUN;
@@ -11066,6 +11277,14 @@ BOOL CDATsysView::AutoControlProcess()
 					else
 					{
 						Sleep(2000);
+					}
+
+					if (m_pVfMeasureCheckDlg.m_bActivate == TRUE)
+					{
+						TVCommCtrl.Send_TVControl_Command("aa 00 00", 500);
+						TVCommCtrl.Send_TVControl_Command("ai 00 30", 500);
+						TVCommCtrl.Send_TVControl_Command("aa 00 20", 500);
+						TVCommCtrl.Send_TVControl_Command("ar 00 30", 500);
 					}
 
 					gPLC_Ctrl.m_nCurrentVideoNG = 0;
@@ -11228,14 +11447,23 @@ BOOL CDATsysView::AutoControlProcess()
 						Sleep(2000);
 					}
 
+					if (m_pVfMeasureCheckDlg.m_bActivate == TRUE)
+					{
+						TVCommCtrl.Send_TVControl_Command("aa 00 00", 500);
+						TVCommCtrl.Send_TVControl_Command("ai 00 30", 500);
+						TVCommCtrl.Send_TVControl_Command("aa 00 20", 500);
+						TVCommCtrl.Send_TVControl_Command("ar 00 30", 500);
+					}
+									   
 					gPLC_Ctrl.m_nCurrentVideoNG = 0;
-
 					sRetryCount = 0;
-
 					sWaitCount = 0;
 					sInterProcess = 1;
 					g_AutoControlProcess = _AUTO_ROBOT_CTRL_TEST_RUN;
 					ctrlPLC_COM_Status.SetWindowText(_T("TEST RUN"));
+
+
+
 					if (m_bResultDlgActivate == 1)
 					{
 						m_ResultDlg->SetContinue();
@@ -12001,7 +12229,10 @@ LRESULT CDATsysView::ShowResultDisplay(WPARAM wParam, LPARAM lParam)
 	CRect rect;
 
 	m_ResultDlg = new CResultDlg;
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(2000);
+//	Sleep(1000);
+//#endif
 	if(nResult == 0)
 	{
 		
@@ -12026,6 +12257,11 @@ LRESULT CDATsysView::ShowResultDisplay(WPARAM wParam, LPARAM lParam)
 		gPLC_Ctrl.m_nTestResult = PLC_CHECK_MODE;
 	}
 
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(2000);
+//	Sleep(1000);
+//#endif
+
 	m_ResultDlg->Create(IDD_RESULT_DLG, this);
 
 	m_ResultDlg->GetWindowRect(&rect);
@@ -12036,12 +12272,18 @@ LRESULT CDATsysView::ShowResultDisplay(WPARAM wParam, LPARAM lParam)
 	nTop = (m_FormViewRect.Height() / 2) + 200; // - (rect.Height()/2);
 	nWidth  = rect.Width();
 	nHeight = rect.Height();
-	
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(2000);
+//	Sleep(1000);
+//#endif	
 	m_ResultDlg->MoveWindow(nLeft,nTop,nWidth,nHeight);
 	m_ResultDlg->ShowWindow(SW_SHOW);
 	m_ResultDlg->UpdateWindow();
 	m_bResultDlgActivate = TRUE;
-
+//#ifdef	DEBUG_MD5_CODE__
+//	Sleep(2000);
+//	Sleep(1000);
+//#endif
 	return 0;
 }
 
@@ -13826,7 +14068,8 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 
 		if(nSize > 0)
 		{
-			//strTmp = "";
+			CString strTmp;
+			strTmp = "";
 			for(int i = 0 ; i < nSize; i++)
 			{
 	  			(TVCommCtrl.m_ctrlTVCommCtrl.m_QueueRead).GetByte(&aByte);  //
@@ -13838,10 +14081,16 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 				TVCommCtrl.m_nReceiveData[TVCommCtrl.m_nReceiveLength++] = aByte;
 
 				sTmp.Format("%02X ", aByte);
-				//strTmp = strTmp + sTmp;
+				strTmp = strTmp + sTmp;
 			}
 
 			//AddStringToStatus(strTmp);
+			//gStrTmpLog = "Com:";
+			//gStrTmpLog += strTmp;
+			//AddStringToStatus(strTmp);
+			//gStrTmpLog.Format("Com: %Ts ", buf1);// gStrTmpLog = "CommandLoadFast()"; //
+			//SystemMonitorLog_Save(gStrTmpLog, _T(__FILE__), __LINE__);
+
 
 
 			buf2.Format("%s",strReceive);
@@ -16255,6 +16504,12 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 						g_ImageProc.Rotate(g_GrabDisplayImage, (float)CurrentSet->nImageRotation);
 						//	lRotateProcess = 1;
 					}
+					else if (CurrentSet->nUHD_Grab_Mode == 17) {
+						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
+						g_ImageProc.LM21A_HKC_220307(bufTmp, g_GrabDisplayImage.m_pImageData, nWidth, nHeight);
+						g_ImageProc.Rotate(g_GrabDisplayImage, (float)CurrentSet->nImageRotation);
+						//	lRotateProcess = 1;
+					}
 					else {
 #ifdef SM_MODIFY_CODE__	
 						pView->m_clsPCI.DFT3_UHDPuzzle(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);
@@ -16315,7 +16570,7 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 		}
 		else {
 			if(nNoImage < 500){nNoImage++;}
-			if(nNoImage > 15){
+			if(nNoImage > 14){
 				memset(g_GrabDisplayImage.m_pImageData,0xff,nImageSize*3);
 				g_GrabDisplayImage.m_bImageLoaded = TRUE;
 				pView->PostMessage(UM_UPDATE_GRAB_STATUS,0,0);
@@ -16564,6 +16819,69 @@ int CDATsysView::IF_Pack_Reset()
 
 
 	return 1;
+}
+
+int CDATsysView::CheckGrabberStatus()
+{
+
+
+	int lrtn, addr;
+	__int64 wd;
+	unsigned int img_cnt1, img_cnt2;
+
+	CString str;
+
+	addr = 0x060;	lrtn = m_clsPCI.CM_RegisterRead(addr, &wd);		//	Image Index 읽기
+	img_cnt1 = 0xffffffff & (wd >> 0);
+
+	str.Format(_T("PRI CHK - Image Index1 : %08x "), img_cnt1);		//OutputDebugString(str);	//	이 메시지를 로그로 남겨야 합니다.
+	for (int i = 0; i < 10; i++)
+	{
+		Sleep(20);
+		addr = 0x060;	lrtn = m_clsPCI.CM_RegisterRead(addr, &wd);		//	Image Index 읽기
+		img_cnt2 = 0xffffffff & (wd >> 0);
+		str.Format(_T("PRI CHK - Image Index2 : %08x "), img_cnt2);		//OutputDebugString(str);	//	이 메시지를 로그로 남겨야 합니다.
+		if (img_cnt1 != img_cnt2)
+		{
+			break;
+		}
+	}
+	// 여기에서 차이를 구해서 영상이 끊겼는지 확인가능
+	if (img_cnt1 == img_cnt2)
+	{
+		str.Format(_T("PRI CHK -img_cnt1 == img_cnt2 : %08x "), img_cnt2);
+		AddStringToStatus(str);
+		//	End of 1. Image Index 읽기
+
+		//	2. 그래버 버퍼 상태정보 읽어보기
+	//	int lrtn, addr;
+	//	__int64 wd;
+		unsigned int buff_status;
+		addr = 0x000;	lrtn = m_clsPCI.CM_RegisterRead(addr, &wd);		//	Image Index 읽기
+		buff_status = 0xffffffff & (wd >> 32);
+
+		str.Format(_T("PRI CHK - Buffer Status : %08x "), buff_status);		OutputDebugString(str);	//	이 메시지를 로그로 남겨야 합니다.
+		AddStringToStatus(str);
+		//	End of 2. 그래버 버퍼 상태정보 읽어보기
+		return 0;
+	}
+	else
+	{
+
+		//	2. 그래버 버퍼 상태정보 읽어보기
+	//	int lrtn, addr;
+	//	__int64 wd;
+		unsigned int buff_status;
+		addr = 0x000;	lrtn = m_clsPCI.CM_RegisterRead(addr, &wd);		//	Image Index 읽기
+		buff_status = 0xffffffff & (wd >> 32);
+
+		str.Format(_T("PRI CHK - Buffer Status : %08x "), buff_status);	//	OutputDebugString(str);	//	이 메시지를 로그로 남겨야 합니다.
+		AddStringToStatus(str);
+		//	End of 2. 그래버 버퍼 상태정보 읽어보기
+
+		return 1;
+	}
+	   	
 }
 void CDATsysView::StartLVDSGrabThread()
 {
@@ -20717,7 +21035,12 @@ void CDATsysView::InsertResult2DetailedGrid(int nStepNo)
 
 		//if (nStepNo % 7 == 0) m_CtrlListMainProcess.Scroll(nStepNo*20);//.settop.SetTopRow(nStepNo);
 
-		// (Column 11) Elapsed Time
+	if (nStepNo == 0)
+	{
+		sTmp = "HDMI Gen Ver :";
+		sTmp += HDMIGeneratorCtrl.m_FW_Ver;
+		m_CtrlListMainProcess.SetItemText(nStepNo, 11, sTmp); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, sTmp);
+	}
 	if (pCurStep->m_bTest) // == TRUE)
 	{
 		sTmp.Format(_T("%5.1f"), pCurStep->m_fElapsedTime);
@@ -24244,6 +24567,7 @@ void CDATsysView::FillBmInfo( BITMAPINFO8* bmi, int width, int height, int bpp, 
 	}
 }
 */
+
 void CDATsysView::OnJigdownGood() 
 {
 	CurrentSet->nJigUpType = 0;	
@@ -27083,6 +27407,9 @@ void CDATsysView::OnNMCustomdrawListVersionProcess(NMHDR *pNMHDR, LRESULT *pResu
 
 void CDATsysView::OnBnClickedButtonBatVer()
 {
+#ifdef	_PLC_COM_SIM_DEBUG__MODE
+	gServer_Ctrl.ServerReportTestResult(PLC_NG_MODE);
+#endif
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//GetDlgItem(IDC_EDIT_BAT_VER)->set
 	if (m_BatVerReadOnly == 0)
@@ -27101,4 +27428,18 @@ void CDATsysView::OnBnClickedButtonBatVer()
 
 		SetDlgItemText(IDC_BUTTON_BAT_VER, "BAT VER SAVE");
 	}
+}
+
+
+void CDATsysView::CheckFWVer()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//925MSPG-925FU	LGFU-1F
+	//MSSD - 47AV	100223
+	//	MSHG - 800PLUS	1.0.30
+	//	MSHG - 800	211101
+//	AvSwitchBoxCtrl.CheckVer();
+	HDMIGeneratorCtrl.CheckVer();
+//	PatternGeneratorCtrl.CheckVer();
+
 }

@@ -189,13 +189,38 @@ int CI2cAdcCtrl::ReceiveCommString(int nRev, unsigned nWaitLimit, CString& sRead
 
 			if(m_ctrlI2cAdcCtrl.m_QueueRead.GetSize() >= nRev)
 			{
+				Sleep(10);
+				dwRead = m_ctrlI2cAdcCtrl.ReadComm(ReadBuffer, 2048);
+				
 				break;			
 			}
 			Sleep(10);
 		}
 
 		int rrv = m_ctrlI2cAdcCtrl.m_QueueRead.GetSize();
-		
+
+#if 1 //CYS 20220601
+		if ((rrv > 0) && (rrv >= nRev))
+		{
+			for (int i = 0; i < rrv; i++)
+			{
+				m_ctrlI2cAdcCtrl.m_QueueRead.GetByte(&Buffer);
+				m_strReceive[i] = Buffer;
+			}
+			sReadString.Format("%s", m_strReceive);
+
+			if (CurrentSet->bCommDisplay)
+			{
+				szString.Format("Receive :[ %s", m_strReceive);
+				szString += "]";
+				m_szCurrentStatusMsg.Format("=> Receive : %s", m_strReceive);
+				AddStringToStatus(szString);
+			}
+			//+change kwmoon 080804
+		//	return TRUE;
+			return TEST_PASS;
+		}
+#else
 		if((rrv >0) && (rrv <= nRev))
 		{
 			for(int i=0; i<nRev; i++)
@@ -215,7 +240,7 @@ int CI2cAdcCtrl::ReceiveCommString(int nRev, unsigned nWaitLimit, CString& sRead
 		//	return TRUE;
 			return TEST_PASS;
 		}
-
+#endif
 		if((GetTickCount() - dwStartTick) > nWaitLimit)		
 		{	
 			m_ctrlI2cAdcCtrl.m_QueueRead.Clear();

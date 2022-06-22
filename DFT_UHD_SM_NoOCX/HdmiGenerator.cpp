@@ -117,10 +117,17 @@ BOOL CHdmiGenerator::ReceiveCommString(int nWaitLimit)
 	DWORD		dwRead;			// Read Byte Count
 	BYTE		buff[2048];		// Read Buffer
 	CString		sTmp;
+	CString		sTmpBuf;
 
-	if(m_bPortOpen == FALSE) return FALSE;
+	if (m_bPortOpen == FALSE)
+	{	
+		AddStringToStatus("m_bPortOpen == FALSE");
+		return FALSE;
+	}
 
 	memset(m_strReceive, 0, 225);
+	m_nReceiveCount = 0;
+
 	bDoing = TRUE;
 	start = clock();
 
@@ -144,15 +151,26 @@ BOOL CHdmiGenerator::ReceiveCommString(int nWaitLimit)
 			}
 			else
 			{
+				AddStringToStatus("BUFF_SIZE - ..Size() > (int)dwRead)");
 				return FALSE;
 			}
 
 			if ((clock() - start)*1000/CLOCKS_PER_SEC > nWaitLimit) 
 			{//Over Limit Time.....False Return
+				AddStringToStatus("//Over Limit Time.....False Return");
+				int rrv1 = m_ctrlPatternGenerator.m_QueueRead.GetSize();
+				sTmpBuf = "Data:";
+				for (i = 0; i < rrv1; i++)
+				{
+					m_ctrlPatternGenerator.m_QueueRead.GetByte(&buf);
+					sTmp.Format("0x02X ", buf);
+					sTmpBuf += sTmp;
+				}
+
+				AddStringToStatus(sTmpBuf);
 				m_ctrlPatternGenerator.m_QueueRead.Clear();
 				return FALSE;
-			}
-			  
+			}			  
 		} while (dwRead); 
 
 		int rrv = m_ctrlPatternGenerator.m_QueueRead.GetSize();
@@ -164,9 +182,20 @@ BOOL CHdmiGenerator::ReceiveCommString(int nWaitLimit)
 				m_ctrlPatternGenerator.m_QueueRead.GetByte(&buf);
 				m_strReceive[i] = buf;
 			}
+			m_nReceiveCount = rrv;
 
+			sTmpBuf = "Data:";
+			for (i = 0; i < rrv; i++)
+			{
+				sTmp.Format("0x%02X ", m_strReceive[i]);
+				sTmpBuf += sTmp;
+			}
+				
+			//AddStringToStatus(sTmpBuf);
 			m_ctrlPatternGenerator.m_QueueRead.Clear();
-			if(m_strReceive[0] == 0x06){
+			if(m_strReceive[0] == 0x06)
+			{
+				//AddStringToStatus("if(m_strReceive[0] == 0x06)");				
 				return TRUE;
 			}
 			else{
@@ -176,11 +205,12 @@ BOOL CHdmiGenerator::ReceiveCommString(int nWaitLimit)
 		
         if ((clock() - start)*1000/CLOCKS_PER_SEC > nWaitLimit) 
         {//Over Limit Time.....False Return
+			AddStringToStatus("//Over Limit Time.....No Data");
 			m_ctrlPatternGenerator.m_QueueRead.Clear();
 			return FALSE;
 		}
 	}
-	
+	AddStringToStatus("End return TRUE;");
 	return TRUE;	
 }
 
@@ -924,4 +954,94 @@ BOOL CHdmiGenerator::SetDFT_Mode(int nData)
 
 
 	return TRUE;
+}
+
+
+
+BOOL CHdmiGenerator::CheckVer()
+{
+	CString szCmdString;
+	CString szTemp;
+	CString szData;
+	
+	szTemp = "Check HDMI Ver";
+	AddStringToStatus(szTemp);
+	m_FW_Ver = "";
+#ifdef _DEBUG
+
+	m_FW_Ver = "220516";
+	return TRUE;
+#endif
+	if (!CurrentSet->bUseHDMIGen) return TRUE;
+
+
+	
+	szCmdString.Format("%c%c%c", STX, CHECK_FW_VER, ETX);
+
+
+	if (!SendCommString(szCmdString))
+	{
+		AddStringToStatus(_T("HDMI Gen Ver. Error"));
+		return FALSE;
+	}
+	if (!ReceiveCommString(500))
+	{
+
+		//0x02 0x1A 0x32 0x31 0x31 0x31 0x30 0x31 0x03 
+		if (m_nReceiveCount >= 9)
+		{
+			if ((m_strReceive[0] == 0x02) && (m_strReceive[1] == CHECK_FW_VER) && (m_strReceive[8] == 0x03))
+			{
+				m_strReceive[8] = 0x00;
+				m_FW_Ver = &(m_strReceive[2]);
+				AddStringToStatus(m_FW_Ver);
+				return TRUE;
+			}
+		}
+		szTemp= "RCV Error:";
+		for (int i = 0; i < m_nReceiveCount; i++)
+		{
+			szData.Format("0x%02X",m_strReceive[i]);
+			szTemp += szData;
+		}
+		AddStringToStatus(szTemp);
+		AddStringToStatus("Retry..");
+
+		SendCommString(szCmdString);
+		if (!ReceiveCommString(1500))
+		{
+
+			//0x02 0x1A 0x32 0x31 0x31 0x31 0x30 0x31 0x03 
+			if (m_nReceiveCount >= 9)
+			{
+				if ((m_strReceive[0] == 0x02) && (m_strReceive[1] == CHECK_FW_VER) && (m_strReceive[8] == 0x03))
+				{
+					m_strReceive[8] = 0x00;
+					m_FW_Ver = &(m_strReceive[2]);
+					AddStringToStatus(m_FW_Ver);
+					return TRUE;
+				}
+			}
+
+		}
+		szTemp = "Retry RCV Error:";
+		for (int i = 0; i < m_nReceiveCount; i++)
+		{
+			szData.Format("0x%02X", m_strReceive[i]);
+			szTemp += szData;
+		}
+		AddStringToStatus(szTemp);
+	}
+	AddStringToStatus(_T("HDMI Gen Ver Check. Error"));
+
+	//if (CurrentSet->bCommDisplay)
+	//{
+	//	AddStringToStatus(szTemp);
+	//}
+
+	return FALSE;
+
+
+
+
 }

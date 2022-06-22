@@ -1222,7 +1222,37 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 	CString szErrMsg = _T("");
 	CString szTemp	 = _T("");
 	CString szData   = _T("");
+#ifdef	DEBUG_MD5_CODE__
+	szTemp = "8203C2";
+	if (szTemp.Find("82") == 0)
+	{
+		nReadByte = 3;
+	}
+	for (int i = 0; i < nReadByte; i++)
+	{
+		szData.Format("%02x", hexCstr2decNum(szTemp.Mid( 2 * i, 2)));
+		szData.MakeUpper();
 
+		//	nIndex = I2cAdcCtrl.m_nData2 + i;			
+		m_ctrlReadDataGrid.SetRow(1 + (nIndex / 16));
+		m_ctrlReadDataGrid.SetCol(1 + (nIndex % 16));
+		m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+		m_ctrlReadDataGrid.SetText(szData);
+
+		nIndex++;
+	}
+	if (szTemp.Find("82") == 0)
+	{
+		int lhighVersion = hex2dec(szTemp.GetAt(3));
+		int lMidVersion = hex2dec(szTemp.GetAt(4));
+		szData.Format("%02d%02d", lhighVersion, lMidVersion);
+		szData.MakeUpper();
+		m_sz2abReadVersion2 = szData;
+	}
+	UpdateData(FALSE);
+	nIndex = 0;
+	return;
+#endif
 	m_sz2abReadToolOption = _T("");
 
 	if((nResult = I2cAdcCtrl.MNT_ReadVersion()) != TEST_PASS)
@@ -1232,16 +1262,19 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 	}
 	else
 	{
-		InitReadDataGrid();
-		
-	
+		InitReadDataGrid();		
+		szTemp = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH);
+		AddStringToStatus( szTemp);//LOG
+		if (szTemp.Find("82") == 0)
+		{
+			nReadByte = 3;
+		}
 		for(int i=0; i<nReadByte; i++)
 		{
 			szData.Format("%02x",hexCstr2decNum(I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH+2*i,2)));
 			szData.MakeUpper();
 
-		//	nIndex = I2cAdcCtrl.m_nData2 + i;
-			
+		//	nIndex = I2cAdcCtrl.m_nData2 + i;			
 			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
 			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
 			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
@@ -1250,10 +1283,18 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 			nIndex++;
 		}
 
-		m_sz2abReadVersion2 = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH,4);
-	//	nCpuVersion	  = hexCstr2decNum(I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH+2,6));
-	//	nMicomVersion = hexCstr2decNum(I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH+8,6));
-	//	nUsbVersion   = hexCstr2decNum(I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH+14,6));
+		if (szTemp.Find("82") == 0)
+		{
+			int lhighVersion = hex2dec(szTemp.GetAt(3));
+			int lMidVersion = hex2dec(szTemp.GetAt(4));
+			szData.Format("%02d%02d", lhighVersion, lMidVersion);
+			szData.MakeUpper();
+			m_sz2abReadVersion2 = szData;
+		}
+		else
+		{
+			m_sz2abReadVersion2 = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH,4);
+		}
 	}
 	UpdateData(FALSE);
 }

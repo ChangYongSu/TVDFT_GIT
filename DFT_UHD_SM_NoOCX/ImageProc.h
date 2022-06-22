@@ -258,6 +258,7 @@ public:
 	void P60_CEDS20Y_Mapping(unsigned char *pImgBufOut, unsigned char *pImgBufIn, int nWidth, int nHeight);
 	void P68_70_UPQO_Sharp_CEDS_DPT(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 	void P22Y8K_TCONLESS(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
+	void LM21A_HKC_220307(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 	void P68_50_UPQO_VA_CEDS_HKC(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 	void P68_55UP77_CSOT(unsigned char *bufTmp, unsigned char *pImgBufOut, int nWidth, int nHeight);
 
@@ -287,6 +288,7 @@ public:
 				POINT& ptResultPosition,int& nMaxDifference, CProgressCtrl& Progress);
 	int DarknessTest(CBaseImage& SnapImage, CBaseImage& MaskImage);
 	int WhitenessTest(CBaseImage& SnapImage, CBaseImage& MaskImage);
+	int WhitenessFullTest(CBaseImage& SnapImage);
 
 	int BinaryForMaskImage(int nType,CBaseImage& DstImage,int nThreshold,BOOL bOverwrite = FALSE);
 	int BinaryForMonoImage(int nType,BYTE* pImageData,int nHeight,int nWidth,int nBitCount,int nThreshold);

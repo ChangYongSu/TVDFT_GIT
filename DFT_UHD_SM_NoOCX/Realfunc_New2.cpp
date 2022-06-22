@@ -320,8 +320,8 @@ BOOL Work_Normal()
 
 		if(szPrevMsg != _T(""))
 		{
-				g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " +sMsg);
-				pCurStep->m_strMsg = szPrevMsg + "; " + sMsg;
+			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " +sMsg);
+			pCurStep->m_strMsg = szPrevMsg + "; " + sMsg;
 		}
 		else
 		{
@@ -7866,6 +7866,174 @@ BOOL _Grabber_Reset()
 
 	return TRUE;
 }
+
+
+BOOL _Grabber_HW_Reset()//GRABBER_HW_TEST
+{
+	static int sWhiteCount = 0;
+	BOOL bResult = FALSE;
+	g_pView->m_WhiteResetFlag = 1;
+	if ((g_nSysType == AUTO_SYS) && (CurrentSet->bUsePLCRobot == TRUE))
+	{
+		if (g_AutoControlProcess != _AUTO_ROBOT_CTRL_TEST_RUN)
+		{
+
+			return 1;
+		}
+			   
+		if (g_pView->m_bMakeReferenceMode)
+		{
+			
+			return 1;
+		}
+		else
+		{
+			bResult = Grab_Image_UHD("", 0);// bResult = Grab_Image_Check_Normal_2in1();
+		}
+
+		int nResult = g_ImageProc.WhitenessFullTest(g_GrabImage);
+
+		
+		if (nResult == TEST_FAIL)//No WhiteScreen
+		{
+			g_pView->m_WhiteResetCount = 0;
+			sWhiteCount = 0;
+			return TRUE;
+		}
+		AddStringToStatus("Grab HW Test Fail");
+		if (g_pView->CheckGrabberStatus())
+		{
+			AddStringToStatus("Grabber Update PASS!");
+			sWhiteCount = 0;
+			return TRUE;
+		}
+		//{
+		//	gJigCtrl.Set_Gender_Reset(0);
+		//	AddStringToStatus("Gender_Reset!!");
+		//	Sleep(1000);
+
+		for (int i = 0; i < 2; i++)
+		{
+//				g_pView->GrabBaseResetStartThread();
+			gJigCtrl.Set_Gender_Reset(0);
+			AddStringToStatus("Gender_Reset!!");
+			Sleep(700);
+			if (g_pView->Grab_UHD())
+			{
+				nResult = g_ImageProc.WhitenessFullTest(g_GrabImage);
+				if (nResult == TEST_FAIL)//No WhiteScreen
+				{
+					g_pView->m_WhiteResetCount = 0;
+					sWhiteCount = 0;
+					return 1;
+				}
+				AddStringToStatus("Grab HW Test Fail");
+			}
+		}
+
+		AddStringToStatus("Grabber Power OFF");
+		gJigCtrl.Set_Grabber_Power(0);
+		Sleep(700);
+
+		AddStringToStatus("Grabber Power ON");
+		gJigCtrl.Set_Grabber_Power(1);
+		Sleep(700);
+
+		g_pView->ResetGrabStartThread();
+		Sleep(1000);
+		if (g_pView->Grab_UHD())
+		{
+			nResult = g_ImageProc.WhitenessFullTest(g_GrabImage);
+			if (nResult == TEST_FAIL)//No WhiteScreen
+			{
+				g_pView->m_WhiteResetCount = 0;
+				sWhiteCount = 0;
+				return 1;
+			}
+			AddStringToStatus("Grab HW Test Fail");
+		}
+		if (g_pView->CheckGrabberStatus())
+		{
+			AddStringToStatus("Grabber Update PASS!");
+			sWhiteCount = 0;
+			return TRUE;
+		}
+		//gender Reset(2ȸ)->Grabber Off / On->Fixture Up / Donw->AC on->Grabber SW Rest
+		gJigCtrl.Set_CylinderUP();
+		AddStringToStatus("Jig Up!");
+		Sleep(1000);
+		for (int i = 0; i < 10; i++)
+		{
+			if (gJigCtrl.m_bJigUpStatus)
+				break;
+			Sleep(500);
+		}
+		gJigCtrl.Set_CylinderDOWN();
+		AddStringToStatus("Jig Down!");
+		Sleep(1000);
+		for (int i = 0; i < 10; i++)
+		{
+			if (gJigCtrl.m_bJigDownStatus)
+				break;
+			Sleep(500);
+		}
+		if (gJigCtrl.m_bJigDownStatus == 0)
+		{
+			AddStringToStatus("Jig Up Down Fail!");
+			
+			return 0;
+		}
+		gJigCtrl.Set_ACPower(1);
+		AddStringToStatus("AC ON!");
+		g_pView->ResetGrabStartThread();
+		AddStringToStatus("Grab Reset!");
+		Sleep(1000);
+		if (g_pView->Grab_UHD())
+		{
+			nResult = g_ImageProc.WhitenessFullTest(g_GrabImage);
+			if (nResult == TEST_FAIL)//No WhiteScreen
+			{
+				g_pView->m_WhiteResetCount = 0;
+				sWhiteCount = 0;
+				return 1;
+			}
+			AddStringToStatus("Grab HW Test Fail");
+		}
+		if (g_pView->CheckGrabberStatus())
+		{
+			AddStringToStatus("Grabber Update PASS!");
+			sWhiteCount = 0;
+			return TRUE;
+		}
+		sWhiteCount++;
+		//if (sWhiteCount >= 3)
+		//{
+		//	gPLC_Ctrl.Command3TimesError();			
+		//	AfxMessageBox("Grab HW Test Fail !!");
+		//	gPLC_Ctrl.Command3TimesErrorClear();
+		//	sWhiteCount = 0;
+		//	return 1;
+		//	int lCount = CurrentSet->nNoRetry+2;//(CurrentSet->nNoRetry > 0)
+		//	if (sWhiteCount >= lCount*3)
+		//	{
+		//		gPLC_Ctrl.Command3TimesError();			
+		//		AfxMessageBox("Grab HW Test Fail !!");
+		//		gPLC_Ctrl.Command3TimesErrorClear();
+		//		sWhiteCount = 0;
+		//		return 1;
+		//	}
+		//}
+	}
+	else
+	{
+		g_pView->m_WhiteResetCount = 0;
+		sWhiteCount = 0;
+		return 1;
+	}
+	g_pView->m_WhiteResetCount = sWhiteCount;
+	return bResult;
+}
+
 BOOL _AVC_BufferClear()
 {
 	BOOL bReturn = FALSE;

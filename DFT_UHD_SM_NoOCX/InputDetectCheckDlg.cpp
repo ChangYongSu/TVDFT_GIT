@@ -768,7 +768,7 @@ void CInputDetectCheckDlg::OnTimer(UINT nIDEvent)
 
 void CInputDetectCheckDlg::OnBtnEnter() 
 {
-	OnOK();	
+	//OnOK();	
 }
 
 void CInputDetectCheckDlg::OnBtnRecheck() 

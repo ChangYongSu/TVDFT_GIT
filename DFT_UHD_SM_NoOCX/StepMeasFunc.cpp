@@ -77,6 +77,9 @@ double	_Color_Test()
 	DWORD dwFuncElapsedTime   = 0;
 	CString szFuncElapsedTime = _T("");
 	SystemMonitorLog_Save("_Color_Test");// , _T(__FILE__), __LINE__);
+
+	
+
 	if(CurrentSet->bSaveProcessingTimeData)
 	{
 		sMsg.Format("  B-ColorTest");
@@ -86,6 +89,20 @@ double	_Color_Test()
 
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	
+	//if (g_pView->CheckGrabberStatus())
+	//{
+	//	AddStringToStatus("Grabber Update PASS!");
+	//	//sWhiteCount = 0;		
+	//}
+	//else
+	//{
+	//	AddStringToStatus("Grabber Update FAIL!");
+	//	pCurStep->m_bResult = FALSE;
+	//	return 100;
+	//}
+
+
 	//+add kwmoon 080819
 	g_ImageProc.m_ptPositionShift.x = 0;
 	g_ImageProc.m_ptPositionShift.y = 0;
@@ -1673,7 +1690,7 @@ double _Moving_Pic_Test()
 	{
 		//+add 090218(Modification No1)
 		szMsg1.Format("No of color used : %d (Threshold : %d)", nNoMpicColor, nMpicColorThreshold);
-
+		AddStringToStatus(szMsg1);
 		g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
 
 		if (szPrevMsg != _T(""))
@@ -1694,6 +1711,29 @@ double _Moving_Pic_Test()
 		}
 
 		//return 0.0;
+	}
+	else
+	{
+		szMsg1.Format("[PASS]No of color : %d (Threshold : %d)", nNoMpicColor, nMpicColorThreshold);
+		AddStringToStatus(szMsg1);
+		g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
+
+		if (szPrevMsg != _T(""))
+		{
+			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + szMsg1);
+			pCurStep->m_strMsg = szPrevMsg + "; " + szMsg1;
+		}
+		else
+		{
+			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szMsg1);
+			pCurStep->m_strMsg = szMsg1;
+		}
+
+		if (g_GrabImage.m_szFilePath != _T(""))
+		{
+			//	g_GrabImage.SaveImage(sGrabPath,SNAP_IMAGE,ctrlImgProg);
+			g_GrabImage.SaveJpgImage(sGrabPath, SNAP_IMAGE, ctrlImgProg);
+		}
 	}
 #else
 	nVideoMovingResult = TRUE;
@@ -2141,7 +2181,7 @@ double _Adc_Test()
 				g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, "ADC TIMEOUT");
 				TVCommCtrl.ResetArray();
 				g_pView->m_bAdcRunning = FALSE;
-				
+				CurrentSet->bRunAbort = 1;
 				return 0.0;
 			}
 			else if(nResult == TEST_FAIL)
@@ -2470,7 +2510,23 @@ double	_MNT_Version_Check()
 	}
 	else
 	{
-		sCpuVersion = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH,4);
+		CString szTemp;
+		CString szData;
+		szTemp = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH);
+		if (szTemp.Find("82") == 0)
+		{
+			int lhighVersion = hex2dec(szTemp.GetAt(3));
+			int lMidVersion = hex2dec(szTemp.GetAt(4));
+			szData.Format("%02d%02d", lhighVersion, lMidVersion);
+			szData.MakeUpper();
+			sCpuVersion = szData;
+		}
+		else
+		{
+			sCpuVersion = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH, 4);
+		}
+
+		
 		sCpuVersion.Insert(2, '.');
 	}
 

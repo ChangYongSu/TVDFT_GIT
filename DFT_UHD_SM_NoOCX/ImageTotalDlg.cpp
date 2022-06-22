@@ -910,8 +910,10 @@ BOOL CImageTotalDlg::OnInitDialog()
 	//IDD_PARM_AUTO_ROBOT_PAGE
 
 	//+add kwmoon 071106
+	CString strMsg;
 	if(CurrentSet->sRemoconTitle.IsEmpty())
 	{
+		strMsg.LoadString(IDS_ERR_REMOTE);
 		AfxMessageBox(IDS_ERR_REMOTE);
 	}
 	else
@@ -922,7 +924,8 @@ BOOL CImageTotalDlg::OnInitDialog()
 	//+add kwmoon 071214
 	if(CurrentSet->sPatternTitle.IsEmpty())
 	{
-		AfxMessageBox(IDS_ERR_PATTERN);
+		strMsg.LoadString(IDS_ERR_PATTERN);
+		AfxMessageBox(strMsg);
 	}
 	else
 	{

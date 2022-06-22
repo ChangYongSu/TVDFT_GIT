@@ -834,7 +834,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->nUHD_Type = m_Ini.GetProfileInt(GRAB_S, "UHD Type");
 		CurrentSet->nUHD_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "UHD Grab BitShift");
 		CurrentSet->nUHD_Grab_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Mode");
-		if(CurrentSet->nUHD_Grab_Mode > 16){CurrentSet->nUHD_Grab_Mode = 13;}
+		if(CurrentSet->nUHD_Grab_Mode > 17){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
 		if (CurrentSet->nUHD_Y20_SW_Mode > 7) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
@@ -3299,6 +3299,9 @@ BOOL SaveTestParamIniFile(CString sIniPath)
 	m_Ini.SetProfileInt(FORCE_CHECK_S, "AUDIO_FORCE_SCART_L", CurrentSet->nAudioForce_SCART_L);
 	m_Ini.SetProfileInt(FORCE_CHECK_S, "AUDIO_FORCE_SCART_R", CurrentSet->nAudioForce_SCART_R);
 
+
+	m_Ini.SetProfileInt(VIDEO_MARGIN_S, "MOVING_PIC_NO_OF_COLOR", CurrentSet->nNoUsedColors);
+
 	/*int
 int			nAudioForce_HP_R		;
 int			nAudioForce_HP_L		;
@@ -3390,8 +3393,9 @@ BOOL OpenTestParamIniFile(CString sIniPath)
 	if (CurrentSet->nAudioForce_RGB_R == 0)		CurrentSet->nAudioForce_RGB_R = 1000;
 	if (CurrentSet->nAudioForce_SCART_L == 0)	CurrentSet->nAudioForce_SCART_L = 400;
 	if (CurrentSet->nAudioForce_SCART_R == 0)	CurrentSet->nAudioForce_SCART_R = 1000;
-
-
+	//m_Ini.SetProfileInt(VIDEO_MARGIN_S, "MOVING_PIC_NO_OF_COLOR", CurrentSet->nNoUsedColors);
+	CurrentSet->nNoUsedColors = m_Ini.GetProfileInt(VIDEO_MARGIN_S, "MOVING_PIC_NO_OF_COLOR");
+	if (CurrentSet->nNoUsedColors == 0)	CurrentSet->nNoUsedColors = 5000;
 
 	//int			nAudioForce_HP_R;
 	//int			nAudioForce_HP_L;
@@ -3400,7 +3404,7 @@ BOOL OpenTestParamIniFile(CString sIniPath)
 	//int			nAudioForce_HDMI_L;
 	//int			nAudioForce_HDMI_R;
 	//int			nAudioForce_RGB_L;
-	//int			nAudioForce_RGB_R;
+	//int			nAudioForce_RGB_R; Cmd : 0x1012 (LDCMD_GET_BRIGHT_IMAGE)
 	//int			nAudioForce_SCART_L;
 	//int			nAudioForce_SCART_R;
 
@@ -3765,7 +3769,7 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 	
 	if(!bAlreadyExist)
 	{
-		szOutputString.Format("WipID,Chassis,Model,Time,Result,TestTime,NO,NAME, StepResult,MEASURE,TARGET,L-LIMIT,U-LIMIT,A_TARGET,A_MEASURE,TIME,MESSAG\r\n");
+		szOutputString.Format("WipID,Chassis,Model,Time,Result,TestTime,NO,NAME, StepResult,MEASURE,TARGET,L-LIMIT,U-LIMIT,A_TARGET,A_MEASURE,TIME,MESSAG,HDMIVer\r\n");
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString,szOutputString.GetLength()+1);
 	}
 
@@ -3778,7 +3782,14 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 	if (bResult)
 	{
 		szResultTotal = _T("OK");
-		szOutputString.Format("%s,%s,%s,%s,%s,%s, , , , , , , , , , ,\r\n",strWipid,CurrentSet->sChassisName, CurrentSet->sModelName,sTemp2,szResultTotal,sTime);
+		szOutputString.Format("%s,%s,%s,%s,%s,%s, , , , , , , , , , , ,%s\r\n",
+			strWipid,
+			CurrentSet->sChassisName, 
+			CurrentSet->sModelName,
+			sTemp2,
+			szResultTotal,
+			sTime, 
+			HDMIGeneratorCtrl.m_FW_Ver);
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString,szOutputString.GetLength()+1);
 	}
 	else
@@ -3855,8 +3866,15 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 			sStepNo.Format("%d", pStep->m_nStep);
 			sMsg.Format(_T("%s"), pStep->m_strMsg);
 
-			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \r\n",strWipid,CurrentSet->sChassisName, CurrentSet->sModelName,szResultTotal,sTime,
-									sStepNo, pStep->m_sName, sResult, sMeasured, sNominal,sLowLimit,sHighLimit,sAudioTarget,sAudioMeasure,sElapsedTime,sMsg);
+			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \r\n",
+				strWipid,
+				CurrentSet->sChassisName, 
+				CurrentSet->sModelName,
+				sTemp2,
+				szResultTotal,
+				sTime,
+				sStepNo, pStep->m_sName, sResult, sMeasured, sNominal,sLowLimit,sHighLimit,sAudioTarget,
+				sAudioMeasure,sElapsedTime,sMsg, HDMIGeneratorCtrl.m_FW_Ver);
 
 			pFile.Write((LPSTR)(LPCTSTR)szOutputString,szOutputString.GetLength()+1);
 
@@ -4786,7 +4804,8 @@ BOOL StepInit_SourceAutoControl_UHD()
 			return TRUE;
 		}
 	}
-	else{
+	else
+	{
 		if(CurrentSet->nTVControlType){
 			bResult = I2cAdcCtrl.InputSourceChange(nSourceCode);
 			if(!bResult)
@@ -4813,10 +4832,12 @@ BOOL StepInit_SourceAutoControl_UHD()
 		}
 	}
 
-	if(bResult){
+	if(bResult)
+	{
 		g_CurSetting.m_nInputSourceCode = nSourceCode;
 	}
-	else{
+	else
+	{
 		szMsg1 = _T("StepInit_SourceAutoControl- FAIL");
 		AddStringToStatus(szMsg1);
 

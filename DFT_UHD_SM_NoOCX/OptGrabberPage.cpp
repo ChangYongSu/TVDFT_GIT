@@ -574,6 +574,7 @@ BOOL COptGrabberPage::OnInitDialog()
 		m_ctrlGrabMode.AddString("14. Type15 : HKC 966 Pixel");
 		m_ctrlGrabMode.AddString("15. Type16 : CSOT 68P 55UP77");
 		m_ctrlGrabMode.AddString("16. Type17 : 8K T-CONLESS");
+		m_ctrlGrabMode.AddString("17. Type18 : LM21A HKC 220307");
 		//m_ctrlGrabMode.AddString(" 16. Type17 : Y20_SW_Mode_02");
 		//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 		m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);

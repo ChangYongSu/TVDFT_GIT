@@ -199,6 +199,7 @@ BOOL _MHL_BufferControl();
 BOOL _MHL_DetectLineControl();
 BOOL _SetDetectCheckSource();
 BOOL _Grabber_Reset();
+BOOL _Grabber_HW_Reset();
 BOOL _AVC_BufferClear();
 BOOL _Set_HdmiGrab();
 BOOL _Read_KeyItem();

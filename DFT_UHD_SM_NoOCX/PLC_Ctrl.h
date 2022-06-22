@@ -86,6 +86,7 @@ public:
 
 
 	int m_nUserRetry;
+	int m_nCheckAbortRetry;
 	int m_nTestResult;
 	int m_nFirstVideoNG;
 	int m_nCurrentVideoNG;
@@ -94,6 +95,7 @@ public:
 
 	int m_NG_StepNo;
 	int m_NG_StepNoOld;
+	int m_NG_StepNo3Times;
 
 	int m_nTestStepNGCount;
 

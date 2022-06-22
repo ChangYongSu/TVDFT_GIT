@@ -478,7 +478,8 @@ BOOL CJigCtrl::Set_Cylinder(BOOL bEarPhone, BOOL bComp)
 	if(!m_bPortOpen) return FALSE;
 	
 	if(bEarPhone){
-		m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL;
+		//m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL ;
+		m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL | HDMI_USB_SIGNAL;
 	}
 	else{
 		m_nCylinder = m_nCylinder & (~ERAPHONE_SIGNAL);
