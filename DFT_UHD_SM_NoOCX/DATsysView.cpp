@@ -6042,8 +6042,10 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	}
 	//gStrTmpLog.Format("InsertStepData2Grid(int nGridType) (%Ts:%d)", _T(__FILE__), __LINE__);
 	SystemMonitorLog_Save("Position", _T(__FILE__), __LINE__);
-
-	pView->CheckFWVer();
+	if (g_nGrabberType == UHD_GRABBER)
+	{
+		pView->CheckFWVer();
+	}
 
 	if(!HDMIGeneratorCtrl.m_bEDIDMode){
 		if(CurrentSet->nHDMIGenType == 0){
@@ -16530,7 +16532,7 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 						g_ImageProc.SW_MODE_Mapping(g_GrabDisplayImage.m_pImageData, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nUHD_Y20_SW_Mode);
 					}
 					
-					/*		
+	/*		
 					if (CurrentSet->nDeHsyncEnable || CurrentSet->nHyncEdgeEnable)
 					{
 						g_ImageProc.HsyncModeChange(CurrentSet->nDeHsyncEnable, CurrentSet->nHyncEdgeEnable);
@@ -17034,13 +17036,22 @@ void CDATsysView::StartLVDSGrabThread()
 			//if (CurrentSet->nUHD_Grab_Mode == 14) //if ((CurrentSet->nUHD_Grab_Mode >= 14) && (CurrentSet->nUHD_Grab_Mode <= 17)) //201109 HKC_966_PIXEL
 			{
 				__int64 SW_Mode_Sel;
-				if ((CurrentSet->nUHD_Y20_SW_Mode >= 0) && (CurrentSet->nUHD_Y20_SW_Mode <= 7)) // Y20_SW_Mode_01
+				if (CurrentSet->nUHD_Y20_SW_Mode >= 8)
+				{
+					SW_Mode_Sel = CurrentSet->nUHD_Y20_SW_Mode - 8;
+				}
+				else
+				{
 					SW_Mode_Sel = CurrentSet->nUHD_Y20_SW_Mode;
+				}
+
+				if ((SW_Mode_Sel >= 0) && (SW_Mode_Sel <= 7)) // Y20_SW_Mode_01
+					SW_Mode_Sel = SW_Mode_Sel;
 				else
 					SW_Mode_Sel = 0x00000000;
 
 				m_clsPCI.CM_RegisterWrite(0x0170, SW_Mode_Sel);
-				Sleep(1); // SW_Mode_Sel
+				Sleep(1); 
 			}
 			//if ((CurrentSet->nUHD_Grab_Mode >= 14) && (CurrentSet->nUHD_Grab_Mode <= 17)) //201109 HKC_966_PIXEL
 			//{
@@ -27439,6 +27450,7 @@ void CDATsysView::CheckFWVer()
 	//	MSHG - 800PLUS	1.0.30
 	//	MSHG - 800	211101
 //	AvSwitchBoxCtrl.CheckVer();
+	
 	HDMIGeneratorCtrl.CheckVer();
 //	PatternGeneratorCtrl.CheckVer();
 

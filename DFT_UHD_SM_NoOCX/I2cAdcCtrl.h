@@ -11,6 +11,7 @@
 #define	END_C		0x0d		//Enter
 #define CMD_LENGTH	14
 
+#define		HM_GET_STS 		0x0
 #define		HM_IIC_WR_REG1 		0x1
 #define		HM_IIC_WR_REG2 		0x2
 
@@ -58,6 +59,8 @@ public :
 
 	//+add kwmoon 080804
 	int				m_nReadByte;
+	int				m_MicomVer_Ex;
+
 
 	//+add kwmoon 080826
 	int				m_aReadData[256];
@@ -153,6 +156,7 @@ public :
 	BOOL ReadEdid_2B(int nIndex);
 */
 	int GetFWVersion();
+	int CI2cAdcCtrl::GetSETStS();
 };
 
 

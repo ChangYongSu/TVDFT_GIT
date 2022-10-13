@@ -1222,7 +1222,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 	CString szErrMsg = _T("");
 	CString szTemp	 = _T("");
 	CString szData   = _T("");
-#ifdef	DEBUG_MD5_CODE__
+#if 0 //def	DEBUG_MD5_CODE__
 	szTemp = "8203C2";
 	if (szTemp.Find("82") == 0)
 	{

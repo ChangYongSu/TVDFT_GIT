@@ -2398,7 +2398,9 @@ int CI2cAdcCtrl::MNT_ReadVersion()
 	int nResult				=	 TEST_FAIL;
 	int nCheckSum			= 0;
 	int nToolOption			= 0;
-	int nReadByte			= 2; // Version Data : 9Byte
+
+	//int nReadByte = 2; // Version Data : 9Byte
+	int nReadByte = 2; // Version Data : 9Byte
 
 	CString szCmd		 = _T("");
 	CString szTemp		 = _T("");
@@ -2407,6 +2409,11 @@ int CI2cAdcCtrl::MNT_ReadVersion()
 	CString szErrMsg	 = _T("");
 	int nHostAdd;
 
+
+	if (m_MicomVer_Ex >= 1)
+	{
+		nReadByte = 3;
+	}
 //	if(CurrentSet->nHostAddressType == 0){
 		nHostAdd = HOST_ADD0;
 //	}
@@ -3389,6 +3396,7 @@ int CI2cAdcCtrl::GetFWVersion()
 	CString szCmd		= _T("");
 	CString sReadString = _T("");
 	int nValue;
+	int nValueMid;
 
 	szCmd.Format(">%02x%02x00000000%c%c",m_nI2cAdcSeqNo++, HM_GET_VER, CR,LF);
 
@@ -3414,9 +3422,45 @@ int CI2cAdcCtrl::GetFWVersion()
 	}
 
 	nValue = (int)(hexCstr2decNum(sReadString.Mid(5,2)));
+	nValueMid = (int)(hexCstr2decNum(sReadString.Mid(7,2)));
+	m_MicomVer_Ex = nValueMid;
+	return nValue;
+}
+int CI2cAdcCtrl::GetSETStS()
+{
+	int		nResult = TEST_FAIL;
+	CString szCmd = _T("");
+	CString sReadString = _T("");
+	int nValue;
+
+	szCmd.Format(">%02x%02x00000000%c%c", m_nI2cAdcSeqNo++, HM_GET_STS, CR, LF);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(14, 5000, sReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	//================
+	// Response Check
+	//================
+	if (sReadString.GetLength() >= 7)
+	{
+		nValue = (int)(hexCstr2decNum(sReadString.Mid(5, 2)));
+	}
+	else {
+		return 0;
+	}
+
+	nValue = (int)(hexCstr2decNum(sReadString.Mid(5, 2)));
 
 	return nValue;
 }
+
 
 /*
 BOOL CI2cAdcCtrl::WriteEdid_2AB(int nIndex)

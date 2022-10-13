@@ -416,7 +416,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 			::ResetEvent(m_hReadEvent);
 		}
 #ifdef DEBUG_MD5_CODE__
-		m_sReceive = "a 01 NO91x";
+		//m_sReceive = "a 01 TO91x";//"a 01 NG91x";// 
 #endif
 		nTemp = m_sReceive.GetLength();
 		if(nTemp > 0)
@@ -486,7 +486,7 @@ BOOL CTVCommCtrl::ReceiveCommString(int nRev, int nWaitLimit, CString& sReadStri
 
 				}
 
-				if((sTemp.Find("OK") != -1) || (sTemp.Find("NG") != -1) || (sTemp.Find("NO") != -1)||(sTemp.Find("NULL") != -1))
+				if((sTemp.Find("OK") != -1) || (sTemp.Find("NG") != -1) || (sTemp.Find("TO") != -1) || (sTemp.Find("NO") != -1) ||(sTemp.Find("NULL") != -1))
 				{
 					if(sSendData != _T(""))
 					{
@@ -1202,12 +1202,19 @@ UINT CTVCommCtrl::AdcTest(CString sCmd1, CString sCmd2, int nSetId, CString sDat
 	//else if (sReadData.Find("OK") >= 0)
 	//{
 	if (sReadData.Find("OK") != -1)
+	{
+
 		m_nResult = TEST_PASS;
-	else if (sReadData.Find("NO") != -1)
+	}
+	else if (sReadData.Find("TO") != -1) 
+	{
+		m_nResult = TEST_PASS;
+		AddStringToStatus("ACK [TO] ");
+	}	
+	else if  (sReadData.Find("NO") != -1)
 	{
 		m_nResult = TEST_PASS;
 		AddStringToStatus("ACK [NO] ");
-
 	}
 	else
 		m_nResult = TEST_FAIL;

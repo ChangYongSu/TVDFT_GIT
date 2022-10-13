@@ -382,6 +382,7 @@ BOOL CHdmiGenerator::SetEDID_PassCheck(BOOL bFlag)
 {
 	CString szCmdString;
 	CString szTemp;
+	
 
 	if(!CurrentSet->bUseHDMIGen) return TRUE;
 	if(bFlag)
@@ -963,12 +964,17 @@ BOOL CHdmiGenerator::CheckVer()
 	CString szCmdString;
 	CString szTemp;
 	CString szData;
-	
+
+	if (g_nGrabberType == FHD_GRABBER)
+		return TRUE;
+
+
 	szTemp = "Check HDMI Ver";
 	AddStringToStatus(szTemp);
 	m_FW_Ver = "";
 #ifdef _DEBUG
-
+	InitHDMIGen(CurrentSet->sHDMIComPort, CurrentSet->wHDMIBaudRate);
+	InitHDMIGen(CurrentSet->sHDMIComPort, CurrentSet->wHDMIBaudRate);
 	m_FW_Ver = "220516";
 	return TRUE;
 #endif

@@ -581,9 +581,14 @@ BOOL COptGrabberPage::OnInitDialog()
 
 		CString Stemp;
 		m_cComboY20SwMode.ResetContent();
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 8; i++)
 		{
-			Stemp.Format(_T(" SW_%02d"), i);
+			Stemp.Format(_T("SW_Mode_%02d"), i);
+			m_cComboY20SwMode.AddString(Stemp);
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			Stemp.Format(_T("SW_170_%02d"), i);
 			m_cComboY20SwMode.AddString(Stemp);
 		}
 		m_cComboY20SwMode.SetCurSel(CurrentSet->nUHD_Y20_SW_Mode);
@@ -925,7 +930,7 @@ void COptGrabberPage::OnBnClickedChkRbSwap()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
-
+#if 0
 void COptGrabberPage::OnBnClickedButton170Write()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -957,7 +962,61 @@ void COptGrabberPage::OnBnClickedButton170Write()
 	//	MessageBox("nUHD_Grab_Mode != HKC 966 Pixel[14]");
 	//}
 }
+#else
+void COptGrabberPage::OnBnClickedButton170Write()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int  lRet;
+	__int64 SW_Mode_Sel;
+	int lSelID = 0;
+	CString strTmp;
+	//CurrentSet->nUHD_Grab_Mode = m_ctrlGrabMode.GetCurSel();
+	lSelID =  m_cComboY20SwMode.GetCurSel();
+//	m_cComboY20SwMode.GetLBText(lSelID, strTmp);
 
+	//if (strTmp.Find("SW_170_") == 0)
+	//{
+	//	CurrentSet->nUHD_Y20_SW_Mode = _ttoi(strTmp.Mid(7));
+	//}
+	//else
+	//{
+	//	CurrentSet->nUHD_Y20_SW_Mode = lSelID;
+	//}
+	CurrentSet->nUHD_Y20_SW_Mode = lSelID;
+	if (CurrentSet->nUHD_Y20_SW_Mode >= 8)
+	{
+		SW_Mode_Sel = CurrentSet->nUHD_Y20_SW_Mode - 8;
+	}
+	else
+	{
+		SW_Mode_Sel = CurrentSet->nUHD_Y20_SW_Mode;
+	}
+	
+	//if (CurrentSet->nUHD_Grab_Mode == 14) //if ((CurrentSet->nUHD_Grab_Mode >= 14) && (CurrentSet->nUHD_Grab_Mode <= 17)) //201109 HKC_966_PIXEL
+	{
+		if ((SW_Mode_Sel >= 0) && (SW_Mode_Sel <= 7)) // Y20_SW_Mode_01
+			SW_Mode_Sel = SW_Mode_Sel;
+		else
+			SW_Mode_Sel = 0x00000000;
+
+		lRet = g_pView->m_clsPCI.CM_RegisterWrite(0x0170, SW_Mode_Sel);
+		Sleep(1); // SW_Mode_Sel
+	}
+	if (lRet == 0)
+	{
+		CString stemp;
+		stemp.Format(_T("CM_RegisterWrite 0x0170: 0x%08X"), SW_Mode_Sel);
+		MessageBox(stemp);
+	}
+	else
+	{
+		MessageBox("Write 0x170: Fail!!");
+	}
+	//{
+	//	MessageBox("nUHD_Grab_Mode != HKC 966 Pixel[14]");
+	//}
+}
+#endif
 
 void COptGrabberPage::OnBnClickedButton170Read()
 {

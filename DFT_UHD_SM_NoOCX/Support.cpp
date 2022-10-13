@@ -837,7 +837,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		if(CurrentSet->nUHD_Grab_Mode > 17){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
-		if (CurrentSet->nUHD_Y20_SW_Mode > 7) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
+		if (CurrentSet->nUHD_Y20_SW_Mode > 16) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
 
 		CurrentSet->nHDMI_Grab_Resolution = m_Ini.GetProfileInt(GRAB_S, "HDMI Grab Resolution");
 		CurrentSet->nHDMI_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "HDMI Grab BitShift");
@@ -2434,7 +2434,8 @@ BOOL InitHDMIGen(CString sComPort, DWORD wBaudRate)
 		if(HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE) 
 		{
 			HDMIGeneratorCtrl.PortClose(); _Wait(100);
-			if(!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
+			//if (!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)				
+			if (HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
 			{
 				CString szErrMsg;
 				szErrMsg.Format("Failed to open COM port (%s)",CurrentSet->sHDMIComPort);
@@ -2446,7 +2447,8 @@ BOOL InitHDMIGen(CString sComPort, DWORD wBaudRate)
 	else if(HDMIGeneratorCtrl.m_bPortOpen == TRUE)
 	{
 		HDMIGeneratorCtrl.PortClose(); _Wait(100);
-		if(!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
+		//if (!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)			
+		if (HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
 		{
 			CString szErrMsg;
 			szErrMsg.Format("Failed to open COM port (%s)",CurrentSet->sHDMIComPort);

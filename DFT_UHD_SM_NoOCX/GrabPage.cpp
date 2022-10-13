@@ -512,9 +512,14 @@ BOOL CGrabPage::OnInitDialog()
 	
 	CString Stemp;
 	m_cComboY20SwMode.ResetContent();
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		Stemp.Format(_T("SW_Mode_%02d"), i);
+		m_cComboY20SwMode.AddString(Stemp);
+	}	
+	for (int i = 0; i < 8; i++)
+	{
+		Stemp.Format(_T("SW_170_%02d"), i);
 		m_cComboY20SwMode.AddString(Stemp);
 	}
 	m_cComboY20SwMode.SetCurSel(CurrentSet->nUHD_Y20_SW_Mode);
@@ -1249,8 +1254,18 @@ void CGrabPage::GrabStart(int nGrabMode)
 			//if (CurrentSet->nUHD_Grab_Mode == 14) //if ((CurrentSet->nUHD_Grab_Mode >= 14) && (CurrentSet->nUHD_Grab_Mode <= 17)) //201109 HKC_966_PIXEL
 			{
 				__int64 SW_Mode_Sel;
-				if ((CurrentSet->nUHD_Y20_SW_Mode >= 0) && (CurrentSet->nUHD_Y20_SW_Mode <= 7)) // Y20_SW_Mode_01
+
+				if (CurrentSet->nUHD_Y20_SW_Mode >= 8)
+				{
+					SW_Mode_Sel = CurrentSet->nUHD_Y20_SW_Mode - 8;
+				}
+				else
+				{
 					SW_Mode_Sel = CurrentSet->nUHD_Y20_SW_Mode;
+				}
+
+				if ((SW_Mode_Sel >= 0) && (SW_Mode_Sel <= 7)) // Y20_SW_Mode_01
+					SW_Mode_Sel = SW_Mode_Sel;
 				else
 					SW_Mode_Sel = 0x00000000;
 
@@ -2865,7 +2880,26 @@ void CGrabPage::OnBtnGrabOptionApply()
 		CurrentSet->nUHD_Type =	m_ctrlUhdType.GetCurSel();
 		CurrentSet->nUHD_Grab_BitShift = m_ctrlBitShift.GetCurSel();
 		CurrentSet->nUHD_Grab_Mode = m_ctrlGrabMode.GetCurSel();
-		CurrentSet->nUHD_Y20_SW_Mode = m_cComboY20SwMode.GetCurSel();
+
+
+		CurrentSet->nUHD_Y20_SW_Mode = m_cComboY20SwMode.GetCurSel();		
+	
+		//int lSelID = 0;
+		//CString strTmp;
+		//
+		//lSelID = m_cComboY20SwMode.GetCurSel();
+		//m_cComboY20SwMode.GetLBText(lSelID, strTmp);
+
+		//if (strTmp.Find("SW_170_") == 0)
+		//{
+		//	CurrentSet->nUHD_Y20_SW_Mode = _ttoi(strTmp.Mid(7));
+		//}
+		//else
+		//{
+		//	CurrentSet->nUHD_Y20_SW_Mode = lSelID;
+		//}
+
+
 
 
 		CurrentSet->nHDMI_Grab_Resolution = m_ctrlHdmiResolution.GetCurSel();
