@@ -1381,14 +1381,31 @@ BOOL _SetRoi()
 	{
 		if((ptStartPosition.x < 0) || (ptEndPosition.x > (int)(CurrentSet->nLvdsWidth-1)))
 		{
-			szErrMsg.Format("Roi must be in the range of 0 to %d",CurrentSet->nLvdsWidth-1);
+			szErrMsg.Format("Roi must be in the X range of 0 to %d",CurrentSet->nLvdsWidth-1);
 			AfxMessageBox(szErrMsg);
 			return FALSE;
 		}
 
 		if((ptStartPosition.y < 0) || (ptEndPosition.y > (int)(CurrentSet->nLvdsHeight-1)))
 		{
-			szErrMsg.Format("Roi must be in the range of 0 to %d",CurrentSet->nLvdsHeight-1);
+			szErrMsg.Format("Roi must be in the Y range of 0 to %d",CurrentSet->nLvdsHeight-1);
+			AfxMessageBox(szErrMsg);
+			return FALSE;
+		}
+	}
+	else if (g_GrabSource == HDMI_GRABBER) {
+		//nWidth = CurrentSet->nHdmiWidth;
+		//nHeight = CurrentSet->nHdmiHeight;
+		if ((ptStartPosition.x < 0) || (ptEndPosition.x > (int)(CurrentSet->nHdmiWidth - 1)))
+		{
+			szErrMsg.Format("Roi must be in the X range of 0 to %d", CurrentSet->nHdmiWidth - 1);
+			AfxMessageBox(szErrMsg);
+			return FALSE;
+		}
+
+		if ((ptStartPosition.y < 0) || (ptEndPosition.y > (int)(CurrentSet->nHdmiHeight - 1)))
+		{
+			szErrMsg.Format("Roi must be in the Y range of 0 to %d", CurrentSet->nHdmiHeight - 1);
 			AfxMessageBox(szErrMsg);
 			return FALSE;
 		}

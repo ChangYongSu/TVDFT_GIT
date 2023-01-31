@@ -480,6 +480,7 @@ BOOL COptGrabberPage::OnInitDialog()
 	m_bDeHsyncEnable = CurrentSet->nDeHsyncEnable;
 	m_bHyncEdgeEnable = CurrentSet->nHyncEdgeEnable;
 
+	
 	m_bAutoDataDelete	 = CurrentSet->bAutoDataDelete;
 	m_nPeriod  = CurrentSet->nDataSavePeriod;
 	if(m_nPeriod <15){

@@ -3012,8 +3012,9 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 
 	pCurrentSet->nAudioCheckMethod		= pApp->GetProfileInt(_T("Config"), _T("AudioCheckMethod"), 1);
 
-	pCurrentSet->nDataSavePeriod		= pApp->GetProfileInt(_T("Config"), _T("Data Save Period"), 60);
-	pCurrentSet->bAutoDataDelete		= pApp->GetProfileInt(_T("Config"), _T("Auto Data Delete"), 1);
+	//godtech 221104
+	pCurrentSet->nDataSavePeriod = 180;//  pApp->GetProfileInt(_T("Config"), _T("Data Save Period"), 60);
+	pCurrentSet->bAutoDataDelete = 1;// pApp->GetProfileInt(_T("Config"), _T("Auto Data Delete"), 1);
 
 	pCurrentSet->nToolOptionSetMethod	= pApp->GetProfileInt(_T("Config"), _T("Tool Option Set Method"), 0);
 
@@ -17586,7 +17587,7 @@ BOOL CDATsysView::MesData_AutoUpLoad_DataCheck()
 }
 
 
-void CDATsysView::OnMesDataUpload() 
+void CDATsysView::OnMesDataUpload() //OnUploadMesData(WPARAM wParam, LPARAM lParam
 {
 	CString sTemp;
 

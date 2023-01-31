@@ -3712,7 +3712,231 @@ BOOL OpenEPI_ConfigFile(CString sIniPath)
 	}	
 	return TRUE;
 }
+#if 1
+void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
+{
+	CFile pFile;
+	CFileException FileExcept;
 
+	CString sTemp = _T("");
+	CString szOutputString = _T("");
+	CString szResultTotal = _T("");
+	CString sStepNo = _T("");
+	CString sRun = _T("");
+	CString sResult = _T("");
+	CString sAudioTarget = _T("");
+	CString sAudioMeasure = _T("");
+	CString sMeasured = _T("");
+	CString sNominal = _T("");
+	CString sLowLimit = _T("");
+	CString sHighLimit = _T("");
+	CString sElapsedTime = _T("");
+	CString sMsg = _T("");
+	BOOL	bAlreadyExist = FALSE;
+
+	CString sResultPath;
+	CStdioFile stdFile;
+	CFileException fileExcept;
+	CString sDay;
+	CString sMonth;
+	CString filename;
+	CString sModel;
+	CString sTemp2;
+	CString sKeyDL_Log = _T("");
+	CString sSystemNo = _T("");
+	CString sDayTime = _T("");
+	CString sSPEC_SEQ = _T("1");
+
+	int		nSeqNo = 1;
+	CString sSeqNo = _T("");
+	CString sGMES_PortNo = _T("");
+
+	nSeqNo = CurrentSet->nDftSeq + 1;
+	sSeqNo.Format("%d", nSeqNo);
+
+	sGMES_PortNo.Format("%d", CurrentSet->nGmesPort);
+
+	CTime curTime = CTime::GetCurrentTime();
+
+	sTemp2 = curTime.Format(_T("[%H%M%S]"));
+	sDayTime = curTime.Format(_T("%Y-%m-%d %H:%M:%S"));
+	sDay = curTime.Format(_T("%Y%m%d"));
+	sTemp.Format(_T("%s\\TestResult\\Summary"), g_pView->m_szExePath);
+
+	if (!FileExists(sTemp))   CreateFullPath(sTemp);
+
+	sResultPath.Format(_T("%s\\ResultSummary_%s.CSV"), sTemp, sDay);
+
+	int nOutputStringLength = 0;
+
+	if (FileExists(sResultPath))
+	{
+		bAlreadyExist = TRUE;
+	}
+
+	if (!pFile.Open(sResultPath, CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate | CFile::shareDenyNone, &FileExcept))
+	{
+		char   szCause[255];
+		FileExcept.GetErrorMessage(szCause, 255);
+		AfxMessageBox(szCause);
+		return;
+	}
+
+	if (!bAlreadyExist)
+	{
+		//szOutputString.Format("WipID,Chassis,Model,Time,Result,TestTime,NO,NAME, StepResult,MEASURE,TARGET,L-LIMIT,U-LIMIT,A_TARGET,A_MEASURE,TIME,MESSAG,HDMIVer\r\n");
+		szOutputString.Format(	"GMES PORT,SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,\
+KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
+STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
+		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
+	}
+
+	pFile.SeekToEnd();
+
+	//=============	
+	// Test Result 
+	//=============
+	if (CurrentSet->bDrmKey) {
+		sKeyDL_Log.Format("KEY%04X%04X", CurrentSet->nInputCheckResultVal, CurrentSet->nDrmKeyResultVal);
+	}
+	else {
+		sKeyDL_Log.Format("DFT%04X%04X", CurrentSet->nInputCheckResultVal, CurrentSet->nDrmKeyResultVal);
+	}
+
+	sSystemNo.Format("%d", CurrentSet->nSystemNo);
+
+	if (bResult)
+	{
+		szResultTotal = _T("OK");
+
+		sAudioTarget = _T("-");
+		sAudioMeasure = _T("-");
+
+
+		sLowLimit = _T("-");
+
+		sMeasured = _T("-");
+		sNominal = _T("-");
+		sHighLimit = _T("-");
+		sElapsedTime = _T("-");
+		sResult = _T("-");
+		sSPEC_SEQ = "1";
+
+
+//		szOutputString.Format("SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,
+//		HDMI_GEN_VER,\
+//KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
+//STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
+		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s\r\n",
+			sGMES_PortNo,strWipid,szResultTotal, sAudioMeasure, sAudioTarget,CurrentSet->sChassisName,
+			HDMIGeneratorCtrl.m_FW_Ver,	sKeyDL_Log, sLowLimit, sSystemNo,sMeasured, 
+			sMsg, sRun, sSeqNo,/* pStep->m_sName,*/sStepNo, 
+			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ
+			);
+		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
+	}
+	else
+	{
+		szResultTotal = _T("NG");
+		POSITION Position = StepList.GetHeadPosition();
+		while (Position)
+		{
+			CStep* pStep = StepList.GetNext(Position);
+
+			if (pStep->m_sName == _T(""))  pStep->m_sName = _T("-");
+			if (pStep->m_strMsg == _T("")) pStep->m_strMsg = _T("-");
+			sAudioTarget = _T("-");
+			sAudioMeasure = _T("-");
+			sMeasured = _T("-");
+			sNominal = _T("-");
+			sLowLimit = _T("-");
+			sHighLimit = _T("-");
+			sElapsedTime = _T("-");
+			sResult = _T("-");
+			sSPEC_SEQ = "1";
+
+			if (pStep->m_bTest) {
+				sRun = _T("1");
+				if (pStep->m_bResult) { sResult = _T("OK"); }
+				else {
+					sResult = _T("NG");
+					if (pStep->m_bRunAudioTest && pStep->m_bRunVideoTest) {
+						if (pStep->m_bVideoTestResult == FALSE) { sResult = _T("NG_V"); }
+						if (pStep->m_bAudioTestResult == FALSE) { sResult = _T("NG_A"); }
+
+						if ((pStep->m_bVideoTestResult == FALSE) && (pStep->m_bAudioTestResult == FALSE)) {
+							sResult = _T("NG_AV");
+						}
+					}
+					else if (!pStep->m_bRunAudioTest && pStep->m_bRunVideoTest) {
+						if (pStep->m_bVideoTestResult == FALSE) { sResult = _T("NG_V"); }
+					}
+					else if (pStep->m_bRunAudioTest && !pStep->m_bRunVideoTest) {
+						if (pStep->m_bAudioTestResult == FALSE) { sResult = _T("NG_A"); }
+					}
+				}
+				sElapsedTime.Format(_T("%.1f"), pStep->m_fElapsedTime);
+			}
+			else 
+			{ 
+				sResult = _T("SKIP"); 
+				sRun = _T("0");
+			}
+
+			if (pStep->m_bResult || !pStep->m_bTest) continue;
+
+			if (pStep->m_bRunAudioTest)
+			{
+				if (pStep->m_nMeasureAudioType == LEVEL_CHECK) {
+					sAudioTarget.Format(_T("X_X_%d_%d"), pStep->m_nLeftLevel[0], pStep->m_nRightLevel[0]);
+				}
+				else if (pStep->m_nMeasureAudioType == FREQUENCY_CHECK) {
+					sAudioTarget.Format(_T("%d_%d_X_X"), pStep->m_nLeftFreq[0], pStep->m_nRightFreq[0]);
+				}
+				else {
+					sAudioTarget.Format(_T("%d_%d_%d_%d"), pStep->m_nLeftFreq[0], pStep->m_nRightFreq[0], pStep->m_nLeftLevel[0], pStep->m_nRightLevel[0]);
+				}
+				// Audio Measure
+				sAudioMeasure.Format(_T("%d_%d_%d_%d"), pStep->m_nLeftFreq[1], pStep->m_nRightFreq[1], pStep->m_nLeftLevel[1], pStep->m_nRightLevel[1]);
+			}
+
+			if (pStep->m_bAdcValueCheckStep)
+			{
+				sAudioMeasure = pStep->m_szAdcValue;
+			}
+			if (pStep->m_nFuncType == MEAS_DOUBLE)
+			{
+				sMeasured.Format(_T("%.1f"), pStep->m_fMeasured);
+				sNominal.Format(_T("%.1f"), pStep->m_fNominal);
+				sLowLimit.Format(_T("%.1f"), pStep->m_fLowLimit);
+				sHighLimit.Format(_T("%.1f"), pStep->m_fHighLimit);
+
+			}
+			sStepNo.Format("%d", pStep->m_nStep);
+			sMsg.Format(_T("%s"), pStep->m_strMsg);
+
+			//szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \r\n",
+			//	strWipid,
+			//	CurrentSet->sChassisName,
+			//	CurrentSet->sModelName,
+			//	sTemp2,
+			//	szResultTotal,
+			//	sTime,
+			//	sStepNo, pStep->m_sName, sResult, sMeasured, sNominal, sLowLimit, sHighLimit, sAudioTarget,
+			//	sAudioMeasure, sElapsedTime, sMsg, HDMIGeneratorCtrl.m_FW_Ver);
+			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+				sGMES_PortNo,strWipid, szResultTotal, sAudioMeasure, sAudioTarget, CurrentSet->sChassisName,
+			HDMIGeneratorCtrl.m_FW_Ver,sKeyDL_Log, sLowLimit, sSystemNo, sMeasured, 
+			sMsg, sRun, sSeqNo, pStep->m_sName,sStepNo, 
+			sNominal,sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ);
+
+			pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
+		}
+	}
+
+	pFile.Close();
+}
+#else
 void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 {
 	CFile pFile;
@@ -3885,7 +4109,7 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 
 	pFile.Close();
 }
-
+#endif
 BOOL OpenModelListFile(CString sModelListPath,int& nNoModel,CStringArray &Divisions)
 {
 	POSITION PosStep = NULL;
@@ -6067,10 +6291,22 @@ void ResultData_Delete(LONG nPeriodDay)
 	CString		 szYear			  = _T("");
 	int nTemp;
 
+	int nYear_temp;
+	int nYear;
+	int nMonth_temp;
+	int nMonth;
+	int nDay_temp;
+	int nDay;
+
 	delTime = curTime - ts;
 
 	szYear = delTime.Format("[%y_%m_%d]");
-	
+
+	nYear = delTime.GetYear();
+	nMonth = delTime.GetMonth();
+	nDay = delTime.GetDay();
+
+
 	CFileFind ff;
 	CString sPath;
 	CString sTemp;
@@ -6090,13 +6326,15 @@ void ResultData_Delete(LONG nPeriodDay)
 			if(sPath.Find('[') != -1)
 			{
 				sTemp = sPath.Right(sPath.GetLength()-sPath.ReverseFind('\\')-1);
-        
-/*
+     
+#if 0
+
 				sTemp.TrimLeft('[');
 				sTemp.TrimRight(']');
 
 				sTemp2 = sTemp.Left(2);
 				nYear_temp = atoi(sTemp2);
+				nYear_temp += 2000;
 
 				sTemp2 = sTemp.Mid(3,2);
 				nMonth_temp = atoi(sTemp2);
@@ -6104,14 +6342,21 @@ void ResultData_Delete(LONG nPeriodDay)
 				sTemp2 = sTemp.Right(2);
 				nDay_temp = atoi(sTemp2);
 
-				if((nYear_temp <= nYear) && (nMonth_temp <= nMonth) && (nDay_temp <= nDay))
-*/
-				nTemp = sTemp.Compare(szYear);
-				if(nTemp <= 0)
+				if((nYear_temp <= nYear) && (nMonth_temp <= nMonth) && (nDay_temp <= nDay))				
 				{
 					RecursiveDelete(sPath);
 					RemoveDirectory(sPath);
 				}
+
+#else
+				nTemp = sTemp.Compare(szYear);
+				if(nTemp == 0)
+				{
+					RecursiveDelete(sPath);
+					RemoveDirectory(sPath);
+				}
+
+#endif
 			}
 		}
 	}
@@ -6157,7 +6402,7 @@ void GmesLog_Delete(LONG nPeriodDay)
 			//	sTemp.TrimRight("_3.txt");
 
 				nTemp = sTemp.Compare(szYear);
-				if(nTemp <= 0)
+				if(nTemp == 0)
 				{
 					DeleteFile(sPath);
 				}
@@ -6168,7 +6413,7 @@ void GmesLog_Delete(LONG nPeriodDay)
 				sTemp = sTemp2.Left(sTemp2.ReverseFind('_'));
 
 				nTemp = sTemp.Compare(szYear2);
-				if(nTemp <= 0)
+				if(nTemp == 0)
 				{
 					DeleteFile(sPath);
 				}
