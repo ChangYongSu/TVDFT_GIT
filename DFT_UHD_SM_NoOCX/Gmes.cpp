@@ -1046,6 +1046,9 @@ CString CGmes::MakeElem_S6F1(CString sEquipmentID, CString sPcbID, BOOL bResult,
 	xmlTemp.AddChildElem("NAME", "HDMI_GEN_VER");
 	xmlTemp.AddChildElem("VALUE", HDMIGeneratorCtrl.m_FW_Ver);// 
 
+	xmlTemp.AddChildElem("NAME", "PCBA_SW_VER");
+	xmlTemp.AddChildElem("VALUE", CurrentSet->sCPUVersionRead);// 
+
 	if(!bResult){
 		POSITION Position = StepList.GetHeadPosition();
 		while (Position) 

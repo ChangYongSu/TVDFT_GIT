@@ -2484,7 +2484,7 @@ int CI2cAdcCtrl::MNT_ReadVersion()
 		return nResult;
 	}
 
-	if((nResult = ReceiveCommString(CMD_LENGTH,2000,szReadString)) != TEST_PASS)
+	if((nResult = ReceiveCommString(CMD_LENGTH,5000,szReadString)) != TEST_PASS)
 	{
 		return nResult;
 	}
@@ -2492,7 +2492,7 @@ int CI2cAdcCtrl::MNT_ReadVersion()
 	if(szReadString.GetLength() >= 7)
 	{
 		if((szReadString.GetAt(5) != '0') 
-		|| (szReadString.GetAt(6) != '1'))
+		&&(szReadString.GetAt(6) != '1'))
 		{
 			nResult = ERROR_I2C_RESPONSE; 
 		}

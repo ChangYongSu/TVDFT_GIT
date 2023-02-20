@@ -501,6 +501,7 @@ public:
 	//add 20110610
 	CString		sCommercialOption1;
 
+	CString		sCPUVersionRead;
 	CString		sCPUVersion;
 	CString		sMicomVersion;
 	CString		sUSBVersion;

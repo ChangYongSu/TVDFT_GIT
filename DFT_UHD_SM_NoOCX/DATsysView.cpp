@@ -5816,6 +5816,8 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	HDMIGeneratorCtrl.m_bResetPatternModel = 1;
 	HDMIGeneratorCtrl.m_bResetHDCP_EDID = 1;
 
+	CurrentSet->sCPUVersionRead = "";
+
 	SystemMonitorLog_Save("StartTestThread(LPVOID pParam) ");
 	// RunMode : CONT = 0, ERRORSTEP = 1, STOP = 2, STEP = 3, AUTO = 4
 	int nRunMode = CONT;

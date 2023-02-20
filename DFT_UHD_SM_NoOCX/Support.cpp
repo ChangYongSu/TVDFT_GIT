@@ -3785,7 +3785,7 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 	if (!bAlreadyExist)
 	{
 		//szOutputString.Format("WipID,Chassis,Model,Time,Result,TestTime,NO,NAME, StepResult,MEASURE,TARGET,L-LIMIT,U-LIMIT,A_TARGET,A_MEASURE,TIME,MESSAG,HDMIVer\r\n");
-		szOutputString.Format(	"GMES PORT,SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,\
+		szOutputString.Format(	"GMES PORT,SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,PCBA_SW_VER,\
 KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
 STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
@@ -3827,9 +3827,9 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 //		HDMI_GEN_VER,\
 //KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
 //STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
-		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s\r\n",
+		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s\r\n",
 			sGMES_PortNo,strWipid,szResultTotal, sAudioMeasure, sAudioTarget,CurrentSet->sChassisName,
-			HDMIGeneratorCtrl.m_FW_Ver,	sKeyDL_Log, sLowLimit, sSystemNo,sMeasured, 
+			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo,sMeasured,
 			sMsg, sRun, sSeqNo,/* pStep->m_sName,*/sStepNo, 
 			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ
 			);
@@ -3924,9 +3924,9 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 			//	sTime,
 			//	sStepNo, pStep->m_sName, sResult, sMeasured, sNominal, sLowLimit, sHighLimit, sAudioTarget,
 			//	sAudioMeasure, sElapsedTime, sMsg, HDMIGeneratorCtrl.m_FW_Ver);
-			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
 				sGMES_PortNo,strWipid, szResultTotal, sAudioMeasure, sAudioTarget, CurrentSet->sChassisName,
-			HDMIGeneratorCtrl.m_FW_Ver,sKeyDL_Log, sLowLimit, sSystemNo, sMeasured, 
+			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo, sMeasured,
 			sMsg, sRun, sSeqNo, pStep->m_sName,sStepNo, 
 			sNominal,sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ);
 

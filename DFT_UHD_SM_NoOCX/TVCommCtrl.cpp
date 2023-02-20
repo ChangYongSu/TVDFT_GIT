@@ -1403,6 +1403,7 @@ BOOL CTVCommCtrl::Firmware_VersionCheck(int nIndex, CString sVersion)
 	switch(nIndex)
 	{
 		case CPU_VER:
+			CurrentSet->sCPUVersionRead = "";
 			sData = "00";
 			break;
 
@@ -1493,7 +1494,7 @@ BOOL CTVCommCtrl::Firmware_VersionCheck(int nIndex, CString sVersion)
 	}
 */
 //-
-
+	CurrentSet->sCPUVersionRead = sReadData;
 	sVersion.MakeUpper(); 
 //	if(sReadData.Compare(sVersion) == 0){
 	if(Check_Version(sReadData, sVersion)){
