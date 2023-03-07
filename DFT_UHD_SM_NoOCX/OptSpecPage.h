@@ -87,6 +87,7 @@ public:
 	afx_msg void OnNMCustomdrawListSpecGrid(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonOpEpiCfgSw();
 	CEdit m_CEdit_OP_EPI_CFG_SW;
+	afx_msg void OnLvnItemchangedListSpecGrid(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -5530,7 +5530,7 @@ BOOL _SendI2cCommand()
 //				goto END_POSITION;
 //			}
 
-			if((nResult = I2cAdcCtrl.SendCmd(szData1,szData2)) != TEST_PASS)
+			if((nResult = I2cAdcCtrl.SendCmd(szData1,"00",szData2)) != TEST_PASS)
 			{
 				goto END_POSITION;
 			}
@@ -5567,7 +5567,7 @@ BOOL _SendI2cCommand()
 //				goto END_POSITION;
 //			}
 
-			if((nResult = I2cAdcCtrl.SendCmd(szData1,szData2)) != TEST_PASS)
+			if((nResult = I2cAdcCtrl.SendCmd(szData1, "00", szData2)) != TEST_PASS)
 			{
 				goto END_POSITION;
 			}
@@ -8497,4 +8497,27 @@ BOOL _VF_MeasureStart()
 
 	return TRUE;
 
+}
+
+BOOL _Mnt_Edid_Source()
+{
+	
+
+	UINT nDelay = 0;
+
+	CString szMsg = _T("");
+	CString szUserMsg = _T("");
+
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+	if (pos != NULL)
+	{
+		szMsg = GetString();
+		
+		CurrentSet->sMNT_Edid_Source = szMsg;
+		
+	}
+
+	if (!_Wait(nDelay)) return FALSE;
+
+	return TRUE;
 }

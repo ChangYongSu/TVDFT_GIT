@@ -215,4 +215,6 @@ BOOL _VF_MeasureStart();
 BOOL _RotateDisplay();
 BOOL _SetTVBuadRate();
 
+BOOL _Mnt_Edid_Source();
+
 #endif	// __REALMEAS_H__

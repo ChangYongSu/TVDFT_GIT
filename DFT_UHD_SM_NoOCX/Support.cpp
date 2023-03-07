@@ -508,7 +508,9 @@ BOOL CreateModelIniFile(CString sModelIni)
 	m_Ini.SetProfileInt(HDMI_FORMAT_S, "Resolution",CurrentSet->nHDMIResolution);
 	m_Ini.SetProfileInt(HDMI_FORMAT_S, "Color Bit Count",CurrentSet->nHDMIBitSpec);
 
-	m_Ini.SetProfileInt(HDMI_FORMAT_S, "CEC On/Off Control",CurrentSet->bHdmiCecControl);
+	m_Ini.SetProfileInt(HDMI_FORMAT_S, "CEC On/Off Control", CurrentSet->bHdmiCecControl);
+	m_Ini.SetProfileInt(HDMI_FORMAT_S, "EDID On/Off Control", CurrentSet->bHdmiEdidControl);
+	m_Ini.SetProfileInt(HDMI_FORMAT_S, "HDCP On/Off Control", CurrentSet->bHdmiHdcpControl);
 
 	// add 101029
 	m_Ini.SetProfileInt(GRAB_S, "3D Grabbing Mode",CurrentSet->n3DGrabbingMode);
@@ -719,7 +721,9 @@ BOOL SaveModelIniFile(CString sIniPath)
 
 	m_Ini.SetProfileInt(HDMI_FORMAT_S, "Color Bit Count",CurrentSet->nHDMIBitSpec);
 
-	m_Ini.SetProfileInt(HDMI_FORMAT_S, "CEC On/Off Control",CurrentSet->bHdmiCecControl);
+	m_Ini.SetProfileInt(HDMI_FORMAT_S, "CEC On/Off Control", CurrentSet->bHdmiCecControl);
+	m_Ini.SetProfileInt(HDMI_FORMAT_S, "EDID On/Off Control", CurrentSet->bHdmiEdidControl);
+	m_Ini.SetProfileInt(HDMI_FORMAT_S, "HDCP On/Off Control", CurrentSet->bHdmiHdcpControl);
 
 	m_Ini.SetProfileInt(COMP_FORMAT_S, "Resolution",CurrentSet->nCompResolution);
 
@@ -1027,7 +1031,9 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 
 	CurrentSet->nHDMIBitSpec			= m_Ini.GetProfileInt(HDMI_FORMAT_S, "Color Bit Count");
 
-	CurrentSet->bHdmiCecControl			= m_Ini.GetProfileInt(HDMI_FORMAT_S, "CEC On/Off Control");
+	CurrentSet->bHdmiCecControl = m_Ini.GetProfileInt(HDMI_FORMAT_S, "CEC On/Off Control");
+	CurrentSet->bHdmiEdidControl = m_Ini.GetProfileInt(HDMI_FORMAT_S, "EDID On/Off Control",1);
+	CurrentSet->bHdmiHdcpControl = m_Ini.GetProfileInt(HDMI_FORMAT_S, "HDCP On/Off Control",1);
 
 	CurrentSet->nCompResolution 		= m_Ini.GetProfileInt(COMP_FORMAT_S, "Resolution");
 
@@ -3787,7 +3793,7 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 		//szOutputString.Format("WipID,Chassis,Model,Time,Result,TestTime,NO,NAME, StepResult,MEASURE,TARGET,L-LIMIT,U-LIMIT,A_TARGET,A_MEASURE,TIME,MESSAG,HDMIVer\r\n");
 		szOutputString.Format(	"GMES PORT,SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,PCBA_SW_VER,\
 KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
-STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
+STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write\r\n");
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 	}
 
@@ -3804,6 +3810,16 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 	}
 
 	sSystemNo.Format("%d", CurrentSet->nSystemNo);
+
+	CString sPCBID_Rewrite;
+	if (CurrentSet->bPCBID_Rewrite == 1)
+	{
+		sPCBID_Rewrite = "1";
+	}
+	else
+	{
+		sPCBID_Rewrite = "0";
+	}
 
 	if (bResult)
 	{
@@ -3827,11 +3843,11 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 //		HDMI_GEN_VER,\
 //KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
 //STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
-		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s\r\n",
+		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
 			sGMES_PortNo,strWipid,szResultTotal, sAudioMeasure, sAudioTarget,CurrentSet->sChassisName,
 			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo,sMeasured,
 			sMsg, sRun, sSeqNo,/* pStep->m_sName,*/sStepNo, 
-			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ
+			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite
 			);
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 	}
@@ -3924,11 +3940,11 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 			//	sTime,
 			//	sStepNo, pStep->m_sName, sResult, sMeasured, sNominal, sLowLimit, sHighLimit, sAudioTarget,
 			//	sAudioMeasure, sElapsedTime, sMsg, HDMIGeneratorCtrl.m_FW_Ver);
-			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
 				sGMES_PortNo,strWipid, szResultTotal, sAudioMeasure, sAudioTarget, CurrentSet->sChassisName,
 			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo, sMeasured,
 			sMsg, sRun, sSeqNo, pStep->m_sName,sStepNo, 
-			sNominal,sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ);
+			sNominal,sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite);
 
 			pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 		}

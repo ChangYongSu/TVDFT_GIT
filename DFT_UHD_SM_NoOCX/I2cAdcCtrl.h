@@ -104,7 +104,8 @@ public :
 	//+add kwmoon 080807
 	int SetDDC2AB();
 	int SetChannel(CString szData1);
-	int SendCmd(CString szData1,CString szData2);
+	int SendCmd(CString szData1,CString szData2, CString szData3);
+	int ReadCmd(CString szData1, CString szData2, CString szData3);
 	int SendCmd2(int nCmd, int nData);
 
 	//+add kwmoon 080911
@@ -129,6 +130,8 @@ public :
 	//+add kwmoon 080923
 	int ReadVersion();
 	int MNT_ReadVersion();
+	int MNT_EDID_Check();
+	int MNT_HDCP_Check();
 
 	//+add PSH 081204
 	BOOL  InputSourceChange(BYTE nCode);

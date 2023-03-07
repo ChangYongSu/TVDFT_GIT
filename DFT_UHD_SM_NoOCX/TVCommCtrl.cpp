@@ -1494,7 +1494,11 @@ BOOL CTVCommCtrl::Firmware_VersionCheck(int nIndex, CString sVersion)
 	}
 */
 //-
-	CurrentSet->sCPUVersionRead = sReadData;
+	if (nIndex == CPU_VER)
+	{
+		CurrentSet->sCPUVersionRead = sReadData;
+	}
+	
 	sVersion.MakeUpper(); 
 //	if(sReadData.Compare(sVersion) == 0){
 	if(Check_Version(sReadData, sVersion)){
@@ -2664,6 +2668,10 @@ BOOL CTVCommCtrl::InputSourceChange(BYTE nCode)
 	{
 		AddStringToStatus("TV-Com : " + m_strSendStr);
 	}
+#ifdef _TVCOM_PASS_DEBUG__MODE
+	AddStringToStatus("TV-Com Debug PASS: " + m_strSendStr);
+	return TRUE;
+#endif
 	if(!SendCommString(m_strSendStr))
 	{
 		return FALSE;

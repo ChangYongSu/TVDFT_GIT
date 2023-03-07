@@ -2016,6 +2016,10 @@ void CDATsysView::OnModelOpen()
 				SetGrabInfo(&g_GrabImage);
 			}//
 			HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
+			HDMIGeneratorCtrl.SetHDCP_OnOff(CurrentSet->bHdmiHdcpControl);
+			HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl);
+
+
 			if(!CurrentSet->bHdmiOutControl){
 				HDMIGeneratorCtrl.SetOutPort(0);
 			}
@@ -3029,7 +3033,9 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	pCurrentSet->nHDMI3_Port			= pApp->GetProfileInt(_T("Config"), _T("HDMI3 Port"), 3);
 	pCurrentSet->nHDMI4_Port			= pApp->GetProfileInt(_T("Config"), _T("HDMI4 Port"), 4);
 
-	pCurrentSet->bHdmiCecControl		= pApp->GetProfileInt(_T("Config"), _T("HDMI CEC On/Off Control"), 0);
+	pCurrentSet->bHdmiCecControl = pApp->GetProfileInt(_T("Config"), _T("HDMI CEC On/Off Control"), 0);
+	pCurrentSet->bHdmiHdcpControl = pApp->GetProfileInt(_T("Config"), _T("HDMI HDCP On/Off Control"), 1);
+	pCurrentSet->bHdmiEdidControl = pApp->GetProfileInt(_T("Config"), _T("HDMI EDID On/Off Control"), 1);
 	pCurrentSet->bAutoRun_DFT2			= pApp->GetProfileInt(_T("Config"), _T("Auto Run DFT2(3)"), 1);
 
 	pCurrentSet->bPJT_GrabDisable			= pApp->GetProfileInt(_T("Config"), _T("PJT Grab Disable"), 0);
@@ -3657,7 +3663,9 @@ void CDATsysView::SaveRegistrySetting()
 	pApp->WriteProfileInt(_T("Config"), _T("HDMI3 Port"),					(UINT)CurrentSet->nHDMI3_Port);
 	pApp->WriteProfileInt(_T("Config"), _T("HDMI4 Port"),					(UINT)CurrentSet->nHDMI4_Port);
 
-	pApp->WriteProfileInt(_T("Config"), _T("HDMI CEC On/Off Control"),		(UINT)CurrentSet->bHdmiCecControl);
+	pApp->WriteProfileInt(_T("Config"), _T("HDMI CEC On/Off Control"), (UINT)CurrentSet->bHdmiCecControl);
+	pApp->WriteProfileInt(_T("Config"), _T("HDMI HDCP On/Off Control"), (UINT)CurrentSet->bHdmiHdcpControl);
+	pApp->WriteProfileInt(_T("Config"), _T("HDMI EDID On/Off Control"), (UINT)CurrentSet->bHdmiEdidControl);
 
 	pApp->WriteProfileInt(_T("Config"), _T("Auto Run DFT2(3)"),				(UINT)CurrentSet->bAutoRun_DFT2);
 	pApp->WriteProfileInt(_T("Config"), _T("PJT Grab Disable"),				(UINT)CurrentSet->bPJT_GrabDisable);
@@ -5283,11 +5291,14 @@ END_INIT_I2C:
 				HDMIGeneratorCtrl.m_nRemoteMode = FALSE;
 				sMsg = "[HDMI Gen.] On Line Mode = Off(Com. Error)- FAIL";
 			}
-			HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE) ;
+			HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl) ;
 			Sleep(100);
-			HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE) ;
+			HDMIGeneratorCtrl.SetHDCP_OnOff(CurrentSet->bHdmiHdcpControl) ;
 			Sleep(100);
 			HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
+
+
+
 			Sleep(100);
 			g_pView->Set_Mhl(1, 1);
 
@@ -6049,7 +6060,47 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	{
 		pView->CheckFWVer();
 	}
+#if 1
+	if (CurrentSet->bHdmiEdidControl)
+	{
+		if (!HDMIGeneratorCtrl.m_bEDIDMode) {
+			if (CurrentSet->nHDMIGenType == 0) {
+				HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE);
+			}
+			else {
+				HDMIGeneratorCtrl.SetEDID_PassCheck(FALSE);
+			}
 
+			Sleep(100);
+		}
+	}
+	else
+	{
+		if (HDMIGeneratorCtrl.m_bEDIDMode != CurrentSet->bHdmiEdidControl) {
+			HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl);
+			Sleep(100);
+		}
+	}
+	if (CurrentSet->bHdmiHdcpControl)
+	{
+		if (!HDMIGeneratorCtrl.m_bHDCPMode) {
+			if (CurrentSet->nHDMIGenType == 0) {
+				HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE);
+			}
+			else {
+				HDMIGeneratorCtrl.SetHDCP_OnOff(FALSE);
+			}
+			Sleep(100);
+		}
+	}
+	else
+	{
+		if (HDMIGeneratorCtrl.m_bHDCPMode != CurrentSet->bHdmiHdcpControl) {
+			HDMIGeneratorCtrl.SetHDCP_OnOff(CurrentSet->bHdmiHdcpControl);
+			Sleep(100);
+		}
+	}
+#else
 	if(!HDMIGeneratorCtrl.m_bEDIDMode){
 		if(CurrentSet->nHDMIGenType == 0){
 			HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE) ;
@@ -6071,6 +6122,8 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 		Sleep(100);
 	}
 	AddStringToStatus("Debug Check HDCP");
+
+#endif
 	if(HDMIGeneratorCtrl.m_bCECMode != CurrentSet->bHdmiCecControl){
 		HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
 		Sleep(100);
@@ -6593,23 +6646,45 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 		if (HDMIGeneratorCtrl.m_bResetHDCP_EDID == 1)
 		{
 			HDMIGeneratorCtrl.m_bResetHDCP_EDID = 0;
-			if (CurrentSet->nHDMIGenType == 0) {
-				HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE);
-			}
-			else {
-				HDMIGeneratorCtrl.SetEDID_PassCheck(FALSE);
-			}
+			if (CurrentSet->bHdmiEdidControl)
+			{
+				if (CurrentSet->nHDMIGenType == 0) {
+					HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE);
+				}
+				else {
+					HDMIGeneratorCtrl.SetEDID_PassCheck(FALSE);
+				}
 
-			Sleep(100);
+				Sleep(100);
+
+			}
+			else
+			{
+				if (HDMIGeneratorCtrl.m_bEDIDMode != CurrentSet->bHdmiEdidControl) {
+					HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl);
+					Sleep(100);
+				}
+			}
+			if (CurrentSet->bHdmiHdcpControl)
+			{
+				if (CurrentSet->nHDMIGenType == 0) {
+					HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE);
+				}
+				else {
+					HDMIGeneratorCtrl.SetHDCP_OnOff(FALSE);
+				}
+				Sleep(100);
+			}
+			else
+			{
+				if (HDMIGeneratorCtrl.m_bHDCPMode != CurrentSet->bHdmiHdcpControl) {
+					HDMIGeneratorCtrl.SetHDCP_OnOff(CurrentSet->bHdmiHdcpControl);
+					Sleep(100);
+				}
+			}
+		
 			
 			
-			if (CurrentSet->nHDMIGenType == 0) {
-				HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE);
-			}
-			else {
-				HDMIGeneratorCtrl.SetHDCP_OnOff(FALSE);
-			}
-			Sleep(100);
 			
 		}
 //
@@ -8829,6 +8904,11 @@ BOOL CDATsysView::ServerChangeModel()
 				SetGrabInfo(&g_GrabImage);
 			}//
 			HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
+			Sleep(100);
+			HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl);
+			Sleep(100);
+			HDMIGeneratorCtrl.SetHDCP_OnOff(CurrentSet->bHdmiHdcpControl);
+			Sleep(100);
 			if (!CurrentSet->bHdmiOutControl) {
 				HDMIGeneratorCtrl.SetOutPort(0);
 			}
@@ -12717,6 +12797,8 @@ CEnvironmentData::CEnvironmentData()
 	nHDMI4_Port = 4;
 
 	bHdmiCecControl = FALSE;
+	bHdmiEdidControl = TRUE;
+	bHdmiHdcpControl = TRUE;
 
 	nHDCP_Start_ADH		= 0xAC;
 	nHDCP_Start_ADL		= 0x80;

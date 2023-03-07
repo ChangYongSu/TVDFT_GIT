@@ -50,6 +50,7 @@
 //#define _ERROR_CHILD_CONNECT_DEBUG__MODE
 //#define _ABORT_DEBUG__MODE
 #define _LISTSCROLL_DEBUG__MODE
+#define _TVCOM_PASS_DEBUG__MODE
 #endif
 
 #define  MAX_COLUMN_NO	13

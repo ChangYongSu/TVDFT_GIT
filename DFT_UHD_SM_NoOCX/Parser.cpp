@@ -239,6 +239,8 @@ _MeasureFunction MeasDefined[] =
 	_T("ir_blaster_check"),		_IR_Blaster_Check,	    MEAS_DOUBLE,
 	_T("read_a_cas_id"),		_Read_A_CAS_ID,	    MEAS_BOOL,
 	_T("bat_ver_check"),			_BAT_Ver_Check,				MEAS_BOOL,
+	_T("mnt_edid_check"),			_MNT_EDID_Check,				MEAS_BOOL,
+	_T("mnt_hdcp_check"),			_MNT_HDCP_Check,				MEAS_BOOL,
 	NULL, NULL, NULL
 };
 ///////////////////////////////////////////////////////////////
@@ -773,6 +775,11 @@ _InternalFunction Predefined[] =
 	{ LP, RP, TNULL },
 	{ _T("") },
 	{ NULL_TYPE },
+
+	_T("mnt_edid_source"), _Mnt_Edid_Source,
+	{ LP, STRING, RP, TNULL },
+	{ _T("") },
+	{ NORMAL_EDIT_TYPE,NULL_TYPE },
 
     NULL, NULL, { TNULL }
 };                      

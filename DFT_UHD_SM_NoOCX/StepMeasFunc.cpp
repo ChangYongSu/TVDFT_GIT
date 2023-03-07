@@ -2546,6 +2546,84 @@ double	_MNT_Version_Check()
 	}
 }
 
+double	_MNT_EDID_Check()
+{
+	CString sCpuVersion   = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+//	int nData[3]   = {0,0,0};
+
+	if(!CurrentSet->nTVControlType)
+	{
+			return FALSE;
+	}
+
+	for(i= 0; i<5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_EDID_Check();
+		if(nI2cResult == TEST_PASS) break;
+	}
+
+	if(nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	
+
+	if(bResult1)
+	{
+		return 1.0;	
+	}
+	else
+	{
+		return 0.0;	
+	}
+}
+
+
+double	_MNT_HDCP_Check()
+{
+	CString sCpuVersion   = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+//	int nData[3]   = {0,0,0};
+
+	if(!CurrentSet->nTVControlType)
+	{
+			return FALSE;
+	}
+
+	for(i= 0; i<5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_HDCP_Check();
+		if(nI2cResult == TEST_PASS) break;
+	}
+
+	if(nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	if(bResult1)
+	{
+		return 1.0;	
+	}
+	else
+	{
+		return 0.0;	
+	}
+}
 
 #ifdef SM_MODIFY_CODE__
 //2018.11.26 CYS

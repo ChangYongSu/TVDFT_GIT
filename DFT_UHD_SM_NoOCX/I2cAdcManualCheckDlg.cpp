@@ -66,9 +66,10 @@ void CI2cAdcManualCheckDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_2B_READ_BYTE_COMBO, m_ctrl2bReadByte);
 	DDX_Control(pDX, IDC_CMB_I2C_CHANNEL_NO, m_ctrlI2cChannelNo);
 	DDX_Control(pDX, IDC_CMB_I2C_CLK_SPEED, m_ctrlI2cClkSpeed);
-	DDX_Control(pDX, IDC_READ_DATA_GRID, m_ctrlReadDataGrid);
-	DDX_Control(pDX, IDC_I2C_ADC_COM_LOG_GRID, m_ctrlI2cAdcComLogGrid);
+	//DDX_Control(pDX, IDC_READ_DATA_GRID, m_ctrlReadDataGrid);
+	//DDX_Control(pDX, IDC_I2C_ADC_COM_LOG_GRID, m_ctrlI2cAdcComLogGrid);
 	DDX_Text(pDX, IDC_EDIT_2AB_DATA, m_sz2abData);
+	DDX_Text(pDX, IDC_EDIT_2AB_DATA2, m_sz2abDataMid);
 	DDX_Text(pDX, IDC_EDIT_2AB_CMD, m_sz2abCmd);
 	DDX_Text(pDX, IDC_EDIT_2AB_READ_ADH, m_sz2abReadAdh);
 	DDX_Text(pDX, IDC_EDIT_2AB_READ_ADL, m_sz2abReadAdl);
@@ -86,7 +87,11 @@ void CI2cAdcManualCheckDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_READ_VERSION, m_sz2abReadVersion);
 	DDX_Text(pDX, IDC_EDIT_EDID_DOWNLOAD, m_szEdidDownloadResult);
 	DDX_Text(pDX, IDC_EDIT_READ_VERSION2, m_sz2abReadVersion2);
-	//}}AFX_DATA_MAP
+
+	DDX_Control(pDX, IDC_LIST_READ_DATA_GRID, m_ctrlReadDataList);
+	DDX_Control(pDX, IDC_LIST_I2C_ADC_COM_LOG_GRID, m_ctrlI2cAdcComLogList);//IDC_LIST_READ_DATA_GRID
+																			//}}AFX_DATA_MAP
+	
 }
 
 
@@ -129,6 +134,7 @@ BEGIN_MESSAGE_MAP(CI2cAdcManualCheckDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_2AB_EDID_DOWNLOAD, OnBtn2abEdidDownload)
 	ON_BN_CLICKED(IDC_BTN_2AB_READ_VERSION2, OnBtn2abReadVersion2)
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_BTN_READ_2AB_CMD, &CI2cAdcManualCheckDlg::OnBnClickedBtnRead2abCmd)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -178,6 +184,25 @@ BOOL CI2cAdcManualCheckDlg::OnInitDialog()
 
 void CI2cAdcManualCheckDlg::InitReadDataGrid()
 {
+
+#if 1
+
+	CString sTmp;
+	UINT nTmp;
+	char *sHeader1[] = { "00","01","02", "03","04", "05", "06", "07", "08", "09", "0A", "0B","0C", "0D", "0E", "0F" };
+	char *sHeader2[] = { "00","10","20", "30","40", "50", "60", "70", "80", "90", "A0", "B0","C0", "D0", "E0", "F0" };
+	m_ctrlReadDataList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);// 리스트 컨트롤 초기화: 열 추가
+	for (int i = 0; i < 16; i++)
+	{
+		sTmp = sHeader1[i];
+		m_ctrlReadDataList.InsertColumn(i, sTmp, LVCFMT_CENTER, 38);
+		sTmp = sHeader2[i];
+		m_ctrlReadDataList.InsertItem(i, sTmp);
+	}
+	
+
+
+#else
 	CString sTmp;
 	UINT nTmp;
 	char *sHeader1[] = {"00","01","02", "03","04", "05", "06", "07", "08", "09", "0A", "0B","0C", "0D", "0E", "0F"};
@@ -238,10 +263,16 @@ void CI2cAdcManualCheckDlg::InitReadDataGrid()
 	m_ctrlReadDataGrid.SetCol(0);
 	m_ctrlReadDataGrid.SetRedraw(TRUE);
 	m_ctrlReadDataGrid.Refresh();
+
+#endif
 }
 
 void CI2cAdcManualCheckDlg::InitComLogGrid()
 {
+
+#if 1
+	m_ctrlI2cAdcComLogList.ResetContent();
+#else
 	//////////////////////////
 	// Remote Com Log
 	//////////////////////////
@@ -271,6 +302,8 @@ void CI2cAdcManualCheckDlg::InitComLogGrid()
 	
 	m_ctrlI2cAdcComLogGrid.SetRedraw(TRUE);
 	m_ctrlI2cAdcComLogGrid.Refresh();
+
+#endif
 }
 
 void CI2cAdcManualCheckDlg::OnBtnSetI2cClkDelay() 
@@ -362,7 +395,7 @@ void CI2cAdcManualCheckDlg::OnBtnSend2abCmd()
 	int nResult = TEST_PASS;
 	CString szErrMsg = _T("");
 
-	if((nResult = I2cAdcCtrl.SendCmd(m_sz2abCmd,m_sz2abData)) != TEST_PASS)
+	if((nResult = I2cAdcCtrl.SendCmd(m_sz2abCmd, m_sz2abDataMid, m_sz2abData)) != TEST_PASS)
 	{
 		szErrMsg.LoadString(nResult);
 		AfxMessageBox(szErrMsg); return;
@@ -442,11 +475,11 @@ void CI2cAdcManualCheckDlg::OnBtnRead2abDataByte()
 			szData.MakeUpper();
 
 			nIndex = I2cAdcCtrl.m_nData2 + i;
-			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataList.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 		}
 
 //		AfxMessageBox("Read Data was successful"); 
@@ -487,11 +520,11 @@ void CI2cAdcManualCheckDlg::OnBtnRead2abDataPage()
 			szData.MakeUpper();
 
 			nIndex = I2cAdcCtrl.m_nData2 + i;
-			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 		}
 
 //		AfxMessageBox("Read Page was successful"); 
@@ -551,11 +584,11 @@ void CI2cAdcManualCheckDlg::OnBtnRead2bDataByte()
 			szData.MakeUpper();
 
 			nIndex = I2cAdcCtrl.m_nData1 + i;
-			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 		}
 
 //		AfxMessageBox("Read Data was successful"); 
@@ -596,11 +629,11 @@ void CI2cAdcManualCheckDlg::OnBtnRead2bDataPage()
 				szData.MakeUpper();
 
 				nIndex = i;
-				
-				m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-				m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-				m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-				m_ctrlReadDataGrid.SetText(szData);
+				m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+				//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+				//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+				//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+				//m_ctrlReadDataGrid.SetText(szData);
 			}
 		}
 		else
@@ -616,11 +649,11 @@ void CI2cAdcManualCheckDlg::OnBtnRead2bDataPage()
 				szData.MakeUpper();
 
 				nIndex = 128 + i;
-				
-				m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-				m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-				m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-				m_ctrlReadDataGrid.SetText(szData);
+				m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+				//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+				//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+				//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+				//m_ctrlReadDataGrid.SetText(szData);
 			}
 		}
 		else
@@ -640,11 +673,11 @@ void CI2cAdcManualCheckDlg::OnBtnRead2bDataPage()
 				szData.MakeUpper();
 
 				nIndex = I2cAdcCtrl.m_nData2 + i;
-				
-				m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-				m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-				m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-				m_ctrlReadDataGrid.SetText(szData);
+				m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+				//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+				//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+				//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+				//m_ctrlReadDataGrid.SetText(szData);
 			}
 
 	//		AfxMessageBox("Read Page was successful"); 
@@ -731,22 +764,62 @@ void CI2cAdcManualCheckDlg::OnBtn2abSetType()
 
 void CI2cAdcManualCheckDlg::WriteLog(CString szString)
 {
-	int nRow = m_ctrlI2cAdcComLogGrid.GetRows();
-
-	if(nRow > 500)
+	int nRow = m_ctrlI2cAdcComLogList.GetSelCount();
+	if (nRow > 500)
 	{
 		InitComLogGrid();
 		nRow = 0;
 	}
 
-	m_ctrlI2cAdcComLogGrid.SetRedraw(FALSE);
-	m_ctrlI2cAdcComLogGrid.SetRows(nRow + 1);
-	m_ctrlI2cAdcComLogGrid.SetTextMatrix(nRow , 0, szString);
-	//+del kwmoon 080826
+	szString.Replace("\t", "   ");
+	szString.Trim("\r\n");
+	szString.Replace("\r", "/r");
+	szString.Replace("\n", "/n");
+	int nIndex = m_ctrlI2cAdcComLogList.AddString(szString);
+	m_ctrlI2cAdcComLogList.SetCurSel(nIndex);
+
+	//int lpos = szString.Find();
+	//m_ctrlI2cAdcComLogList.AddString(szString);
+	//m_ctrlI2cAdcComLogList.SetScrollPos(1, nRow);
+	//int lPos = szString.Find("\r");
+	//if (lPos == -1)
+	//{
+	//	lPos = szString.Find("\n");
+	//}
+	//CString String2;
+	//int nIndex;
+	//if (lPos == -1)
+	//{
+	//	nIndex = m_ctrlI2cAdcComLogList.AddString(szString);
+	//	m_ctrlI2cAdcComLogList.SetCurSel(nIndex);
+	//}
+	//else
+	//{
+	//	//String2 = szString.Left(lPos);
+	//	//nIndex = m_ctrlI2cAdcComLogList.AddString(String2);
+	//	//m_ctrlI2cAdcComLogList.SetCurSel(nIndex);
+	//	//szString = szString.Mid(lPos);
+	//	nIndex = m_ctrlI2cAdcComLogList.AddString(szString);
+	//	m_ctrlI2cAdcComLogList.SetCurSel(nIndex);
+	//	
+	//}
+
+//	int nRow = m_ctrlI2cAdcComLogGrid.GetRows();
+
+//	if(nRow > 500)
+//	{
+//		InitComLogGrid();
+//		nRow = 0;
+//	}
+//
+//	m_ctrlI2cAdcComLogGrid.SetRedraw(FALSE);
+//	m_ctrlI2cAdcComLogGrid.SetRows(nRow + 1);
+//	m_ctrlI2cAdcComLogGrid.SetTextMatrix(nRow , 0, szString);
+//	//+del kwmoon 080826
+////	m_ctrlI2cAdcComLogGrid.SetTopRow(nRow);
+//	m_ctrlI2cAdcComLogGrid.SetRedraw(TRUE);
+//	m_ctrlI2cAdcComLogGrid.Refresh();
 //	m_ctrlI2cAdcComLogGrid.SetTopRow(nRow);
-	m_ctrlI2cAdcComLogGrid.SetRedraw(TRUE);
-	m_ctrlI2cAdcComLogGrid.Refresh();
-	m_ctrlI2cAdcComLogGrid.SetTopRow(nRow);
 }
 
 
@@ -829,11 +902,11 @@ void CI2cAdcManualCheckDlg::OnBtn2abToolOptionRead()
 			szData.MakeUpper();
 
 		//	nIndex = I2cAdcCtrl.m_nData2 + i;
-			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 
 			nIndex++;
 		}	
@@ -876,11 +949,11 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion()
 			szData.MakeUpper();
 
 		//	nIndex = I2cAdcCtrl.m_nData2 + i;
-			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 
 			nIndex++;
 		}
@@ -931,11 +1004,11 @@ void CI2cAdcManualCheckDlg::OnBtn2abAreaOptionRead()
 			szData.MakeUpper();
 
 		//	nIndex = I2cAdcCtrl.m_nData2 + i;
-			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 
 			nIndex++;
 		}	
@@ -1166,7 +1239,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abEdidDownload()
 	InitReadDataGrid();
 	m_szEdidDownloadResult = _T("");
 
-	if((nResult = I2cAdcCtrl.SendCmd("F6","0A")) != TEST_PASS)
+	if((nResult = I2cAdcCtrl.SendCmd("F6", "00", "0A")) != TEST_PASS)
 	{
 		sTemp.Format("I2C EDID D/L Start Fail");
 		AddStringToStatus(sTemp);
@@ -1189,10 +1262,11 @@ void CI2cAdcManualCheckDlg::OnBtn2abEdidDownload()
 				sTemp.Format("I2C EDID D/L Check : %s",szData);
 
 				AddStringToStatus(sTemp);
-				m_ctrlReadDataGrid.SetRow(1);
-				m_ctrlReadDataGrid.SetCol(1);
-				m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-				m_ctrlReadDataGrid.SetText(szData);
+				m_ctrlReadDataList.SetItemText(0, 1 , szData);//
+				//m_ctrlReadDataGrid.SetRow(1);
+				//m_ctrlReadDataGrid.SetCol(1);
+				//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+				//m_ctrlReadDataGrid.SetText(szData);
 			}
 
 		}
@@ -1274,11 +1348,12 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 			szData.Format("%02x",hexCstr2decNum(I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH+2*i,2)));
 			szData.MakeUpper();
 
-		//	nIndex = I2cAdcCtrl.m_nData2 + i;			
-			m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
-			m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
-			m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
-			m_ctrlReadDataGrid.SetText(szData);
+		//	nIndex = I2cAdcCtrl.m_nData2 + i;	
+			m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+			//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+			//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+			//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+			//m_ctrlReadDataGrid.SetText(szData);
 
 			nIndex++;
 		}
@@ -1297,4 +1372,48 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 		}
 	}
 	UpdateData(FALSE);
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedBtnRead2abCmd()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+	int nReadByte = 2;
+	int nIndex = 0;
+	CString szData;
+	int nResult = TEST_PASS;
+	CString szErrMsg = _T("");
+
+	if ((nResult = I2cAdcCtrl.ReadCmd(m_sz2abCmd, m_sz2abDataMid,m_sz2abData)) != TEST_PASS)
+	{
+		szErrMsg.LoadString(nResult);
+		AfxMessageBox(szErrMsg); return;
+	}
+
+	CString sTmp;
+	sTmp = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH, 2);
+	//sTmp = "84";
+	if (sTmp.GetAt(0) == '8')
+	{
+		int llen = hexCstr2decNum(sTmp)-0x80;
+		nReadByte = llen+1;
+	}
+
+	for (int i = 0; i < nReadByte; i++)
+	{
+		szData.Format("%02x", hexCstr2decNum(I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH + 2 * i, 2)));
+		szData.MakeUpper();
+
+		//	nIndex = I2cAdcCtrl.m_nData2 + i;	
+		m_ctrlReadDataList.SetItemText((nIndex / 16), 1 + (nIndex % 16), szData);//
+		//m_ctrlReadDataGrid.SetRow(1+(nIndex / 16));
+		//m_ctrlReadDataGrid.SetCol(1+(nIndex % 16));
+		//m_ctrlReadDataGrid.SetCellAlignment(flexAlignCenterCenter);
+		//m_ctrlReadDataGrid.SetText(szData);
+
+		nIndex++;
+	}
+
+
 }

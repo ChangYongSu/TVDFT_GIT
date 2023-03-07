@@ -637,6 +637,8 @@ public:
 	UINT		nHDMI3_Port;
 	UINT		nHDMI4_Port;
 	BOOL		bHdmiCecControl;
+	BOOL		bHdmiHdcpControl;
+	BOOL		bHdmiEdidControl;
 	int			nAvrFW_Ver;
 //	BOOL		bS6F5DL;
 	UINT		nUHD_Type;
@@ -699,6 +701,9 @@ public:
 	CString		sBatVersion;
 	BOOL		bEpiPAckReset;	
 	BOOL		bGrabBaseReset;
+
+	CString		sMNT_Edid_Source;
+	int			bPCBID_Rewrite;
 };
 
 enum GrabberType

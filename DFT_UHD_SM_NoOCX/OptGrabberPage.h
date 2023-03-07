@@ -109,6 +109,8 @@ public:
 	afx_msg void OnBnClickedButton170Read();
 //	BOOL m_bEpiPAckReset;
 //	BOOL m_bGrabBaseReset;
+	BOOL m_nHdmiEdidControl;
+	BOOL m_nHdmiHdcpControl;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -36,6 +36,8 @@ COptGrabberPage::COptGrabberPage() : CPropertyPage(COptGrabberPage::IDD)
 , m_bHyncEdgeEnable(FALSE)
 //, m_bEpiPAckReset(FALSE)
 //, m_bGrabBaseReset(FALSE)
+, m_nHdmiEdidControl(FALSE)
+, m_nHdmiHdcpControl(FALSE)
 {
 	//{{AFX_DATA_INIT(COptGrabberPage)
 	m_nAnalogFormat = -1;
@@ -104,6 +106,8 @@ void COptGrabberPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_Y20_SW_MODE2, m_cComboY20SwMode);
 	//DDX_Check(pDX, IDC_CHK_EPI_PACK_RESET, m_bEpiPAckReset);
 	//DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET, m_bGrabBaseReset);
+	DDX_Radio(pDX, IDC_RADIO_HDMI_EDID_CONTROL1, m_nHdmiEdidControl);
+	DDX_Radio(pDX, IDC_RADIO_HDMI_HDCP_CONTROL1, m_nHdmiHdcpControl);
 }
 
 
@@ -365,6 +369,12 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 
 	CurrentSet->bHdmiCecControl = m_nHdmiCecControl;
 	HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
+
+	CurrentSet->bHdmiEdidControl = m_nHdmiEdidControl;
+	HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl);
+
+	CurrentSet->bHdmiHdcpControl = m_nHdmiHdcpControl;
+	HDMIGeneratorCtrl.SetHDCP_OnOff(CurrentSet->bHdmiHdcpControl);
 
 	CurrentSet->nCompResolution = m_nCompResolution;
 
@@ -646,6 +656,8 @@ BOOL COptGrabberPage::OnInitDialog()
 	m_ctrlHdmi4Port.SetCurSel(CurrentSet->nHDMI4_Port -1);
 
 	m_nHdmiCecControl = CurrentSet->bHdmiCecControl;
+	m_nHdmiEdidControl = CurrentSet->bHdmiEdidControl;
+	m_nHdmiHdcpControl = CurrentSet->bHdmiHdcpControl;
 
 	m_nCompResolution = CurrentSet->nCompResolution;
 	//m_bEpiPAckReset = CurrentSet->bEpiPAckReset;

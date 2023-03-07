@@ -616,6 +616,7 @@
 #define IDC_BTN_SELECT_ALL              1675
 #define IDC_BTN_SEND_2AB_CMD            1676
 #define IDC_BTN_SEND_AVSWITCH_CMD       1677
+#define IDC_BTN_READ_2AB_CMD            1677
 #define IDC_BTN_SEND_CMD                1678
 #define IDC_BTN_RESET_IFPACK            1678
 #define IDC_BTN_SEND_CMDSTRING          1679
@@ -1770,9 +1771,14 @@
 #define IDC_RADIO_HDMI_OUT_CONTROL      2730
 #define IDC_RADIO_HDMI_OUT_CONTROL2     2731
 #define IDC_RADIO_HDMI_TYPE1            2732
+#define IDC_RADIO_HDMI_EDID_CONTROL1    2732
 #define IDC_RADIO_HDMI_TYPE2            2733
+#define IDC_RADIO_HDMI_EDID_CONTROL2    2733
 #define IDC_RADIO_MEASURE_START         2734
+#define IDC_RADIO_HDMI_HDCP_CONTROL1    2734
 #define IDC_RADIO_MEASURE_STOP          2735
+#define IDC_RADIO_HDMI_CEC_CONTROL6     2735
+#define IDC_RADIO_HDMI_HDCP_CONTROL2    2735
 #define IDC_RADIO_MHL                   2736
 #define IDC_RADIO_MHL2                  2737
 #define IDC_RADIO_NORMAL                2738
@@ -2524,6 +2530,9 @@
 #define IDC_BUTTON_SERARCH_MODEL        3451
 #define IDC_LIST_SEL_CHASSIS            3452
 #define IDC_LIST_SEL_MODEL              3453
+#define IDC_LIST_READ_DATA_GRID         3454
+#define IDC_LIST_I2C_ADC_COM_LOG_GRID   3455
+#define IDC_EDIT_2AB_DATA2              3456
 #define ID_AC_ONOFF                     32768
 #define ID_ACPOWER_                     32769
 #define ID_ACPOWER_ALL                  32770
@@ -2645,9 +2654,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        1250
+#define _APS_NEXT_RESOURCE_VALUE        1251
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3454
+#define _APS_NEXT_CONTROL_VALUE         3455
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

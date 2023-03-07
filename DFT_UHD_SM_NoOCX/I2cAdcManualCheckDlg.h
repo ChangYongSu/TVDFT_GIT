@@ -1,5 +1,5 @@
 //{{AFX_INCLUDES()
-#include "vsflexgrid.h"
+//#include "vsflexgrid.h"
 //}}AFX_INCLUDES
 #if !defined(AFX_I2CADCMANUALCHECKDLG_H__FF48D34B_8B24_4093_9E6C_28E7B0DAC369__INCLUDED_)
 #define AFX_I2CADCMANUALCHECKDLG_H__FF48D34B_8B24_4093_9E6C_28E7B0DAC369__INCLUDED_
@@ -32,8 +32,8 @@ public:
 	CComboBox	m_ctrl2bReadByte;
 	CComboBox	m_ctrlI2cChannelNo;
 	CComboBox	m_ctrlI2cClkSpeed;
-	CVSFlexGrid	m_ctrlReadDataGrid;
-	CVSFlexGrid	m_ctrlI2cAdcComLogGrid;
+	//CVSFlexGrid	m_ctrlReadDataGrid;
+	//CVSFlexGrid	m_ctrlI2cAdcComLogGrid;
 	CString	m_sz2abData;
 	CString	m_sz2abCmd;
 	CString	m_sz2abReadAdh;
@@ -115,6 +115,10 @@ public:
 	void InitComLogGrid();
 	void WriteLog(CString szString);
 
+	afx_msg void OnBnClickedBtnRead2abCmd();
+	CListCtrl m_ctrlReadDataList;
+	CListBox m_ctrlI2cAdcComLogList;
+	CString m_sz2abDataMid;
 };
 
 //{{AFX_INSERT_LOCATION}}

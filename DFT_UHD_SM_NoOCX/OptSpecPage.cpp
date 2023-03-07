@@ -93,6 +93,7 @@ BEGIN_MESSAGE_MAP(COptSpecPage, CPropertyPage)
 	ON_NOTIFY(NM_CLICK, IDC_LIST_SPEC_GRID, &COptSpecPage::OnNMClickListSpecGrid)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_SPEC_GRID, &COptSpecPage::OnNMCustomdrawListSpecGrid)
 	ON_BN_CLICKED(IDC_BUTTON_OP_EPI_CFG_SW, &COptSpecPage::OnBnClickedButtonOpEpiCfgSw)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_SPEC_GRID, &COptSpecPage::OnLvnItemchangedListSpecGrid)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1116,4 +1117,12 @@ void COptSpecPage::OnBnClickedButtonOpEpiCfgSw()
 		CurrentSet->sDipStatus = "";
 	}
 	m_CEdit_OP_EPI_CFG_SW.SetWindowText(CurrentSet->sDipStatus);
+}
+
+
+void COptSpecPage::OnLvnItemchangedListSpecGrid(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	*pResult = 0;
 }
