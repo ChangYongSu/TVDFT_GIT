@@ -125,6 +125,8 @@ BEGIN_MESSAGE_MAP(COptGrabberPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHK_RB_SWAP, &COptGrabberPage::OnBnClickedChkRbSwap)
 	ON_BN_CLICKED(IDC_BUTTON_170_WRITE, &COptGrabberPage::OnBnClickedButton170Write)
 	ON_BN_CLICKED(IDC_BUTTON_170_READ, &COptGrabberPage::OnBnClickedButton170Read)
+	ON_CBN_SELCHANGE(IDC_COMBO_GRABMODE, &COptGrabberPage::OnCbnSelchangeComboGrabmode)
+	ON_CBN_SELCHANGE(IDC_COMBO_UHDTYPE, &COptGrabberPage::OnCbnSelchangeComboUhdtype)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -278,6 +280,10 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 		case W_3840_H_600: 
 			CurrentSet->nLvdsWidth = 3840; 
 			CurrentSet->nLvdsHeight = 600;			
+			break;
+		case W_1920_H_540: 
+			CurrentSet->nLvdsWidth = 1920; 
+			CurrentSet->nLvdsHeight = 540;			
 			break;
 			
 			
@@ -479,6 +485,7 @@ BOOL COptGrabberPage::OnInitDialog()
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 2160)) m_nLvdsFormat = W_3840_H_2160;
 	else if((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 300))  m_nLvdsFormat = W_1920_H_300;
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 600))  m_nLvdsFormat = W_3840_H_600;
+	else if((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540))  m_nLvdsFormat = W_1920_H_540;
 	else m_nLvdsFormat = -1;
 
 	m_nAnalogFormat = CurrentSet->nAnalogType;
@@ -563,7 +570,26 @@ BOOL COptGrabberPage::OnInitDialog()
 		m_ctrlHdmi4Model.SetCurSel(CurrentSet->nHDMI4_Model);
 	
 		m_ctrlLvdsMode.SetCurSel(CurrentSet->nLVDS_Mode);
+
+		m_ctrlUhdType.ResetContent();
+		m_ctrlUhdType.AddString("0. UHD Full Speed");
+		m_ctrlUhdType.AddString("1. UHD Normal Speed");
+		m_ctrlUhdType.AddString("2. FHD(60Hz) - Pack1(51p), Pack10");
+		m_ctrlUhdType.AddString("3. FHD(120Hz) - Pack1(51p + 41p), EPI");
+		m_ctrlUhdType.AddString("4. FHD");
+		m_ctrlUhdType.AddString("5. No Use");
+		m_ctrlUhdType.AddString("6. HD - Pack5 / 8");
+		m_ctrlUhdType.AddString("7. EPI_UHD");
+		m_ctrlUhdType.AddString("8. EPI_UHD(16Y_60P)");
+		m_ctrlUhdType.AddString("9. CMVIEW");
+		m_ctrlUhdType.AddString("10. 5_HD_Rev");
+		m_ctrlUhdType.AddString("11. 5_Rev_2019");
+		m_ctrlUhdType.AddString("12. 5_Rev_2020");
+		m_ctrlUhdType.AddString("13. UHD Low Speed");
+		m_ctrlUhdType.AddString("14. QHD Full Speed");
+		m_ctrlUhdType.AddString("15. FHD(120Hz) Low Speed");
 		m_ctrlUhdType.SetCurSel(CurrentSet->nUHD_Type);
+
 		m_ctrlBitShift.SetCurSel(CurrentSet->nUHD_Grab_BitShift);
 
 		m_ctrlGrabMode.ResetContent();
@@ -580,12 +606,12 @@ BOOL COptGrabberPage::OnInitDialog()
 		m_ctrlGrabMode.AddString("10.Type11 : 18YEPI(60P / RGBW / 6Nane)");
 		m_ctrlGrabMode.AddString("11. Type12 : 20YEPI 60P CEDS");
 		m_ctrlGrabMode.AddString("12. Type13 : 21Y50 68P HKC CEDS UPQO VA");
-		m_ctrlGrabMode.AddString("13. Type14 : 21Y70 68P SharpCEDS DPT UPQO");
-		
+		m_ctrlGrabMode.AddString("13. Type14 : 21Y70 68P SharpCEDS DPT UPQO");		
 		m_ctrlGrabMode.AddString("14. Type15 : HKC 966 Pixel");
 		m_ctrlGrabMode.AddString("15. Type16 : CSOT 68P 55UP77");
 		m_ctrlGrabMode.AddString("16. Type17 : 8K T-CONLESS");
 		m_ctrlGrabMode.AddString("17. Type18 : LM21A HKC 220307");
+		m_ctrlGrabMode.AddString("18. Type19 : QHD_FULL_SPEED");
 		//m_ctrlGrabMode.AddString(" 16. Type17 : Y20_SW_Mode_02");
 		//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 		m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
@@ -1049,4 +1075,19 @@ void COptGrabberPage::OnBnClickedButton170Read()
 		MessageBox("Read 0x170: Fail!!");
 	}
 	
+}
+
+
+void COptGrabberPage::OnCbnSelchangeComboGrabmode()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	OnBtnGrabberOptApply();
+}
+
+
+void COptGrabberPage::OnCbnSelchangeComboUhdtype()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	OnBtnGrabberOptApply();
 }

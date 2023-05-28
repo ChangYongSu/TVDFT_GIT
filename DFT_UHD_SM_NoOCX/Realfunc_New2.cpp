@@ -8498,7 +8498,6 @@ BOOL _VF_MeasureStart()
 	return TRUE;
 
 }
-
 BOOL _Mnt_Edid_Source()
 {
 	
@@ -8519,5 +8518,57 @@ BOOL _Mnt_Edid_Source()
 
 	if (!_Wait(nDelay)) return FALSE;
 
+	return TRUE;
+}
+//_T("grab_stop"), _GrabStop,
+//{ LP, RP, TNULL },
+//{ _T("") },
+//{ NULL_TYPE },
+//
+//_T("grab_toggle"), _GrabToggle,
+BOOL _GrabStop()
+{
+	
+	UINT nDelay = 0;
+	
+	if (g_nGrabberType == UHD_GRABBER)
+	{
+		g_pView->StopLVDSGrabThread();
+	}
+	else //FHD
+	{
+		g_pView->StopLVDSGrabThread_FHD();
+
+	}
+	return TRUE;
+}
+
+BOOL _GrabToggle()
+{
+
+	if (CurrentSet->bPJT_GrabDisable == 1)
+		return 1;
+	
+	if (g_nGrabberType == UHD_GRABBER)
+	{
+		if (!g_pView->m_bGrabThreadRunning) {
+
+			g_pView->StartLVDSGrabThread();
+		}
+		else {
+			g_pView->StopLVDSGrabThread();
+		}
+	}
+	else//FHD
+	{
+		if (!g_pView->m_bGrabThreadRunning) {
+			g_pView->SetGrabInfo(&g_GrabImage);
+
+			g_pView->StartLVDSGrabThread_FHD();
+		}
+		else {
+			g_pView->StopLVDSGrabThread_FHD();
+		}
+	}//
 	return TRUE;
 }

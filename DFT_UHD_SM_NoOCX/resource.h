@@ -1053,6 +1053,7 @@
 #define IDC_CMB_COMPORT_AV_SWITCHBOX    2043
 #define IDC_CMB_COMPORT_AVC             2044
 #define IDC_CMB_COMPORT_DMM             2045
+#define IDC_CMB_BAUDRATE_DPGEN          2045
 #define IDC_CMB_COMPORT_HDMI            2046
 #define IDC_CMB_COMPORT_I2C_ADC         2047
 #define IDC_CMB_COMPORT_JIG             2048
@@ -1069,6 +1070,7 @@
 #define IDC_CMB_CUR_SRC                 2059
 #define IDC_CMB_COMPORT_START_BOX       2059
 #define IDC_CMB_I2C_CHANNEL_NO          2060
+#define IDC_CMB_COMPORT_DPGEN           2060
 #define IDC_CMB_I2C_CLK_SPEED           2061
 #define IDC_CMB_I2C_CLK_SPEED2          2062
 #define IDC_CMB_IDC_CMB_AV_SWITCHBOX_CHANNEL 2063
@@ -1889,6 +1891,7 @@
 #define IDC_RDO_LVDS_FORMAT15           2843
 #define IDC_RDO_LVDS_FORMAT16           2844
 #define IDC_RDO_LVDS_GRABBER_TYPE_EXT   2845
+#define IDC_RDO_LVDS_FORMAT17           2845
 #define IDC_RDO_LVDS_GRABBER_TYPE_INT   2846
 #define IDC_RDO_LVDS_MODE1              2847
 #define IDC_RDO_LVDS_MODE2              2848
@@ -1911,6 +1914,7 @@
 #define IDC_RDO_LVDS_RESOLUTION15       2865
 #define IDC_RDO_LVDS_RESOLUTION16       2866
 #define IDC_RDO_MEMORYCARD_TEST         2867
+#define IDC_RDO_LVDS_RESOLUTION17       2867
 #define IDC_RDO_OPTIC                   2868
 #define IDC_RDO_OPTICAL_INPUT           2869
 #define IDC_RDO_OSD_TEST                2870
@@ -2400,7 +2404,10 @@
 #define IDC_STATIC_VFM_BAUDRATE         3339
 #define IDC_STATIC_VFM_COMPORT          3340
 #define IDC_STATIC_VIDEO                3341
+#define IDC_STATIC_DP_COMPORT           3341
 #define IDC_STATIC_VIEW                 3342
+#define IDC_STATIC_VFM_BAUDRATE2        3342
+#define IDC_STATIC_DP_BAUDRATE          3342
 #define IDC_STATIC_WRITE_BYTE_DELAY     3343
 #define IDC_STATIC_WRITE_BYTE_DELAY2    3344
 #define IDC_STATIC_X                    3345
@@ -2532,7 +2539,11 @@
 #define IDC_LIST_SEL_MODEL              3453
 #define IDC_LIST_READ_DATA_GRID         3454
 #define IDC_LIST_I2C_ADC_COM_LOG_GRID   3455
+#define IDC_STATIC_DP_TIME              3455
 #define IDC_EDIT_2AB_DATA2              3456
+#define IDC_CHK_USE_DPGEN               3457
+#define IDC_RADIO_DP_TIME60             3458
+#define IDC_RADIO_DP_TIME30             3459
 #define ID_AC_ONOFF                     32768
 #define ID_ACPOWER_                     32769
 #define ID_ACPOWER_ALL                  32770
@@ -2656,7 +2667,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        1251
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3455
+#define _APS_NEXT_CONTROL_VALUE         3456
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

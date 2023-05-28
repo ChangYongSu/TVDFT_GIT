@@ -26,6 +26,7 @@ double	_Version_Check();
 double	_MNT_Version_Check();
 double	_MNT_EDID_Check();
 double	_MNT_HDCP_Check();
+double	_APD_ON_Check();
 BOOL	Check_ToolOption(int nOptionNo, int nOptionValue);
 double	_Option_Check();
 double	_Option_CheckAll();

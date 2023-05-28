@@ -111,7 +111,7 @@ protected:
 
 public:
 
-	void InitReadDataGrid();
+	void InitReadDataGrid(int lUpdate = 0);
 	void InitComLogGrid();
 	void WriteLog(CString szString);
 
@@ -119,6 +119,8 @@ public:
 	CListCtrl m_ctrlReadDataList;
 	CListBox m_ctrlI2cAdcComLogList;
 	CString m_sz2abDataMid;
+	afx_msg void OnNMCustomdrawListReadDataGrid(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnEnChangeEdit2abData2();
 };
 
 //{{AFX_INSERT_LOCATION}}

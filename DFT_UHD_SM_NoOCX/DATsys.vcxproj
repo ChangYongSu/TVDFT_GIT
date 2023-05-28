@@ -739,6 +739,7 @@
     <ClCompile Include="Curvefit.cpp" />
     <ClCompile Include="Digistring.cpp" />
     <ClCompile Include="Dmmdlg.cpp" />
+    <ClCompile Include="DPGenerator.cpp" />
     <ClCompile Include="FileTreeCtrl.cpp" />
     <ClCompile Include="FlexUtil.cpp" />
     <ClCompile Include="font1.cpp" />
@@ -871,6 +872,7 @@
     <ClInclude Include="Curvefit.h" />
     <ClInclude Include="Digistring.h" />
     <ClInclude Include="Dmmdlg.h" />
+    <ClInclude Include="DPGenerator.h" />
     <ClInclude Include="FileTreeCtrl.h" />
     <ClInclude Include="IcmpEcho.h" />
     <ClInclude Include="InputDetectCheckDlg.h" />

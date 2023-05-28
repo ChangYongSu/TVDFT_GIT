@@ -482,6 +482,7 @@ BOOL CreateModelIniFile(CString sModelIni)
 	m_Ini.SetProfileInt(GENERAL_S, "TV Link ComPort Baud Rate", CurrentSet->wTVBaudRate);
 
 	m_Ini.SetProfileInt(GENERAL_S, "Scanner Skip", CurrentSet->bScanNotUse);
+	m_Ini.SetProfileInt(GENERAL_S, "DP Time Set", CurrentSet->nDP_TimeSel);
 	
 	//============
 	// I2C Option
@@ -682,6 +683,7 @@ BOOL SaveModelIniFile(CString sIniPath)
 	m_Ini.SetProfileInt(GENERAL_S, "TV Link ComPort Baud Rate", CurrentSet->wTVBaudRate);
 
 	m_Ini.SetProfileInt(GENERAL_S, "Scanner Skip", CurrentSet->bScanNotUse);
+	m_Ini.SetProfileInt(GENERAL_S, "DP Time Set", CurrentSet->nDP_TimeSel);
 
 
 	//============
@@ -838,7 +840,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->nUHD_Type = m_Ini.GetProfileInt(GRAB_S, "UHD Type");
 		CurrentSet->nUHD_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "UHD Grab BitShift");
 		CurrentSet->nUHD_Grab_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Mode");
-		if(CurrentSet->nUHD_Grab_Mode > 17){CurrentSet->nUHD_Grab_Mode = 13;}
+		if(CurrentSet->nUHD_Grab_Mode > 18){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
 		if (CurrentSet->nUHD_Y20_SW_Mode > 16) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
@@ -986,6 +988,8 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 	if(CurrentSet->wTVBaudRate == 0) CurrentSet->wTVBaudRate = 115200;
 
 	CurrentSet->bScanNotUse = m_Ini.GetProfileInt(GENERAL_S, "Scanner Skip");
+	CurrentSet->nDP_TimeSel = m_Ini.GetProfileInt(GENERAL_S, "DP Time Set",0);
+	//if (CurrentSet->nDP_TimeSel == 0) CurrentSet->wTVBaudRate = 115200;
 
 
 	//============
@@ -2433,45 +2437,90 @@ BOOL InitPatternGen(CString sComPort, DWORD wBaudRate)
 BOOL InitHDMIGen(CString sComPort, DWORD wBaudRate)
 {
 	CString szCmdString;
-	szCmdString.Format("%c",START_TERMINAL_MODE);
-	
-	if(HDMIGeneratorCtrl.m_bPortOpen == FALSE)
+	szCmdString.Format("%c", START_TERMINAL_MODE);
+
+	if (HDMIGeneratorCtrl.m_bPortOpen == FALSE)
 	{
-		if(HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE) 
+		if (HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
 		{
 			HDMIGeneratorCtrl.PortClose(); _Wait(100);
 			//if (!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)				
 			if (HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
 			{
 				CString szErrMsg;
-				szErrMsg.Format("Failed to open COM port (%s)",CurrentSet->sHDMIComPort);
+				szErrMsg.Format("Failed to open COM port (%s)", CurrentSet->sHDMIComPort);
 				AfxMessageBox(szErrMsg);
 				return FALSE;
 			}
 		}
 	}
-	else if(HDMIGeneratorCtrl.m_bPortOpen == TRUE)
+	else if (HDMIGeneratorCtrl.m_bPortOpen == TRUE)
 	{
 		HDMIGeneratorCtrl.PortClose(); _Wait(100);
 		//if (!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)			
 		if (HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
 		{
 			CString szErrMsg;
-			szErrMsg.Format("Failed to open COM port (%s)",CurrentSet->sHDMIComPort);
+			szErrMsg.Format("Failed to open COM port (%s)", CurrentSet->sHDMIComPort);
 			AfxMessageBox(szErrMsg);
 			return FALSE;
 		}
 	}
 
 	// Send On-Line Mode On Cmd
-	HDMIGeneratorCtrl.SendCommString(szCmdString); 
+	HDMIGeneratorCtrl.SendCommString(szCmdString);
 	HDMIGeneratorCtrl.m_nRemoteMode = ONLINE;
 
-	if(CurrentSet->nHDMIGenType == 0){
+	if (CurrentSet->nHDMIGenType == 0) {
 		Sleep(500);
-		HDMIGeneratorCtrl.SetMHL_Control(FALSE);; 
+		HDMIGeneratorCtrl.SetMHL_Control(FALSE);;
 	}
-	
+
+	return TRUE;
+}
+BOOL InitDPGen(CString sComPort, DWORD wBaudRate)
+{
+	CString szCmdString;
+	szCmdString.Format("%c", START_TERMINAL_MODE);
+
+	if (DPGeneratorCtrl.m_bPortOpen == FALSE)
+	{
+		if (DPGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
+		{
+			DPGeneratorCtrl.PortClose(); _Wait(100);
+			//if (!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)				
+			if (DPGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
+			{
+				CString szErrMsg;
+				szErrMsg.Format("Failed to open COM port (%s)", CurrentSet->sDpgComPort);
+				AfxMessageBox(szErrMsg);
+				return FALSE;
+			}
+		}
+	}
+	else if (DPGeneratorCtrl.m_bPortOpen == TRUE)
+	{
+		DPGeneratorCtrl.PortClose(); _Wait(100);
+		//if (!HDMIGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)			
+		if (DPGeneratorCtrl.Create(sComPort, wBaudRate) == FALSE)
+		{
+			CString szErrMsg;
+			szErrMsg.Format("Failed to open COM port (%s)", CurrentSet->sDpgComPort);
+			AfxMessageBox(szErrMsg);
+			return FALSE;
+		}
+	}
+
+	// Send On-Line Mode On Cmd
+	DPGeneratorCtrl.SendCommString(szCmdString);
+	DPGeneratorCtrl.m_nRemoteMode = ONLINE;
+
+	//if (CurrentSet->nDP_TimeSel == 0) 
+	{
+		Sleep(500);
+		DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel);;
+	}
+
 	return TRUE;
 }
 
@@ -3791,9 +3840,15 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 	if (!bAlreadyExist)
 	{
 		//szOutputString.Format("WipID,Chassis,Model,Time,Result,TestTime,NO,NAME, StepResult,MEASURE,TARGET,L-LIMIT,U-LIMIT,A_TARGET,A_MEASURE,TIME,MESSAG,HDMIVer\r\n");
+#if 1
+		szOutputString.Format("GMES PORT,Read_ID,Scan ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,PCBA_SW_VER,\
+KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
+STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write\r\n");
+#else
 		szOutputString.Format(	"GMES PORT,SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,PCBA_SW_VER,\
 KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
 STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write\r\n");
+#endif
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 	}
 
@@ -3843,12 +3898,22 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write
 //		HDMI_GEN_VER,\
 //KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
 //STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
+
+#if 1
+		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+			sGMES_PortNo, CurrentSet->sPCBID_Read, CurrentSet->sPCBID_Scan, szResultTotal, sAudioMeasure, sAudioTarget,CurrentSet->sChassisName,
+			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo,sMeasured,
+			sMsg, sRun, sSeqNo,/* pStep->m_sName,*/sStepNo, 
+			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite
+			);
+#else
 		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
 			sGMES_PortNo,strWipid,szResultTotal, sAudioMeasure, sAudioTarget,CurrentSet->sChassisName,
 			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo,sMeasured,
 			sMsg, sRun, sSeqNo,/* pStep->m_sName,*/sStepNo, 
 			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite
 			);
+#endif
 		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 	}
 	else
@@ -3940,8 +4005,8 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write
 			//	sTime,
 			//	sStepNo, pStep->m_sName, sResult, sMeasured, sNominal, sLowLimit, sHighLimit, sAudioTarget,
 			//	sAudioMeasure, sElapsedTime, sMsg, HDMIGeneratorCtrl.m_FW_Ver);
-			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
-				sGMES_PortNo,strWipid, szResultTotal, sAudioMeasure, sAudioTarget, CurrentSet->sChassisName,
+			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+				sGMES_PortNo, CurrentSet->sPCBID_Read, CurrentSet->sPCBID_Scan, szResultTotal, sAudioMeasure, sAudioTarget, CurrentSet->sChassisName,
 			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo, sMeasured,
 			sMsg, sRun, sSeqNo, pStep->m_sName,sStepNo, 
 			sNominal,sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite);
@@ -4983,7 +5048,15 @@ BOOL StepInit_SourceAutoControl_UHD()
 			break;
 
 		case 50:  //DP
-			nSourceCode = 0xc0;
+			if (CurrentSet->nTVControlType) // I2C
+			{
+				nSourceCode = 0xd0;
+			}
+			else
+			{
+				nSourceCode = 0xc0;
+			}
+			
 			break;
 
 		case 51:  //OPS

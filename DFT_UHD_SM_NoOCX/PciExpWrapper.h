@@ -95,6 +95,10 @@ typedef enum
 #define			PACK_TYPE_5_HD_Rev		10
 #define			PACK_TYPE_5_Rev_2019	11
 #define			PACK_TYPE_5_Rev_2020	12
+#define			PACK_TYPE_UHDFULL_LOWSPEED		13
+#define			PACK_TYPE_QHD_FULL_SPEED		14
+#define			PACK_TYPE_120HZ_LOW_SPEED		15
+
 
 /*
 0. UHD Full Speed;

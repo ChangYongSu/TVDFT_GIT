@@ -53,6 +53,8 @@
 #define _TVCOM_PASS_DEBUG__MODE
 #endif
 
+//#define __DEBUG_SCAN_SN_NO_WRITE
+
 #define  MAX_COLUMN_NO	13
 
 //#define SM_CYS_TEMP_TEST_CODE__  //SM_MODIFY_CODE__

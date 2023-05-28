@@ -48,7 +48,7 @@ extern CImageProc		g_ImageProc;
 //#define NO_GRAB_OPTION_TAB_ITEM 28
 //#define NO_GRAB_OPTION_TAB_ITEM 41
 //#define NO_GRAB_OPTION_TAB_ITEM 48
-#define NO_GRAB_OPTION_TAB_ITEM 50
+#define NO_GRAB_OPTION_TAB_ITEM 51 // 50
 
 #define NO_USB_DIO_TAB_ITEM 26//21//15
 
@@ -81,7 +81,7 @@ int aGrabOptionItemNo[] =
 	IDC_RDO_LVDS_RESOLUTION6,	IDC_RDO_LVDS_RESOLUTION7,	IDC_RDO_LVDS_RESOLUTION8, 
 	IDC_RDO_LVDS_RESOLUTION9,	IDC_RDO_LVDS_RESOLUTION10,	IDC_RDO_LVDS_RESOLUTION11, 
 	IDC_RDO_LVDS_RESOLUTION12,	IDC_RDO_LVDS_RESOLUTION13,	IDC_RDO_LVDS_RESOLUTION14,
-	IDC_RDO_LVDS_RESOLUTION15,	IDC_RDO_LVDS_RESOLUTION16,	IDC_STATIC_LVDS_TYPE,
+	IDC_RDO_LVDS_RESOLUTION15,	IDC_RDO_LVDS_RESOLUTION16,  IDC_RDO_LVDS_RESOLUTION17,	IDC_STATIC_LVDS_TYPE,
 	IDC_RDO_LVDS_MODE1,			IDC_RDO_LVDS_MODE2,			IDC_RDO_LVDS_MODE3,
 	IDC_RDO_LVDS_MODE4,			IDC_STATIC_COLOR_DEPTH,		IDC_RDO_COLOR_DEPTH1,
 	IDC_RDO_COLOR_DEPTH2,		IDC_RDO_COLOR_DEPTH3,		IDC_RDO_COLOR_DEPTH4,
@@ -314,7 +314,7 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_COMMAND_RANGE(IDC_BTN_REMOTE_DLG_1, IDC_BTN_REMOTE_DLG_73,OnRemoteButtonClick)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_CONTROL_TAB, OnSelchangeControlTab)
 	ON_BN_CLICKED(IDC_BTN_GRAB_OPTION_APPLY, OnBtnGrabOptionApply)
-	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION16,OnRdoLvdsResolution1)
+	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION17,OnRdoLvdsResolution1)
 	ON_COMMAND_RANGE(IDC_RDO_COLOR_DEPTH1, IDC_RDO_COLOR_DEPTH4,OnRdoColorDepth1)
 	ON_COMMAND_RANGE(IDC_RDO_3D_MODE1,IDC_RDO_3D_MODE3, OnRdo3dMode1)
 	ON_BN_CLICKED(IDC_RDO_AVSWITCH_CMD13, OnRdoAvswitchCmd13)
@@ -365,6 +365,8 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_BN_CLICKED(IDC_CHK_DE_HSYNC_GRAB, &CGrabPage::OnBnClickedChkDeHsyncGrab)
 	ON_BN_CLICKED(IDC_CHK_HSYNC_EDGE_GRAB, &CGrabPage::OnBnClickedChkHsyncEdgeGrab)
 	ON_BN_CLICKED(IDC_BTN_RESET_GRAB, &CGrabPage::OnBnClickedBtnResetGrab)
+	ON_CBN_SELCHANGE(IDC_COMBO_GRABMODE2, &CGrabPage::OnCbnSelchangeComboGrabmode2)
+	ON_CBN_SELCHANGE(IDC_COMBO_UHDTYPE2, &CGrabPage::OnCbnSelchangeComboUhdtype2)
 END_MESSAGE_MAP()
 
 //	ON_COMMAND_RANGE(IDC_RADIO_MHL,IDC_RADIO_MHL2, OnRadioMhl)
@@ -442,6 +444,7 @@ BOOL CGrabPage::OnInitDialog()
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 2160)){	m_nLvdsResolutionIndex = W_3840_H_2160;}
 	else if((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 300)) {	m_nLvdsResolutionIndex = W_1920_H_300;}
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 600)){	m_nLvdsResolutionIndex = W_3840_H_600;}
+	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540)) { m_nLvdsResolutionIndex = W_1920_H_540; }
 	else m_nLvdsResolutionIndex = -1;
 
 	if(g_nGrabberType == FHD_GRABBER)
@@ -484,7 +487,27 @@ BOOL CGrabPage::OnInitDialog()
 	m_n3DMode = CurrentSet->n3DGrabbingMode;
 
 	m_ctrlLvdsModeCmb.SetCurSel(CurrentSet->nLVDS_Mode);
+
+	m_ctrlUhdType.ResetContent();
+	m_ctrlUhdType.AddString("0. UHD Full Speed");
+	m_ctrlUhdType.AddString("1. UHD Normal Speed");
+	m_ctrlUhdType.AddString("2. FHD(60Hz) - Pack1(51p), Pack10");
+	m_ctrlUhdType.AddString("3. FHD(120Hz) - Pack1(51p + 41p), EPI");
+	m_ctrlUhdType.AddString("4. FHD");
+	m_ctrlUhdType.AddString("5. No Use");
+	m_ctrlUhdType.AddString("6. HD - Pack5 / 8");
+	m_ctrlUhdType.AddString("7. EPI_UHD");
+	m_ctrlUhdType.AddString("8. EPI_UHD(16Y_60P)");
+	m_ctrlUhdType.AddString("9. CMVIEW");
+	m_ctrlUhdType.AddString("10. 5_HD_Rev");
+	m_ctrlUhdType.AddString("11. 5_Rev_2019");
+	m_ctrlUhdType.AddString("12. 5_Rev_2020");
+	m_ctrlUhdType.AddString("13. UHD Low Speed");
+	m_ctrlUhdType.AddString("14. QHD Full Speed");
+	m_ctrlUhdType.AddString("15. FHD(120Hz) Low Speed");
+
 	m_ctrlUhdType.SetCurSel(CurrentSet->nUHD_Type);
+
 	m_ctrlBitShift.SetCurSel(CurrentSet->nUHD_Grab_BitShift);
 
 	m_ctrlGrabMode.ResetContent();
@@ -506,7 +529,7 @@ BOOL CGrabPage::OnInitDialog()
 	m_ctrlGrabMode.AddString(" 15. Type16 : CSOT 68P 55UP77");//
 	m_ctrlGrabMode.AddString(" 16. Type17 : 8K T-CONLESS");
 	m_ctrlGrabMode.AddString(" 17. Type18 : LM21A HKC 220307");
-	//m_ctrlGrabMode.AddString(" 16. Type17 : Y20_SW_Mode_02");
+	m_ctrlGrabMode.AddString(" 18. Type19 : QHD_FULL_SPEED");
 	//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 	m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
 	
@@ -847,19 +870,18 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
 					
 					}
-					else if (CurrentSet->nUHD_Grab_Mode == 15) //( (CurrentSet->nUHD_Grab_Mode >= 14)&&(CurrentSet->nUHD_Grab_Mode <= 17))) //201106 else if (CurrentSet->nUHD_Grab_Mode == 12)
-					{
-						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
-						g_ImageProc.P68_55UP77_CSOT(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
-						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
-					
-					}		
 					else if (CurrentSet->nUHD_Grab_Mode == 13) {
 						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
 						g_ImageProc.P68_70_UPQO_Sharp_CEDS_DPT(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
 						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
 						//	lRotateProcess = 1;
-					}
+					}				
+					else if (CurrentSet->nUHD_Grab_Mode == 15) //( (CurrentSet->nUHD_Grab_Mode >= 14)&&(CurrentSet->nUHD_Grab_Mode <= 17))) //201106 else if (CurrentSet->nUHD_Grab_Mode == 12)
+					{
+						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
+						g_ImageProc.P68_55UP77_CSOT(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
+						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);					
+					}		
 					else if (CurrentSet->nUHD_Grab_Mode == 16) {
 						g_pView->m_clsPCI.DFT3_UHDPuzzle(2, pImgBuf8, bufTmp, nWidth, nHeight, 0);
 						g_ImageProc.P22Y8K_TCONLESS(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
@@ -871,6 +893,10 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 						g_ImageProc.LM21A_HKC_220307(bufTmp, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight);
 						g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
 					}
+					else if (CurrentSet->nUHD_Grab_Mode == 18) {
+
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
+					}						
 					else {
 
 #ifdef SM_MODIFY_CODE__	
@@ -886,10 +912,10 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 
 					//g_ImageProc.Rotate(pGrabPage->m_Image1, (float)CurrentSet->nImageRotation);
 
-					if (CurrentSet->nRedBlueSwap)
-					{
-						g_ImageProc.RedBlueSwap(g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nRedBlueSwap);
-					}
+					//if (CurrentSet->nRedBlueSwap)
+					//{
+					//	g_ImageProc.RedBlueSwap(g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nRedBlueSwap);
+					//}
 					//if (CurrentSet->nRedBlueSwap)
 					//{
 					//	g_ImageProc.RedBlueSwap(pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nRedBlueSwap);
@@ -1242,7 +1268,11 @@ void CGrabPage::GrabStart(int nGrabMode)
 	
 		if(m_nGrabDevice == LVDS_GRABBER)
 		{
-			if ((nModel == PACK_TYPE_5_Rev_2019)|| (nModel == PACK_TYPE_5_Rev_2020))
+			if ((nModel == PACK_TYPE_5_Rev_2019)
+				|| (nModel == PACK_TYPE_5_Rev_2020)
+				||(nModel == PACK_TYPE_UHDFULL_LOWSPEED)
+				||(nModel == PACK_TYPE_120HZ_LOW_SPEED)
+				||(nModel == PACK_TYPE_120HZ_LOW_SPEED))
 			{
 				lRet = g_pView->DFT3_UHDGrabStartLocal(nModel, nShiftVal, nWidth, nHeight, nImageOffset, 50, nLvdsType);
 			}
@@ -2693,18 +2723,18 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 
 	if(g_nGrabberType == UHD_GRABBER){
-		for(i = 0; i<17; i++)
+		for(i = 0; i<18; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
 
-		for(i = 33; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 34; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		}
-		for(i = 17; i<33; i++)
+		for(i = 18; i<34; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2870,6 +2900,10 @@ void CGrabPage::OnBtnGrabOptionApply()
 			case W_3840_H_600: 
 				CurrentSet->nLvdsWidth = 3840; 
 				CurrentSet->nLvdsHeight = 600;			
+				break;
+			case W_1920_H_540:
+				CurrentSet->nLvdsWidth = 1920;
+				CurrentSet->nLvdsHeight = 540;
 				break;
 			
 			default :
@@ -3143,10 +3177,15 @@ void CGrabPage::OnRdoLvdsResolution1(UINT nButtonID)
 			m_nNewLvdsHeight		= 300; 
 			break;
 
-		case IDC_RDO_LVDS_RESOLUTION16: 
-			m_nLvdsResolutionIndex	= 15;
-			m_nNewLvdsWidth			= 3840; 
-			m_nNewLvdsHeight		= 600; 
+		case IDC_RDO_LVDS_RESOLUTION16:
+			m_nLvdsResolutionIndex = 15;
+			m_nNewLvdsWidth = 3840;
+			m_nNewLvdsHeight = 600;
+			break;
+		case IDC_RDO_LVDS_RESOLUTION17:
+			m_nLvdsResolutionIndex = 16;
+			m_nNewLvdsWidth = 1920;
+			m_nNewLvdsHeight = 540;
 			break;
 
 		default : 
@@ -3899,4 +3938,18 @@ void CGrabPage::OnBnClickedBtnResetGrab()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	g_pView->GrabBaseResetStartThread(); 
+}
+
+
+void CGrabPage::OnCbnSelchangeComboGrabmode2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	OnBtnGrabOptionApply();
+}
+
+
+void CGrabPage::OnCbnSelchangeComboUhdtype2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	OnBtnGrabOptionApply();
 }

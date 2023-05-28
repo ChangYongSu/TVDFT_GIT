@@ -384,6 +384,9 @@
     <ClCompile Include="CSpreadSheet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DPGenerator.cpp">
+      <Filter>PatternGenControl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DATsys.rc">
@@ -756,6 +759,9 @@
     </ClInclude>
     <ClInclude Include="ListCtrlEx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DPGenerator.h">
+      <Filter>PatternGenControl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

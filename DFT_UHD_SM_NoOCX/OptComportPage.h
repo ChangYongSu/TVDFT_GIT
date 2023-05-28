@@ -114,6 +114,7 @@ public:
 	void		SetJigGroup(BOOL bEnable);
 	void		SetI2cAdcGroup(BOOL bEnable);
 	void		SetVfmGroup(BOOL bEnable);
+	void		SetDPGroup(BOOL bEnable);
 	
 //////////////////////////////////////////////////////////////////////////
 
@@ -123,6 +124,11 @@ public:
 	BOOL m_bScanNotUse;
 	afx_msg void OnBnClickedChkUseStartBox();
 	CButton m_ctrlUseStartBoxChk;
+	BOOL m_nDP_TimeSel;
+	CButton m_cCheckDP_PortEnable;
+	afx_msg void OnBnClickedChkUseDpgen();
+	afx_msg void OnBnClickedRadioDpTime60();
+	afx_msg void OnBnClickedRadioDpTime30();
 };
 
 //{{AFX_INSERT_LOCATION}}

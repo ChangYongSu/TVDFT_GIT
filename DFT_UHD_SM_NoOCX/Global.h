@@ -15,6 +15,7 @@
 #include "DATsysView.h"
 #include "FlexUtil.h"
 #include "HdmiGenerator.h"
+#include "DPGenerator.h"
 #include <vector>
 #include <algorithm>
 
@@ -355,6 +356,7 @@ public:
 	CString		sLNBComPort;
 	CString		sJigComPort;
 	CString		sVfmComPort;
+	CString		sDpgComPort;
 
 	DWORD		wPatternBaudRate;
 	DWORD		wHDMIBaudRate;
@@ -365,6 +367,7 @@ public:
 	DWORD		wLNBBaudRate;
 	DWORD		wJigBaudRate;
 	DWORD		wVfmBaudRate;
+	DWORD		wDpgBaudRate;
 
 	CString		sHDMIRoiShape;
 
@@ -378,6 +381,7 @@ public:
 	BOOL		bUseLNB;
 	BOOL		bUseJig;
 	BOOL		bUseVfm;
+	BOOL		bUseDpg;
 
 // add 20100622
 	BOOL		bUseAVC;
@@ -704,6 +708,10 @@ public:
 
 	CString		sMNT_Edid_Source;
 	int			bPCBID_Rewrite;
+	CString		sPCBID_Scan;
+	CString		sPCBID_Read;
+	UINT		nDP_TimeSel;
+
 };
 
 enum GrabberType
@@ -1104,6 +1112,7 @@ const COLORREF COLOR_BLACK       = RGB(   1,   1,   1 );
 #define		W_3840_H_2160			13
 #define		W_1920_H_300			14
 #define		W_3840_H_600			15
+#define		W_1920_H_540			16
 
 //Mode Register Setting Define
 #define		JEIDA_DUAL			0x81
@@ -1535,6 +1544,7 @@ BOOL TestCountRead(CString sExePath);
 void StringToken(CString Source, CString Deliminator, CStringArray& AddIt, BOOL bAddEmpty);
 
 BOOL InitHDMIGen(CString sComPort, DWORD wBaudRate);
+BOOL InitDPGen(CString sComPort, DWORD wBaudRate);
 BOOL InitAVC(CString sComPort, DWORD wBaudRate);
 void ResultData_Delete(LONG nPeriodDay); 
 void GmesLog_Delete(LONG nPeriodDay); 

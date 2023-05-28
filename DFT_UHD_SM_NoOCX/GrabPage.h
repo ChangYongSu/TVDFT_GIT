@@ -279,6 +279,8 @@ public:
 		afx_msg void OnBnClickedChkHsyncEdgeGrab();
 		CComboBox m_cComboY20SwMode;
 		afx_msg void OnBnClickedBtnResetGrab();
+		afx_msg void OnCbnSelchangeComboGrabmode2();
+		afx_msg void OnCbnSelchangeComboUhdtype2();
 };
 
 //{{AFX_INSERT_LOCATION}}

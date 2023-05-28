@@ -241,6 +241,7 @@ _MeasureFunction MeasDefined[] =
 	_T("bat_ver_check"),			_BAT_Ver_Check,				MEAS_BOOL,
 	_T("mnt_edid_check"),			_MNT_EDID_Check,				MEAS_BOOL,
 	_T("mnt_hdcp_check"),			_MNT_HDCP_Check,				MEAS_BOOL,
+	_T("mnt_apd_check"),			_APD_ON_Check,				MEAS_BOOL,
 	NULL, NULL, NULL
 };
 ///////////////////////////////////////////////////////////////
@@ -780,6 +781,16 @@ _InternalFunction Predefined[] =
 	{ LP, STRING, RP, TNULL },
 	{ _T("") },
 	{ NORMAL_EDIT_TYPE,NULL_TYPE },
+
+	_T("grab_stop"), _GrabStop,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
+		
+	_T("grab_toggle"), _GrabToggle,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
 
     NULL, NULL, { TNULL }
 };                      

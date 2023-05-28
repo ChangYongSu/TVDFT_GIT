@@ -43,6 +43,7 @@ IMPLEMENT_DYNCREATE(COptComportPage, CPropertyPage)
 
 COptComportPage::COptComportPage() : CPropertyPage(COptComportPage::IDD)
 , m_bScanNotUse(FALSE)
+, m_nDP_TimeSel(FALSE)
 {
 	//{{AFX_DATA_INIT(COptComportPage)
 	m_szAvSwitchBoxSettingValueTitle = _T("");
@@ -102,6 +103,8 @@ void COptComportPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHK_USE_VFM, m_ctrlUseVfmChk);
 	DDX_Check(pDX, IDC_CHK_SCAN_NO_USE, m_bScanNotUse);
 	DDX_Control(pDX, IDC_CHK_USE_START_BOX, m_ctrlUseStartBoxChk);
+	DDX_Radio(pDX, IDC_RADIO_DP_TIME60, m_nDP_TimeSel);
+	DDX_Control(pDX, IDC_CHK_USE_DPGEN, m_cCheckDP_PortEnable);
 }
 
 BEGIN_MESSAGE_MAP(COptComportPage, CPropertyPage)
@@ -121,6 +124,9 @@ BEGIN_MESSAGE_MAP(COptComportPage, CPropertyPage)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_CHK_USE_VFM, &COptComportPage::OnBnClickedChkUseVfm)
 	ON_BN_CLICKED(IDC_CHK_USE_START_BOX, &COptComportPage::OnBnClickedChkUseStartBox)
+	ON_BN_CLICKED(IDC_CHK_USE_DPGEN, &COptComportPage::OnBnClickedChkUseDpgen)
+	ON_BN_CLICKED(IDC_RADIO_DP_TIME60, &COptComportPage::OnBnClickedRadioDpTime60)
+	ON_BN_CLICKED(IDC_RADIO_DP_TIME30, &COptComportPage::OnBnClickedRadioDpTime30)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -312,6 +318,16 @@ void COptComportPage::SetVfmGroup(BOOL bEnable)
 	GetDlgItem(IDC_CMB_BAUDRATE_VFM)->EnableWindow(bEnable);
 }
 
+void COptComportPage::SetDPGroup(BOOL bEnable)
+{
+	GetDlgItem(IDC_STATIC_DP_COMPORT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_COMPORT_DPGEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_DP_BAUDRATE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_BAUDRATE_DPGEN)->EnableWindow(bEnable); 
+	GetDlgItem(IDC_STATIC_DP_TIME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_RADIO_DP_TIME60)->EnableWindow(bEnable);
+	GetDlgItem(IDC_RADIO_DP_TIME30)->EnableWindow(bEnable);
+}
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -345,7 +361,7 @@ BOOL COptComportPage::OnInitDialog()
 	SetI2cAdcGroup(CurrentSet->bUseI2cAdc);
 
 	m_ctrlUseHdmiGenChk.SetCheck(CurrentSet->bUseHDMIGen);
-	m_nHdmiType = CurrentSet->nHDMIGenType;
+	m_nHdmiType = CurrentSet->nHDMIGenType;// m_nDP_TimeSel
 	SetHDMIGenGroup(CurrentSet->bUseHDMIGen);
 
 	m_ctrlUseLnbChk.SetCheck(CurrentSet->bUseLNB);
@@ -414,6 +430,12 @@ BOOL COptComportPage::OnInitDialog()
 	m_ctrlUseVfmChk.SetCheck(CurrentSet->bUseVfm);
 	SetVfmGroup(CurrentSet->bUseVfm);
 
+	InitComPort(CurrentSet->sDpgComPort, CurrentSet->wDpgBaudRate, IDC_CMB_COMPORT_DPGEN, IDC_CMB_BAUDRATE_DPGEN);
+	m_cCheckDP_PortEnable.SetCheck(CurrentSet->bUseDpg);
+	m_nDP_TimeSel = CurrentSet->nDP_TimeSel;// 
+	if (m_nDP_TimeSel != 1)
+		m_nDP_TimeSel = 0;
+	SetDPGroup(CurrentSet->bUseDpg);
 
 
 	m_ctlTVControlMode		 = CurrentSet->nTVControlType;
@@ -796,6 +818,37 @@ void COptComportPage::OnBtnComportOptApply()
 	}
 
 
+	//========================
+	// Init DP GTenerator
+	//========================
+	OldSet.bUseDpg = CurrentSet->bUseDpg;
+	OldSet.sDpgComPort = CurrentSet->sDpgComPort;
+	OldSet.wDpgBaudRate = CurrentSet->wDpgBaudRate;
+	OldSet.nDP_TimeSel = CurrentSet->nDP_TimeSel;
+
+	CurrentSet->nDP_TimeSel = m_nDP_TimeSel;
+	CurrentSet->bUseDpg = m_cCheckDP_PortEnable.GetCheck();
+	CurrentSet->wDpgBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_DPGEN);
+	CurrentSet->sDpgComPort.Format(GetComPortVal(IDC_CMB_COMPORT_DPGEN));
+	if (CurrentSet->bUseDpg)
+	{
+		if ((CurrentSet->bUseDpg != OldSet.bUseDpg)
+			|| (CurrentSet->sDpgComPort != OldSet.sDpgComPort)
+			|| (CurrentSet->wDpgBaudRate != OldSet.wDpgBaudRate))
+		{
+			if (DPGeneratorCtrl.m_bPortOpen)		DPGeneratorCtrl.PortClose();
+			InitDPGen(CurrentSet->sDpgComPort, CurrentSet->wDpgBaudRate);
+		}
+		else if (CurrentSet->nDP_TimeSel != OldSet.nDP_TimeSel)
+		{
+			DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel);//m_nDP_TimeSel
+		}
+	}
+	else
+	{
+		if (DPGeneratorCtrl.m_bPortOpen)		DPGeneratorCtrl.PortClose();
+	}
+
 
 	CurrentSet->nTVControlType = m_ctlTVControlMode;
 	CurrentSet->bAutoSourceControl = m_bAutoSourceControl;
@@ -953,4 +1006,56 @@ void COptComportPage::OnBnClickedChkUseStartBox()
 		m_ctrlUseScannerChk.SetCheck(0);
 		SetScannerGroup(0);
 	}
+}
+
+
+void COptComportPage::OnBnClickedChkUseDpgen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	SetDPGroup(m_cCheckDP_PortEnable.GetCheck());
+}
+
+
+void COptComportPage::OnBnClickedRadioDpTime60()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int i = 0;
+	CEnvironmentData OldSet;
+
+	UpdateData();
+//========================
+// Init DP GTenerator
+//========================
+	OldSet.bUseDpg = CurrentSet->bUseDpg;
+	OldSet.sDpgComPort = CurrentSet->sDpgComPort;
+	OldSet.wDpgBaudRate = CurrentSet->wDpgBaudRate;
+	OldSet.nDP_TimeSel = CurrentSet->nDP_TimeSel;
+
+	CurrentSet->nDP_TimeSel = m_nDP_TimeSel;
+	CurrentSet->bUseDpg = m_cCheckDP_PortEnable.GetCheck();
+	CurrentSet->wDpgBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_DPGEN);
+	CurrentSet->sDpgComPort.Format(GetComPortVal(IDC_CMB_COMPORT_DPGEN));
+
+	if (CurrentSet->bUseDpg)
+	{
+		if ((CurrentSet->bUseDpg != OldSet.bUseDpg)
+			|| (CurrentSet->sDpgComPort != OldSet.sDpgComPort)
+			|| (CurrentSet->wDpgBaudRate != OldSet.wDpgBaudRate))
+		{
+			if (DPGeneratorCtrl.m_bPortOpen)		DPGeneratorCtrl.PortClose();
+			InitDPGen(CurrentSet->sDpgComPort, CurrentSet->wDpgBaudRate);
+		}
+		else if (CurrentSet->nDP_TimeSel != OldSet.nDP_TimeSel)
+		{
+			DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel);//m_nDP_TimeSel
+		}
+	}
+}
+
+
+void COptComportPage::OnBnClickedRadioDpTime30()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	OnBnClickedRadioDpTime60();
 }

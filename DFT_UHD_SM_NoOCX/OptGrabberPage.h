@@ -111,6 +111,8 @@ public:
 //	BOOL m_bGrabBaseReset;
 	BOOL m_nHdmiEdidControl;
 	BOOL m_nHdmiHdcpControl;
+	afx_msg void OnCbnSelchangeComboGrabmode();
+	afx_msg void OnCbnSelchangeComboUhdtype();
 };
 
 //{{AFX_INSERT_LOCATION}}

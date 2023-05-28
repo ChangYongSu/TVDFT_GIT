@@ -216,5 +216,7 @@ BOOL _RotateDisplay();
 BOOL _SetTVBuadRate();
 
 BOOL _Mnt_Edid_Source();
+BOOL _GrabStop();
+BOOL _GrabToggle();
 
 #endif	// __REALMEAS_H__

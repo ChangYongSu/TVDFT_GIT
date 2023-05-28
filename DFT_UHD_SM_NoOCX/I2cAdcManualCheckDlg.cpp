@@ -29,8 +29,9 @@ CI2cAdcManualCheckDlg::CI2cAdcManualCheckDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CI2cAdcManualCheckDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CI2cAdcManualCheckDlg)
-	m_sz2abData = "00";
+	m_sz2abData = "01";
 	m_sz2abCmd = "f4";
+	m_sz2abDataMid = "00";
 	m_sz2abReadAdh = "00";
 	m_sz2abReadAdl = "00";
 	m_nI2cPacketDelay = 0;
@@ -135,6 +136,8 @@ BEGIN_MESSAGE_MAP(CI2cAdcManualCheckDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_2AB_READ_VERSION2, OnBtn2abReadVersion2)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_BTN_READ_2AB_CMD, &CI2cAdcManualCheckDlg::OnBnClickedBtnRead2abCmd)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_READ_DATA_GRID, &CI2cAdcManualCheckDlg::OnNMCustomdrawListReadDataGrid)
+	ON_EN_CHANGE(IDC_EDIT_2AB_DATA2, &CI2cAdcManualCheckDlg::OnEnChangeEdit2abData2)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -182,7 +185,7 @@ BOOL CI2cAdcManualCheckDlg::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CI2cAdcManualCheckDlg::InitReadDataGrid()
+void CI2cAdcManualCheckDlg::InitReadDataGrid(int lUpdate)
 {
 
 #if 1
@@ -191,16 +194,32 @@ void CI2cAdcManualCheckDlg::InitReadDataGrid()
 	UINT nTmp;
 	char *sHeader1[] = { "00","01","02", "03","04", "05", "06", "07", "08", "09", "0A", "0B","0C", "0D", "0E", "0F" };
 	char *sHeader2[] = { "00","10","20", "30","40", "50", "60", "70", "80", "90", "A0", "B0","C0", "D0", "E0", "F0" };
-	m_ctrlReadDataList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);// 리스트 컨트롤 초기화: 열 추가
-	for (int i = 0; i < 16; i++)
-	{
-		sTmp = sHeader1[i];
-		m_ctrlReadDataList.InsertColumn(i, sTmp, LVCFMT_CENTER, 38);
-		sTmp = sHeader2[i];
-		m_ctrlReadDataList.InsertItem(i, sTmp);
-	}
-	
 
+	if (lUpdate == 0)
+	{
+		m_ctrlReadDataList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);// 리스트 컨트롤 초기화: 열 추가
+
+		m_ctrlReadDataList.InsertColumn(0, "", LVCFMT_CENTER, 30);
+
+		for (int i = 0; i < 16; i++)
+		{
+			sTmp = sHeader1[i];
+			m_ctrlReadDataList.InsertColumn(i + 1, sTmp, LVCFMT_CENTER, 37);
+			sTmp = sHeader2[i];
+			m_ctrlReadDataList.InsertItem(i, sTmp);
+		}
+
+	}
+	else
+	{
+		m_ctrlReadDataList.DeleteAllItems();
+		for (int i = 0; i < 16; i++)
+		{
+			sTmp = sHeader2[i];
+			m_ctrlReadDataList.InsertItem(i, sTmp);
+		}	
+
+	}
 
 #else
 	CString sTmp;
@@ -494,7 +513,7 @@ void CI2cAdcManualCheckDlg::OnBtnRead2abDataPage()
 {
 	// TODO: Add your control notification handler code here
 	//+add kwmoon 080910
-	InitReadDataGrid();
+	InitReadDataGrid(1);
 	
 	UpdateData(TRUE);
 	
@@ -603,7 +622,7 @@ void CI2cAdcManualCheckDlg::OnBtnRead2bDataPage()
 {
 	// TODO: Add your control notification handler code here
 	//+add kwmoon 080910
-	InitReadDataGrid();
+	InitReadDataGrid(1);
 	
 	UpdateData(TRUE);
 	
@@ -841,7 +860,8 @@ void CI2cAdcManualCheckDlg::OnBtnClearComLogGrid()
 void CI2cAdcManualCheckDlg::OnBtnClearReadData() 
 {
 	// TODO: Add your control notification handler code here
-	InitReadDataGrid();
+	InitReadDataGrid(1);
+
 }
 
 void CI2cAdcManualCheckDlg::OnBtn2bWakeup() 
@@ -894,7 +914,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abToolOptionRead()
 
 		m_sz2abReadToolOption.Format("%d",nReadToolOption);
 	
-		InitReadDataGrid();
+		InitReadDataGrid(1);
 		
 		for(int i=0; i<nReadByte; i++)
 		{
@@ -940,8 +960,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion()
 	}
 	else
 	{
-		InitReadDataGrid();
-		
+		InitReadDataGrid(1);
 	
 		for(int i=0; i<nReadByte; i++)
 		{
@@ -996,7 +1015,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abAreaOptionRead()
 
 		m_sz2abReadAreaOption.Format("%d",nReadAreaOption);
 	
-		InitReadDataGrid();
+		InitReadDataGrid(1);
 	
 		for(int i=0; i<nReadByte; i++)
 		{
@@ -1236,7 +1255,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abEdidDownload()
 	CString szData;
 
 	UpdateData(TRUE);
-	InitReadDataGrid();
+	InitReadDataGrid(1);
 	m_szEdidDownloadResult = _T("");
 
 	if((nResult = I2cAdcCtrl.SendCmd("F6", "00", "0A")) != TEST_PASS)
@@ -1336,7 +1355,7 @@ void CI2cAdcManualCheckDlg::OnBtn2abReadVersion2()
 	}
 	else
 	{
-		InitReadDataGrid();		
+		InitReadDataGrid(1);
 		szTemp = I2cAdcCtrl.m_szI2cAdcReadString.Mid(CMD_LENGTH);
 		AddStringToStatus( szTemp);//LOG
 		if (szTemp.Find("82") == 0)
@@ -1416,4 +1435,87 @@ void CI2cAdcManualCheckDlg::OnBnClickedBtnRead2abCmd()
 	}
 
 
+}
+
+
+void CI2cAdcManualCheckDlg::OnNMCustomdrawListReadDataGrid(NMHDR *pNMHDR, LRESULT *pResult)
+{
+//	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	*pResult = 0;
+	NMLVCUSTOMDRAW* pLVCD = (NMLVCUSTOMDRAW*)pNMHDR;
+
+	CString strCol = _T("");
+
+
+
+	switch (pLVCD->nmcd.dwDrawStage)
+	{
+		case CDDS_PREPAINT:
+		{
+			*pResult = CDRF_NOTIFYITEMDRAW;
+			return;
+		}
+		case CDDS_ITEMPREPAINT:
+		{
+			*pResult = CDRF_NOTIFYSUBITEMDRAW;
+			return;
+		}
+		case CDDS_SUBITEM | CDDS_ITEMPREPAINT:
+		{
+			COLORREF crText, crBkgnd;
+
+			//	nCol= m_CtrlListMainProcess.getse.GetSelectedColumn();
+			//	nRow= m_CtrlListMainProcess.GetItemCount();
+
+			int l_nItem = static_cast<int>(pLVCD->nmcd.dwItemSpec); //row
+			int l_nSubItem = (int)(pLVCD->iSubItem);
+
+			//if ((m_CurrentStep > 0) && (m_CurrentStep < 200)&&(l_nItem == m_CurrentStep-1)&&(l_nSubItem < 2))
+			//{
+			//	crText = RGB(0, 0, 0);		//글자색
+			//	crBkgnd = RGB(128, 128, 255);	//배경색으로 한다   
+			//}
+			//else if ((l_nItem >= 0) && (l_nItem < 200) && (l_nSubItem >= 0) && (l_nSubItem < 20))
+			//{
+			//	crText = m_CtrlListMainProcessEx.nSelForeColor[l_nItem][l_nSubItem];// RGB(0, 0, 0); //글자색
+			//	crBkgnd = m_CtrlListMainProcessEx.nSelBackColor[l_nItem][l_nSubItem];// = RGB(255, 0, 0); //배경색으로 한다   
+			//}
+
+			if (l_nSubItem == 0)
+			{
+				
+					crText = RGB(0, 0, 0); //글자색
+					crBkgnd = RGB(230, 230, 230);
+					
+			}
+			else
+			{
+				
+				crText = RGB(0, 0, 0); //글자색
+				crBkgnd = RGB(250, 250, 250);				
+			}
+
+
+			pLVCD->clrText = crText;
+			pLVCD->clrTextBk = crBkgnd;
+
+
+			*pResult = CDRF_DODEFAULT;
+			return;
+		}
+	}
+
+	*pResult = 0;
+}
+
+
+void CI2cAdcManualCheckDlg::OnEnChangeEdit2abData2()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialog::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

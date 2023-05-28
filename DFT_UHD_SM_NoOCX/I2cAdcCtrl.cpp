@@ -1382,7 +1382,8 @@ int CI2cAdcCtrl::ReadI2cNbyteData(int nByte)
 
 	m_szI2cAdcReadString = _T("");
 
-	if((nResult = ReceiveCommString(CMD_LENGTH+nByte*2+3,3000,m_szI2cAdcReadString)) != TEST_PASS)
+//	if ((nResult = ReceiveCommString(CMD_LENGTH + nByte * 2 + 3, 3000, m_szI2cAdcReadString)) != TEST_PASS)
+	if ((nResult = ReceiveCommString(CMD_LENGTH + nByte * 2 + 1, 3000, m_szI2cAdcReadString)) != TEST_PASS)
 	{
 		return nResult;
 	}
@@ -1601,7 +1602,7 @@ int CI2cAdcCtrl::SendCmd(CString szData1,CString szData2, CString szData3)
 	szCmd.Format(">%02x02%s%s%s00%c%c",m_nI2cAdcSeqNo++,szData1,szData2, szData3,CR,LF);
 	
 	//+add kwmoon 080826
-	m_szCurrentStatusMsg.Format("[2AB] Set Command : %s, %s \t Send :  %s",szData1,szData2,szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] Set Command : %s, %s, %s \t Send :  %s",szData1, szData2, szData3, szCmd);
 	
 	if((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -1620,7 +1621,7 @@ int CI2cAdcCtrl::SendCmd(CString szData1,CString szData2, CString szData3)
 	szCmd.Format(">%02x1000000000%c%c",m_nI2cAdcSeqNo++,CR,LF);
 	
 	//+add kwmoon 080826
-	m_szCurrentStatusMsg.Format("[2AB] Send Command : %s, %s \t Send :  %s",szData1,szData2,szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] Send Command : %s, %s, %s \t Send :  %s",szData1, szData2, szData3,szCmd);
 
 	if((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -2652,7 +2653,7 @@ int CI2cAdcCtrl::MNT_ReadVersion()
 		return nResult;
 	}
 
-	if((nResult = ReceiveCommString(CMD_LENGTH+(nReadByte*2)+3,2000,m_szI2cAdcReadString)) != TEST_PASS)
+	if ((nResult = ReceiveCommString(CMD_LENGTH + (nReadByte * 2) + 3, 2000, m_szI2cAdcReadString)) != TEST_PASS)
 	{
 		return nResult;
 	}
@@ -3036,6 +3037,82 @@ int CI2cAdcCtrl::MNT_HDCP_Check()
 	return nResult;
 }
 
+
+int CI2cAdcCtrl::APD_ON_Check()
+{
+		int		nCmdType = 0;
+		int		nDelay = 0;
+		int		nData1 = 0;
+		int		nData2 = 0;
+		int		nData3 = 0;
+		int		nResult = TEST_PASS;
+		int		nOptionValue = 0;
+
+		CString sMsg = _T("");
+		CString sTemp = _T("");
+		CString sReadData = _T("");
+		CString szCmd = _T("");
+		CString sReadString = _T("");
+		CString szData1 = _T("");
+		CString szData2 = _T("");
+		CString szData3 = _T("");
+		CString szErrMsg = _T("");
+
+		DWORD dwStartTick = 0;
+		DWORD dwFuncTickCount = 0;
+		DWORD dwFuncElapsedTime = 0;
+		CString szFuncElapsedTime = _T("");
+
+		if (CurrentSet->bSaveProcessingTimeData)
+		{
+			dwFuncTickCount = GetTickCount();
+		}
+
+
+		I2cAdcCtrl.m_ctrlI2cAdcCtrl.ClearPort();
+
+		if (I2cAdcCtrl.m_nI2cAdcSeqNo >= 0xff) I2cAdcCtrl.m_nI2cAdcSeqNo = 0;
+
+	
+		CurrentSet->nAdcType = ADC_TYPE_I2C;
+		
+
+		szData1 = "F7";
+		szData2 = "01";//// .Format("%02x", nData1);
+		//szData2.Format("%02x", nData2);
+
+		sTemp.Format("I2C) Send Command(%s)(%s)", szData1, szData2);
+		ShowSubStepMessage(sTemp, _T(""));
+
+		for (int j = 0; j < 5; j++)
+		{
+			nResult = I2cAdcCtrl.WakeUp();
+			if (nResult == TEST_PASS) break;
+			Sleep(1);
+		}
+
+		if ((nResult = I2cAdcCtrl.SendCmd(szData1, "00", szData2)) != TEST_PASS)
+		{
+			nResult = TEST_FAIL;// goto END_POSITION;
+		}
+
+//		nDelay = 3000;
+//		_Wait(nDelay);
+		
+		if (CurrentSet->bSaveProcessingTimeData)
+		{
+			DWORD dwStepElapsedTime = GetTickCount() - g_pView->m_dwStepElapsedTime;
+
+			DWORD dwFuncElapsedTime = GetTickCount() - dwFuncTickCount;
+			szFuncElapsedTime.Format("   SendI2cCommand [%dms] (%dms)", dwFuncElapsedTime, dwStepElapsedTime);
+			AddTimeData(szFuncElapsedTime);
+		}
+
+	
+
+
+	return nResult;
+}
 
 BOOL CI2cAdcCtrl::GetModuleVoltage(double& dVolt)
 {

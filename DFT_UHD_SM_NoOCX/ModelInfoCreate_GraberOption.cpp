@@ -243,6 +243,11 @@ void CModelInfoCreate_GraberOption::OnOK()
 			CurrentSet->nLvdsWidth = 3840; 
 			CurrentSet->nLvdsHeight = 600;			
 			break;
+
+		case W_1920_H_540:
+			CurrentSet->nLvdsWidth = 1920;
+			CurrentSet->nLvdsHeight = 540;
+			break;
 		
 		default : CurrentSet->nLvdsWidth = 1366; CurrentSet->nLvdsHeight = 768;		break;
 	}
@@ -450,6 +455,7 @@ BOOL CModelInfoCreate_GraberOption::OnInitDialog()
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 2160)) m_nLvdsFormat = W_3840_H_2160;
 	else if((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 300))  m_nLvdsFormat = W_1920_H_300;
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 600))  m_nLvdsFormat = W_3840_H_600;
+	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540))  m_nLvdsFormat = W_1920_H_540;
 	else m_nLvdsFormat = -1;
 
 	m_nAnalogFormat = CurrentSet->nAnalogType;

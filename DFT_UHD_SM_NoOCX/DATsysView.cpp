@@ -2020,8 +2020,13 @@ void CDATsysView::OnModelOpen()
 			HDMIGeneratorCtrl.SetEDID_PassCheck(CurrentSet->bHdmiEdidControl);
 
 
+
 			if(!CurrentSet->bHdmiOutControl){
 				HDMIGeneratorCtrl.SetOutPort(0);
+			}
+			if (CurrentSet->bUseDpg)
+			{
+				DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel);
 			}
 
 			//CurrentSet->sEpiCfgIni = m_szExePath + "\\EPI_Config.ini";
@@ -2648,6 +2653,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 
 		pCurrentSet->sHDMIComPort = pApp->GetProfileString(_T("Config"), _T("HDMI Generator ComPort"), "COM6");
 		if (pCurrentSet->sHDMIComPort == _T("")) pCurrentSet->sHDMIComPort = "COM6";
+		pCurrentSet->sDpgComPort = pApp->GetProfileString(_T("Config"), _T("DP Generator ComPort"), "COM6");
+		if (pCurrentSet->sDpgComPort == _T("")) pCurrentSet->sDpgComPort = "COM6";
 
 		pCurrentSet->sLNBComPort = pApp->GetProfileString(_T("Config"), _T("LNB ComPort"), "COM7");
 		if (pCurrentSet->sLNBComPort == _T("")) pCurrentSet->sLNBComPort = "COM7";
@@ -2692,6 +2699,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 
 		pCurrentSet->sHDMIComPort = pApp->GetProfileString(_T("Config"), _T("HDMI Generator ComPort"), "\\\\.\\COM16");
 		if (pCurrentSet->sHDMIComPort == _T("")) pCurrentSet->sHDMIComPort = "\\\\.\\COM16";
+		pCurrentSet->sDpgComPort = pApp->GetProfileString(_T("Config"), _T("DP Generator ComPort"), "\\\\.\\COM16");
+		if (pCurrentSet->sDpgComPort == _T("")) pCurrentSet->sDpgComPort = "\\\\.\\COM16";
 
 		pCurrentSet->sLNBComPort = pApp->GetProfileString(_T("Config"), _T("LNB ComPort"), "\\\\.\\COM17");
 		if (pCurrentSet->sLNBComPort == _T("")) pCurrentSet->sLNBComPort = "\\\\.\\COM17";
@@ -2736,6 +2745,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 
 		pCurrentSet->sHDMIComPort = pApp->GetProfileString(_T("Config"), _T("HDMI Generator ComPort"), "\\\\.\\COM26");
 		if (pCurrentSet->sHDMIComPort == _T("")) pCurrentSet->sHDMIComPort = "\\\\.\\COM26";
+		pCurrentSet->sDpgComPort = pApp->GetProfileString(_T("Config"), _T("DP Generator ComPort"), "\\\\.\\COM26");
+		if (pCurrentSet->sDpgComPort == _T("")) pCurrentSet->sDpgComPort = "\\\\.\\COM26";
 
 		pCurrentSet->sAvcComPort = pApp->GetProfileString(_T("Config"), _T("AVC ComPort"), "\\\\.\\COM27");
 		if (pCurrentSet->sAvcComPort == _T("")) pCurrentSet->sAvcComPort = "\\\\.\\COM27";
@@ -2910,6 +2921,12 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	sBaudRate							= pApp->GetProfileString(_T("Config"), _T("VFM Baud Rate"), "19200");
 	pCurrentSet->wVfmBaudRate			= (DWORD)(atoi(sBaudRate));
 
+	sBaudRate							= pApp->GetProfileString(_T("Config"), _T("DPG Baud Rate"), "19200");
+	pCurrentSet->wDpgBaudRate = (DWORD)(atoi(sBaudRate));
+
+	
+
+
 	pCurrentSet->bUsePatternGen			= pApp->GetProfileInt(_T("Config"), _T("Use Pattern Generator"), 1);
 	pCurrentSet->bUseTVCommPort			= pApp->GetProfileInt(_T("Config"), _T("Use TVComm Port"), 1);
 	pCurrentSet->bUseAVSwitchBox		= pApp->GetProfileInt(_T("Config"), _T("Use AVSwitchingBox"), 1);
@@ -2934,6 +2951,9 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	}
 //
 	pCurrentSet->bUseVfm				= pApp->GetProfileInt(_T("Config"), _T("Use VFM"), 0);
+	pCurrentSet->bUseDpg = pApp->GetProfileInt(_T("Config"), _T("Use DPG"), 0);
+
+
 
 	pCurrentSet->nAdcType				= pApp->GetProfileInt(_T("Config"), _T("ADC Type"), 0); // 0 : RS232C, 1 : I2C
 
@@ -3550,6 +3570,13 @@ void CDATsysView::SaveRegistrySetting()
 	pApp->WriteProfileString(_T("Config"), _T("VFM Baud Rate"), sBaudRate);
 	pApp->WriteProfileInt(_T("Config"), _T("Use VFM"),			CurrentSet->bUseVfm);
 
+	pApp->WriteProfileString(_T("Config"), _T("DP Generator ComPort"), CurrentSet->sDpgComPort);
+	sBaudRate.Format("%d", CurrentSet->wDpgBaudRate);
+	pApp->WriteProfileString(_T("Config"), _T("DPG Baud Rate"), sBaudRate);
+	pApp->WriteProfileInt(_T("Config"), _T("Use DPG"),			CurrentSet->bUseDpg);
+	
+
+
 	pApp->WriteProfileString(_T("Config"), _T("TV ComPort"),				CurrentSet->sTVComPort);
 	//+del psh 080701
 //	sBaudRate.Format("%d", CurrentSet->wTVBaudRate);
@@ -3926,12 +3953,15 @@ BOOL CDATsysView::Read_PCBAID_READ()
 				CurrentSet->bSystemBreak = TRUE;
 				sTmp.Format("PCBA ID Read :FAIL");
 				AddStringToStatus(sTmp); //AfxMessageBox(sTmp);
+				CurrentSet->sPCBID_Read = "NO_READ";
 				return FALSE;
 			}
 		}
 		if (nRev == 2)
 		{
 			sSerialTmp = sSerialTmp.Left(10);
+			CurrentSet->sPCBID_Read = sSerialTmp;
+
 			if (m_strWipId.Find("NO_SCAN") >= 0)
 			{
 				CString StrPathFileNameTemp;
@@ -4032,12 +4062,39 @@ BOOL CDATsysView::Read_PCBAID_READ()
 			CurrentSet->bSystemBreak = TRUE;
 			sTmp.Format("PCBA ID Read :FAIL");
 			AddStringToStatus(sTmp); //AfxMessageBox(sTmp);
+			CurrentSet->sPCBID_Read = "NO_READ";
 			return FALSE;
 		}
 	}
 	else
 	{
-		return FALSE;
+		nRev = TVCommCtrl.ModelSNo_Read(nKeySerialItem, sSerialTmp, TRUE);
+		if ((nRev != 2) || (sSerialTmp.Find("x") >= 0))
+		{
+			nRev = TVCommCtrl.ModelSNo_Read(nKeySerialItem, sSerialTmp, TRUE);
+			if ((nRev != 2) || (sSerialTmp.Find("x") >= 0))
+			{
+#if 0
+				CurrentSet->bSystemBreak = TRUE;
+				sTmp.Format("PCBA ID Read :FAIL");
+				AddStringToStatus(sTmp); //AfxMessageBox(sTmp);
+				CurrentSet->sPCBID_Read = "NO_READ";
+				return FALSE;
+#else
+				sTmp.Format("PCBA ID Read :FAIL Continue");
+				AddStringToStatus(sTmp); //AfxMessageBox(sTmp);
+				CurrentSet->sPCBID_Read = "NO_READ";
+				return TRUE;
+#endif
+			}
+		}
+		sSerialTmp = sSerialTmp.Left(10);
+		CurrentSet->sPCBID_Read = sSerialTmp;
+		sTmp.Format("PCBA ID Check Read : ");
+		sTmp += sSerialTmp;
+		AddStringToStatus(sTmp);
+
+		return TRUE;
 	}
 
 
@@ -4924,6 +4981,12 @@ LRESULT CDATsysView::RunTest(WPARAM wParam, LPARAM lParam)
 				}				
 			}
 #endif
+			
+			CurrentSet->sPCBID_Scan = m_strWipId;
+			CurrentSet->sPCBID_Read = "";
+			CurrentSet->bPCBID_Rewrite = 0;
+
+
 			CurrentSet->nDftSeq = 0;
 			CurrentSet->nDftNgCount = 0;
 			CurrentSet->nDftOkCount = 0;
@@ -5526,6 +5589,43 @@ END_INIT :
 
 		m_pInitDlg->AddString2List(sMsg);
 	}
+
+	if (CurrentSet->bUseDpg)
+	{
+		sMsg = _T("[Display Port] Port COM Check = ");
+
+		if (DPGeneratorCtrl.m_bPortOpen == FALSE)
+		{
+			if (DPGeneratorCtrl.Create(CurrentSet->sDpgComPort, CurrentSet->wDpgBaudRate))
+			{
+
+				double dVol;
+				if (DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel))
+				{
+					sMsg += "PASS";
+				}
+				else 
+				{					
+					sMsg += "FAIL";			
+
+				}				
+
+			}
+			else sMsg += "FAIL";
+		}
+		else if (DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel))
+		{
+			sMsg += "PASS";
+		}
+		else
+		{
+			sMsg += "FAIL";
+
+		}
+
+		m_pInitDlg->AddString2List(sMsg);
+	}
+
 	m_pInitDlg->m_ctrlProgress.SetPos(80);
 
 
@@ -6199,6 +6299,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 #if 1
 		if (g_ID_Check == 2)
 		{
+			//if (g_pView->m_bMakeReferenceMode == FALSE)// && (CurrentSet->bUseGmes) && (CurrentSet->bGMES_Connection) && (CurrentSet->bUploadMes))
 			if ((g_pView->m_bMakeReferenceMode == FALSE) && (CurrentSet->bUseGmes) && (CurrentSet->bGMES_Connection) && (CurrentSet->bUploadMes))
 			{
 
@@ -6210,10 +6311,6 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 					}
 					else
 					{
-						//if (g_nSysType == AUTO_SYS) {
-						//	if (!pView->RunUserRetry(nStepResult)) 
-						//}
-
 						if (g_pView->Read_PCBAID_READ())
 						{
 							g_ID_Check = 3;
@@ -6232,11 +6329,25 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 				}
 				else
 				{
-					g_ID_Check = 3;
+					if (g_pView->Read_PCBAID_READ())
+					{
+						g_ID_Check = 3;
+					}
+					else
+					{
+						AddStringToStatus("=>NG:PCBAID READ FAIL!!");
+						CurrentSet->bRunAbort = 1;
+						pCurStep->m_bResult = FALSE;
+
+						g_ID_Check = 4;
+						goto END_WHILE_LOOP;
+						
+					}
 				}
 			}
 			else
 			{
+				CurrentSet->sPCBID_Read = "GMES OFF";
 				g_ID_Check = 3;
 			}
 
@@ -8911,6 +9022,11 @@ BOOL CDATsysView::ServerChangeModel()
 			Sleep(100);
 			if (!CurrentSet->bHdmiOutControl) {
 				HDMIGeneratorCtrl.SetOutPort(0);
+			}
+
+			if (CurrentSet->bUseDpg)
+			{
+				DPGeneratorCtrl.SetTime_Control(CurrentSet->nDP_TimeSel);
 			}
 
 			//CurrentSet->sEpiCfgIni = m_szExePath + "\\EPI_Config.ini";
@@ -16412,6 +16528,9 @@ void CDATsysView::GetApplicationVersion()
 #endif
 
 //	m_szCurrentStatus	= m_szVersion;
+#ifdef __DEBUG_SCAN_SN_NO_WRITE
+	m_szVersion += " ***** SCAN NO WRITE TEST VERSION ***** ";
+#endif
 
 	CMainFrame* pMainFrame =(CMainFrame*)AfxGetMainWnd();
 	pMainFrame->SetTitle(m_szVersion);
@@ -16548,10 +16667,26 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 
 			if(g_GrabSource == LVDS_GRABBER)
 			{
-				if (CurrentSet->nUHD_Type == 7) {		// EPI Mode
-					pView->m_clsPCI.DFT3_EPIPuzzle( pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);
+				if (CurrentSet->nUHD_Type == PACK_TYPE_UHDEPI) {		// EPI Mode
+	//frame->m_clsPCI.DFT3_EPIPuzzle(frame->m_nImgMode, imgBuf8, /*frame->m_pDoc->m_pImage*/frame->m_pEPIRGBImage, frame->m_pEPIWImage, nWidth, nHeight, frame->m_bRotate180);	// 150311 rotate추가
+					g_pView->m_clsPCI.DFT3_EPIPuzzle(pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);
+					//memcpy(frame->m_pDoc->m_pImage, frame->m_pEPIRGBImage, nWidth*nHeight*3* sizeof(unsigned char)  );
+				}
+				else if (CurrentSet->nUHD_Type == PACK_TYPE_CMVIEW) {		// CM VIEW
+					g_pView->m_clsPCI.DFT3_CMVPuzzle(pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
 				}
 				else {
+
+					if (CurrentSet->nRedBlueSwap)
+					{
+						g_ImageProc.RedBlueSwap(pImgBuf8, nWidth, nHeight, CurrentSet->nRedBlueSwap);
+					}
+
+
+				//if (CurrentSet->nUHD_Type == 7) {		// EPI Mode
+				//	pView->m_clsPCI.DFT3_EPIPuzzle( pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);
+				//}
+				//else {
 					
  					if (CurrentSet->nUHD_Grab_Mode == 9) {
 						pView->m_clsPCI.DFT3_UHDPuzzle(CurrentSet->nUHD_Grab_Mode, pImgBuf8, bufTmp, nWidth, nHeight, CurrentSet->nImageRotation);	
@@ -16597,6 +16732,11 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 						g_ImageProc.Rotate(g_GrabDisplayImage, (float)CurrentSet->nImageRotation);
 						//	lRotateProcess = 1;
 					}
+					else if (CurrentSet->nUHD_Grab_Mode == 18) {
+
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
+
+					}
 					else {
 #ifdef SM_MODIFY_CODE__	
 						pView->m_clsPCI.DFT3_UHDPuzzle(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);
@@ -16607,10 +16747,10 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 #endif
 					}
 					
-					if (CurrentSet->nRedBlueSwap)
-					{
-						g_ImageProc.RedBlueSwap(g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nRedBlueSwap);
-					}
+					//if (CurrentSet->nRedBlueSwap)
+					//{
+					//	g_ImageProc.RedBlueSwap(g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nRedBlueSwap);
+					//}
 
 					if (CurrentSet->nUHD_Y20_SW_Mode == 3)
 					{
@@ -16810,7 +16950,12 @@ int CDATsysView::DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, i
 		(nModel == PACK_TYPE_5_HD_Rev) ? 1 :
 		(nModel == PACK_TYPE_5_Rev_2019) ? 1 :
 		(nModel == PACK_TYPE_5_Rev_2020) ? 1 :
-		(nModel == PACK_TYPE_5) ? 1 : 2;
+		(nModel == PACK_TYPE_5) ? 1 :
+		(nModel == PACK_TYPE_UHDFULL_LOWSPEED) ? 4 :		//	230315 Low Speed Mode 추가
+		(nModel == PACK_TYPE_QHD_FULL_SPEED) ? 4 :
+		(nModel == PACK_TYPE_120HZ_LOW_SPEED) ? 2 :
+		2;
+		//(nModel == PACK_TYPE_5) ? 1 : 2;
 
 
 	nChOffset = nWidth * 3 / nChInfo;
@@ -16818,10 +16963,16 @@ int CDATsysView::DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, i
 	n64MemWrInfo = ((((nChOffset))) | (((nChOffset * 8 / 512) - 1) << 16)) | ((__int64)nChInfo << 32);
 
 	n64MemRdInfo = (__int64)nChOffset | ((__int64)nHeight << 32);
-	n64PushOrder = ((nModel == PACK_TYPE_UHDFULL) | (nModel == PACK_TYPE_UHDNORMAL) | (nModel == PACK_TYPE_UHDEPI) | (nModel == PACK_TYPE_CMVIEW)) ? 0x72 : 0x1b;	// lvds speed gbps
+	n64PushOrder = ((nModel == PACK_TYPE_UHDFULL) || (nModel == PACK_TYPE_UHDNORMAL) 
+		|| (nModel == PACK_TYPE_UHDEPI) 
+		|| (nModel == PACK_TYPE_CMVIEW) 
+		|| (nModel == PACK_TYPE_UHDFULL_LOWSPEED)
+		|| (nModel == PACK_TYPE_QHD_FULL_SPEED)
+		) ? 0x72 : 0x1b;	// lvds speed gbps
 //	n64BitSpeed		=	((nModel == PACK_TYPE_UHDFULL) | (nModel == PACK_TYPE_UHDNORMAL)) ? 0x1120	:	0x450	;	// lvds speed gbps
-	n64BitSpeed = ((nModel == PACK_TYPE_UHDFULL) | (nModel == PACK_TYPE_UHDNORMAL)) ? 0x1120 :
-		((nModel == PACK_TYPE_UHDEPI)) ? 0x525 : 0x36;	// lvds speed gbps
+	n64BitSpeed = ((nModel == PACK_TYPE_UHDFULL) || (nModel == PACK_TYPE_UHDNORMAL)) ? 0x1120 :
+		((nModel == PACK_TYPE_UHDEPI) || (nModel == PACK_TYPE_UHDFULL_LOWSPEED) || (nModel == PACK_TYPE_QHD_FULL_SPEED)) ? 0x525 :
+		(nModel == PACK_TYPE_120HZ_LOW_SPEED) ? 0x400 : 0x450;	// lvds speed gbps	//	230315 Low Speed Mode 추가) ? 0x525 : 0x36;	// lvds speed gbps
 
 	if (nModel == PACK_TYPE_8) n64BitSpeed |= 0x10f0000;
 	else if (nModel == PACK_TYPE_5) n64BitSpeed |= 0x110f0000;
@@ -16878,9 +17029,15 @@ int CDATsysView::DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, i
 		(nChInfo == 5) ? 0x0ffc00 : 0x0fffff;	// 150226 추가
 	m_clsPCI.CM_RegisterWrite(0x0020, nChRstRelease);			Sleep(1);		// 150226 추가
 
-	if ((nModel == PACK_TYPE_UHDFULL) | (nModel == PACK_TYPE_UHDNORMAL) | (nModel == PACK_TYPE_UHDEPI) | (nModel == PACK_TYPE_CMVIEW)) 
-	{ m_clsPCI.CM_RegisterWrite(0x0050, 1);			Sleep(1); }
-	else { m_clsPCI.CM_RegisterWrite(0x0050, 0);			Sleep(1); }
+	if ((nModel == PACK_TYPE_UHDFULL) || (nModel == PACK_TYPE_UHDNORMAL) || (nModel == PACK_TYPE_UHDEPI)
+		|| (nModel == PACK_TYPE_CMVIEW)||(nModel == PACK_TYPE_UHDFULL_LOWSPEED) || (nModel == PACK_TYPE_QHD_FULL_SPEED))
+	{
+		m_clsPCI.CM_RegisterWrite(0x0050, 1);			Sleep(1); 
+	}
+	else 
+	{
+		m_clsPCI.CM_RegisterWrite(0x0050, 0);			Sleep(1); 
+	}
 
 	m_clsPCI.CM_RegisterWrite(0x0110, ((__int64)((__int64)nShiftVal << 48) | ((__int64)(nOffset) << 32) | (__int64)nGrabSize));		Sleep(1);
 
@@ -17109,7 +17266,11 @@ void CDATsysView::StartLVDSGrabThread()
 
 		if(g_GrabSource == LVDS_GRABBER)
 		{
-			if ((nModel == PACK_TYPE_5_Rev_2019) || (nModel == PACK_TYPE_5_Rev_2020))
+			if ((nModel == PACK_TYPE_5_Rev_2019) 
+				|| (nModel == PACK_TYPE_5_Rev_2020)
+				|| (nModel == PACK_TYPE_UHDFULL_LOWSPEED) 
+				|| (nModel == PACK_TYPE_QHD_FULL_SPEED)
+				|| (nModel == PACK_TYPE_120HZ_LOW_SPEED))
 			{
 				lRet = DFT3_UHDGrabStartLocal(nModel, nShiftVal, nWidth, nHeight, nImageOffset, nGrabDelay, nLvdsType);
 			}
@@ -24449,7 +24610,8 @@ void CDATsysView::OnCheckMeson()
 	if(CurrentSet->bUploadMes){
 		CurrentSet->bUploadMes = FALSE;
 	}
-	else{
+	else if(CurrentSet->bIsRunning == 0)
+	{
 		CurrentSet->bUploadMes = TRUE;
 		if(CurrentSet->bUseGmes && (!CurrentSet->bGMES_Connection))
 		{
@@ -25673,17 +25835,53 @@ BOOL CDATsysView::Check_KeyDownload()
 		}
 
 	}
-	
-	if(CurrentSet->bUseScanner && bReturn){
-		if(!TVCommCtrl.ModelSNo_Write(m_strWipId, TRUE)){
-			Sleep(100);
 
-			if(!TVCommCtrl.ModelSNo_Write(m_strWipId, TRUE)){
-				sMsg = sMsg + "(PCBID Write NG)";
-				bReturn = FALSE;
+	if(CurrentSet->bUseScanner && bReturn){
+		if (CurrentSet->sPCBID_Scan != CurrentSet->sPCBID_Read)
+		{
+#ifndef __DEBUG_SCAN_SN_NO_WRITE
+			if (!TVCommCtrl.ModelSNo_Write(m_strWipId, TRUE)) {
+				Sleep(100);
+
+				if (!TVCommCtrl.ModelSNo_Write(m_strWipId, TRUE)) {
+					sMsg =  "(PCBID Write NG)";
+					bReturn = FALSE;
+				}
 			}
+			CurrentSet->bPCBID_Rewrite = 1;
+			sMsg= "SN Write: ScanID=>";
+			sMsg += CurrentSet->sPCBID_Scan;
+			sMsg += ",Read ID=>";
+			sMsg += CurrentSet->sPCBID_Read;
+
+			AddStringToStatus(sMsg);
+#else
+			
+			sMsg = "(PCBID Different : Write SKIP)";
+			
+			CurrentSet->bPCBID_Rewrite = 0;
+			sMsg = "SN Write: ScanID=>";
+			sMsg += CurrentSet->sPCBID_Scan;
+			sMsg += ",Read ID=>";
+			sMsg += CurrentSet->sPCBID_Read;
+
+			AddStringToStatus(sMsg);
+#endif	
+		}
+		else
+		{
+			CurrentSet->bPCBID_Rewrite = 0;
+			sMsg = "SN No Write: ScanID=>";
+			sMsg += CurrentSet->sPCBID_Scan;
+			sMsg += ",Read ID=>";
+			sMsg += CurrentSet->sPCBID_Read;
+
+			AddStringToStatus(sMsg);
+
 		}
 	}
+
+
 	m_pKeyCheckDlg->SaveResult2File();
 
 	m_pKeyCheckDlg->DestroyWindow();
