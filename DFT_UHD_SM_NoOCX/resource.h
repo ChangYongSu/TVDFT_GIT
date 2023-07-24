@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++에서 생성한 포함 파일입니다.
-// DATsys.rc에서 사용되고 있습니다.
+// Microsoft Visual C++ generated include file.
+// Used by DATsys.rc
 //
 #define IDR_MAINFRAME                   128
 #define ERROR_I2C_EMPTY_READ_STRING     1000
@@ -232,6 +232,7 @@
 #define IDD_VF_DISCHARGE_CHECK          1227
 #define IDD_PARM_AUTO_ROBOT_PAGE        1228
 #define IDD_SELECT_GENERATE_MODEL_DLG   1229
+#define IDD_USER_MSG_COLOR_DLG          1230
 #define IDB_BITMAP_TOOL_MESSAGE         1248
 #define IDC_2AB_READ_BYTE_COMBO         1300
 #define IDC_2B_READ_BYTE_COMBO          1301
@@ -619,6 +620,7 @@
 #define IDC_BTN_READ_2AB_CMD            1677
 #define IDC_BTN_SEND_CMD                1678
 #define IDC_BTN_RESET_IFPACK            1678
+#define IDC_BTN_SEND_AVSWITCH_CMD2      1678
 #define IDC_BTN_SEND_CMDSTRING          1679
 #define IDC_BTN_RESET_GENDER            1679
 #define IDC_BTN_SEND_COMMAND            1680
@@ -816,6 +818,7 @@
 #define IDC_CHASSISNAME                 1865
 #define IDC_CHECK1                      1866
 #define IDC_CHECK_COMMAND_LOAD          1866
+#define IDC_CHECK_OPTION_WRITE          1866
 #define IDC_CHECK2                      1867
 #define IDC_CHECK_LOAD_FINISH           1867
 #define IDC_CHECK3                      1868
@@ -907,7 +910,10 @@
 #define IDC_CHK_CROP_PAGE               1908
 #define IDC_CHK_AUTO_PLC_ROBOT2         1908
 #define IDC_CHK_SERVER_CTRL_CONNECT     1908
+#define IDC_CHECK_GRABBER_ONOFF_OPTION  1908
 #define IDC_CHK_DDCLINE                 1909
+#define IDC_CHECK_OLED_RESET2           1909
+#define IDC_CHECK_FUHD_OLED_RESET       1909
 #define IDC_CHK_EDID                    1910
 #define IDC_CHK_GRAB_AUTO               1911
 #define IDC_CHK_GRAB_IMG                1912
@@ -2125,6 +2131,7 @@
 #define IDC_STATIC_GRAB_GROUP_6         3070
 #define IDC_STATIC_GRAB_GROUP_7         3071
 #define IDC_STATIC_GRAB_IMAGE           3072
+#define IDC_STATIC_GRAB_GROUP_8         3072
 #define IDC_STATIC_GRAB_IMAGE_VIEW      3073
 #define IDC_STATIC_GRAB_MODE            3074
 #define IDC_STATIC_GRAB_R_VAL           3075
@@ -2541,6 +2548,7 @@
 #define IDC_LIST_I2C_ADC_COM_LOG_GRID   3455
 #define IDC_STATIC_DP_TIME              3455
 #define IDC_EDIT_2AB_DATA2              3456
+#define IDC_MESSAGE_NEW                 3456
 #define IDC_CHK_USE_DPGEN               3457
 #define IDC_RADIO_DP_TIME60             3458
 #define IDC_RADIO_DP_TIME30             3459
@@ -2665,9 +2673,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        1251
+#define _APS_NEXT_RESOURCE_VALUE        1252
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3456
+#define _APS_NEXT_CONTROL_VALUE         3457
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

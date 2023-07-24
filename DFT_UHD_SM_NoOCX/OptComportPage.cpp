@@ -373,6 +373,67 @@ BOOL COptComportPage::OnInitDialog()
 
 
 //-
+#if 1
+	if (g_nSysType == AUTO_SYS) {
+		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate, IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG);
+		SetJigGroup(CurrentSet->bUseJig);
+
+		m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
+
+		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
+		//SetScannerGroup(FALSE);
+		GetDlgItem(IDC_CHK_USE_SCANNER)->EnableWindow(FALSE);
+
+		InitComPort(CurrentSet->sStartBoxComPort, CurrentSet->wStartBoxBaudRate, IDC_CMB_COMPORT_START_BOX, IDC_CMB_BAUDRATE_START_BOX);
+		//SetStartBoxGroup(FALSE);
+		GetDlgItem(IDC_CHK_USE_START_BOX)->EnableWindow(FALSE);
+		if (CurrentSet->bUsePLCRobot == TRUE)
+		{
+			SetScannerGroup(TRUE);
+			SetStartBoxGroup(FALSE);
+
+		}
+		else
+		{
+			m_ctrlUseScannerChk.SetCheck(CurrentSet->bUseScanner);
+			if (CurrentSet->bUseScanner == FALSE)
+			{
+				CurrentSet->bUseStartBox = TRUE;
+			}
+			else
+			{
+				CurrentSet->bUseStartBox = FALSE;
+			}
+			m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
+		}
+	}
+	else {
+		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
+		InitComPort(CurrentSet->sStartBoxComPort, CurrentSet->wStartBoxBaudRate, IDC_CMB_COMPORT_START_BOX, IDC_CMB_BAUDRATE_START_BOX);
+
+//		GetDlgItem(IDC_CHK_USE_JIG)->EnableWindow(FALSE);
+//		SetJigGroup(FALSE);
+		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate, IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG);
+		SetJigGroup(CurrentSet->bUseJig);
+
+		m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
+
+
+		m_ctrlUseScannerChk.SetCheck(CurrentSet->bUseScanner);
+		SetScannerGroup(CurrentSet->bUseScanner);
+		if (CurrentSet->bUseScanner == FALSE)
+		{
+			CurrentSet->bUseStartBox = TRUE;
+		}
+		else
+		{
+			CurrentSet->bUseStartBox = FALSE;
+		}
+		m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
+		SetStartBoxGroup(CurrentSet->bUseStartBox);
+	}
+#else
+
 //AUTO
 	if(g_nSysType == AUTO_SYS){
 		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate,IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG );
@@ -426,6 +487,7 @@ BOOL COptComportPage::OnInitDialog()
 		m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
 		SetStartBoxGroup(CurrentSet->bUseStartBox);
 	}
+#endif
 	InitComPort(CurrentSet->sVfmComPort, CurrentSet->wVfmBaudRate,IDC_CMB_COMPORT_VFM, IDC_CMB_BAUDRATE_VFM );
 	m_ctrlUseVfmChk.SetCheck(CurrentSet->bUseVfm);
 	SetVfmGroup(CurrentSet->bUseVfm);
@@ -751,8 +813,43 @@ void COptComportPage::OnBtnComportOptApply()
 	OldSet.sJigComPort = CurrentSet->sJigComPort;
 	OldSet.wJigBaudRate = CurrentSet->wJigBaudRate;
 
+#if 1
+	
+	CurrentSet->bUseJig = m_ctrlUseJigChk.GetCheck();
+	CurrentSet->wJigBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_JIG);
+	CurrentSet->sJigComPort.Format(GetComPortVal(IDC_CMB_COMPORT_JIG));
+	
+	if (CurrentSet->bUseJig)
+	{
+		if ((CurrentSet->bUseJig != OldSet.bUseJig)
+			|| (CurrentSet->sJigComPort != OldSet.sJigComPort)
+			|| (CurrentSet->wJigBaudRate != OldSet.wJigBaudRate))
+		{
+			if (gJigCtrl.m_bPortOpen)
+				gJigCtrl.PortClose();
+			//if (gJigCtrl.m_bPortOpen == FALSE)
+			{
+				if (!gJigCtrl.Create(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate)) {
+					sMsg.Format("Failed to open COM port (%s)", CurrentSet->sJigComPort);
+					AfxMessageBox(sMsg);
+				}
+			}
 
-	if (g_nSysType == AUTO_SYS) {
+			if (gJigCtrl.m_bPortOpen == TRUE)
+			{
+				gJigCtrl.Init();
+			}
+		}
+
+
+	}
+	else
+	{
+		if (gJigCtrl.m_bPortOpen)				gJigCtrl.PortClose();
+	}
+	
+#else
+	if (1)// g_nSysType == AUTO_SYS) {
 		CurrentSet->bUseJig = m_ctrlUseJigChk.GetCheck();
 		CurrentSet->wJigBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_JIG);
 		CurrentSet->sJigComPort.Format(GetComPortVal(IDC_CMB_COMPORT_JIG));
@@ -787,6 +884,8 @@ void COptComportPage::OnBtnComportOptApply()
 		}
 	}
 
+#endif
+
 //
 	
 
@@ -819,7 +918,7 @@ void COptComportPage::OnBtnComportOptApply()
 
 
 	//========================
-	// Init DP GTenerator
+	// Init DP Generator
 	//========================
 	OldSet.bUseDpg = CurrentSet->bUseDpg;
 	OldSet.sDpgComPort = CurrentSet->sDpgComPort;

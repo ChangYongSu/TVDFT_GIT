@@ -14,6 +14,7 @@
 #include "ResultDlg.h"
 #include "StopStepDlg.h"
 #include "UserMsgDlg.h"
+#include "CUserMsgColorDlg.h"
 #include "resource.h"
 
 
@@ -172,6 +173,7 @@ public:
 	CResultDlg*					m_ResultDlg;
 	//+add 090902
 	CUserMsgDlg					m_UserMsgDlg;
+	CUserMsgColorDlg			m_UserColorMsgDlg;
 
 	//+add kwmoon 080826
 	CI2cAdcManualCheckDlg		m_I2cAdcManualCheckDlg;
@@ -427,7 +429,7 @@ public :
 	//add 090702
 	void ComLogClear();
 	void ComLog_AddString(CString szString);
-
+	void SaveMessageList(CString szString);
 	//add 090909
 	void InitMainGrid(int nGridType);
 	void InsertStepData2Grid(int nGridType);

@@ -700,7 +700,9 @@ void CMainFrame::OnI2cManualCheckDialog()
 	else
 	{
 		
+		pView->AudioMeasureStart();
 		pView->m_I2cAdcManualCheckDlg.DoModal();
+
 
 	}
 }

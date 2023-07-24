@@ -477,7 +477,7 @@ BOOL COptGrabberPage::OnInitDialog()
 	{
 		m_nLvdsFormat = W_2560_H_1080;
 	}
-	else if((CurrentSet->nLvdsWidth == 2560) && (CurrentSet->nLvdsHeight == 1440) && (CurrentSet->nFullHd120Hz == 0)) 
+	else if((CurrentSet->nLvdsWidth == 2560) && (CurrentSet->nLvdsHeight == 1440) && (CurrentSet->nFullHd120Hz == 1)) 
 	{
 		m_nLvdsFormat = W_2560_H_1440;
 	}

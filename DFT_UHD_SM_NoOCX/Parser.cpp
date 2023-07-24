@@ -242,6 +242,8 @@ _MeasureFunction MeasDefined[] =
 	_T("mnt_edid_check"),			_MNT_EDID_Check,				MEAS_BOOL,
 	_T("mnt_hdcp_check"),			_MNT_HDCP_Check,				MEAS_BOOL,
 	_T("mnt_apd_check"),			_APD_ON_Check,				MEAS_BOOL,
+	_T("lan_dhcp_check"),			_LAN_HDCP_Check,				MEAS_BOOL,
+	_T("mnt_fan_check"),			_MNT_FAN_Check,				MEAS_BOOL,
 	NULL, NULL, NULL
 };
 ///////////////////////////////////////////////////////////////

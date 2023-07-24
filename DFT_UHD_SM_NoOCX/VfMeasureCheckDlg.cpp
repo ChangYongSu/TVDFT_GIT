@@ -360,6 +360,7 @@ BOOL  CVfMeasureCheckDlg::VfMeasureCheck()
 	int nTestIndex = 0;
 	int nNoFailed = 0;
 	CString sMeasur;
+	CString sMessageStr;
 
 	if(CurrentSet->VF_TestInfo.GetCount() == 0){
 		AfxMessageBox(_T("Failed to load VF_TestInfo."));
@@ -477,6 +478,7 @@ BOOL  CVfMeasureCheckDlg::VfMeasureCheck()
 						}
 						else{
 							pCurStep_EM->bResult = FALSE;
+							
 						}
 					}
 					else{
@@ -485,6 +487,8 @@ BOOL  CVfMeasureCheckDlg::VfMeasureCheck()
 						pCurStep_EM->bResult = FALSE;
 					}
 					sMeasur.Format(_T("%.1f"), pCurStep_EM->dMaesure_Min);
+					sMessageStr.Format(_T("Ch No: %d, Ch Name: %s, T:%.1f, M:%.1f"), 
+						nTestIndex, pCurStep_EM->strTestName, pCurStep_EM->dTarget, pCurStep_EM->dMaesure_Min);//Ch No; xxx Ch Name; xxx T;xx M;xx 
 				}
 				else if(nCheckType == 2){
 					nWait = (int)((nTime + 1) - (nTime * 0.5)) * 1000;
@@ -511,10 +515,17 @@ BOOL  CVfMeasureCheckDlg::VfMeasureCheck()
 						pCurStep_EM->bResult = FALSE;
 					}
 					sMeasur.Format(_T("%.1f,%.1f"), pCurStep_EM->dMaesure_Min, pCurStep_EM->dMaesure_Max);
+					sMessageStr.Format(_T("Ch No: %d, Ch Name: %s, T:%.1f, M:%.1f~%.1f"),
+						nTestIndex, pCurStep_EM->strTestName, pCurStep_EM->dTarget, pCurStep_EM->dMaesure_Min, pCurStep_EM->dMaesure_Max);//Ch No; xxx Ch Name; xxx T;xx M;xx 
+
 				}
 				if(pCurStep_EM->bResult){break;} 
 			}
-			if(!pCurStep_EM->bResult){nNoFailed++;} 
+			if(!pCurStep_EM->bResult)
+			{				
+				g_pView->SaveMessageList(sMessageStr);
+				nNoFailed++;
+			} 
 
 			m_bVfCheckResultList[nTestIndex ] = pCurStep_EM->bResult;
 			m_sVfCheckResultMesure[nTestIndex] = sMeasur;

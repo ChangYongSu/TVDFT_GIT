@@ -36,6 +36,7 @@
 #include <afxdlgs.h>
 #include <afxcontrolbars.h>
 #include <afxcontrolbars.h>
+#include <afxcontrolbars.h>
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
@@ -43,8 +44,9 @@
 #define _EXIT_DEBUG
 #ifdef _DEBUG
 
-	#define DEBUG_MD5_CODE__
-	//#define TEXT_MSG_EXE_DEBUG_CODE__
+#define DEBUG_IRLANTEST__CODE__
+#define DEBUG_MD5_CODE__
+//#define TEXT_MSG_EXE_DEBUG_CODE__
 	#define _PLC_COM_SIM_DEBUG__MODE
 #define _NO_CONNECT_DEBUG__MODE
 //#define _ERROR_CHILD_CONNECT_DEBUG__MODE

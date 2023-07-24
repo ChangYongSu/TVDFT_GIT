@@ -57,6 +57,10 @@ public:
 
 	BOOL	m_bActive;
 
+	BOOL CI2cAdcManualCheckDlg::InitAvSwitchController();
+	void CI2cAdcManualCheckDlg::SetHDMIGenGroup(BOOL bEnable);
+
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CI2cAdcManualCheckDlg)
@@ -121,6 +125,24 @@ public:
 	CString m_sz2abDataMid;
 	afx_msg void OnNMCustomdrawListReadDataGrid(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeEdit2abData2();
+	afx_msg void OnBnClickedBtnSendModel2();
+	CEdit m_ctrlModelEdit2;
+	CButton m_ctrlOnlineChk2;
+	afx_msg void OnBnClickedBtnSendPattern2();
+	CEdit m_ctrlPatternEdit2;
+	afx_msg void OnCbnSelchangeComboOutPort();
+	CComboBox m_ctrlHdmiOutPortCmb;
+	afx_msg void OnBnClickedChkHdcp();
+	CButton m_ctrlHdcpChk;
+	afx_msg void OnBnClickedChkEdid();
+	CButton m_ctrlEdidChk;
+	afx_msg void OnBnClickedChkDdcline();
+	CButton m_ctrlDDCLineChk;
+	afx_msg void OnBnClickedChkCec();
+	CButton m_ctrlCECChk;
+	afx_msg void OnBnClickedBtnSendAvswitchCmd2();
+	CEdit m_ctrlAvSwitchRtnEdit;
+	CComboBox m_ctrlAvSwitchVal1Cmb;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -27,7 +27,7 @@
 #include "AvConvertorCtrl.h"
 #include "Gmes.h"
 #include "VF1000.h"
-
+#include "PLC_Ctrl.h"
 
 
 
@@ -429,6 +429,7 @@ BOOL CreateModelIniFile(CString sModelIni)
 	m_Ini.SetProfileString(TOOL_AREA_S, "Tool Option7",CurrentSet->sToolOption7);
 	m_Ini.SetProfileString(TOOL_AREA_S, "Tool Option8",CurrentSet->sToolOption8);
 	m_Ini.SetProfileString(TOOL_AREA_S, "Tool CRC",CurrentSet->sToolCRC);
+	m_Ini.SetProfileInt(TOOL_AREA_S, "ToolOption Write", CurrentSet->bToolOptionWriteFlag);
 	
 	m_Ini.SetProfileString(TOOL_AREA_S, "Area Option1",CurrentSet->sAreaOption1);
 
@@ -437,7 +438,7 @@ BOOL CreateModelIniFile(CString sModelIni)
 
 	m_Ini.SetProfileString(TOOL_AREA_S, "Commercial Option1",CurrentSet->sCommercialOption1);
 
-	m_Ini.SetProfileInt(TOOL_AREA_S, "Tool Option Chek Delay" ,CurrentSet->nToolOptionCheck_Delay);
+	m_Ini.SetProfileInt(TOOL_AREA_S, "Tool Option Chek Delay", CurrentSet->nToolOptionCheck_Delay);
 
 	m_Ini.SetProfileString(VERSION_CHECK_S, "CPU Version",CurrentSet->sCPUVersion);
 	m_Ini.SetProfileString(VERSION_CHECK_S, "Micom Version",CurrentSet->sMicomVersion);
@@ -629,6 +630,8 @@ BOOL SaveModelIniFile(CString sIniPath)
 	m_Ini.SetProfileString(TOOL_AREA_S, "Tool Option7",CurrentSet->sToolOption7);
 	m_Ini.SetProfileString(TOOL_AREA_S, "Tool Option8",CurrentSet->sToolOption8);
 	m_Ini.SetProfileString(TOOL_AREA_S, "Tool CRC",CurrentSet->sToolCRC);
+	m_Ini.SetProfileInt(TOOL_AREA_S, "ToolOption Write", CurrentSet->bToolOptionWriteFlag);
+
 
 	m_Ini.SetProfileString(TOOL_AREA_S, "Area Option1",CurrentSet->sAreaOption1);
 //	m_Ini.SetProfileString(TOOL_AREA_S, "Area Option2",CurrentSet->sAreaOption2);
@@ -876,6 +879,8 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 	CurrentSet->sToolOption7	= m_Ini.GetProfileString(TOOL_AREA_S, "Tool Option7");
 	CurrentSet->sToolOption8	= m_Ini.GetProfileString(TOOL_AREA_S, "Tool Option8");
 	CurrentSet->sToolCRC		= m_Ini.GetProfileString(TOOL_AREA_S, "Tool CRC");
+	CurrentSet->bToolOptionWriteFlag = m_Ini.GetProfileInt(TOOL_AREA_S, "ToolOption Write");
+
 
 	CurrentSet->sAreaOption1	= m_Ini.GetProfileString(TOOL_AREA_S, "Area Option1");
 //	CurrentSet->sAreaOption2	= m_Ini.GetProfileString(TOOL_AREA_S, "Area Option2");
@@ -1115,6 +1120,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 	//CurrentSet->bEpiPAckReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", 0);
 	//CurrentSet->bGrabBaseReset = m_Ini.GetProfileInt(SPEC_CHECK_S, "GRAB_BASE_RESET", 0);
 	
+	memset(gPLC_Ctrl.m_nTestStepNGCountList, 0, sizeof(gPLC_Ctrl.m_nTestStepNGCountList));
 	
 	return TRUE;
 }
@@ -2758,7 +2764,13 @@ BOOL InitVfm_Detector(CString sComPort, DWORD wBaudRate)
 		}
 		double dVol;
 		gVF1000Ctrl.m_bSystemMixType = _IR_MIX_TYPE;//  _VF_ONLY_TYPE
-		if (gVF1000Ctrl.GetVoltageData(1, dVol)) {
+#ifdef				DEBUG_IRLANTEST__CODE__
+		CString strRead;
+		if (gVF1000Ctrl.GetIRBlasterData(strRead, 1000))
+#else
+		if (gVF1000Ctrl.GetVoltageData(1, dVol))
+#endif
+		 {
 			//sMsg += "M PASS";
 		}
 		else {

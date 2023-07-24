@@ -26,6 +26,7 @@ double	_Version_Check();
 double	_MNT_Version_Check();
 double	_MNT_EDID_Check();
 double	_MNT_HDCP_Check();
+double	_MNT_FAN_Check();
 double	_APD_ON_Check();
 BOOL	Check_ToolOption(int nOptionNo, int nOptionValue);
 double	_Option_Check();
@@ -113,6 +114,7 @@ double _HP_Disable_Check();
 double _Port_Auto_Check();
 double _IR_Blaster_Check();
 double _Read_A_CAS_ID();
+double _LAN_HDCP_Check();
 #endif
 
 #endif	// __REALMEAS_H__

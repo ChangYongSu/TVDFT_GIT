@@ -92,7 +92,17 @@ void CI2cAdcManualCheckDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_READ_DATA_GRID, m_ctrlReadDataList);
 	DDX_Control(pDX, IDC_LIST_I2C_ADC_COM_LOG_GRID, m_ctrlI2cAdcComLogList);//IDC_LIST_READ_DATA_GRID
 																			//}}AFX_DATA_MAP
-	
+
+	DDX_Control(pDX, IDC_EDIT_MODEL2, m_ctrlModelEdit2);
+	DDX_Control(pDX, IDC_CHK_ONLINE2, m_ctrlOnlineChk2);
+	DDX_Control(pDX, IDC_EDIT_PATTERN2, m_ctrlPatternEdit2);
+	DDX_Control(pDX, IDC_COMBO_OUT_PORT, m_ctrlHdmiOutPortCmb);
+	DDX_Control(pDX, IDC_CHK_HDCP, m_ctrlHdcpChk);
+	DDX_Control(pDX, IDC_CHK_EDID, m_ctrlEdidChk);
+	DDX_Control(pDX, IDC_CHK_DDCLINE, m_ctrlDDCLineChk);
+	DDX_Control(pDX, IDC_CHK_CEC, m_ctrlCECChk);
+	DDX_Control(pDX, IDC_EDIT_AVSWITCH_RETURN, m_ctrlAvSwitchRtnEdit);
+	DDX_Control(pDX, IDC_CMB_AVSWITCH_VALUE1, m_ctrlAvSwitchVal1Cmb);
 }
 
 
@@ -138,6 +148,14 @@ BEGIN_MESSAGE_MAP(CI2cAdcManualCheckDlg, CDialog)
 	ON_BN_CLICKED(IDC_BTN_READ_2AB_CMD, &CI2cAdcManualCheckDlg::OnBnClickedBtnRead2abCmd)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_READ_DATA_GRID, &CI2cAdcManualCheckDlg::OnNMCustomdrawListReadDataGrid)
 	ON_EN_CHANGE(IDC_EDIT_2AB_DATA2, &CI2cAdcManualCheckDlg::OnEnChangeEdit2abData2)
+	ON_BN_CLICKED(IDC_BTN_SEND_MODEL2, &CI2cAdcManualCheckDlg::OnBnClickedBtnSendModel2)
+	ON_BN_CLICKED(IDC_BTN_SEND_PATTERN2, &CI2cAdcManualCheckDlg::OnBnClickedBtnSendPattern2)
+	ON_CBN_SELCHANGE(IDC_COMBO_OUT_PORT, &CI2cAdcManualCheckDlg::OnCbnSelchangeComboOutPort)
+	ON_BN_CLICKED(IDC_CHK_HDCP, &CI2cAdcManualCheckDlg::OnBnClickedChkHdcp)
+	ON_BN_CLICKED(IDC_CHK_EDID, &CI2cAdcManualCheckDlg::OnBnClickedChkEdid)
+	ON_BN_CLICKED(IDC_CHK_DDCLINE, &CI2cAdcManualCheckDlg::OnBnClickedChkDdcline)
+	ON_BN_CLICKED(IDC_CHK_CEC, &CI2cAdcManualCheckDlg::OnBnClickedChkCec)
+	ON_BN_CLICKED(IDC_BTN_SEND_AVSWITCH_CMD2, &CI2cAdcManualCheckDlg::OnBnClickedBtnSendAvswitchCmd2)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -172,6 +190,16 @@ BOOL CI2cAdcManualCheckDlg::OnInitDialog()
 	m_ctrlI2cAreaOptionNo.SetCurSel(0);
 	m_sz2abCurrentToolOption = CurrentSet->sToolOption1;
 	m_sz2abCurrentAreaOption = CurrentSet->sAreaOption1;
+
+	CString sTmp;
+	//m_ctrlAvSwitchVal1Name.SetWindowText("CH");
+	for (int i = 0; i < 9; i++)
+	{
+		sTmp.Format("%d CH", i + 1);
+		m_ctrlAvSwitchVal1Cmb.AddString(sTmp);
+	}
+	m_ctrlAvSwitchVal1Cmb.SetCurSel(0);
+	SetHDMIGenGroup(CurrentSet->bUseHDMIGen);
 
 	UpdateData(FALSE);
 
@@ -1518,4 +1546,264 @@ void CI2cAdcManualCheckDlg::OnEnChangeEdit2abData2()
 	// 이 알림 메시지를 보내지 않습니다.
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedBtnSendModel2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	CString szCmdString = _T("");
+	szCmdString.Format("%c", START_TERMINAL_MODE);
+	BOOL bReturn;
+
+	// Port Open
+	if (HDMIGeneratorCtrl.m_bPortOpen == FALSE)
+	{
+		if (HDMIGeneratorCtrl.Create(CurrentSet->sHDMIComPort, CurrentSet->wHDMIBaudRate) == FALSE)
+		{
+			HDMIGeneratorCtrl.PortClose();
+			HDMIGeneratorCtrl.Create(CurrentSet->sHDMIComPort, CurrentSet->wHDMIBaudRate);
+		}
+	}
+
+	// Send On-Line Mode On Cmd
+	HDMIGeneratorCtrl.SendCommString(szCmdString);
+
+	CString sTmp = _T("");
+	UINT nNumber = 0;
+
+	m_ctrlModelEdit2.GetWindowText(sTmp);
+	nNumber = atoi(sTmp);
+
+	bReturn = HDMIGeneratorCtrl.SetModel((int)nNumber);
+	if (!bReturn)
+	{
+		AfxMessageBox(_T("Failed to Set Model(HDMI_Gen)"));
+		HDMIGeneratorCtrl.m_nRemoteMode = 0;
+		m_ctrlOnlineChk2.SetCheck(FALSE);
+	}
+	else {
+		HDMIGeneratorCtrl.m_nRemoteMode = ONLINE;
+		m_ctrlOnlineChk2.SetCheck(TRUE);
+	}
+}
+
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedBtnSendPattern2()
+{
+	CString szCmdString = _T("");
+	szCmdString.Format("%c", START_TERMINAL_MODE);
+	BOOL bReturn;
+
+	// Port Open
+	if (HDMIGeneratorCtrl.m_bPortOpen == FALSE)
+	{
+		if (HDMIGeneratorCtrl.Create(CurrentSet->sHDMIComPort, CurrentSet->wHDMIBaudRate) == FALSE)
+		{
+			HDMIGeneratorCtrl.PortClose();
+			HDMIGeneratorCtrl.Create(CurrentSet->sHDMIComPort, CurrentSet->wHDMIBaudRate);
+		}
+	}
+
+	// Send On-Line Mode On Cmd
+	HDMIGeneratorCtrl.SendCommString(szCmdString);
+
+	CString sTmp = _T("");
+	UINT nNumber = 0;
+
+	m_ctrlPatternEdit2.GetWindowText(sTmp);
+	nNumber = atoi(sTmp);
+	bReturn = HDMIGeneratorCtrl.SetPattern((int)nNumber);
+	if (!bReturn)
+	{
+		AfxMessageBox(_T("Failed to Set Pattern(HDMI_Gen)"));
+		HDMIGeneratorCtrl.m_nRemoteMode = 0;
+		m_ctrlOnlineChk2.SetCheck(FALSE);
+	}
+	else {
+		HDMIGeneratorCtrl.m_nRemoteMode = ONLINE;
+		m_ctrlOnlineChk2.SetCheck(TRUE);
+	}
+
+
+
+}
+
+void CI2cAdcManualCheckDlg::OnCbnSelchangeComboOutPort()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int nPort;
+
+	UpdateData(TRUE);
+	nPort = m_ctrlHdmiOutPortCmb.GetCurSel();
+	HDMIGeneratorCtrl.SetOutPort(nPort);
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedChkHdcp()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	BOOL bReturn;
+
+	if (m_ctrlHdcpChk.GetCheck())
+	{
+		bReturn = HDMIGeneratorCtrl.SetHDCP_OnOff(TRUE);
+	}
+	else
+	{
+		bReturn = HDMIGeneratorCtrl.SetHDCP_OnOff(FALSE);
+	}
+	if (!bReturn)
+	{
+		CString szErrMsg;
+		szErrMsg.Format(_T("Failed to Set HDCP(HDMI_Gen)"));
+		AfxMessageBox(szErrMsg);
+	}
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedChkEdid()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bReturn;
+
+	if (m_ctrlEdidChk.GetCheck())
+	{
+		bReturn = HDMIGeneratorCtrl.SetEDID_PassCheck(TRUE);
+	}
+	else
+	{
+		bReturn = HDMIGeneratorCtrl.SetEDID_PassCheck(FALSE);
+	}
+
+	if (!bReturn)
+	{
+		CString szErrMsg;
+		szErrMsg.Format(_T("Failed to Set EDID(HDMI_Gen)"));
+		AfxMessageBox(szErrMsg);
+	}
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedChkDdcline()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bReturn;
+
+	if (CurrentSet->nHDMIGenType == 0) { return; }
+
+	if (m_ctrlDDCLineChk.GetCheck())
+	{
+		bReturn = HDMIGeneratorCtrl.SetDDCLine_OpenClose(FALSE);
+	}
+	else
+	{
+		bReturn = HDMIGeneratorCtrl.SetDDCLine_OpenClose(TRUE);
+	}
+
+	if (!bReturn)
+	{
+		CString szErrMsg;
+		szErrMsg.Format(_T("Failed to Set DDCLine(HDMI_Gen)"));
+		AfxMessageBox(szErrMsg);
+	}
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedChkCec()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	//HDMIGeneratorCtrl.SetCEC_OnOff(CurrentSet->bHdmiCecControl);
+	BOOL bReturn;
+
+	if (m_ctrlCECChk.GetCheck())
+	{
+		bReturn = HDMIGeneratorCtrl.SetCEC_OnOff(TRUE);
+	}
+	else
+	{
+		bReturn = HDMIGeneratorCtrl.SetCEC_OnOff(FALSE);
+	}
+	if (!bReturn)
+	{
+		CString szErrMsg;
+		szErrMsg.Format(_T("Failed to Set CEC(HDMI_Gen)"));
+		AfxMessageBox(szErrMsg);
+	}
+}
+
+
+void CI2cAdcManualCheckDlg::OnBnClickedBtnSendAvswitchCmd2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+		UpdateData(TRUE);
+		int nVal1, nVal2, nValue;
+		nVal1 = nVal2 = nValue = 0;
+
+		CString sTmp, sValue;
+		sTmp = _T("");
+		sValue = _T("");
+
+		UINT nRtn = 0;
+		int m_nAvSwitchCmd;
+		m_nAvSwitchCmd = SET_AUDIO_CH;
+		nVal1 = m_ctrlAvSwitchVal1Cmb.GetCurSel() + 1;
+		m_ctrlAvSwitchRtnEdit.SetWindowText("");
+		I2cAdcCtrl.m_szCurrentStatusMsg = "";
+		if (AvSwitchBoxCtrl.m_bPortOpen == FALSE)
+		{
+			if (InitAvSwitchController() == FALSE) return;
+		}
+
+		if (AvSwitchBoxCtrl.SendCmd(m_nAvSwitchCmd, MAX_AVSWITCH_WAIT_DELAY, sValue, nVal1, nVal2))
+		{			
+			m_ctrlAvSwitchRtnEdit.SetWindowText("PASS");
+		}
+		else m_ctrlAvSwitchRtnEdit.SetWindowText(AvSwitchBoxCtrl.m_strErrMsg);
+	
+}
+
+BOOL CI2cAdcManualCheckDlg::InitAvSwitchController()
+{
+	if (AvSwitchBoxCtrl.m_bPortOpen == FALSE)
+	{
+		if (AvSwitchBoxCtrl.Create(CurrentSet->sAvSwitchBoxComPort, CurrentSet->wAvSwitchBoxBaudRate) == FALSE)
+		{
+			AvSwitchBoxCtrl.PortClose();
+			AvSwitchBoxCtrl.Create(CurrentSet->sAvSwitchBoxComPort, CurrentSet->wAvSwitchBoxBaudRate);
+
+			if (AvSwitchBoxCtrl.m_bPortOpen == FALSE)
+			{
+				//+add kwmoon 080313
+				CString szErrMsg;
+				szErrMsg.Format("Failed to open COM port (%s)", CurrentSet->sAvSwitchBoxComPort);
+				AfxMessageBox(szErrMsg);
+				return FALSE;
+			}
+		}
+	}
+	return TRUE;
+}
+
+
+void CI2cAdcManualCheckDlg::SetHDMIGenGroup(BOOL bEnable)
+{
+	GetDlgItem(IDC_STATIC_GRAB_GROUP_7)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_MODEL_NUMBER2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_MODEL2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_SEND_MODEL2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_PATTERN_NUMBER2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_PATTERN2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_SEND_PATTERN2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CHK_ONLINE2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CHK_HDCP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CHK_EDID)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CHK_DDCLINE)->EnableWindow(bEnable);	
+	GetDlgItem(IDC_COMBO_OUT_PORT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CHK_CEC)->EnableWindow(bEnable);
 }

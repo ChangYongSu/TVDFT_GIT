@@ -2559,10 +2559,12 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	pCurrentSet->bCheckRotateReset = pApp->GetProfileInt(_T("Config"), _T("Reset Rotate Reset Option"), FALSE);
 //	pCurrentSet->bCheckImageFullReset = pApp->GetProfileInt(_T("Config"), _T("Image Full Reset Option"), FALSE);
 	pCurrentSet->bCheckBatteryCheck = pApp->GetProfileInt(_T("Config"), _T("Battery Check Option"), FALSE);
+	pCurrentSet->bCheckGrabberOnOffCheck = pApp->GetProfileInt(_T("Config"), _T("Grabber ON OFF Option"), FALSE);
 	//pApp->WriteProfileInt(_T("Config"), _T(" Battery Check Option"), CurrentSet->bCheckBatteryCheck);
 	pCurrentSet->bCheckUsePcbSensor = pApp->GetProfileInt(_T("Config"), _T("Use PCB Load Sensor"), FALSE);
 	pCurrentSet->bCheckUsePcbSensor = 1;
 
+	pCurrentSet->bFHDUHD_OLED_Pack_Reset = pApp->GetProfileInt(_T("Config"), _T("FHDUHD_OLED_PACK_RESET"), FALSE);
 	pCurrentSet->bEpiPAckReset = pApp->GetProfileInt(_T("Config"), _T("EPI_PACK_RESET"), FALSE);
 	pCurrentSet->bGrabBaseReset = pApp->GetProfileInt(_T("Config"), _T("GRAB_BASE_RESET"), FALSE);
 	//m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", CurrentSet->bEpiPAckReset);
@@ -2663,7 +2665,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		if (pCurrentSet->sAvcComPort == _T("")) pCurrentSet->sAvcComPort = "COM8";
 
 		//AUTO
-		if (g_nSysType == AUTO_SYS) {
+		if (1)//g_nSysType == AUTO_SYS)
+		{
 			pCurrentSet->sJigComPort = pApp->GetProfileString(_T("Config"), _T("Jig ComPort"), "COM9");
 			if (pCurrentSet->sJigComPort == _T("")) pCurrentSet->sJigComPort = "COM9";
 
@@ -2709,7 +2712,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		if (pCurrentSet->sAvcComPort == _T("")) pCurrentSet->sAvcComPort = "\\\\.\\COM18";
 
 		//AUTO
-		if (g_nSysType == AUTO_SYS) {
+		if (1)//g_nSysType == AUTO_SYS) 
+		{
 			pCurrentSet->sJigComPort = pApp->GetProfileString(_T("Config"), _T("Jig ComPort"), "\\\\.\\COM19");
 			if (pCurrentSet->sJigComPort == _T("")) pCurrentSet->sJigComPort = "\\\\.\\COM19";
 			pCurrentSet->sVfmComPort = pApp->GetProfileString(_T("Config"), _T("VFM ComPort"), "\\\\.\\COM20");
@@ -2754,7 +2758,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		pCurrentSet->sLNBComPort = pApp->GetProfileString(_T("Config"), _T("LNB ComPort"), "\\\\.\\COM28");
 		if (pCurrentSet->sLNBComPort == _T("")) pCurrentSet->sLNBComPort = "\\\\.\\COM28";
 		//AUTO		
-		if (g_nSysType == AUTO_SYS) {
+		if (1)//g_nSysType == AUTO_SYS)
+ {
 			pCurrentSet->sJigComPort = pApp->GetProfileString(_T("Config"), _T("Jig ComPort"), "\\\\.\\COM29");
 			if (pCurrentSet->sJigComPort == _T("")) pCurrentSet->sJigComPort = "\\\\.\\COM29";	
 			
@@ -2913,7 +2918,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	sBaudRate							= pApp->GetProfileString(_T("Config"), _T("LNB Baud Rate"), "9600");
 	pCurrentSet->wLNBBaudRate			= (DWORD)(atoi(sBaudRate));
 //AUTO
-	if(g_nSysType == AUTO_SYS){
+	if(1)//g_nSysType == AUTO_SYS)
+	{
 		sBaudRate							= pApp->GetProfileString(_T("Config"), _T("Jig Baud Rate"), "9600");
 		pCurrentSet->wJigBaudRate			= (DWORD)(atoi(sBaudRate));
 	}
@@ -2946,7 +2952,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	pCurrentSet->bUseAVC				= pApp->GetProfileInt(_T("Config"), _T("Use AVC"), 0);
 	pCurrentSet->bUseLNB				= pApp->GetProfileInt(_T("Config"), _T("Use LNB"), 0);
 //AUTO	
-	if(g_nSysType == AUTO_SYS){
+	if(1)//g_nSysType == AUTO_SYS)
+	{
 		pCurrentSet->bUseJig				= pApp->GetProfileInt(_T("Config"), _T("Use Jig"), 0);
 	}
 //
@@ -3477,9 +3484,12 @@ void CDATsysView::SaveRegistrySetting()
 	pApp->WriteProfileInt(_T("Config"), _T("Reset Rotate Reset Option"), CurrentSet->bCheckRotateReset);
 	//pApp->WriteProfileInt(_T("Config"), _T("Image Full Reset Option"), CurrentSet->bCheckImageFullReset);
 	pApp->WriteProfileInt(_T("Config"), _T("Battery Check Option"), CurrentSet->bCheckBatteryCheck);
+	pApp->WriteProfileInt(_T("Config"), _T("Grabber ON OFF Option"), CurrentSet->bCheckGrabberOnOffCheck);
+	
 	pApp->WriteProfileInt(_T("Config"), _T("Use PCB Load Sensor"), CurrentSet->bCheckUsePcbSensor);
 	//pCurrentSet->bCheckRotateReset = pApp->GetProfileInt(_T("Config"), _T("Reset Rotate Reset Option"), FALSE);
 
+	pApp->WriteProfileInt(_T("Config"), _T("FHDUHD_OLED_PACK_RESET"), CurrentSet->bFHDUHD_OLED_Pack_Reset);
 	pApp->WriteProfileInt(_T("Config"), _T("EPI_PACK_RESET"), CurrentSet->bEpiPAckReset);
 	pApp->WriteProfileInt(_T("Config"), _T("GRAB_BASE_RESET"), CurrentSet->bGrabBaseReset);
 	//m_Ini.SetProfileInt(SPEC_CHECK_S, "EPI_PACK_RESET", CurrentSet->bEpiPAckReset);
@@ -3558,7 +3568,8 @@ void CDATsysView::SaveRegistrySetting()
 	pApp->WriteProfileString(_T("Config"), _T("LNB Baud Rate"), sBaudRate);
 	pApp->WriteProfileInt(_T("Config"), _T("Use LNB"),			CurrentSet->bUseLNB);
 //AUTO
-	if(g_nSysType == AUTO_SYS){
+	if(1)//g_nSysType == AUTO_SYS)
+	{
 		pApp->WriteProfileString(_T("Config"), _T("Jig ComPort"), CurrentSet->sJigComPort);
 		sBaudRate.Format("%d", CurrentSet->wJigBaudRate);
 		pApp->WriteProfileString(_T("Config"), _T("Jig Baud Rate"), sBaudRate);
@@ -5516,7 +5527,8 @@ END_INIT :
 	//========================
 	// Init Jig 
 	//========================
-	if(g_nSysType == AUTO_SYS){
+	if(1)//g_nSysType == AUTO_SYS)
+	{
 		if(CurrentSet->bUseJig)
 		{
 			sMsg = _T("[Jig] Port Open Check = ");
@@ -5526,14 +5538,22 @@ END_INIT :
 				if(gJigCtrl.Create(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate)){
 					sMsg += "PASS";
 					Sleep(1000);
-					if(gJigCtrl.Get_JigReady()){
-						CurrentSet->nJigStatus = IN_JIGDN;
+					if (g_nSysType == AUTO_SYS)
+					{
+						if (gJigCtrl.Get_JigReady()) {
+							CurrentSet->nJigStatus = IN_JIGDN;
+						}
+						else {
+							CurrentSet->nJigStatus = IN_JIGUP;
+						}
+
+						gJigCtrl.Set_CylinderUP();
 					}
-					else{
-						CurrentSet->nJigStatus = IN_JIGUP;
+					else
+					{
+						gJigCtrl.Set_Grabber_Power(1);
 					}
 
-					gJigCtrl.Set_CylinderUP();
 				}
 				else sMsg += "FAIL";
 			}
@@ -5563,8 +5583,14 @@ END_INIT :
 			{
 
 				double dVol;
+				CString strRead;
 				gVF1000Ctrl.m_bSystemMixType = _IR_MIX_TYPE;//  _VF_ONLY_TYPE
-				if (gVF1000Ctrl.GetVoltageData(1, dVol)) {
+				#ifdef				DEBUG_IRLANTEST__CODE__
+				if (gVF1000Ctrl.GetIRBlasterData(strRead, 1000) )
+#else
+				if (gVF1000Ctrl.GetVoltageData(1, dVol))
+#endif
+				{// {
 					sMsg += "M PASS";
 				}
 				else {
@@ -7979,17 +8005,55 @@ int CDATsysView::StepRun()
 								{								
 									continue;
 								}
-
+#if 0
 								AddStringToStatus("Grabber Power OFF");
 								gJigCtrl.Set_Grabber_Power(0);
 								Sleep(1000);
 
 								AddStringToStatus("Grabber Power ON");
 								gJigCtrl.Set_Grabber_Power(1);
-								Sleep(2000);	
-
+								Sleep(2000);
 								g_pView->ResetGrabStartThread();
+#else
+								for (int i = 0; i < 3; i++)
+								{
+									AddStringToStatus("Grabber Power OFF");
+									gJigCtrl.Set_Grabber_Power(0);
+									Sleep(500);
 
+									AddStringToStatus("Grabber Power ON");
+									gJigCtrl.Set_Grabber_Power(1);
+									Sleep(500);
+									g_pView->ResetGrabStartThread();
+									Sleep(500);
+									if (g_pView->Grab_UHD())
+									{
+										localRetryResult = (*pCurFunc->m_pFunc)();
+										AddStringToStatus("Video Check !!");
+										if (localRetryResult == TEST_PASS)
+										{
+											break;
+										}
+										else
+										{
+											if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
+											{
+												AddStringToStatus("Video Test NG");
+											}
+											if ((pCurStep->m_bAudioTestResult == FALSE) && pCurStep->m_bRunAudioTest)
+											{
+												AddStringToStatus("Audio Test NG");
+											}
+										}
+									}		
+								}	
+								if (localRetryResult == TEST_PASS)
+								{
+									continue;
+								}
+#endif
+								
+#if 0
 								for (int i = 0; i < 3; i++)
 								{
 									Sleep(1000);
@@ -8019,7 +8083,7 @@ int CDATsysView::StepRun()
 								{								
 									continue;
 								}
-								
+#endif
 								if (CurrentSet->bCheckRotateReset == 1)
 								{
 									Sleep(1000);
@@ -8141,8 +8205,42 @@ int CDATsysView::StepRun()
 				else
 				{
 					if ((pCurStep->m_bVideoTestResult == FALSE) &&( pCurStep->m_bRunVideoTest))// &&(CurrentSet->bEpiPAckReset == 1))
-					{						
-						if (CurrentSet->bGrabBaseReset == 1)
+					{
+						if (CurrentSet->bFHDUHD_OLED_Pack_Reset == 1)
+						{
+							gJigCtrl.Set_Grabber_Power(0);
+							Sleep(500);
+							gJigCtrl.Set_Grabber_Power(1);
+							Sleep(500);
+							g_pView->GrabBaseResetStartThread();
+							localRetryResult = (*pCurFunc->m_pFunc)();
+							if (localRetryResult == TEST_PASS)
+							{
+								continue;
+							}
+						}
+						else if (CurrentSet->bEpiPAckReset == 1)
+						{	
+								
+							//gJigCtrl.Set_Grabber_Power(0);
+							//Sleep(500); 
+							//gJigCtrl.Set_Grabber_Power(1);
+							//Sleep(500);
+							gJigCtrl.Set_IF_Pack_Reset(1);
+							Sleep(500);
+							gJigCtrl.Set_Gender_Reset(1);
+							Sleep(500);
+								
+							g_pView->GrabBaseResetStartThread();
+							localRetryResult = (*pCurFunc->m_pFunc)();
+							if (localRetryResult == TEST_PASS)
+							{
+								continue;
+							}
+								
+							
+						}
+						else if (CurrentSet->bGrabBaseReset == 1)
 						{
 							int lWhiteFlag = _White_Test();
 							if (lWhiteFlag == 1)
@@ -8156,40 +8254,8 @@ int CDATsysView::StepRun()
 							}
 						}
 
-						if (CurrentSet->bEpiPAckReset == 1)
-						{
-							for (int i = 0; i < 2; i++)
-							{
-								Sleep(100);
-								g_pView->IF_Pack_Reset();
-								Sleep(100);
-								localRetryResult = (*pCurFunc->m_pFunc)();
-								if (localRetryResult == TEST_PASS)
-								{
-									break;
-								}
-							}
-							if (localRetryResult == TEST_PASS)
-							{
-								continue;
-							}
-						}
-
-						//for (int i = 0; i < 1; i++)
-						//{
-						//	Sleep(100);
-						//	g_pView->IF_Pack_Reset();
-						//	Sleep(100);
-						//	localRetryResult = (*pCurFunc->m_pFunc)();
-						//	if (localRetryResult == TEST_PASS)
-						//	{
-						//		break;
-						//	}
-						//}
-						//if (localRetryResult == TEST_PASS)
-						//{
-						//	continue;
-						//}
+						
+												
 					}
 				}
 			}
@@ -10193,10 +10259,7 @@ BOOL CDATsysView::AutoControlProcess()
 		if ((gPLC_Ctrl.m_bPCB_Onload_JIG == 1) || (gPLC_Ctrl.m_cCheck_PLC_Data_PCB_Inside == 1)
 			|| ((CurrentSet->bCheckUsePcbSensor == 1) && (gPLC_Ctrl.m_cCheckPCBOnLoadSensor == 1)))
 		{
-			/*			ctrlPLC_COM_Status.SetWindowText(_T("LOADING"));
-						g_AutoControlProcess = _AUTO_ROBOT_CTRL_LOAD;
-						gPLC_Ctrl.CommandLoad();
-						sInterProcess = 0;*/
+			
 			ctrlPLC_COM_Status.SetWindowText(_T("JIG UP"));
 			gJigCtrl.Set_CylinderUP();
 			sWaitCount = 0;
@@ -10226,6 +10289,11 @@ BOOL CDATsysView::AutoControlProcess()
 			sWaitCount = 0;
 			sInterProcess = 1;
 			sRetryCount = 0;
+			if (CurrentSet->bCheckGrabberOnOffCheck == 1)
+			{
+				gJigCtrl.Set_Grabber_Power(0);
+				Sleep(500);
+			}
 			gJigCtrl.Get_JigReady();
 			ctrlPLC_COM_Status.SetWindowText(_T("JIG UP"));
 		}
@@ -10530,7 +10598,10 @@ BOOL CDATsysView::AutoControlProcess()
 	case  _AUTO_ROBOT_CTRL_TEST_RUN:
 		if (sInterProcess == 0)
 		{
-
+			if (CurrentSet->bCheckGrabberOnOffCheck == 1)
+			{
+				gJigCtrl.Set_Grabber_Power(1);
+			}
 			if (g_AutoControlProcessNoTEST)
 			{
 				sWaitCount++;
@@ -11072,7 +11143,7 @@ BOOL CDATsysView::AutoControlProcess()
 					
 					if ((gPLC_Ctrl.m_NG_StepNo > 0)&&(gPLC_Ctrl.m_NG_StepNo < 499))
 					{
-
+						int lError3TimeFlag = 0;
 						if (gPLC_Ctrl.m_NG_StepNo3Times == gPLC_Ctrl.m_NG_StepNo)
 						{
 							int nTotalCnt = StepList.GetCount();
@@ -11101,9 +11172,7 @@ BOOL CDATsysView::AutoControlProcess()
 									int nTotalCnt = StepList.GetCount();
 									if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < nTotalCnt))
 									{
-
 										POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
-
 										CStep* pStep = StepList.GetAt(PosStep);
 										CString str;
 										str.Format("ERROR STEP[%d]: ", gPLC_Ctrl.m_NG_StepNo );
@@ -11121,6 +11190,29 @@ BOOL CDATsysView::AutoControlProcess()
 							}
 						}
 						gPLC_Ctrl.m_NG_StepNoOld = gPLC_Ctrl.m_NG_StepNo;
+
+
+						if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < 100))
+						{
+							gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo]++;
+						}
+						if ((gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo] % 5 == 0)
+							&& (gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo] > 0)
+							&&(lError3TimeFlag == 1))
+						{
+							int nTotalCnt = StepList.GetCount();
+							if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < nTotalCnt))
+							{
+								POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
+								CStep* pStep = StepList.GetAt(PosStep);
+								CString str;
+								str.Format("ERROR STEP[%d]: %d times ", gPLC_Ctrl.m_NG_StepNo, gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo]);
+								str += pStep->m_sName;
+								gPLC_Ctrl.Command3TimesError();
+								MessageBox(str, " Count Error Step!!");
+								gPLC_Ctrl.Command3TimesErrorClear();
+							}
+						}
 					}
 				}
 			}
@@ -12806,6 +12898,8 @@ CEnvironmentData::CEnvironmentData()
 	sToolOption7		= _T("");
 	sToolOption8		= _T("");
 	sToolCRC			= _T("");
+	bToolOptionWriteFlag = FALSE;
+
 
 	sAreaOption1		= _T("");
 
@@ -16798,7 +16892,18 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 		else {
 			if(nNoImage < 500){nNoImage++;}
 			if(nNoImage > 14){
-				memset(g_GrabDisplayImage.m_pImageData,0xff,nImageSize*3);
+#if 1 //230712 Poland 
+				memset(g_GrabDisplayImage.m_pImageData, 0xff, nImageSize * 3);
+#else
+				if (g_GrabSource == LVDS_GRABBER)
+				{
+					memset(g_GrabDisplayImage.m_pImageData, 0x00, nImageSize * 3);
+				}
+				else
+				{
+					memset(g_GrabDisplayImage.m_pImageData, 0xff, nImageSize * 3);
+				}
+#endif
 				g_GrabDisplayImage.m_bImageLoaded = TRUE;
 				pView->PostMessage(UM_UPDATE_GRAB_STATUS,0,0);
 
@@ -19751,6 +19856,25 @@ void CDATsysView::ComLog_AddString(CString szString)
 //	sTime.Format("[%02d:%02d:%02d.%03d]%s\r\n", cur_time.wHour, cur_time.wMinute, cur_time.wSecond, cur_time.wMilliseconds, szString);
 	sTime.Format("%s\r\n", szString);
 	AppendToLogAndScroll(sTime);
+}
+void CDATsysView::SaveMessageList(CString szString)
+{
+
+	CString szPrevMsg;// 
+	if (CurrentSet->bIsRunning)
+	{
+		g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
+		if (szPrevMsg != _T(""))
+		{
+			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + szString);
+			pCurStep->m_strMsg = szPrevMsg + "; " + szString;
+		}
+		else
+		{
+			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szString);
+			pCurStep->m_strMsg = szString;
+		}
+	}
 }
 
 
@@ -25513,8 +25637,11 @@ BOOL CDATsysView::Check_KeyDownload()
 	m_pKeyCheckDlg->MoveWindow(nLeft,nTop,nWidth,nHeight);
 	m_pKeyCheckDlg->ShowWindow(SW_SHOW);
 	m_pKeyCheckDlg->UpdateWindow();
+	///////////////////////////ToolOption Write
 
 	if(!CurrentSet->bDrmKey){
+
+		
 		if(_Option_Check() == 0.0){
 			m_pKeyCheckDlg->UpdateResult(1, 0);
 			sMsg = sMsg + "Option(NG)";
@@ -25530,6 +25657,7 @@ BOOL CDATsysView::Check_KeyDownload()
 				bReturn = FALSE;
 			}
 		}
+		
 
 		for(nRow = 2; nRow < 15 ; nRow++)
 		{
@@ -25899,7 +26027,9 @@ BOOL CDATsysView::Check_KeyDownload()
 	{
 		g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, sMsg);
 		pCurStep->m_strMsg = sMsg;
-	}		
+	}
+
+	
 
 	return bReturn;
 }
@@ -26391,6 +26521,7 @@ BOOL CDATsysView::Check_IR_Blaster()
 	CString strIR_KeyData;
 	CString str33Data;
 	double Volt33Data;
+	CString szPrevMsg;
 
 	if (gVF1000Ctrl.GetIRBlasterData(strRead, 1000) == 0)
 	{
@@ -26439,6 +26570,21 @@ BOOL CDATsysView::Check_IR_Blaster()
 				{
 					AddStringToStatus("IR OK DC NG");
 					TVCommCtrl.Send_TVControl_Command("av 00 26", 1000);
+					//"V; xx, S; OK / NG"
+					//CString szPrevMsg = "";
+					strMsg.Format("V: %2.2fV,S: OK", Volt33Data);
+					SaveMessageList(strMsg);
+					/*g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
+					if (szPrevMsg != _T(""))
+					{
+						g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + strMsg);
+						pCurStep->m_strMsg = szPrevMsg + "; " + strMsg;
+					}
+					else
+					{
+						g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, strMsg);
+						pCurStep->m_strMsg = strMsg;
+					}*/
 					return FALSE;
 				}
 			}
@@ -26452,6 +26598,20 @@ BOOL CDATsysView::Check_IR_Blaster()
 		else
 		{
 			TVCommCtrl.Send_TVControl_Command("av 00 26", 1000);
+			//CString szPrevMsg = "";
+			strMsg = "Fail to Get Test Data From IR Blaster";
+			SaveMessageList(strMsg);
+		/*	g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
+			if (szPrevMsg != _T(""))
+			{
+				g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + strMsg);
+				pCurStep->m_strMsg = szPrevMsg + "; " + strMsg;
+			}
+			else
+			{
+				g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, strMsg);
+				pCurStep->m_strMsg = strMsg;
+			}*/
 			return FALSE;
 		}
 	}
@@ -26459,6 +26619,20 @@ BOOL CDATsysView::Check_IR_Blaster()
 	//m_pVfMeasureCheckDlg.DoModal();
 	//bReturn = m_pVfMeasureCheckDlg.m_bVfCheckResult;
 	TVCommCtrl.Send_TVControl_Command("av 00 26", 1000);
+	
+	strMsg.Format("V: %2.2fV,S: NG", Volt33Data);
+	SaveMessageList(strMsg);
+	//g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
+	//if (szPrevMsg != _T(""))
+	//{
+	//	g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + strMsg);
+	//	pCurStep->m_strMsg = szPrevMsg + "; " + strMsg;
+	//}
+	//else
+	//{
+	//	g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, strMsg);
+	//	pCurStep->m_strMsg = strMsg;
+	//}
 	return bReturn;
 }
 
@@ -27701,7 +27875,12 @@ void CDATsysView::OnNMCustomdrawListVersionProcess(NMHDR *pNMHDR, LRESULT *pResu
 
 void CDATsysView::OnBnClickedButtonBatVer()
 {
+//#ifdef _DE 
+//	gVF1000Ctrl.CheckLanc(strRead, 1000)
+//#endif
 #ifdef	_PLC_COM_SIM_DEBUG__MODE
+	CString strRead;
+	gVF1000Ctrl.CheckLanClear(strRead, 1000);
 	gServer_Ctrl.ServerReportTestResult(PLC_NG_MODE);
 #endif
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.

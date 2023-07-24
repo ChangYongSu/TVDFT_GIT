@@ -131,6 +131,8 @@ public:
 	BOOL m_bEpiPAckReset;
 	afx_msg void OnBnClickedChkGrabBaseReset2();
 	BOOL m_bGrabBaseReset;
+	BOOL m_bCheckGrabberOnOffCheck;
+	BOOL m_bFHDUHD_OLED_Pack_Reset;
 };
 
 //{{AFX_INSERT_LOCATION}}

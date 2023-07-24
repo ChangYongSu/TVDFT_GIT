@@ -6476,6 +6476,24 @@ void Set_Grab_Image_Check_Roi(int nType)
 //2018.12.19 CYS
 BOOL _ToolOption_Write()
 {
+	CString lsMsg1, lsMsg2;
+	return 1;
+	if (CurrentSet->bToolOptionWriteFlag == 1)
+	{
+
+		lsMsg1 = "Warning";
+		lsMsg2 = "Tool Option Writing...";
+		g_pView->m_UserMsgDlg.m_bAutoClose = 1;
+		g_pView->m_UserMsgDlg.SetMessage(lsMsg1, lsMsg2);
+		g_pView->m_UserMsgDlg.DoModal();
+
+		g_pView->m_UserMsgDlg.m_bAutoClose = 0;
+	}
+	else
+	{
+		return 1;
+	}
+
 	BOOL bResult1 = TRUE;
 	BOOL bResult2 = TRUE;
 	BOOL bResult3 = TRUE;
@@ -6490,198 +6508,456 @@ BOOL _ToolOption_Write()
 	int  i;
 	int nToolOption;
 
-	if(CurrentSet->sToolOption1 != ""){
+	if (CurrentSet->sToolOption1 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption1);
-		if(CurrentSet->nTVControlType){
+		if (CurrentSet->nTVControlType) {
 			_Wait(500);
-			for(i=0; i<5; i++)
+			for (i = 0; i < 5; i++)
 			{
 				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 1, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
+				if (nI2cResult == TEST_PASS) break;
 				_Wait(200);
 			}
-			if(nI2cResult != TEST_PASS)
+			if (nI2cResult != TEST_PASS)
 			{
 				bResult1 = FALSE;
 			}
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult1 = TVCommCtrl.Write_Option(TOOL_OPTION1, nToolOption);
-				if(bResult1) break;
+				if (bResult1) break;
 				_Wait(200);
 			}
 		}
 	}
 
-	if(CurrentSet->sToolOption2 != ""){
+	if (CurrentSet->sToolOption2 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption2);
-		if(CurrentSet->nTVControlType){
+		if (CurrentSet->nTVControlType) {
 			_Wait(500);
-			for(i=0; i<5; i++)
+			for (i = 0; i < 5; i++)
 			{
 				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 2, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
+				if (nI2cResult == TEST_PASS) break;
 				_Wait(200);
 			}
-			if(nI2cResult != TEST_PASS)
+			if (nI2cResult != TEST_PASS)
 			{
 				bResult2 = FALSE;
 			}
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult2 = TVCommCtrl.Write_Option(TOOL_OPTION2, nToolOption);
-				if(bResult2) break;
-				_Wait(200);
-			}
-		}
-	}
-	
-	if(CurrentSet->sToolOption3 != ""){
-		nToolOption = atoi(CurrentSet->sToolOption3);
-		if(CurrentSet->nTVControlType){
-			_Wait(500);
-			for(i=0; i<5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 3, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if(nI2cResult != TEST_PASS)
-			{
-				bResult3 = FALSE;
-			}
-		}
-		else{
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
-			{
-				bResult3 = TVCommCtrl.Write_Option(TOOL_OPTION3, nToolOption);
-				if(bResult3) break;
+				if (bResult2) break;
 				_Wait(200);
 			}
 		}
 	}
 
-	if(CurrentSet->sToolOption4 != ""){
-		nToolOption = atoi(CurrentSet->sToolOption4);
-		if(CurrentSet->nTVControlType){
+	if (CurrentSet->sToolOption3 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption3);
+		if (CurrentSet->nTVControlType) {
 			_Wait(500);
-			for(i=0; i<5; i++)
+			for (i = 0; i < 5; i++)
 			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 4, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 3, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
 				_Wait(200);
 			}
-			if(nI2cResult != TEST_PASS)
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult3 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult3 = TVCommCtrl.Write_Option(TOOL_OPTION3, nToolOption);
+				if (bResult3) break;
+				_Wait(200);
+			}
+		}
+	}
+
+	if (CurrentSet->sToolOption4 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption4);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 4, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
 			{
 				bResult4 = FALSE;
 			}
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult4 = TVCommCtrl.Write_Option(TOOL_OPTION4, nToolOption);
-				if(bResult4) break;
+				if (bResult4) break;
 				_Wait(200);
 			}
 		}
 	}
 	//091016
-	if(CurrentSet->sToolOption5 != ""){
+	if (CurrentSet->sToolOption5 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption5);
-		if(CurrentSet->nTVControlType){
+		if (CurrentSet->nTVControlType) {
 			_Wait(500);
-			for(i=0; i<5; i++)
+			for (i = 0; i < 5; i++)
 			{
 				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 5, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
+				if (nI2cResult == TEST_PASS) break;
 				_Wait(200);
 			}
-			if(nI2cResult != TEST_PASS)
+			if (nI2cResult != TEST_PASS)
 			{
 				bResult5 = FALSE;
 			}
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult5 = TVCommCtrl.Write_Option(TOOL_OPTION5, nToolOption);
-				if(bResult5) break;
+				if (bResult5) break;
 				_Wait(200);
 			}
 		}
 	}
 	//101011
-	if(CurrentSet->sToolOption6 != ""){
+	if (CurrentSet->sToolOption6 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption6);
-		if(CurrentSet->nTVControlType){
+		if (CurrentSet->nTVControlType) {
 			_Wait(500);
-			for(i=0; i<5; i++)
+			for (i = 0; i < 5; i++)
 			{
 				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 6, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
+				if (nI2cResult == TEST_PASS) break;
 				_Wait(200);
 			}
-			if(nI2cResult != TEST_PASS)
+			if (nI2cResult != TEST_PASS)
 			{
 				bResult6 = FALSE;
 			}
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult6 = TVCommCtrl.Write_Option(TOOL_OPTION6, nToolOption);
-				if(bResult6) break;
+				if (bResult6) break;
 				_Wait(200);
 			}
 		}
 	}
 
-	if(CurrentSet->sToolOption7 != ""){
+	if (CurrentSet->sToolOption7 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption7);
-		if(CurrentSet->nTVControlType){
+		if (CurrentSet->nTVControlType) {
 			_Wait(500);
-			for(i=0; i<5; i++)
+			for (i = 0; i < 5; i++)
 			{
 				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 7, nToolOption);
-				if(nI2cResult == TEST_PASS) break;
+				if (nI2cResult == TEST_PASS) break;
 				_Wait(200);
 			}
-			if(nI2cResult != TEST_PASS)
+			if (nI2cResult != TEST_PASS)
 			{
 				bResult7 = FALSE;
 			}
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult7 = TVCommCtrl.Write_Option(TOOL_OPTION7, nToolOption);
-				if(bResult7) break;
+				if (bResult7) break;
 				_Wait(200);
 			}
 		}
 	}
-	if(CurrentSet->sToolOption8 != ""){
+	if (CurrentSet->sToolOption8 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption8);
-		if(CurrentSet->nTVControlType){
+		if (CurrentSet->nTVControlType) {
 			bResult8 = FALSE;
 		}
-		else{
+		else {
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for(i=0; i<3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				bResult8 = TVCommCtrl.Write_Option(TOOL_OPTION8, nToolOption);
-				if(bResult8) break;
+				if (bResult8) break;
+				_Wait(200);
+}
+		}
+	}
+	if (CurrentSet->sCommercialOption1 != "") {
+		nToolOption = atoi(CurrentSet->sCommercialOption1);
+		if (CurrentSet->nTVControlType) {
+			bResult9 = FALSE;
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_OPTION1, nToolOption);
+				if (bResult9) break;
+				_Wait(200);
+			}
+		}
+	}
+
+
+
+	if (bResult1 && bResult2 && bResult3  && bResult4  && bResult5  && bResult6  && bResult7 && bResult8 && bResult9)
+	{
+		return TRUE;
+
+	}
+	else {
+		return FALSE;
+	}
+
+}
+BOOL ToolOption_WriteCheck()
+{
+	CString lsMsg1, lsMsg2;
+	
+	if (CurrentSet->bToolOptionWriteFlag == 1)
+	{
+
+		lsMsg1 = "Warning:";
+		lsMsg2 = "Tool Option Writing...";
+		g_pView->m_UserColorMsgDlg.m_bAutoClose = 1;
+		g_pView->m_UserColorMsgDlg.SetMessage(lsMsg1, lsMsg2);
+		g_pView->m_UserColorMsgDlg.DoModal();
+
+		g_pView->m_UserColorMsgDlg.m_bAutoClose = 0;
+	}
+	else
+	{
+		return 1;
+	}
+
+	BOOL bResult1 = TRUE;
+	BOOL bResult2 = TRUE;
+	BOOL bResult3 = TRUE;
+	BOOL bResult4 = TRUE;
+	BOOL bResult5 = TRUE;
+	BOOL bResult6 = TRUE;
+	BOOL bResult7 = TRUE;
+	BOOL bResult8 = TRUE;
+	BOOL bResult9 = TRUE;
+
+	int  nI2cResult;
+	int  i;
+	int nToolOption;
+
+	if (CurrentSet->sToolOption1 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption1);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 1, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult1 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult1 = TVCommCtrl.Write_Option(TOOL_OPTION1, nToolOption);
+				if (bResult1) break;
+				_Wait(200);
+			}
+		}
+	}
+
+	if (CurrentSet->sToolOption2 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption2);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 2, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult2 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult2 = TVCommCtrl.Write_Option(TOOL_OPTION2, nToolOption);
+				if (bResult2) break;
+				_Wait(200);
+			}
+		}
+	}
+
+	if (CurrentSet->sToolOption3 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption3);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 3, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult3 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult3 = TVCommCtrl.Write_Option(TOOL_OPTION3, nToolOption);
+				if (bResult3) break;
+				_Wait(200);
+			}
+		}
+	}
+
+	if (CurrentSet->sToolOption4 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption4);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 4, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult4 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult4 = TVCommCtrl.Write_Option(TOOL_OPTION4, nToolOption);
+				if (bResult4) break;
+				_Wait(200);
+			}
+		}
+	}
+	//091016
+	if (CurrentSet->sToolOption5 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption5);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 5, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult5 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult5 = TVCommCtrl.Write_Option(TOOL_OPTION5, nToolOption);
+				if (bResult5) break;
+				_Wait(200);
+			}
+		}
+	}
+	//101011
+	if (CurrentSet->sToolOption6 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption6);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 6, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult6 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult6 = TVCommCtrl.Write_Option(TOOL_OPTION6, nToolOption);
+				if (bResult6) break;
+				_Wait(200);
+			}
+		}
+	}
+
+	if (CurrentSet->sToolOption7 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption7);
+		if (CurrentSet->nTVControlType) {
+			_Wait(500);
+			for (i = 0; i < 5; i++)
+			{
+				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 7, nToolOption);
+				if (nI2cResult == TEST_PASS) break;
+				_Wait(200);
+			}
+			if (nI2cResult != TEST_PASS)
+			{
+				bResult7 = FALSE;
+			}
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult7 = TVCommCtrl.Write_Option(TOOL_OPTION7, nToolOption);
+				if (bResult7) break;
+				_Wait(200);
+			}
+		}
+	}
+	if (CurrentSet->sToolOption8 != "") {
+		nToolOption = atoi(CurrentSet->sToolOption8);
+		if (CurrentSet->nTVControlType) {
+			bResult8 = FALSE;
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult8 = TVCommCtrl.Write_Option(TOOL_OPTION8, nToolOption);
+				if (bResult8) break;
 				_Wait(200);
 			}
 		}
@@ -6701,19 +6977,21 @@ BOOL _ToolOption_Write()
 			}
 		}
 	}
-	
 
-	
+
+
 	if (bResult1 && bResult2 && bResult3  && bResult4  && bResult5  && bResult6  && bResult7 && bResult8 && bResult9)
 	{
-		return TRUE;	
+		return TRUE;
 
 	}
-	else{
-		return FALSE;	
+	else {
+		return FALSE;
 	}
 
 }
+
+
 #else
 BOOL _ToolOption_Write()
 {

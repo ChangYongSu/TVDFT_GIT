@@ -33,6 +33,7 @@ public:
 
 	//+add kwmoon 080508
 	BOOL	m_bYes;
+	BOOL	m_bAutoClose;
 
 	void ShowMessage2(CString szMsg);
 	void ShowMessage1(CString szMsg);
@@ -63,6 +64,8 @@ protected:
 	DECLARE_EVENTSINK_MAP()
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 //{{AFX_INSERT_LOCATION}}

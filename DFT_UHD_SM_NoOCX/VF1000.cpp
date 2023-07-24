@@ -82,7 +82,7 @@ BOOL CVF1000::SendCommString(CString str)
 	CString lStempSend;
 	if (m_bSystemMixType == _IR_MIX_TYPE)// _VF_ONLY_TYPE
 	{
-		if (str.Find("IR_") > 0)
+		if ((str.Find("IR_") > 0)||(str.Find("LAN") > 0))
 		{
 			lStemp.Format("%cM%02d[01:", STX, str.GetLength());
 			lStempSend = lStemp;
@@ -593,6 +593,118 @@ BOOL CVF1000::GetIRBlasterData(CString &str, int nWaitLimit)
 		bRev = FALSE;
 	}
 	
+
+	return bRev;
+}
+
+
+BOOL CVF1000::CheckLanHDCP(CString &str, int nWaitLimit)
+{
+	CString szCmdString;
+	CString szData;
+	CString szTemp;
+	double dRevData = 0.0;
+	int nFind = -1;
+	int nR_CH = 0;
+	int nR_CH2 = 0;
+	BOOL bRev = TRUE;
+
+	if (!m_bPortOpen) return FALSE;
+
+	m_ctrlVF1000.ClearPort();
+
+	szCmdString.Format("%cCLANCHECK%c\r\n", STX, ETX);
+
+	if (!SendCommString(szCmdString))
+	{
+		return FALSE;
+	}
+	if (!ReceiveString(szData, 1000))
+	{
+		SendCommString(szCmdString);
+		if (!ReceiveString(szData, 1000))
+		{
+			SendCommString(szCmdString);
+			if (!ReceiveString(szData, 1000))
+			{
+				AddStringToStatus(_T("LAN HDCP. Error"));
+				return FALSE;
+			}
+		}
+	}
+
+	szData.MakeUpper();
+	//	nFind = szData.Find("DV_");
+	nFind = szData.Find("DLAN");
+	if (nFind != -1)
+	{
+		str = szData.Mid(nFind + 4, 11);
+		
+
+
+		//		dRevData = (m_strReceive[6] - 0x30)*100 + (m_strReceive[7] - 0x30)*10 + (m_strReceive[8] - 0x30)*1 + (m_strReceive[9] - 0x30)*0.1;
+		//		dRevData = (szData.GetAt(0) - 0x30)*100 + (szData.GetAt(1) - 0x30)*10 + (szData.GetAt(2) - 0x30)*1 + (szData.GetAt(3) - 0x30)*0.1;
+	}
+	else {
+		str = "";
+		bRev = FALSE;
+	}
+
+
+	return bRev;
+}
+
+BOOL CVF1000::CheckLanClear(CString &str, int nWaitLimit)
+{
+	CString szCmdString;
+	CString szData;
+	CString szTemp;
+	double dRevData = 0.0;
+	int nFind = -1;
+	int nR_CH = 0;
+	int nR_CH2 = 0;
+	BOOL bRev = TRUE;
+
+	if (!m_bPortOpen) return FALSE;
+
+	m_ctrlVF1000.ClearPort();
+
+	szCmdString.Format("%cCLANCLEAR%c\r\n", STX, ETX);
+
+	if (!SendCommString(szCmdString))
+	{
+		return FALSE;
+	}
+	if (!ReceiveString(szData, 1000))
+	{
+		SendCommString(szCmdString);
+		if (!ReceiveString(szData, 1000))
+		{
+			SendCommString(szCmdString);
+			if (!ReceiveString(szData, 1000))
+			{
+				AddStringToStatus(_T("LAN CLEAR. Error"));
+				return FALSE;
+			}
+		}
+	}
+
+	szData.MakeUpper();
+	//	nFind = szData.Find("DV_");
+	nFind = szData.Find("DREADY");
+	if (nFind != -1)
+	{
+		str = szData.Mid(nFind + 4, 11);
+
+
+
+		//		dRevData = (m_strReceive[6] - 0x30)*100 + (m_strReceive[7] - 0x30)*10 + (m_strReceive[8] - 0x30)*1 + (m_strReceive[9] - 0x30)*0.1;
+		//		dRevData = (szData.GetAt(0) - 0x30)*100 + (szData.GetAt(1) - 0x30)*10 + (szData.GetAt(2) - 0x30)*1 + (szData.GetAt(3) - 0x30)*0.1;
+	}
+	else {
+		str = "";
+		bRev = FALSE;
+	}
 
 	return bRev;
 }

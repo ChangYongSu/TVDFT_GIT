@@ -1040,6 +1040,34 @@ void CServer_Ctrl::ServerReportTestResult(int lOk)//S2F101
 		else
 		{
 			str1 = "NG";
+			int lNGID = 0;
+			int lCount = g_pView->m_CtrlListMainProcess.GetItemCount();
+			for (int i = 0; i < lCount-1; i++)
+			{
+				str2 = g_pView->m_CtrlListMainProcess.GetItemText(i, 2);
+				if (str2.Find("NG") >= 0)
+				{
+					lNGID = i;
+					
+					break;
+				}
+				else if (str2.GetLength() > 1)
+				{
+					lNGID = i;
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+			CString str;
+			str.Format(":%d:", lNGID);
+			str += g_pView->m_CtrlListMainProcess.GetItemText(lNGID, 1);
+			str1 += str;
+
+		//	g_pView->m_CtrlListMainProcess.GetItemText
+		//		m_CtrlListMainProcess.SetItem(StepList.GetCount(), 2, LVIF_TEXT, "NG", NULL, NULL, NULL, NULL);
 #if 0
 			POSITION PosStep = StepList.FindIndex(gPLC_Ctrl.m_NG_StepNo - 1);
 

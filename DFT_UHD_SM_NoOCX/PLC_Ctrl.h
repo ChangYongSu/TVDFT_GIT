@@ -98,6 +98,7 @@ public:
 	int m_NG_StepNo3Times;
 
 	int m_nTestStepNGCount;
+	int m_nTestStepNGCountList[100];
 
 //	char	m_sReadBuffer[4096];	
 	char	m_sReadBuffer[8192];	

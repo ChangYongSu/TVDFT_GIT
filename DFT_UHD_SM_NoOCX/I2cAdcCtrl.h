@@ -132,6 +132,7 @@ public :
 	int MNT_ReadVersion();
 	int MNT_EDID_Check();
 	int MNT_HDCP_Check();
+	int MNT_FAN_Check();
 	int APD_ON_Check();
 
 	//+add PSH 081204

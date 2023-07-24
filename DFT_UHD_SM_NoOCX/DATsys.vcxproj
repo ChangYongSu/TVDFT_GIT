@@ -737,6 +737,7 @@
     <ClCompile Include="CSpreadSheet.cpp" />
     <ClCompile Include="CurrentSetting.cpp" />
     <ClCompile Include="Curvefit.cpp" />
+    <ClCompile Include="CUserMsgColorDlg.cpp" />
     <ClCompile Include="Digistring.cpp" />
     <ClCompile Include="Dmmdlg.cpp" />
     <ClCompile Include="DPGenerator.cpp" />
@@ -870,6 +871,7 @@
     <ClInclude Include="CDlgParmAutoRobotPage.h" />
     <ClInclude Include="CSelectGenerateModel.h" />
     <ClInclude Include="Curvefit.h" />
+    <ClInclude Include="CUserMsgColorDlg.h" />
     <ClInclude Include="Digistring.h" />
     <ClInclude Include="Dmmdlg.h" />
     <ClInclude Include="DPGenerator.h" />

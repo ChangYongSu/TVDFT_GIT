@@ -858,6 +858,7 @@ BOOL CAvSwitchBox::SendCmd(int nCmd, int nWaitLimit, CString& sValue , int nValu
 	
 	if(CurrentSet->bCommDisplay)
 	{
+		
 		if(szSwitchBoxMsg != _T("")) AddStringToStatus(szSwitchBoxMsg + " : " + m_strErrMsg);
 	}
 
@@ -1475,3 +1476,4 @@ BOOL CAvSwitchBox::AudioMeasure()
 	}
 	return m_bResult;
 }
+

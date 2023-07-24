@@ -1681,7 +1681,19 @@ double _Moving_Pic_Test()
 				break;// return 1.0;
 			}
 		}
-		_Wait(100);
+		_Wait(600); //_Wait(100);
+		if (i % 5 == 4)
+		{
+			if (nResult != TEST_PASS)
+			{
+				int lWhiteFlag = _White_Test();
+				if (lWhiteFlag == 1)
+				{
+					g_pView->GrabBaseResetStartThread();
+					
+				}
+			}
+		}
 	}
 
 
@@ -2625,6 +2637,44 @@ double	_MNT_HDCP_Check()
 	}
 }
 
+double	_MNT_FAN_Check()
+{
+	CString sCpuVersion   = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+//	int nData[3]   = {0,0,0};
+
+	if(!CurrentSet->nTVControlType)
+	{
+			return FALSE;
+	}
+
+	for(i= 0; i<5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_FAN_Check();
+		if(nI2cResult == TEST_PASS) break;
+	}
+
+	if(nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	if(bResult1)
+	{
+		return 1.0;	
+	}
+	else
+	{
+		return 0.0;	
+	}
+}
+
 double	_APD_ON_Check()
 {
 	CString sCpuVersion   = _T("");
@@ -2774,6 +2824,8 @@ double	_Option_Check()
 	BOOL bResult8 = TRUE;
 	BOOL bResult9 = TRUE;
 	int nToolOption;
+	if(g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable == TRUE)
+		ToolOption_WriteCheck();
 
 	if(CurrentSet->sToolOption1 != ""){
 		nToolOption = atoi(CurrentSet->sToolOption1);
@@ -2821,6 +2873,7 @@ double	_Option_Check()
 
 	if(bResult1 && bResult2 && bResult3  && bResult4  && bResult5  && bResult6  && bResult7 && bResult8 && bResult9)
 	{
+		
 		return 1.0;	
 
 	}
@@ -4327,6 +4380,7 @@ double _AVC_ComDataCheck()
 
 double _Drm_Key_DL_Check()
 {
+	g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable = FALSE;
 	if (g_AutoControlProcess == _AUTO_ROBOT_CTRL_TEST_RUN)
 	{
 		memset(g_pView->m_bKeyDLCheckResultList, 0, sizeof(g_pView->m_bKeyDLCheckResultList));
@@ -4334,6 +4388,7 @@ double _Drm_Key_DL_Check()
 		{
 			if (g_pView->Check_KeyDownload())
 			{
+				g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable = TRUE;
 				return 1.0;
 			}
 			//else
@@ -4351,12 +4406,13 @@ double _Drm_Key_DL_Check()
 		memset(g_pView->m_bKeyDLCheckResultList, 0, sizeof(g_pView->m_bKeyDLCheckResultList));
 		if(g_pView->Check_KeyDownload())
 		{
+			g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable = TRUE;
 			return 1.0;
 		}
 	
 
 	}
-	
+	g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable = TRUE;
 	return 0.0;
 }
 double _Input_Detect_AllCheck()
@@ -4442,6 +4498,26 @@ double _IR_Blaster_Check()
 	//}
 
 	//return 1.0;
+}
+
+double _LAN_HDCP_Check()
+{
+	double ldReturn;
+	CString strRead;
+	if (gVF1000Ctrl.CheckLanHDCP(strRead, 1000) == 0)
+	{
+		return FALSE;
+	};
+	if (strRead.Find("OK") >= 0)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+
+	
 }
 
 double _Read_A_CAS_ID()

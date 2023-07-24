@@ -436,7 +436,7 @@ BOOL CGrabPage::OnInitDialog()
 	{
 		m_nLvdsResolutionIndex = W_2560_H_1080;
 	}
-	else if((CurrentSet->nLvdsWidth == 2560) && (CurrentSet->nLvdsHeight == 1440) && (CurrentSet->nFullHd120Hz == 0)) 
+	else if((CurrentSet->nLvdsWidth == 2560) && (CurrentSet->nLvdsHeight == 1440) && (CurrentSet->nFullHd120Hz == 1)) 
 	{
 		m_nLvdsResolutionIndex = W_2560_H_1440;
 	}
@@ -2778,12 +2778,12 @@ void CGrabPage::ShowUsbDioGroup(BOOL bShow)
 		GetDlgItem(IDC_CHECK_COMP)->EnableWindow(FALSE);
 		GetDlgItem(IDC_STATIC_COMP)->EnableWindow(FALSE);
 
-		GetDlgItem(IDC_STATIC_GRAB_POWER)->EnableWindow(FALSE);
-		GetDlgItem(IDC_CHECK_GRAB_POWER)->EnableWindow(FALSE);
+		//GetDlgItem(IDC_STATIC_GRAB_POWER)->EnableWindow(FALSE);
+		//GetDlgItem(IDC_CHECK_GRAB_POWER)->EnableWindow(FALSE);
 	//	GetDlgItem(IDC_STATIC_IFPACK_RESET)->EnableWindow(FALSE);
 	//	GetDlgItem(IDC_BTN_RESET_IFPACK)->EnableWindow(FALSE);
 		//GetDlgItem(IDC_STATIC_GENDER_RESET)->EnableWindow(FALSE);
-		GetDlgItem(IDC_BTN_RESET_GENDER)->EnableWindow(FALSE);
+		//GetDlgItem(IDC_BTN_RESET_GENDER)->EnableWindow(FALSE);
 
 		GetDlgItem(IDC_STATIC_JIG_UP_DOWN)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BTN_MAIN_JIG_UP)->EnableWindow(FALSE);
@@ -3737,8 +3737,8 @@ void CGrabPage::OnBnClickedCheckGrabPower()
 void CGrabPage::OnBnClickedBtnResetIfpack()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//gJigCtrl.Set_IF_Pack_Reset(0);
-	g_pView->IF_Pack_Reset();
+	gJigCtrl.Set_IF_Pack_Reset(0);
+	//g_pView->IF_Pack_Reset();
 }
 
 

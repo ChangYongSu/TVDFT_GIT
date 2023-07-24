@@ -511,7 +511,8 @@ public:
 	CString		sUSBVersion;
 	CString		sMNTVersion;
 
-	UINT		nToolOptionCheck_Delay;					 
+	UINT		nToolOptionCheck_Delay;		
+	BOOL		bToolOptionWriteFlag;
 
 	CString		sEDID_HDMI1;
 	CString		sEDID_HDMI2;
@@ -669,6 +670,7 @@ public:
 	BOOL		bCheckImageFullReset;
 	BOOL		bCheckOledReset;
 	BOOL        bCheckBatteryCheck;
+	BOOL        bCheckGrabberOnOffCheck;
 
 
 	CString		sJACK_AV1;
@@ -703,6 +705,7 @@ public:
 
 	BOOL        bScanNotUse;
 	CString		sBatVersion;
+	BOOL		bFHDUHD_OLED_Pack_Reset;
 	BOOL		bEpiPAckReset;	
 	BOOL		bGrabBaseReset;
 

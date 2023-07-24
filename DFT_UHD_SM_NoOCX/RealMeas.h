@@ -87,6 +87,7 @@ BOOL _AuthenticationKey();
 BOOL _SkippedSignalLineLowBits();
 
 BOOL _ToolOption_Write();
+BOOL ToolOption_WriteCheck();
 BOOL _AreaOption_Write();
 BOOL _ToolOption_WriteAll();
 

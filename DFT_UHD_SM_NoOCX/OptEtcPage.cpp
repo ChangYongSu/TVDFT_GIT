@@ -46,6 +46,8 @@ COptEtcPage::COptEtcPage() : CPropertyPage(COptEtcPage::IDD)
 , m_bCheckBatteryCheck(FALSE)
 , m_bEpiPAckReset(FALSE)
 , m_bGrabBaseReset(FALSE)
+, m_bCheckGrabberOnOffCheck(FALSE)
+, m_bFHDUHD_OLED_Pack_Reset(FALSE)
 {
 	//{{AFX_DATA_INIT(COptEtcPage)
 	m_bSaveProcImg = TRUE; // FALSE;
@@ -188,6 +190,8 @@ void COptEtcPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_BAT_VER_OPTION, m_bCheckBatteryCheck);
 	DDX_Check(pDX, IDC_CHK_EPI_PACK_RESET2, m_bEpiPAckReset);
 	DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET2, m_bGrabBaseReset);
+	DDX_Check(pDX, IDC_CHECK_GRABBER_ONOFF_OPTION, m_bCheckGrabberOnOffCheck);
+	DDX_Check(pDX, IDC_CHECK_FUHD_OLED_RESET, m_bFHDUHD_OLED_Pack_Reset);
 }
 
 
@@ -237,9 +241,12 @@ BOOL COptEtcPage::OnInitDialog()
 
 	m_bCheckUsePcbSensor = CurrentSet->bCheckUsePcbSensor;
 	m_bCheckBatteryCheck = CurrentSet->bCheckBatteryCheck;
+	m_bCheckGrabberOnOffCheck = CurrentSet->bCheckGrabberOnOffCheck;
 	
 	m_bEpiPAckReset = CurrentSet->bEpiPAckReset;
 	m_bGrabBaseReset = CurrentSet->bGrabBaseReset;
+
+	m_bFHDUHD_OLED_Pack_Reset = CurrentSet->bFHDUHD_OLED_Pack_Reset;
 
 	m_strViewerPath			 = CurrentSet->sViewerPath;
 	m_bSaveGrabImg			 = CurrentSet->bSaveGrabImg;
@@ -383,6 +390,8 @@ void COptEtcPage::OnBtnEtcOptApply()
 	CurrentSet->bCheckOledReset = m_bCheckOledReset;
 
 	CurrentSet->bCheckBatteryCheck = m_bCheckBatteryCheck;
+	CurrentSet->bCheckGrabberOnOffCheck = m_bCheckGrabberOnOffCheck;
+	CurrentSet->bFHDUHD_OLED_Pack_Reset = m_bFHDUHD_OLED_Pack_Reset;
 
 	CurrentSet->bEpiPAckReset = m_bEpiPAckReset;
 	CurrentSet->bGrabBaseReset = m_bGrabBaseReset;

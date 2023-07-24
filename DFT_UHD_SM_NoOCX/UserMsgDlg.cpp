@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CUserMsgDlg, CDialog)
 	ON_MESSAGE (WM_JOYSTICK_MSG, OnProcessMessage)
 	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -161,7 +162,10 @@ BOOL CUserMsgDlg::OnInitDialog()
 	//+ add 090902
 	m_bActivate = TRUE;
 	//-
-
+	if (m_bAutoClose == 1)
+	{
+		SetTimer(1, 3000, NULL);
+	}
 	//+add 090213(Modification No1)
 #ifdef _THREAD_DEBUG
 	CString szString;
@@ -235,4 +239,13 @@ void CUserMsgDlg::OnDestroy()
 	
 	m_bActivate = FALSE;
 	
+}
+
+
+void CUserMsgDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	OnBtnYes();
+	m_bAutoClose = 0;
+	CDialog::OnTimer(nIDEvent);
 }

@@ -23,6 +23,7 @@ extern CDATsysView*  g_pView;
 IMPLEMENT_DYNCREATE(COptSpecPage, CPropertyPage)
 
 COptSpecPage::COptSpecPage() : CPropertyPage(COptSpecPage::IDD)
+, m_bToolOptionWriteFlag(FALSE)
 {
 	//{{AFX_DATA_INIT(COptSpecPage)
 	m_szToolOption1 = _T("");
@@ -77,6 +78,7 @@ void COptSpecPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_SPEC_INDEX_OPTION, m_CtrlListSpecIndexOption);
 	DDX_Control(pDX, IDC_LIST_SPEC_GRID, m_CtrlListSpecGrid);
 	DDX_Control(pDX, IDC_EDIT_OP_EPI_CFG_SW, m_CEdit_OP_EPI_CFG_SW);
+	DDX_Check(pDX, IDC_CHECK_OPTION_WRITE, m_bToolOptionWriteFlag);
 }
 
 
@@ -94,6 +96,7 @@ BEGIN_MESSAGE_MAP(COptSpecPage, CPropertyPage)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_SPEC_GRID, &COptSpecPage::OnNMCustomdrawListSpecGrid)
 	ON_BN_CLICKED(IDC_BUTTON_OP_EPI_CFG_SW, &COptSpecPage::OnBnClickedButtonOpEpiCfgSw)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_SPEC_GRID, &COptSpecPage::OnLvnItemchangedListSpecGrid)
+	
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -114,6 +117,9 @@ BOOL COptSpecPage::OnInitDialog()
 	m_szCommercialOption1 = CurrentSet->sCommercialOption1;
 	m_szToolOption8 = CurrentSet->sToolOption8;
 	m_szToolCRC = CurrentSet->sToolCRC;
+	m_bToolOptionWriteFlag = CurrentSet->bToolOptionWriteFlag;
+
+
 
 	m_szAreaOption1  = CurrentSet->sAreaOption1;
 	m_szCountryGroup = CurrentSet->sCountryGroup;
@@ -154,6 +160,7 @@ void COptSpecPage::OnBtnOptApply()
 	CurrentSet->sCommercialOption1 = m_szCommercialOption1;
 	CurrentSet->sToolOption8 = m_szToolOption8;
 	CurrentSet->sToolCRC = m_szToolCRC;
+	CurrentSet->bToolOptionWriteFlag = m_bToolOptionWriteFlag;
 
 	CurrentSet->sAreaOption1  = m_szAreaOption1;
 	CurrentSet->sCountryGroup = m_szCountryGroup;
@@ -1126,3 +1133,4 @@ void COptSpecPage::OnLvnItemchangedListSpecGrid(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	*pResult = 0;
 }
+

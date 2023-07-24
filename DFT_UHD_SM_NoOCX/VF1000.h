@@ -45,6 +45,8 @@ public:
 	BOOL ReceiveString(CString &str, int nWaitLimit);
 
 	BOOL GetIRBlasterData(CString &str, int nWaitLimit);
+	BOOL CheckLanHDCP(CString &str, int nWaitLimit);
+	BOOL CheckLanClear(CString &str, int nWaitLimit);
 	int GetVF_Count();
 
 private:
