@@ -38,7 +38,9 @@ extern CImageProc		g_ImageProc;
 #define GRAB_START		1
 
 #define NO_AVSWITCHBOX_TAB_ITEM	21  //19
-#define NO_AVCONVERTOR_TAB_ITEM	7  //19
+#define NO_AVCONVERTOR_TAB_ITEM	7 // 7  //19
+#define NO_LAN_TAB_ITEM	4 // 7  //19
+
 
 //+change kwmoon 080923
 // #define NO_GRAB_OPTION_TAB_ITEM 21
@@ -48,7 +50,7 @@ extern CImageProc		g_ImageProc;
 //#define NO_GRAB_OPTION_TAB_ITEM 28
 //#define NO_GRAB_OPTION_TAB_ITEM 41
 //#define NO_GRAB_OPTION_TAB_ITEM 48
-#define NO_GRAB_OPTION_TAB_ITEM 51 // 50
+#define NO_GRAB_OPTION_TAB_ITEM 52 //51 // 50
 
 #define NO_USB_DIO_TAB_ITEM 26//21//15
 
@@ -71,9 +73,13 @@ int aAvSwitchBoxCtrlItemNo[] =
 int aAvConvertorCtrlItemNo[] = 
 {
 	IDC_STATIC_AVC_GR,IDC_STATIC_AVC_INPUT,IDC_CMB_AVC_INPUT,
-	IDC_BTN_AVC_COM,IDC_BTN_AVC_IR,IDC_BTN_AVC_BUF,IDC_EDIT_AVC_OUT
+	IDC_BTN_AVC_COM,IDC_BTN_AVC_IR,IDC_BTN_AVC_BUF,IDC_EDIT_AVC_OUT,
+	IDC_STATIC_LAN_GR,IDC_EDIT_LAN_OUT,IDC_BTN_LAN_TEST,IDC_BTN_LAN_CLEAR
 };
-
+int aLAN_CheckerItemNo[] =
+{
+	IDC_STATIC_LAN_GR,IDC_EDIT_LAN_OUT,IDC_BTN_LAN_TEST,IDC_BTN_LAN_CLEAR
+};
 int aGrabOptionItemNo[] =
 {
 	IDC_STATIC_RESOLUTION, 		IDC_RDO_LVDS_RESOLUTION1,	IDC_RDO_LVDS_RESOLUTION2, 
@@ -81,7 +87,10 @@ int aGrabOptionItemNo[] =
 	IDC_RDO_LVDS_RESOLUTION6,	IDC_RDO_LVDS_RESOLUTION7,	IDC_RDO_LVDS_RESOLUTION8, 
 	IDC_RDO_LVDS_RESOLUTION9,	IDC_RDO_LVDS_RESOLUTION10,	IDC_RDO_LVDS_RESOLUTION11, 
 	IDC_RDO_LVDS_RESOLUTION12,	IDC_RDO_LVDS_RESOLUTION13,	IDC_RDO_LVDS_RESOLUTION14,
-	IDC_RDO_LVDS_RESOLUTION15,	IDC_RDO_LVDS_RESOLUTION16,  IDC_RDO_LVDS_RESOLUTION17,	IDC_STATIC_LVDS_TYPE,
+	IDC_RDO_LVDS_RESOLUTION15,	IDC_RDO_LVDS_RESOLUTION16,  IDC_RDO_LVDS_RESOLUTION17,
+	IDC_RDO_LVDS_RESOLUTION18,	
+
+	IDC_STATIC_LVDS_TYPE,
 	IDC_RDO_LVDS_MODE1,			IDC_RDO_LVDS_MODE2,			IDC_RDO_LVDS_MODE3,
 	IDC_RDO_LVDS_MODE4,			IDC_STATIC_COLOR_DEPTH,		IDC_RDO_COLOR_DEPTH1,
 	IDC_RDO_COLOR_DEPTH2,		IDC_RDO_COLOR_DEPTH3,		IDC_RDO_COLOR_DEPTH4,
@@ -314,7 +323,7 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_COMMAND_RANGE(IDC_BTN_REMOTE_DLG_1, IDC_BTN_REMOTE_DLG_73,OnRemoteButtonClick)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_CONTROL_TAB, OnSelchangeControlTab)
 	ON_BN_CLICKED(IDC_BTN_GRAB_OPTION_APPLY, OnBtnGrabOptionApply)
-	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION17,OnRdoLvdsResolution1)
+	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION18,OnRdoLvdsResolution1)
 	ON_COMMAND_RANGE(IDC_RDO_COLOR_DEPTH1, IDC_RDO_COLOR_DEPTH4,OnRdoColorDepth1)
 	ON_COMMAND_RANGE(IDC_RDO_3D_MODE1,IDC_RDO_3D_MODE3, OnRdo3dMode1)
 	ON_BN_CLICKED(IDC_RDO_AVSWITCH_CMD13, OnRdoAvswitchCmd13)
@@ -367,6 +376,8 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_BN_CLICKED(IDC_BTN_RESET_GRAB, &CGrabPage::OnBnClickedBtnResetGrab)
 	ON_CBN_SELCHANGE(IDC_COMBO_GRABMODE2, &CGrabPage::OnCbnSelchangeComboGrabmode2)
 	ON_CBN_SELCHANGE(IDC_COMBO_UHDTYPE2, &CGrabPage::OnCbnSelchangeComboUhdtype2)
+	ON_BN_CLICKED(IDC_BTN_LAN_TEST, &CGrabPage::OnBnClickedBtnLanTest)
+	ON_BN_CLICKED(IDC_BTN_LAN_CLEAR, &CGrabPage::OnBnClickedBtnLanClear)
 END_MESSAGE_MAP()
 
 //	ON_COMMAND_RANGE(IDC_RADIO_MHL,IDC_RADIO_MHL2, OnRadioMhl)
@@ -445,6 +456,7 @@ BOOL CGrabPage::OnInitDialog()
 	else if((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 300)) {	m_nLvdsResolutionIndex = W_1920_H_300;}
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 600)){	m_nLvdsResolutionIndex = W_3840_H_600;}
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540)) { m_nLvdsResolutionIndex = W_1920_H_540; }
+	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 1200)) { m_nLvdsResolutionIndex = W_1920_H_1200; }
 	else m_nLvdsResolutionIndex = -1;
 
 	if(g_nGrabberType == FHD_GRABBER)
@@ -592,6 +604,23 @@ BOOL CGrabPage::OnInitDialog()
 				pButton->EnableWindow(FALSE);
 			}
 		}
+	}
+
+	for (int i = 0; i < NO_LAN_TAB_ITEM; i++)
+	{
+		pButton = (CButton*)GetDlgItem(aLAN_CheckerItemNo[i]);
+		pButton->GetWindowRect(&rect);
+		// add & change psh 080701
+		ScreenToClient(&rect);
+		rect.top = rect.top - 340;
+		rect.bottom = rect.bottom - 340;
+
+		pButton->MoveWindow(&rect);
+		
+		if (!gVF1000Ctrl.m_bPortOpen) {
+			pButton->EnableWindow(FALSE);
+		}
+		
 	}
 
 
@@ -2723,18 +2752,18 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 
 	if(g_nGrabberType == UHD_GRABBER){
-		for(i = 0; i<18; i++)
+		for(i = 0; i<19; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
 
-		for(i = 34; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 35; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		}
-		for(i = 18; i<34; i++)
+		for(i = 19; i<35; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2742,12 +2771,12 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 	}
 	else{
-		for(i = 0; i<34; i++)
+		for(i = 0; i<35; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
-		for(i = 34; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 35; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2944,6 +2973,7 @@ void CGrabPage::OnBtnGrabOptionApply()
 			case 1:  CurrentSet->nHdmiWidth = 1366; CurrentSet->nHdmiHeight = 768; break;
 			case 2:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 1024; break;
 			case 3:  CurrentSet->nHdmiWidth = 1920; CurrentSet->nHdmiHeight = 1080; break;
+			case 4:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 540; break;
 			default: CurrentSet->nHdmiWidth = 1024; CurrentSet->nHdmiHeight = 768; break;
 		}
 
@@ -3186,6 +3216,11 @@ void CGrabPage::OnRdoLvdsResolution1(UINT nButtonID)
 			m_nLvdsResolutionIndex = 16;
 			m_nNewLvdsWidth = 1920;
 			m_nNewLvdsHeight = 540;
+			break;
+		case IDC_RDO_LVDS_RESOLUTION18:
+			m_nLvdsResolutionIndex = 17;
+			m_nNewLvdsWidth = 1920;
+			m_nNewLvdsHeight = 1200;
 			break;
 
 		default : 
@@ -3952,4 +3987,51 @@ void CGrabPage::OnCbnSelchangeComboUhdtype2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	OnBtnGrabOptionApply();
+}
+
+
+void CGrabPage::OnBnClickedBtnLanTest()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strRead;
+	if (gVF1000Ctrl.CheckLanHDCP(strRead, 1000) == 0)
+	{
+		SetDlgItemText(IDC_EDIT_LAN_OUT,"FAIL");//return FALSE;
+	};
+	if (strRead.Find("OK") >= 0)
+	{
+		//if (nStepNo == 0)
+		//{
+		//	sTmp = "HDMI Gen Ver :";
+		//	sTmp += HDMIGeneratorCtrl.m_FW_Ver;
+		//	m_CtrlListMainProcess.SetItemText(nStepNo, 11, sTmp); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, sTmp);
+		//}
+		//g_pView->SaveMessageList("LAN DHCP: OK");
+		//AddStringToStatus("LAN DHCP: OK");
+		SetDlgItemText(IDC_EDIT_LAN_OUT, "OK");//return TRUE;
+	}
+	else
+	{
+		//g_pView->SaveMessageList("LAN DHCP: NG");
+		//AddStringToStatus("LAN DHCP: NG");
+		SetDlgItemText(IDC_EDIT_LAN_OUT, "NG");//return FALSE;
+	}
+
+}
+
+
+void CGrabPage::OnBnClickedBtnLanClear()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strRead;
+	if (gVF1000Ctrl.CheckLanClear(strRead, 1000) == 0)
+	{
+		SetDlgItemText(IDC_EDIT_LAN_OUT, "FAIL");//return FALSE;
+	}
+	else 
+	{
+		
+		SetDlgItemText(IDC_EDIT_LAN_OUT, "PASS");//return TRUE;
+	}
+	
 }

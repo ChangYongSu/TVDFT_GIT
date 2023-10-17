@@ -859,6 +859,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 			case 1:  CurrentSet->nHdmiWidth = 1366; CurrentSet->nHdmiHeight = 768; break;
 			case 2:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 1024; break;
 			case 3:  CurrentSet->nHdmiWidth = 1920; CurrentSet->nHdmiHeight = 1080; break;
+			case 4:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 540; break;
 			default: CurrentSet->nHdmiWidth = 1024; CurrentSet->nHdmiHeight = 768; break;
 		}
 	}
@@ -4706,9 +4707,11 @@ BOOL StepInit_AvSwitchBox_UHD()
 
 		case 46:  //AVC-HDMI
 			g_GrabSource = HDMI_GRABBER; 
+			/*
 			CurrentSet->nHdmiWidth = 1920; 
 			CurrentSet->nHdmiHeight = 1080; 
 			CurrentSet->nHDMI_Grab_Resolution = 3;
+			*/
 		//	CurrentSet->nHDMI_Grab_BitShift = 0;
 			bResult = gAvConvertorCtrl.SetInputSignal(3);
 			break;

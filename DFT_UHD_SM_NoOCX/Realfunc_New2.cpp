@@ -8383,6 +8383,7 @@ BOOL _Set_HdmiGrab()
 		case 1:  CurrentSet->nHdmiWidth = 1366; CurrentSet->nHdmiHeight = 768; break;
 		case 2:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 1024; break;
 		case 3:  CurrentSet->nHdmiWidth = 1920; CurrentSet->nHdmiHeight = 1080; break;
+		case 4:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 540; break;
 		default: CurrentSet->nHdmiWidth = 1024; CurrentSet->nHdmiHeight = 768; break;
 	}
 	_Grabber_Reset();
@@ -8848,5 +8849,19 @@ BOOL _GrabToggle()
 			g_pView->StopLVDSGrabThread_FHD();
 		}
 	}//
+	return TRUE;
+}
+
+//BOOL _LAN_HDCP_Clear();
+BOOL _LAN_HDCP_Clear()
+{
+	double ldReturn;
+	CString strRead;
+	if (gVF1000Ctrl.CheckLanClear(strRead, 1000) == 0)
+	{
+		return FALSE;
+	};
+	
+	
 	return TRUE;
 }

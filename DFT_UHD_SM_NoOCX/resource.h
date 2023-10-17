@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by DATsys.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// DATsys.rc에서 사용되고 있습니다.
 //
 #define IDR_MAINFRAME                   128
 #define ERROR_I2C_EMPTY_READ_STRING     1000
@@ -272,7 +272,9 @@
 #define IDC_BTN_AVC_COM                 1335
 #define IDC_BTN_AVC_IR                  1336
 #define IDC_BTN_AVERAGE_REF             1337
+#define IDC_BTN_LAN_TEST                1337
 #define IDC_BTN_AVG                     1338
+#define IDC_BTN_LAN_CLEAR               1338
 #define IDC_BTN_BINARY                  1339
 #define IDC_BTN_BRIGHT_TEST             1340
 #define IDC_BTN_BROWSE_SEQ              1341
@@ -1206,6 +1208,7 @@
 #define IDC_EDIT_FORCE_SCART_L          2177
 #define IDC_EDIT_AVR_FOLDER_PATH        2178
 #define IDC_EDIT_FORCE_SCART_R          2178
+#define IDC_EDIT_LAN_OUT                2178
 #define IDC_EDIT_AVSWITCH_RESULT        2179
 #define IDC_EDIT_AVSWITCH_RETURN        2180
 #define IDC_EDIT_BRIGHT_B_VAL           2181
@@ -1899,6 +1902,7 @@
 #define IDC_RDO_LVDS_GRABBER_TYPE_EXT   2845
 #define IDC_RDO_LVDS_FORMAT17           2845
 #define IDC_RDO_LVDS_GRABBER_TYPE_INT   2846
+#define IDC_RDO_LVDS_FORMAT18           2846
 #define IDC_RDO_LVDS_MODE1              2847
 #define IDC_RDO_LVDS_MODE2              2848
 #define IDC_RDO_LVDS_MODE3              2849
@@ -1922,6 +1926,7 @@
 #define IDC_RDO_MEMORYCARD_TEST         2867
 #define IDC_RDO_LVDS_RESOLUTION17       2867
 #define IDC_RDO_OPTIC                   2868
+#define IDC_RDO_LVDS_RESOLUTION18       2868
 #define IDC_RDO_OPTICAL_INPUT           2869
 #define IDC_RDO_OSD_TEST                2870
 #define IDC_RDO_PIP_TEST                2871
@@ -2081,6 +2086,7 @@
 #define IDC_STATIC_AVC_GR               3025
 #define IDC_STATIC_AVC_INPUT            3026
 #define IDC_STATIC_AVSWITCH_VALUE_NAME  3027
+#define IDC_STATIC_LAN_GR               3027
 #define IDC_STATIC_AVSWITCH_VALUE_NAME1 3028
 #define IDC_STATIC_AVSWITCH_VALUE_NAME2 3029
 #define IDC_STATIC_AVSWITCHBOX_BAUDRATE 3030

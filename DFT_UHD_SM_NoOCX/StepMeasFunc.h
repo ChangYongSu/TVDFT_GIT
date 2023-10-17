@@ -115,6 +115,7 @@ double _Port_Auto_Check();
 double _IR_Blaster_Check();
 double _Read_A_CAS_ID();
 double _LAN_HDCP_Check();
+
 #endif
 
 #endif	// __REALMEAS_H__

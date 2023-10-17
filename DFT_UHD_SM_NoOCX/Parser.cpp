@@ -794,6 +794,11 @@ _InternalFunction Predefined[] =
 	{ _T("") },
 	{ NULL_TYPE },
 
+	_T("lan_dhcp_clear"), _LAN_HDCP_Clear,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
+
     NULL, NULL, { TNULL }
 };                      
 
@@ -1603,8 +1608,10 @@ BOOL ParseStep(int nStepCnt)
 		}		
 #endif
 
-		else if(cFuncName.Compare("ir_blaster_check") == 0)	
+		else if (cFuncName.Compare("ir_blaster_check") == 0)
 			pStep->SetTestType(VF_MEASURE_TEST);
+		else if (cFuncName.Compare("lan_dhcp_check") == 0)
+			pStep->SetTestType(LAN_TEST);
 		//_T("ir_blaster_check"),		_IR_Blaster_Check,	    MEAS_BOOL,
 
 		if(cMeasFuncType == MEAS_BOOL)

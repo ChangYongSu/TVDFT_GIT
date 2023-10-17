@@ -609,7 +609,15 @@ BOOL CVF1000::CheckLanHDCP(CString &str, int nWaitLimit)
 	int nR_CH2 = 0;
 	BOOL bRev = TRUE;
 
-	if (!m_bPortOpen) return FALSE;
+	if (!m_bPortOpen)
+	{
+		AddStringToStatus("LANCHECK PORT NOT OPEN");
+		return FALSE;
+	}
+	else
+	{
+		AddStringToStatus("DHCP LANCHECK");
+	}
 
 	m_ctrlVF1000.ClearPort();
 
@@ -636,11 +644,11 @@ BOOL CVF1000::CheckLanHDCP(CString &str, int nWaitLimit)
 	szData.MakeUpper();
 	//	nFind = szData.Find("DV_");
 	nFind = szData.Find("DLAN");
+	AddStringToStatus(szData);
 	if (nFind != -1)
 	{
 		str = szData.Mid(nFind + 4, 11);
 		
-
 
 		//		dRevData = (m_strReceive[6] - 0x30)*100 + (m_strReceive[7] - 0x30)*10 + (m_strReceive[8] - 0x30)*1 + (m_strReceive[9] - 0x30)*0.1;
 		//		dRevData = (szData.GetAt(0) - 0x30)*100 + (szData.GetAt(1) - 0x30)*10 + (szData.GetAt(2) - 0x30)*1 + (szData.GetAt(3) - 0x30)*0.1;
@@ -695,13 +703,14 @@ BOOL CVF1000::CheckLanClear(CString &str, int nWaitLimit)
 	if (nFind != -1)
 	{
 		str = szData.Mid(nFind + 4, 11);
-
-
-
-		//		dRevData = (m_strReceive[6] - 0x30)*100 + (m_strReceive[7] - 0x30)*10 + (m_strReceive[8] - 0x30)*1 + (m_strReceive[9] - 0x30)*0.1;
-		//		dRevData = (szData.GetAt(0) - 0x30)*100 + (szData.GetAt(1) - 0x30)*10 + (szData.GetAt(2) - 0x30)*1 + (szData.GetAt(3) - 0x30)*0.1;
+		CString szMsg = "LAN CLEAR: PASS";
+		AddStringToStatus(szMsg);
+		g_pView->SaveMessageList(szMsg);
 	}
-	else {
+	else 
+	{
+		g_pView->SaveMessageList("LAN CLEAR: FAIL");
+		AddStringToStatus("LAN CLEAR: FAIL");
 		str = "";
 		bRev = FALSE;
 	}

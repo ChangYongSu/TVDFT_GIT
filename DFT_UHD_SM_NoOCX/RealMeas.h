@@ -219,5 +219,6 @@ BOOL _SetTVBuadRate();
 BOOL _Mnt_Edid_Source();
 BOOL _GrabStop();
 BOOL _GrabToggle();
+BOOL _LAN_HDCP_Clear();
 
 #endif	// __REALMEAS_H__

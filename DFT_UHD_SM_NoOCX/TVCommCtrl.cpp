@@ -3055,10 +3055,45 @@ BOOL CTVCommCtrl::Marlin_Download_Check(int nWait)
 	{
 		Result = TRUE;
 	}
-	else{
+	else {
 		Result = FALSE;
 	}
-	
+	//
+	//
+	//BOOL Result19;
+	//PortClear();
+	//sIndex.Format("%02x", 0x19);
+	//if (!SendRun("a", "s", 0, sIndex))
+	//{
+	//	return FALSE;
+	//}
+	//if (!ReceiveCommString(14, nWait, sReadData))
+	//{
+	//	return FALSE;
+	//}
+
+	////int nIndex;
+	//nIndex = sReadData.Find(0x0d);
+	//if (nIndex != -1)
+	//{
+	//	szMsg1 = sReadData.Left(nIndex + 1);
+	//}
+	//else {
+	//	szMsg1 = sReadData;
+	//}
+
+	//sReadData.MakeUpper();
+	//sReadData.TrimRight('X');
+
+	//if (sReadData.Find("OK") != -1)
+	//{
+	//	Result19 = TRUE;
+	//}
+	//else {
+	//	Result19 = FALSE;
+	//}
+
+
 	return Result;
 }
 BOOL CTVCommCtrl::BuiltIn_Wifi_Check(int nWait)
@@ -3068,6 +3103,8 @@ BOOL CTVCommCtrl::BuiltIn_Wifi_Check(int nWait)
 	CString szMsg1 = _T("");
 	CString szPrevMsg = _T("");
 	BOOL Result;
+	BOOL Result19;
+	BOOL Result20;
 	CString sTemp;
 
 	PortClear();
@@ -3097,12 +3134,53 @@ BOOL CTVCommCtrl::BuiltIn_Wifi_Check(int nWait)
 
 	if(sReadData.Find("OK") != -1)
 	{
-		Result = TRUE;
+		Result20 = TRUE;
 	}
 	else{
+		Result20 = FALSE;
+	}
+
+	/////////////////////////////////////////////
+	PortClear();
+	sIndex.Format("%02x", 0x19);
+	if (!SendRun("a", "i", 0, sIndex))
+	{
+		return FALSE;
+	}
+	if (!ReceiveCommString(14, nWait, sReadData))
+	{
+		return FALSE;
+	}
+
+//	int nIndex;
+	nIndex = sReadData.Find(0x0d);
+	if (nIndex != -1)
+	{
+		szMsg1 = sReadData.Left(nIndex + 1);
+	}
+	else {
+		szMsg1 = sReadData;
+	}
+
+
+	sReadData.MakeUpper();
+	sReadData.TrimRight('X');
+
+	if (sReadData.Find("OK") != -1)
+	{
+		Result19 = TRUE;
+	}
+	else {
+		Result19 = FALSE;
+	}
+
+	if (Result19 && Result20)
+	{
+		Result = TRUE;
+	}
+	else {
 		Result = FALSE;
 	}
-	
 	return Result;
 }
 

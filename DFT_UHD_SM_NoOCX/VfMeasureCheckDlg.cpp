@@ -487,8 +487,11 @@ BOOL  CVfMeasureCheckDlg::VfMeasureCheck()
 						pCurStep_EM->bResult = FALSE;
 					}
 					sMeasur.Format(_T("%.1f"), pCurStep_EM->dMaesure_Min);
-					sMessageStr.Format(_T("Ch No: %d, Ch Name: %s, T:%.1f, M:%.1f"), 
-						nTestIndex, pCurStep_EM->strTestName, pCurStep_EM->dTarget, pCurStep_EM->dMaesure_Min);//Ch No; xxx Ch Name; xxx T;xx M;xx 
+					sMessageStr.Format(_T("Ch No: %d, Ch Name: %s, T:%.1f~%.1f, M:%.1f"), 
+						nTestIndex, 
+						pCurStep_EM->strTestName,
+						dLowerLimit1 , dUpperLimit1,
+						pCurStep_EM->dMaesure_Min);//Ch No; xxx Ch Name; xxx T;xx M;xx 
 				}
 				else if(nCheckType == 2){
 					nWait = (int)((nTime + 1) - (nTime * 0.5)) * 1000;
@@ -515,8 +518,11 @@ BOOL  CVfMeasureCheckDlg::VfMeasureCheck()
 						pCurStep_EM->bResult = FALSE;
 					}
 					sMeasur.Format(_T("%.1f,%.1f"), pCurStep_EM->dMaesure_Min, pCurStep_EM->dMaesure_Max);
-					sMessageStr.Format(_T("Ch No: %d, Ch Name: %s, T:%.1f, M:%.1f~%.1f"),
-						nTestIndex, pCurStep_EM->strTestName, pCurStep_EM->dTarget, pCurStep_EM->dMaesure_Min, pCurStep_EM->dMaesure_Max);//Ch No; xxx Ch Name; xxx T;xx M;xx 
+					sMessageStr.Format(_T("Ch No: %d, Ch Name: %s, T:%.1f~%.1f, M:%.1f~%.1f"),
+						nTestIndex, 
+						pCurStep_EM->strTestName,
+						dSpec2, dSpec1, 
+						pCurStep_EM->dMaesure_Min, pCurStep_EM->dMaesure_Max);//Ch No; xxx Ch Name; xxx T;xx M;xx 
 
 				}
 				if(pCurStep_EM->bResult){break;} 

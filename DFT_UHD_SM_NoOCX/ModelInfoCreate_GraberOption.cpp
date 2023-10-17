@@ -248,7 +248,12 @@ void CModelInfoCreate_GraberOption::OnOK()
 			CurrentSet->nLvdsWidth = 1920;
 			CurrentSet->nLvdsHeight = 540;
 			break;
-		
+
+		case W_1920_H_1200:
+			CurrentSet->nLvdsWidth = 1920;
+			CurrentSet->nLvdsHeight = 1200;
+			break;
+
 		default : CurrentSet->nLvdsWidth = 1366; CurrentSet->nLvdsHeight = 768;		break;
 	}
 
@@ -404,6 +409,7 @@ void CModelInfoCreate_GraberOption::OnOK()
 			case 1:  CurrentSet->nHdmiWidth = 1366; CurrentSet->nHdmiHeight = 768; break;
 			case 2:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 1024; break;
 			case 3:  CurrentSet->nHdmiWidth = 1920; CurrentSet->nHdmiHeight = 1080; break;
+			case 4:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 540; break;
 			default: CurrentSet->nHdmiWidth = 1024; CurrentSet->nHdmiHeight = 768; break;
 		}
 
@@ -456,6 +462,7 @@ BOOL CModelInfoCreate_GraberOption::OnInitDialog()
 	else if((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 300))  m_nLvdsFormat = W_1920_H_300;
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 600))  m_nLvdsFormat = W_3840_H_600;
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540))  m_nLvdsFormat = W_1920_H_540;
+	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 1200))  m_nLvdsFormat = W_1920_H_1200;
 	else m_nLvdsFormat = -1;
 
 	m_nAnalogFormat = CurrentSet->nAnalogType;

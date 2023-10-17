@@ -1116,6 +1116,7 @@ const COLORREF COLOR_BLACK       = RGB(   1,   1,   1 );
 #define		W_1920_H_300			14
 #define		W_3840_H_600			15
 #define		W_1920_H_540			16
+#define		W_1920_H_1200			17
 
 //Mode Register Setting Define
 #define		JEIDA_DUAL			0x81

@@ -5585,7 +5585,7 @@ END_INIT :
 				double dVol;
 				CString strRead;
 				gVF1000Ctrl.m_bSystemMixType = _IR_MIX_TYPE;//  _VF_ONLY_TYPE
-				#ifdef				DEBUG_IRLANTEST__CODE__
+#ifdef				DEBUG_IRLANTEST__CODE__
 				if (gVF1000Ctrl.GetIRBlasterData(strRead, 1000) )
 #else
 				if (gVF1000Ctrl.GetVoltageData(1, dVol))
@@ -5593,8 +5593,8 @@ END_INIT :
 				{// {
 					sMsg += "M PASS";
 				}
-				else {
-				
+				else 
+				{				
 					gVF1000Ctrl.m_bSystemMixType = _VF_ONLY_TYPE;
 					if (gVF1000Ctrl.GetVoltageData(1, dVol)) {
 						sMsg += "V PASS";
@@ -5602,8 +5602,7 @@ END_INIT :
 					else
 					{
 						sMsg += "FAIL";
-					}
-					
+					}					
 				}
 
 			//	sMsg += "PASS";
@@ -10676,7 +10675,11 @@ BOOL CDATsysView::AutoControlProcess()
 					}
 					else// if (gPLC_Ctrl.m_nTestResult == PLC_NG_MODE)
 					{
-						gServer_Ctrl.ServerReportTestResult(PLC_NG_MODE);
+						if (gPLC_Ctrl.m_nTestResult == PLC_NG_MODE)
+						{
+							gServer_Ctrl.ServerReportTestResult(PLC_NG_MODE);
+						}					
+
 						AddStringToStatus("Jig Up!");
 						///////////////
 						if (m_WhiteResetFlag)
@@ -11122,6 +11125,11 @@ BOOL CDATsysView::AutoControlProcess()
 		}
 		else if (sInterProcess == 1)
 		{
+
+#ifdef _PLC_COM_SIM_DEBUG__MODE
+			gPLC_Ctrl.m_cCheckUnLoadFinish = 1;
+
+#endif
 			if (gPLC_Ctrl.m_cCheckUnLoadFinish)
 			{
 				ctrlPLC_COM_Status.SetWindowText(_T("JIG UP"));
@@ -11159,6 +11167,8 @@ BOOL CDATsysView::AutoControlProcess()
 								gPLC_Ctrl.Command3TimesError();
 								MessageBox(str, "Continue Error Step!! \r\n Not Fixed!! Check Again!!");
 								gPLC_Ctrl.Command3TimesErrorClear();
+								lError3TimeFlag = 1;
+
 							}
 						}
 						else
@@ -11196,9 +11206,10 @@ BOOL CDATsysView::AutoControlProcess()
 						{
 							gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo]++;
 						}
+
 						if ((gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo] % 5 == 0)
 							&& (gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo] > 0)
-							&&(lError3TimeFlag == 1))
+							&&(lError3TimeFlag == 0))
 						{
 							int nTotalCnt = StepList.GetCount();
 							if ((gPLC_Ctrl.m_NG_StepNo > 0) && (gPLC_Ctrl.m_NG_StepNo < nTotalCnt))
@@ -11209,7 +11220,7 @@ BOOL CDATsysView::AutoControlProcess()
 								str.Format("ERROR STEP[%d]: %d times ", gPLC_Ctrl.m_NG_StepNo, gPLC_Ctrl.m_nTestStepNGCountList[gPLC_Ctrl.m_NG_StepNo]);
 								str += pStep->m_sName;
 								gPLC_Ctrl.Command3TimesError();
-								MessageBox(str, " Count Error Step!!");
+								MessageBox(str, " Count 5 Error Step!!");
 								gPLC_Ctrl.Command3TimesErrorClear();
 							}
 						}
@@ -13371,6 +13382,7 @@ void CDATsysView::OnSelchangeViewTab(NMHDR* pNMHDR, LRESULT* pResult)
 			case 1:  CurrentSet->nHdmiWidth = 1366; CurrentSet->nHdmiHeight = 768; break;
 			case 2:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 1024; break;
 			case 3:  CurrentSet->nHdmiWidth = 1920; CurrentSet->nHdmiHeight = 1080; break;
+			case 4:  CurrentSet->nHdmiWidth = 1280; CurrentSet->nHdmiHeight = 540; break;
 			default: CurrentSet->nHdmiWidth = 1024; CurrentSet->nHdmiHeight = 768; break;
 			}
 			_Grabber_Reset();
@@ -22073,7 +22085,6 @@ BOOL CDATsysView::GetResultFromDetailedGrid(int nStepNo, CString& sMsg)
 
 	return TRUE;
 }
-
 void CDATsysView::GetCheckStep(int nGridType)
 {
 	POSITION Position;

@@ -4510,15 +4510,25 @@ double _LAN_HDCP_Check()
 	};
 	if (strRead.Find("OK") >= 0)
 	{
+		//if (nStepNo == 0)
+		//{
+		//	sTmp = "HDMI Gen Ver :";
+		//	sTmp += HDMIGeneratorCtrl.m_FW_Ver;
+		//	m_CtrlListMainProcess.SetItemText(nStepNo, 11, sTmp); // m_ctrlSummaryGrid.SetTextMatrix(nStepNo, 11, sTmp);
+		//}
+		g_pView->SaveMessageList("LAN DHCP: OK");
+		AddStringToStatus("LAN DHCP: OK");
 		return TRUE;
 	}
 	else
 	{
+		g_pView->SaveMessageList("LAN DHCP: NG");
+		AddStringToStatus("LAN DHCP: NG");
 		return FALSE;
-	}
-
-	
+	}	
 }
+
+
 
 double _Read_A_CAS_ID()
 {

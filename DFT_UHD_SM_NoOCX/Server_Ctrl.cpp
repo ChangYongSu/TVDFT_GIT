@@ -1035,6 +1035,7 @@ void CServer_Ctrl::ServerReportTestResult(int lOk)//S2F101
 		
 		m_strMesSend += _T("  <ELEMENT>\r\n");
 		m_strMesSend += _T("    <RESULT>");
+		//PLC_NG_MODE
 		if (lOk)
 			str1 = "OK";
 		else

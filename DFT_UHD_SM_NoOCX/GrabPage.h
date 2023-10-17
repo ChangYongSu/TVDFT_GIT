@@ -281,6 +281,8 @@ public:
 		afx_msg void OnBnClickedBtnResetGrab();
 		afx_msg void OnCbnSelchangeComboGrabmode2();
 		afx_msg void OnCbnSelchangeComboUhdtype2();
+		afx_msg void OnBnClickedBtnLanTest();
+		afx_msg void OnBnClickedBtnLanClear();
 };
 
 //{{AFX_INSERT_LOCATION}}
