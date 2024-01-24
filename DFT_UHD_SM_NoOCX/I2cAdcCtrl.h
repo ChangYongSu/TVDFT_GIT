@@ -135,6 +135,11 @@ public :
 	int MNT_FAN_Check();
 	int APD_ON_Check();
 
+	int CI2cAdcCtrl::MNT_ALS_Sensor_Check();
+	int CI2cAdcCtrl::MNT_BLS_Sensor_Check();
+	int CI2cAdcCtrl::MNT_Front_Sensor_Check();
+	int CI2cAdcCtrl::MNT_Proximity_Check();
+
 	//+add PSH 081204
 	BOOL  InputSourceChange(BYTE nCode);
 

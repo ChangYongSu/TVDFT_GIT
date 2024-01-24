@@ -3270,6 +3270,631 @@ int CI2cAdcCtrl::APD_ON_Check()
 	return nResult;
 }
 
+//13	ALS Sensor Check	BB	00	00 : NG / 01 : OK	ALS Sensor 의 정상 동작 여부 판단 Get 명령(응답 : 00 = NG / 01 = OK)
+//14	BLS Sensor Check	BC	00	00 : NG / 01 : OK	BLS Sensor 의 정상 동작 여부 판단 Get 명령(응답 : 00 = NG / 01 = OK)
+//15	Front Sensor Check	BD	00	00 : NG / 01 : OK	Front Sensor Sensor 의 정상 동작 여부 판단 Get 명령(응답 : 00 = NG / 01 = OK)
+//16	Proximity Check	BE	00	00 : NG / 01 : OK	Proximity Sensor 의 정상 동작 여부 판단 Get 명령(응답 : 00 = NG / 01 = OK)
+int CI2cAdcCtrl::MNT_ALS_Sensor_Check()
+{
+	int nResult = TEST_FAIL;
+	int nCheckSum = 0;
+	int nToolOption = 0;
+
+	//int nReadByte = 2; // Version Data : 9Byte
+	int nReadByte = 2; // Version Data : 9Byte
+
+	CString szCmd = _T("");
+	CString szTemp = _T("");
+	CString szReadString = _T("");
+	CString szToolOption = _T("");
+	CString szErrMsg = _T("");
+	int nHostAdd;
+
+	CString sCommandHexStr;
+	CString szInputSource;
+	
+	sCommandHexStr = "BB";
+
+	if (m_MicomVer_Ex >= 1)
+	{
+		nReadByte = 3;
+	}
+	//	if(CurrentSet->nHostAddressType == 0){
+	nHostAdd = HOST_ADD0;
+	//	}
+	//	else{
+	//		nHostAdd = HOST_ADD1;
+	//	}
+
+	m_szI2cAdcReadString = _T("");
+	//6E 50 84 C9 00 00 checksum 
+		//nCheckSum	= 0x6E ^ nHostAdd ^ 0x84 ^ 0x03 ^ 0xCD ^ 0x00;//int nCheckSum			= 0;
+		//===========================
+		// (Reg0-Reg3 : 6E 50 84 03)
+		//===========================
+	m_ctrlI2cAdcCtrl.ClearPort();
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//	SetChannel("00");
+	for (int i = 0; i < 5; i++)
+	{
+		nResult = WakeUp();
+		if (nResult == TEST_PASS) break;
+		Sleep(1);
+	}
+
+	m_nReadByte = nReadByte;
+
+	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	//===========================
+	// (Reg4-Reg7 : C9 00 00 CS)
+	//===========================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
+	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+
+	nReadByte = 5;
+	//=================================
+	// Tool Option Read Command (0x24)
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 5000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (szReadString.GetLength() >= 7)
+	{
+		if ((szReadString.GetAt(5) != '0')
+			&& (szReadString.GetAt(6) != '1'))
+		{
+			nResult = ERROR_I2C_RESPONSE;
+		}
+	}
+	else {
+		nResult = ERROR_I2C_RESPONSE;
+	}
+
+	//=================================
+	// Tool Option Read Command (0x30)
+	// Read nReadByte
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH + (nReadByte * 2) + 3, 2000, m_szI2cAdcReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (m_szI2cAdcReadString.GetAt(CMD_LENGTH) == '0')
+	{
+		if (m_szI2cAdcReadString.GetAt(CMD_LENGTH + 1) == '1')
+		{
+			nResult = TEST_PASS;
+
+		}
+		else
+		{
+			nResult = TEST_FAIL;
+		}
+	}
+	else
+	{
+		nResult = TEST_FAIL;
+	}
+
+
+	return nResult;
+}
+int CI2cAdcCtrl::MNT_BLS_Sensor_Check()
+{
+	int nResult = TEST_FAIL;
+	int nCheckSum = 0;
+	int nToolOption = 0;
+
+	//int nReadByte = 2; // Version Data : 9Byte
+	int nReadByte = 2; // Version Data : 9Byte
+
+	CString szCmd = _T("");
+	CString szTemp = _T("");
+	CString szReadString = _T("");
+	CString szToolOption = _T("");
+	CString szErrMsg = _T("");
+	int nHostAdd;
+
+	CString sCommandHexStr;
+	CString szInputSource;
+
+	//if (szInputSource.Compare("RGB") == NULL) 
+	sCommandHexStr = "BC";
+
+	if (m_MicomVer_Ex >= 1)
+	{
+		nReadByte = 3;
+	}
+	//	if(CurrentSet->nHostAddressType == 0){
+	nHostAdd = HOST_ADD0;
+	//	}
+	//	else{
+	//		nHostAdd = HOST_ADD1;
+	//	}
+
+	m_szI2cAdcReadString = _T("");
+	//6E 50 84 C9 00 00 checksum 
+		//nCheckSum	= 0x6E ^ nHostAdd ^ 0x84 ^ 0x03 ^ 0xCD ^ 0x00;//int nCheckSum			= 0;
+		//===========================
+		// (Reg0-Reg3 : 6E 50 84 03)
+		//===========================
+	m_ctrlI2cAdcCtrl.ClearPort();
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//	SetChannel("00");
+	for (int i = 0; i < 5; i++)
+	{
+		nResult = WakeUp();
+		if (nResult == TEST_PASS) break;
+		Sleep(1);
+	}
+
+	m_nReadByte = nReadByte;
+
+	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	//===========================
+	// (Reg4-Reg7 : C9 00 00 CS)
+	//===========================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
+	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+
+	nReadByte = 5;
+	//=================================
+	// Tool Option Read Command (0x24)
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 5000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (szReadString.GetLength() >= 7)
+	{
+		if ((szReadString.GetAt(5) != '0')
+			&& (szReadString.GetAt(6) != '1'))
+		{
+			nResult = ERROR_I2C_RESPONSE;
+		}
+	}
+	else {
+		nResult = ERROR_I2C_RESPONSE;
+	}
+
+	//=================================
+	// Tool Option Read Command (0x30)
+	// Read nReadByte
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH + (nReadByte * 2) + 3, 2000, m_szI2cAdcReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (m_szI2cAdcReadString.GetAt(CMD_LENGTH) == '0')
+	{
+		if (m_szI2cAdcReadString.GetAt(CMD_LENGTH + 1) == '1')
+		{
+			nResult = TEST_PASS;
+
+		}
+		else
+		{
+			nResult = TEST_FAIL;
+		}
+	}
+	else
+	{
+		nResult = TEST_FAIL;
+	}
+
+
+	return nResult;
+}
+int CI2cAdcCtrl::MNT_Front_Sensor_Check()
+{
+	int nResult = TEST_FAIL;
+	int nCheckSum = 0;
+	int nToolOption = 0;
+
+	//int nReadByte = 2; // Version Data : 9Byte
+	int nReadByte = 2; // Version Data : 9Byte
+
+	CString szCmd = _T("");
+	CString szTemp = _T("");
+	CString szReadString = _T("");
+	CString szToolOption = _T("");
+	CString szErrMsg = _T("");
+	int nHostAdd;
+
+	CString sCommandHexStr;
+	CString szInputSource;
+
+	//if (szInputSource.Compare("RGB") == NULL) 
+	sCommandHexStr = "BD";
+
+	if (m_MicomVer_Ex >= 1)
+	{
+		nReadByte = 3;
+	}
+	//	if(CurrentSet->nHostAddressType == 0){
+	nHostAdd = HOST_ADD0;
+	//	}
+	//	else{
+	//		nHostAdd = HOST_ADD1;
+	//	}
+
+	m_szI2cAdcReadString = _T("");
+	//6E 50 84 C9 00 00 checksum 
+		//nCheckSum	= 0x6E ^ nHostAdd ^ 0x84 ^ 0x03 ^ 0xCD ^ 0x00;//int nCheckSum			= 0;
+		//===========================
+		// (Reg0-Reg3 : 6E 50 84 03)
+		//===========================
+	m_ctrlI2cAdcCtrl.ClearPort();
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//	SetChannel("00");
+	for (int i = 0; i < 5; i++)
+	{
+		nResult = WakeUp();
+		if (nResult == TEST_PASS) break;
+		Sleep(1);
+	}
+
+	m_nReadByte = nReadByte;
+
+	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	//===========================
+	// (Reg4-Reg7 : C9 00 00 CS)
+	//===========================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
+	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+
+	nReadByte = 5;
+	//=================================
+	// Tool Option Read Command (0x24)
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 5000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (szReadString.GetLength() >= 7)
+	{
+		if ((szReadString.GetAt(5) != '0')
+			&& (szReadString.GetAt(6) != '1'))
+		{
+			nResult = ERROR_I2C_RESPONSE;
+		}
+	}
+	else {
+		nResult = ERROR_I2C_RESPONSE;
+	}
+
+	//=================================
+	// Tool Option Read Command (0x30)
+	// Read nReadByte
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH + (nReadByte * 2) + 3, 2000, m_szI2cAdcReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (m_szI2cAdcReadString.GetAt(CMD_LENGTH) == '0')
+	{
+		if (m_szI2cAdcReadString.GetAt(CMD_LENGTH + 1) == '1')
+		{
+			nResult = TEST_PASS;
+
+		}
+		else
+		{
+			nResult = TEST_FAIL;
+		}
+	}
+	else
+	{
+		nResult = TEST_FAIL;
+	}
+
+
+	return nResult;
+}
+int CI2cAdcCtrl::MNT_Proximity_Check()
+{
+	int nResult = TEST_FAIL;
+	int nCheckSum = 0;
+	int nToolOption = 0;
+
+	//int nReadByte = 2; // Version Data : 9Byte
+	int nReadByte = 2; // Version Data : 9Byte
+
+	CString szCmd = _T("");
+	CString szTemp = _T("");
+	CString szReadString = _T("");
+	CString szToolOption = _T("");
+	CString szErrMsg = _T("");
+	int nHostAdd;
+
+	CString sCommandHexStr;
+	CString szInputSource;
+
+	//if (szInputSource.Compare("RGB") == NULL) 
+	sCommandHexStr = "BE";
+	if (m_MicomVer_Ex >= 1)
+	{
+		nReadByte = 3;
+	}
+	
+	//	if(CurrentSet->nHostAddressType == 0){
+	nHostAdd = HOST_ADD0;
+	//	}
+	//	else{
+	//		nHostAdd = HOST_ADD1;
+	//	}
+
+	m_szI2cAdcReadString = _T("");
+	//6E 50 84 C9 00 00 checksum 
+		//nCheckSum	= 0x6E ^ nHostAdd ^ 0x84 ^ 0x03 ^ 0xCD ^ 0x00;//int nCheckSum			= 0;
+		//===========================
+		// (Reg0-Reg3 : 6E 50 84 03)
+		//===========================
+	m_ctrlI2cAdcCtrl.ClearPort();
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//	SetChannel("00");
+	for (int i = 0; i < 5; i++)
+	{
+		nResult = WakeUp();
+		if (nResult == TEST_PASS) break;
+		Sleep(1);
+	}
+
+	m_nReadByte = nReadByte;
+
+	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	//===========================
+	// (Reg4-Reg7 : C9 00 00 CS)
+	//===========================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
+	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 2000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+
+	nReadByte = 5;
+	//=================================
+	// Tool Option Read Command (0x24)
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH, 5000, szReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (szReadString.GetLength() >= 7)
+	{
+		if ((szReadString.GetAt(5) != '0')
+			&& (szReadString.GetAt(6) != '1'))
+		{
+			nResult = ERROR_I2C_RESPONSE;
+		}
+	}
+	else {
+		nResult = ERROR_I2C_RESPONSE;
+	}
+
+	//=================================
+	// Tool Option Read Command (0x30)
+	// Read nReadByte
+	//=================================
+	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
+	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
+
+	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+
+	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if ((nResult = ReceiveCommString(CMD_LENGTH + (nReadByte * 2) + 3, 2000, m_szI2cAdcReadString)) != TEST_PASS)
+	{
+		return nResult;
+	}
+
+	if (m_szI2cAdcReadString.GetAt(CMD_LENGTH) == '0')
+	{
+		if (m_szI2cAdcReadString.GetAt(CMD_LENGTH + 1) == '1')
+		{
+			nResult = TEST_PASS;
+
+		}
+		else
+		{
+			nResult = TEST_FAIL;
+		}
+	}
+	else
+	{
+		nResult = TEST_FAIL;
+	}
+
+
+	return nResult;
+}
+
+
 BOOL CI2cAdcCtrl::GetModuleVoltage(double& dVolt)
 {
 	CString szCmd		= _T("");

@@ -357,6 +357,9 @@ public:
 	CString		sJigComPort;
 	CString		sVfmComPort;
 	CString		sDpgComPort;
+	CString		sCountJigComPort;
+	CString		sDPMSComPort;
+	
 
 	DWORD		wPatternBaudRate;
 	DWORD		wHDMIBaudRate;
@@ -368,6 +371,8 @@ public:
 	DWORD		wJigBaudRate;
 	DWORD		wVfmBaudRate;
 	DWORD		wDpgBaudRate;
+	DWORD		wCountJigBaudRate;
+	DWORD		wDPMSBaudRate;
 
 	CString		sHDMIRoiShape;
 
@@ -382,7 +387,10 @@ public:
 	BOOL		bUseJig;
 	BOOL		bUseVfm;
 	BOOL		bUseDpg;
+	BOOL		bUseCountIDJig;
+	BOOL		bUseDPMS;
 
+	DWORD		wJig_ID_Count_MAX;
 // add 20100622
 	BOOL		bUseAVC;
 	DWORD		wAvcBaudRate;
@@ -1117,6 +1125,8 @@ const COLORREF COLOR_BLACK       = RGB(   1,   1,   1 );
 #define		W_3840_H_600			15
 #define		W_1920_H_540			16
 #define		W_1920_H_1200			17
+#define		W_2048_H_2560			18
+#define		W_3328_H_1440			19
 
 //Mode Register Setting Define
 #define		JEIDA_DUAL			0x81

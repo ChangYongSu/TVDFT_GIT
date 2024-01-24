@@ -72,6 +72,8 @@ void COptComportPage::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptComportPage)
 	DDX_Control(pDX, IDC_CHK_USE_JIG, m_ctrlUseJigChk);
+	DDX_Control(pDX, IDC_CHK_USE_COUNT_JIG, m_ctrlUseCountJigChk);
+	DDX_Control(pDX, IDC_CHK_USE_DPMS, m_ctrlUseDPMSChk);
 	DDX_Control(pDX, IDC_CHK_USE_LNB, m_ctrlUseLnbChk);
 	DDX_Control(pDX, IDC_CHK_USE_AVC, m_ctrlUseAvcChk);
 	DDX_Control(pDX, IDC_CMB_COMPORT_AVC, m_ctrlAvcComportCmb);
@@ -127,6 +129,8 @@ BEGIN_MESSAGE_MAP(COptComportPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHK_USE_DPGEN, &COptComportPage::OnBnClickedChkUseDpgen)
 	ON_BN_CLICKED(IDC_RADIO_DP_TIME60, &COptComportPage::OnBnClickedRadioDpTime60)
 	ON_BN_CLICKED(IDC_RADIO_DP_TIME30, &COptComportPage::OnBnClickedRadioDpTime30)
+	ON_BN_CLICKED(IDC_CHK_USE_COUNT_JIG, &COptComportPage::OnBnClickedChkUseCountJig)
+	ON_BN_CLICKED(IDC_CHK_USE_DPMS, &COptComportPage::OnBnClickedChkUseDpms)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -303,13 +307,33 @@ void COptComportPage::SetAvcGroup(BOOL bEnable)
 	GetDlgItem(IDC_STATIC_AVC_BAUDRATE)->EnableWindow(bEnable);
 	GetDlgItem(IDC_CMB_BAUDRATE_AVC)->EnableWindow(bEnable);
 }
+
 void COptComportPage::SetJigGroup(BOOL bEnable)
 {
 	GetDlgItem(IDC_STATIC_JIG_COMPORT)->EnableWindow(bEnable);
 	GetDlgItem(IDC_CMB_COMPORT_JIG)->EnableWindow(bEnable);
 	GetDlgItem(IDC_STATIC_JIG_BAUDRATE)->EnableWindow(bEnable);
-	GetDlgItem(IDC_CMB_BAUDRATE_JIG)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_BAUDRATE_JIG)->EnableWindow(bEnable);	
 }
+
+void COptComportPage::SetCountJigGroup(BOOL bEnable)
+{	
+	GetDlgItem(IDC_STATIC_COUNT_JIG_COMPORT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_COMPORT_COUNT_JIG)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_COUNT_JIG_BAUDRATE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_BAUDRATE_COUNT_JIG)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_COUNT_JIG)->EnableWindow(bEnable);
+}
+
+void COptComportPage::SetDPMSGroup(BOOL bEnable)
+{
+	GetDlgItem(IDC_STATIC_DPMS_COMPORT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_COMPORT_DPMS)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_DPMS_BAUDRATE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_BAUDRATE_DPMS)->EnableWindow(bEnable);
+}
+
+
 void COptComportPage::SetVfmGroup(BOOL bEnable)
 {
 	GetDlgItem(IDC_STATIC_VFM_COMPORT)->EnableWindow(bEnable);
@@ -373,12 +397,55 @@ BOOL COptComportPage::OnInitDialog()
 
 
 //-
-#if 1
-	if (g_nSysType == AUTO_SYS) {
-		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate, IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG);
-		SetJigGroup(CurrentSet->bUseJig);
 
-		m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
+	InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate, IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG);
+	SetJigGroup(CurrentSet->bUseJig);
+	m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
+
+	InitComPort(CurrentSet->sCountJigComPort, CurrentSet->wCountJigBaudRate,IDC_CMB_COMPORT_COUNT_JIG, IDC_CMB_BAUDRATE_COUNT_JIG); 
+	SetCountJigGroup(CurrentSet->bUseCountIDJig);
+	m_ctrlUseCountJigChk.SetCheck(CurrentSet->bUseCountIDJig);
+	CString sMsg;
+	sMsg.Format("%d", CurrentSet->wJig_ID_Count_MAX);
+	SetDlgItemText(IDC_EDIT_COUNT_JIG, sMsg);
+	
+
+	InitComPort(CurrentSet->sDPMSComPort, CurrentSet->wDPMSBaudRate, IDC_CMB_COMPORT_DPMS, IDC_CMB_BAUDRATE_DPMS);
+	SetDPMSGroup(CurrentSet->bUseDPMS);
+	m_ctrlUseDPMSChk.SetCheck(CurrentSet->bUseDPMS);
+
+	//if (gJigCtrl.m_bID_Ctrl_PortOpen)
+		//	gJigCtrl.ID_Ctrl_PortClose();
+		//CurrentSet->bUseCountIDJig = m_ctrlUseCountJigChk.GetCheck();
+		//CurrentSet->wCountJigBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_COUNT_JIG);
+		//CurrentSet->sCountJigComPort.Format(GetComPortVal(IDC_CMB_COMPORT_COUNT_JIG));
+
+		//if (CurrentSet->bUseCountIDJig)
+		//{
+
+		//	if (!gJigCtrl.Create(CurrentSet->sCountJigComPort, CurrentSet->wCountJigBaudRate)) {
+		//		sMsg.Format("Failed to open COM port (%s)", CurrentSet->sCountJigComPort);
+		//		AfxMessageBox(sMsg);
+		//	}
+		//}
+
+		//if (gJigCtrl.m_bDPMS_PortOpen)
+		//	gJigCtrl.DPMS_PortClose();
+		//CurrentSet->bUseDPMS = m_ctrlUseDPMSChk.GetCheck();
+		//CurrentSet->wDPMSBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_DPMS);
+		//CurrentSet->sDPMSComPort.Format(GetComPortVal(IDC_CMB_COMPORT_DPMS));
+
+		//if (CurrentSet->bUseDPMS)
+		//{
+
+		//	if (!gJigCtrl.Create(CurrentSet->sDPMSComPort, CurrentSet->wDPMSBaudRate)) {
+		//		sMsg.Format("Failed to open COM port (%s)", CurrentSet->sDPMSComPort);
+		//		AfxMessageBox(sMsg);
+		//	}
+		//}
+
+
+
 
 		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
 		//SetScannerGroup(FALSE);
@@ -406,88 +473,32 @@ BOOL COptComportPage::OnInitDialog()
 			}
 			m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
 		}
-	}
-	else {
-		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
-		InitComPort(CurrentSet->sStartBoxComPort, CurrentSet->wStartBoxBaudRate, IDC_CMB_COMPORT_START_BOX, IDC_CMB_BAUDRATE_START_BOX);
 
-//		GetDlgItem(IDC_CHK_USE_JIG)->EnableWindow(FALSE);
-//		SetJigGroup(FALSE);
-		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate, IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG);
-		SetJigGroup(CurrentSet->bUseJig);
+//	else {
+//		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
+//		InitComPort(CurrentSet->sStartBoxComPort, CurrentSet->wStartBoxBaudRate, IDC_CMB_COMPORT_START_BOX, IDC_CMB_BAUDRATE_START_BOX);
+//
+////		GetDlgItem(IDC_CHK_USE_JIG)->EnableWindow(FALSE);
+////		SetJigGroup(FALSE);
+//		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate, IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG);
+//		SetJigGroup(CurrentSet->bUseJig);
+//		m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
+//
+//
+//		m_ctrlUseScannerChk.SetCheck(CurrentSet->bUseScanner);
+//		SetScannerGroup(CurrentSet->bUseScanner);
+//		if (CurrentSet->bUseScanner == FALSE)
+//		{
+//			CurrentSet->bUseStartBox = TRUE;
+//		}
+//		else
+//		{
+//			CurrentSet->bUseStartBox = FALSE;
+//		}
+//		m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
+//		SetStartBoxGroup(CurrentSet->bUseStartBox);
+//	}
 
-		m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
-
-
-		m_ctrlUseScannerChk.SetCheck(CurrentSet->bUseScanner);
-		SetScannerGroup(CurrentSet->bUseScanner);
-		if (CurrentSet->bUseScanner == FALSE)
-		{
-			CurrentSet->bUseStartBox = TRUE;
-		}
-		else
-		{
-			CurrentSet->bUseStartBox = FALSE;
-		}
-		m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
-		SetStartBoxGroup(CurrentSet->bUseStartBox);
-	}
-#else
-
-//AUTO
-	if(g_nSysType == AUTO_SYS){
-		InitComPort(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate,IDC_CMB_COMPORT_JIG, IDC_CMB_BAUDRATE_JIG );
-		SetJigGroup(CurrentSet->bUseJig);
-
-		m_ctrlUseJigChk.SetCheck(CurrentSet->bUseJig);
-		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
-			//SetScannerGroup(FALSE);
-			GetDlgItem(IDC_CHK_USE_SCANNER)->EnableWindow(FALSE);
-
-			InitComPort(CurrentSet->sStartBoxComPort, CurrentSet->wStartBoxBaudRate, IDC_CMB_COMPORT_START_BOX, IDC_CMB_BAUDRATE_START_BOX);
-			//SetStartBoxGroup(FALSE);
-			GetDlgItem(IDC_CHK_USE_START_BOX)->EnableWindow(FALSE);
-		if (CurrentSet->bUsePLCRobot == TRUE)
-		{			
-			SetScannerGroup(TRUE);			
-			SetStartBoxGroup(FALSE);
-			
-		}
-		else
-		{
-			m_ctrlUseScannerChk.SetCheck(CurrentSet->bUseScanner);		
-			if (CurrentSet->bUseScanner == FALSE)
-			{
-				CurrentSet->bUseStartBox = TRUE;
-			}
-			else
-			{
-				CurrentSet->bUseStartBox = FALSE;
-			}
-			m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
-		}
-	}
-	else{
-		InitComPort(CurrentSet->sScannerComPort, CurrentSet->wScannerBaudRate, IDC_CMB_COMPORT_SCANNER, IDC_CMB_BAUDRATE_SCANNER);
-		InitComPort(CurrentSet->sStartBoxComPort, CurrentSet->wStartBoxBaudRate, IDC_CMB_COMPORT_START_BOX, IDC_CMB_BAUDRATE_START_BOX);
-
-		GetDlgItem(IDC_CHK_USE_JIG)->EnableWindow(FALSE);
-		SetJigGroup(FALSE);
-
-		m_ctrlUseScannerChk.SetCheck(CurrentSet->bUseScanner);
-		SetScannerGroup(CurrentSet->bUseScanner);
-		if (CurrentSet->bUseScanner == FALSE)
-		{
-			CurrentSet->bUseStartBox = TRUE;
-		}
-		else
-		{
-			CurrentSet->bUseStartBox = FALSE;
-		}
-		m_ctrlUseStartBoxChk.SetCheck(CurrentSet->bUseStartBox);
-		SetStartBoxGroup(CurrentSet->bUseStartBox);
-	}
-#endif
 	InitComPort(CurrentSet->sVfmComPort, CurrentSet->wVfmBaudRate,IDC_CMB_COMPORT_VFM, IDC_CMB_BAUDRATE_VFM );
 	m_ctrlUseVfmChk.SetCheck(CurrentSet->bUseVfm);
 	SetVfmGroup(CurrentSet->bUseVfm);
@@ -812,8 +823,6 @@ void COptComportPage::OnBtnComportOptApply()
 	OldSet.bUseJig = CurrentSet->bUseJig;
 	OldSet.sJigComPort = CurrentSet->sJigComPort;
 	OldSet.wJigBaudRate = CurrentSet->wJigBaudRate;
-
-#if 1
 	
 	CurrentSet->bUseJig = m_ctrlUseJigChk.GetCheck();
 	CurrentSet->wJigBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_JIG);
@@ -848,43 +857,47 @@ void COptComportPage::OnBtnComportOptApply()
 		if (gJigCtrl.m_bPortOpen)				gJigCtrl.PortClose();
 	}
 	
-#else
-	if (1)// g_nSysType == AUTO_SYS) {
-		CurrentSet->bUseJig = m_ctrlUseJigChk.GetCheck();
-		CurrentSet->wJigBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_JIG);
-		CurrentSet->sJigComPort.Format(GetComPortVal(IDC_CMB_COMPORT_JIG));
-		if (g_nSysType == AUTO_SYS) {
-			if (CurrentSet->bUseJig)
-			{
-				if ((   CurrentSet->bUseJig     != OldSet.bUseJig)
-					|| (CurrentSet->sJigComPort  != OldSet.sJigComPort)
-					|| (CurrentSet->wJigBaudRate != OldSet.wJigBaudRate))
-				{
-					if (gJigCtrl.m_bPortOpen)			
-						gJigCtrl.PortClose();
-					//if (gJigCtrl.m_bPortOpen == FALSE)
-					{
-						if (!gJigCtrl.Create(CurrentSet->sJigComPort, CurrentSet->wJigBaudRate)) {
-							sMsg.Format("Failed to open COM port (%s)", CurrentSet->sJigComPort);
-							AfxMessageBox(sMsg);
-						}
-					}
+	//OldSet.bUseJig = CurrentSet->bUseJig;
+	//OldSet.sJigComPort = CurrentSet->sJigComPort;
+	//OldSet.wJigBaudRate = CurrentSet->wJigBaudRate;
+////////////////////////////////////////////////////////////
+	if (gJigCtrl.m_bID_Ctrl_PortOpen)
+		gJigCtrl.ID_Ctrl_PortClose();
+	CurrentSet->bUseCountIDJig = m_ctrlUseCountJigChk.GetCheck();
+	CurrentSet->wCountJigBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_COUNT_JIG);
+	CurrentSet->sCountJigComPort.Format(GetComPortVal(IDC_CMB_COMPORT_COUNT_JIG));
+	
+	
+		
+	GetDlgItemText(IDC_EDIT_COUNT_JIG, sMsg);
+	CurrentSet->wJig_ID_Count_MAX = _ttoi(sMsg);
 
-					if (gJigCtrl.m_bPortOpen == TRUE)
-					{
-						gJigCtrl.Init();
-					}
-				}
-
-			}
-		}
-		else
-		{
-			if (gJigCtrl.m_bPortOpen)				gJigCtrl.PortClose();
+	if (CurrentSet->bUseCountIDJig)
+	{
+		
+		if (!gJigCtrl.ID_Ctrl_Create(CurrentSet->sCountJigComPort, CurrentSet->wCountJigBaudRate)) {
+			sMsg.Format("Failed to open COM port (%s)", CurrentSet->sCountJigComPort);
+			AfxMessageBox(sMsg);
 		}
 	}
 
-#endif
+/////////////////////////////////////////////////////
+	if (gJigCtrl.m_bDPMS_PortOpen)
+		gJigCtrl.DPMS_PortClose();
+	CurrentSet->bUseDPMS = m_ctrlUseDPMSChk.GetCheck();
+	CurrentSet->wDPMSBaudRate = GetBaudRateVal(IDC_CMB_BAUDRATE_DPMS);
+	CurrentSet->sDPMSComPort.Format(GetComPortVal(IDC_CMB_COMPORT_DPMS));
+
+	if (CurrentSet->bUseDPMS)
+	{
+
+		if (!gJigCtrl.DPMS_Create(CurrentSet->sDPMSComPort, CurrentSet->wDPMSBaudRate)) {
+			sMsg.Format("Failed to open COM port (%s)", CurrentSet->sDPMSComPort);
+			AfxMessageBox(sMsg);
+		}
+	}
+
+
 
 //
 	
@@ -1157,4 +1170,18 @@ void COptComportPage::OnBnClickedRadioDpTime30()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	OnBnClickedRadioDpTime60();
+}
+
+
+void COptComportPage::OnBnClickedChkUseCountJig()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	SetCountJigGroup(m_ctrlUseCountJigChk.GetCheck());
+}
+
+
+void COptComportPage::OnBnClickedChkUseDpms()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	SetDPMSGroup(m_ctrlUseDPMSChk.GetCheck());
 }

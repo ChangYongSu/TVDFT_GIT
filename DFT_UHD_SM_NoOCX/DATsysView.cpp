@@ -2665,20 +2665,20 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		if (pCurrentSet->sAvcComPort == _T("")) pCurrentSet->sAvcComPort = "COM8";
 
 		//AUTO
-		if (1)//g_nSysType == AUTO_SYS)
-		{
+		
 			pCurrentSet->sJigComPort = pApp->GetProfileString(_T("Config"), _T("Jig ComPort"), "COM9");
 			if (pCurrentSet->sJigComPort == _T("")) pCurrentSet->sJigComPort = "COM9";
 
+			pCurrentSet->sCountJigComPort = pApp->GetProfileString(_T("Config"), _T("Count Jig ComPort"), "COM7");
+			if (pCurrentSet->sCountJigComPort == _T("")) pCurrentSet->sCountJigComPort = "COM7";
+
+			pCurrentSet->sDPMSComPort = pApp->GetProfileString(_T("Config"), _T("DPMS ComPort"), "COM8");
+			if (pCurrentSet->sDPMSComPort == _T("")) pCurrentSet->sDPMSComPort = "COM8";
+			
+
 			pCurrentSet->sVfmComPort = pApp->GetProfileString(_T("Config"), _T("VFM ComPort"), "\\\\.\\COM10");
 			if (pCurrentSet->sVfmComPort == _T("")) pCurrentSet->sVfmComPort = "\\\\.\\COM10";
-		}
-		else
-		{
-			//
-			pCurrentSet->sVfmComPort = pApp->GetProfileString(_T("Config"), _T("VFM ComPort"), "COM9");
-			if (pCurrentSet->sVfmComPort == _T("")) pCurrentSet->sVfmComPort = "COM9";
-		}
+		
 
 	}
 	else if (g_nRunningProcessNo == 2)
@@ -2716,6 +2716,13 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		{
 			pCurrentSet->sJigComPort = pApp->GetProfileString(_T("Config"), _T("Jig ComPort"), "\\\\.\\COM19");
 			if (pCurrentSet->sJigComPort == _T("")) pCurrentSet->sJigComPort = "\\\\.\\COM19";
+
+			pCurrentSet->sCountJigComPort = pApp->GetProfileString(_T("Config"), _T("Count Jig ComPort"), "COM17");
+			if (pCurrentSet->sCountJigComPort == _T("")) pCurrentSet->sCountJigComPort = "COM17";
+
+			pCurrentSet->sDPMSComPort = pApp->GetProfileString(_T("Config"), _T("DPMS ComPort"), "COM18");
+			if (pCurrentSet->sDPMSComPort == _T("")) pCurrentSet->sDPMSComPort = "COM18";
+
 			pCurrentSet->sVfmComPort = pApp->GetProfileString(_T("Config"), _T("VFM ComPort"), "\\\\.\\COM20");
 			if (pCurrentSet->sVfmComPort == _T("")) pCurrentSet->sVfmComPort = "\\\\.\\COM20";
 		}
@@ -2762,7 +2769,13 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
  {
 			pCurrentSet->sJigComPort = pApp->GetProfileString(_T("Config"), _T("Jig ComPort"), "\\\\.\\COM29");
 			if (pCurrentSet->sJigComPort == _T("")) pCurrentSet->sJigComPort = "\\\\.\\COM29";	
-			
+
+			pCurrentSet->sCountJigComPort = pApp->GetProfileString(_T("Config"), _T("Count Jig ComPort"), "COM27");
+			if (pCurrentSet->sCountJigComPort == _T("")) pCurrentSet->sCountJigComPort = "COM27";
+
+			pCurrentSet->sDPMSComPort = pApp->GetProfileString(_T("Config"), _T("DPMS ComPort"), "COM28");
+			if (pCurrentSet->sDPMSComPort == _T("")) pCurrentSet->sDPMSComPort = "COM28";
+
 			pCurrentSet->sVfmComPort = pApp->GetProfileString(_T("Config"), _T("VFM ComPort"), "\\\\.\\COM30");
 			if (pCurrentSet->sVfmComPort == _T("")) pCurrentSet->sVfmComPort = "\\\\.\\COM30";
 
@@ -2924,6 +2937,12 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 		pCurrentSet->wJigBaudRate			= (DWORD)(atoi(sBaudRate));
 	}
 //
+	sBaudRate = pApp->GetProfileString(_T("Config"), _T("Count Jig Baud Rate"), "19200");
+	pCurrentSet->wCountJigBaudRate = (DWORD)(atoi(sBaudRate));
+
+	sBaudRate = pApp->GetProfileString(_T("Config"), _T("DPMS Baud Rate"), "9600");
+	pCurrentSet->wDPMSBaudRate = (DWORD)(atoi(sBaudRate));
+
 	sBaudRate							= pApp->GetProfileString(_T("Config"), _T("VFM Baud Rate"), "19200");
 	pCurrentSet->wVfmBaudRate			= (DWORD)(atoi(sBaudRate));
 
@@ -2956,6 +2975,10 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	{
 		pCurrentSet->bUseJig				= pApp->GetProfileInt(_T("Config"), _T("Use Jig"), 0);
 	}
+		pCurrentSet->bUseCountIDJig = pApp->GetProfileInt(_T("Config"), _T("Use COUNT ID"), 0);
+		pCurrentSet->wJig_ID_Count_MAX = pApp->GetProfileInt(_T("Config"), _T("MAX COUNT ID"), 100000);
+		pCurrentSet->bUseDPMS = pApp->GetProfileInt(_T("Config"), _T("Use DPMS"), 0);
+
 //
 	pCurrentSet->bUseVfm				= pApp->GetProfileInt(_T("Config"), _T("Use VFM"), 0);
 	pCurrentSet->bUseDpg = pApp->GetProfileInt(_T("Config"), _T("Use DPG"), 0);
@@ -3574,7 +3597,20 @@ void CDATsysView::SaveRegistrySetting()
 		sBaudRate.Format("%d", CurrentSet->wJigBaudRate);
 		pApp->WriteProfileString(_T("Config"), _T("Jig Baud Rate"), sBaudRate);
 		pApp->WriteProfileInt(_T("Config"), _T("Use Jig"),			CurrentSet->bUseJig);
+		pApp->WriteProfileInt(_T("Config"), _T("Use Jig"),			CurrentSet->bUseJig);
 	}
+	
+
+		pApp->WriteProfileString(_T("Config"), _T("Count Jig ComPort"), CurrentSet->sCountJigComPort);
+		sBaudRate.Format("%d", CurrentSet->wCountJigBaudRate);
+		pApp->WriteProfileString(_T("Config"), _T("Count Jig Baud Rate"), sBaudRate);
+		pApp->WriteProfileInt(_T("Config"), _T("Use COUNT ID"),			CurrentSet->bUseCountIDJig);
+		pApp->WriteProfileInt(_T("Config"), _T("MAX COUNT ID"),			CurrentSet->wJig_ID_Count_MAX);
+
+		pApp->WriteProfileString(_T("Config"), _T("DPMS ComPort"), CurrentSet->sDPMSComPort);
+		sBaudRate.Format("%d", CurrentSet->wDPMSBaudRate);
+		pApp->WriteProfileString(_T("Config"), _T("DPMS Baud Rate"), sBaudRate);
+		pApp->WriteProfileInt(_T("Config"), _T("Use DPMS"),			CurrentSet->bUseDPMS);
 //
 	pApp->WriteProfileString(_T("Config"), _T("VFM ComPort"), CurrentSet->sVfmComPort);
 	sBaudRate.Format("%d", CurrentSet->wVfmBaudRate);
@@ -5568,6 +5604,47 @@ END_INIT :
 
 		}
 	}
+
+
+
+		if(CurrentSet->bUseCountIDJig)
+		{
+			sMsg = _T("[Jig ID Count] Port Open Check = ");
+
+			if(gJigCtrl.m_bID_Ctrl_PortOpen == FALSE)
+			{
+				if(gJigCtrl.ID_Ctrl_Create(CurrentSet->sCountJigComPort, CurrentSet->wCountJigBaudRate)){
+					sMsg += "PASS";								
+				}
+				else sMsg += "FAIL";
+			}
+			else sMsg += "PASS";
+
+			m_pInitDlg->AddString2List(sMsg);
+		}
+
+		if (CurrentSet->bUseDPMS)
+		{
+			sMsg = _T("[DPMS Control] Port Open Check = ");
+
+			if (gJigCtrl.m_bDPMS_PortOpen == FALSE)
+			{
+				if (gJigCtrl.DPMS_Create(CurrentSet->sDPMSComPort, CurrentSet->wDPMSBaudRate)) {
+					sMsg += "PASS";
+				}
+				else sMsg += "FAIL";
+			}
+			else sMsg += "PASS";
+
+			m_pInitDlg->AddString2List(sMsg);
+		}
+	//InitComPort(CurrentSet->sCountJigComPort, CurrentSet->wCountJigBaudRate, IDC_CMB_COMPORT_COUNT_JIG, IDC_CMB_BAUDRATE_COUNT_JIG);
+	//SetCountJigGroup(CurrentSet->bUseCountIDJig);
+	//m_ctrlUseCountJigChk.SetCheck(CurrentSet->bUseCountIDJig);
+
+	//InitComPort(CurrentSet->sDPMSComPort, CurrentSet->wDPMSBaudRate, IDC_CMB_COMPORT_DPMS, IDC_CMB_BAUDRATE_DPMS);
+	//SetDPMSGroup(CurrentSet->bUseDPMS);
+	//m_ctrlUseDPMSChk.SetCheck(CurrentSet->bUseDPMS);
     //-
 //
 	//=================
@@ -6185,6 +6262,27 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	{
 		pView->CheckFWVer();
 	}
+//20231229 Lee Tae Kyu
+	//CString strRead;
+	if (gVF1000Ctrl.CheckLanClear(szMsg, 1000) == 0)
+	{
+	
+	}
+
+	gJigCtrl.m_strID_JigFullInfo = "";// 
+	gJigCtrl.m_nJigID_UseCount = 0;
+	if (CurrentSet->bUseCountIDJig)
+	{
+		gJigCtrl.m_nJigID_UseCount = 0;
+		if (!gJigCtrl.ID_Ctrl_IncCount())
+		{
+			AfxMessageBox("Jig Using Check Fail");
+			//goto END_EXIT;
+		}
+		if(CurrentSet->wJig_ID_Count_MAX > gJigCtrl.m_nJigID_UseCount)
+			AfxMessageBox("Jig Using Count Over");
+	}
+
 #if 1
 	if (CurrentSet->bHdmiEdidControl)
 	{
@@ -6558,7 +6656,10 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 
 					//	if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST)
 					//	if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST &&  pCurStep->m_nTestType != BCM_CHIP_TEST)
-						if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST &&  pCurStep->m_nTestType < BCM_CHIP_TEST)
+						//if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST &&  pCurStep->m_nTestType < BCM_CHIP_TEST)
+						if (pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST
+							&& (pCurStep->m_nTestType == IR_BLASTER_TEST
+								|| pCurStep->m_nTestType < BCM_CHIP_TEST))
 						{
 							if (g_nUseNoScanType == TRUE)//ScannerCtrl
 							{
@@ -6717,7 +6818,9 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 				//	if(pCurStep->GetResult() == FALSE)
 				//	if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST)
 				//	if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST &&  pCurStep->m_nTestType != BCM_CHIP_TEST)
-					if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST &&  pCurStep->m_nTestType < BCM_CHIP_TEST)
+					if(pCurStep->GetResult() == FALSE && pCurStep->m_nTestType != MANUAL_TEST 
+						&& ( pCurStep->m_nTestType == IR_BLASTER_TEST
+						||  pCurStep->m_nTestType < BCM_CHIP_TEST))
 					{
 						if (g_nUseNoScanType == TRUE)//ScannerCtrl
 						{
@@ -14646,6 +14749,61 @@ long CDATsysView::OnCommunication(WPARAM wParam, LPARAM lParam)
 			
 		}
 	} 
+	else if ((int)wParam == gJigCtrl.m_nID_Ctrl_PortID)
+	{	
+		nSize2 = (gJigCtrl.m_ID_Ctrl_Com.m_QueueRead).GetSize();
+		if (nSize2 >= 1)
+		{			
+			strReadData2 = _T("");
+
+			CString strTmp = _T("JigID>>PC ");
+			for (idx1 = 0; idx1 < nSize2; idx1++)
+			{
+				(gJigCtrl.m_ID_Ctrl_Com.m_QueueRead).GetByte(&aByte);  //
+
+				gJigCtrl.m_strID_Ctrl_Receive[gJigCtrl.m_nID_Ctrl_ReceiveCnt++] = aByte;
+
+				//sTmp.Format("%02X", aByte);
+				//strReadData2 = strReadData2 + sTmp;
+
+				//sTmp.Format("%02X ", aByte);
+				//strTmp = strTmp + sTmp;
+			}
+			gJigCtrl.m_sID_Ctrl_Receive = gJigCtrl.m_strID_Ctrl_Receive;
+		//	gStrTmpLog.Format("Com: %Ts ", strTmp);// gStrTmpLog = "CommandLoadFast()"; //
+		//	SystemMonitorLog_Save(gStrTmpLog, _T(__FILE__), __LINE__);
+		//	AddStringToStatus(strTmp);
+		}
+	}
+	else if ((int)wParam == gJigCtrl.m_nDPMS_PortID)
+	{
+		nSize2 = (gJigCtrl.m_DPMS_Com.m_QueueRead).GetSize();
+		if (nSize2 >= 1)
+		{
+			strReadData2 = _T("");
+
+			CString strTmp = _T("JigID>>PC ");
+			for (idx1 = 0; idx1 < nSize2; idx1++)
+			{
+				(gJigCtrl.m_DPMS_Com.m_QueueRead).GetByte(&aByte);  //
+				if (gJigCtrl.m_nDPMS_ReceiveCnt > 200)
+					gJigCtrl.m_nDPMS_ReceiveCnt = 0;
+				gJigCtrl.m_strDPMS_Receive[gJigCtrl.m_nDPMS_ReceiveCnt++] = aByte;
+				
+				//sTmp.Format("%02X", aByte);
+				//strReadData2 = strReadData2 + sTmp;
+
+				//sTmp.Format("%02X ", aByte);
+				//strTmp = strTmp + sTmp;
+			}
+		//	gJigCtrl.m_nDPMS_ReceiveCnt = nSize2;
+			//gJigCtrl.m_sDPMS_Receive = gJigCtrl.m_strDPMS_Receive;
+			//	gStrTmpLog.Format("Com: %Ts ", strTmp);// gStrTmpLog = "CommandLoadFast()"; //
+			//	SystemMonitorLog_Save(gStrTmpLog, _T(__FILE__), __LINE__);
+			//	AddStringToStatus(strTmp);
+		}
+	}
+
 	return 1;
 }
 
@@ -16033,6 +16191,7 @@ void CDATsysView::SetStopStepDlgMsg(int nStepResult)
 	CString szMsg1 = _T("");
 	CString szMsg2 = _T("");
 	CString szMsg3 = _T("");
+	CString szMsg4 = _T("");
 
 	szMsg1.Format("Step(%d) %s",pCurStep->m_nStep,pCurStep->m_sName);
 
@@ -16240,16 +16399,48 @@ void CDATsysView::SetStopStepDlgMsg(int nStepResult)
 		}
 		else
 		{
-			if(pCurStep->m_nTestType == ADC_TEST)
+			if (pCurStep->m_nTestType == IR_BLASTER_TEST)
 			{
-				szMsg2 = _T("ADC NG");
+				CString sTemp;
+				CString sTemp1;
+				sTemp = pCurStep->m_strMsg;
+				int lpos = sTemp.Find("\n");
+				if (lpos > 0)
+				{
+					szMsg2 = sTemp.Left(lpos);
+					sTemp =  sTemp.Mid(lpos+1);
+					lpos = sTemp.Find("\n");
+					if (lpos > 0)
+					{
+						szMsg3 = sTemp.Left(lpos);
+						szMsg4 = sTemp.Mid(lpos + 1);
+
+						
+					}
+					else
+					{
+						szMsg3 = sTemp;
+					}
+				}
+				else
+				{
+					szMsg2 = sTemp;
+				}
+
 			}
 			else
 			{
-				szMsg2 = _T("NG");
-			}
+				if (pCurStep->m_nTestType == ADC_TEST)
+				{
+					szMsg2 = _T("ADC NG");
+				}
+				else
+				{
+					szMsg2 = _T("NG");
+				}
 
-			szMsg3.Format(_T("%s"), pCurStep->m_strMsg);
+				szMsg2.Format(_T("%s"), pCurStep->m_strMsg);
+			}
 		}
 	}
 	else
@@ -16258,7 +16449,7 @@ void CDATsysView::SetStopStepDlgMsg(int nStepResult)
 		szMsg3.Format(_T("%s"), pCurStep->m_strMsg);
 	}
 
-	m_StopStepDlg.SetTestResultInfo(szMsg1,szMsg2,szMsg3);
+	m_StopStepDlg.SetTestResultInfo(szMsg1,szMsg2, szMsg3, szMsg4);
 }
 
 //+add kwmoon 080624
@@ -26536,11 +26727,27 @@ BOOL CDATsysView::Check_IR_Blaster()
 
 	if (gVF1000Ctrl.GetIRBlasterData(strRead, 1000) == 0)
 	{
+		strMsg = "COMMAND : NO CHECK\n";
+		szPrevMsg += strMsg;
+		strMsg.Format("Voltage : L %2.2f,H %2.2f,DC FAIL,\n", pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
+		szPrevMsg += strMsg;
+		strMsg = "SIGNAL : NO CHECK";
+		szPrevMsg += strMsg;
+		pCurStep->m_strMsg = szPrevMsg;
 		return FALSE;
 	}
 	if (TVCommCtrl.Send_TVControl_Command("av 00 25", 1000) == 0)
 	{
 		AddStringToStatus("Command Send Error: av 00 25");
+		strMsg = "Command Send Error: av 00 25";
+
+		strMsg = "COMMAND : NG\n";
+		szPrevMsg += strMsg;
+		strMsg.Format("Voltage : L %2.2f,H %2.2f,DC NO CHECK,\n", pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
+		szPrevMsg += strMsg;
+		strMsg = "SIGNAL : NO CHECK";
+		szPrevMsg += strMsg;
+		pCurStep->m_strMsg = szPrevMsg;
 		return FALSE;
 	}
 
@@ -26559,7 +26766,7 @@ BOOL CDATsysView::Check_IR_Blaster()
 			strMsg += " DC: ";
 			strMsg += str33Data;
 			strMsg += "V";
-
+			
 			AddStringToStatus(strMsg);
 
 			Volt33Data = _ttoi(strRead.Mid(8));
@@ -26583,8 +26790,18 @@ BOOL CDATsysView::Check_IR_Blaster()
 					TVCommCtrl.Send_TVControl_Command("av 00 26", 1000);
 					//"V; xx, S; OK / NG"
 					//CString szPrevMsg = "";
+					
 					strMsg.Format("V: %2.2fV,S: OK", Volt33Data);
+					pCurStep->m_strMsg = strMsg;
 					SaveMessageList(strMsg);
+
+					strMsg = "COMMAND : OK\n";
+					szPrevMsg += strMsg;
+					strMsg.Format("Voltage : L %2.2f,H %2.2f,DC %2.2f,\n", pCurStep->m_fLowLimit, pCurStep->m_fHighLimit, Volt33Data);
+					szPrevMsg += strMsg;
+					strMsg = "SIGNAL : OK";
+					szPrevMsg += strMsg;
+					pCurStep->m_strMsg = szPrevMsg;
 					/*g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
 					if (szPrevMsg != _T(""))
 					{
@@ -26611,7 +26828,16 @@ BOOL CDATsysView::Check_IR_Blaster()
 			TVCommCtrl.Send_TVControl_Command("av 00 26", 1000);
 			//CString szPrevMsg = "";
 			strMsg = "Fail to Get Test Data From IR Blaster";
+			//pCurStep->m_strMsg = strMsg;
 			SaveMessageList(strMsg);
+
+			strMsg = "COMMAND : OK\n";
+			szPrevMsg += strMsg;
+			strMsg.Format("Voltage : L %2.2f,H %2.2f,DC FAIL,\n", pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
+			szPrevMsg += strMsg;
+			strMsg = "SIGNAL : NO CHECK";
+			szPrevMsg += strMsg;
+			pCurStep->m_strMsg = szPrevMsg;
 		/*	g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
 			if (szPrevMsg != _T(""))
 			{
@@ -26632,7 +26858,16 @@ BOOL CDATsysView::Check_IR_Blaster()
 	TVCommCtrl.Send_TVControl_Command("av 00 26", 1000);
 	
 	strMsg.Format("V: %2.2fV,S: NG", Volt33Data);
+	pCurStep->m_strMsg = strMsg;
 	SaveMessageList(strMsg);
+
+	strMsg = "COMMAND : OK\n";
+	szPrevMsg += strMsg;
+	strMsg.Format("Voltage : L %2.2f,H %2.2f,DC FAIL,\n", pCurStep->m_fLowLimit, pCurStep->m_fHighLimit, Volt33Data);
+	szPrevMsg += strMsg;
+	strMsg = "SIGNAL : NG";
+	szPrevMsg += strMsg;
+	pCurStep->m_strMsg = szPrevMsg;
 	//g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
 	//if (szPrevMsg != _T(""))
 	//{

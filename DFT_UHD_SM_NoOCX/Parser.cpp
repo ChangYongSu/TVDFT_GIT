@@ -244,10 +244,19 @@ _MeasureFunction MeasDefined[] =
 	_T("mnt_apd_check"),			_APD_ON_Check,				MEAS_BOOL,
 	_T("lan_dhcp_check"),			_LAN_HDCP_Check,				MEAS_BOOL,
 	_T("mnt_fan_check"),			_MNT_FAN_Check,				MEAS_BOOL,
-	NULL, NULL, NULL
+	_T("mnt_als_sensor_check"),			_MNT_ALS_Sensor_Check,				MEAS_BOOL,
+	_T("mnt_bls_sensor_check"),			_MNT_BLS_Sensor_Check,				MEAS_BOOL,
+	_T("mnt_front_sensor_check"),		_MNT_Front_Sensor_Check,			MEAS_BOOL,
+	_T("mnt_proximity_check"),			_MNT_Proximity_Check,				MEAS_BOOL,
+	_T("dpms_check"),		_DPMS_Check,	    MEAS_DOUBLE,
+
+		NULL, NULL, NULL
 };
 ///////////////////////////////////////////////////////////////
-
+//int CI2cAdcCtrl::MNT_ALS_Sensor_Check();
+//int CI2cAdcCtrl::MNT_BLS_Sensor_Check();
+//int CI2cAdcCtrl::MNT_Front_Sensor_Check();
+//int CI2cAdcCtrl::MNT_Proximity_Check();
 _InternalFunction Predefined[] =    
 {
 	_T("usermessage"), _UserMessage,
@@ -1051,7 +1060,13 @@ BOOL GetToken()
 			pToken->type = FINISHED;
 			pToken->value.c = '\0';
 			return TRUE;
-		}                                    
+		}    
+
+		if ((*pWalker < 0x09)||(*pWalker >= 0x80))
+		{
+			pToken->value.i = IDS_UNDEFINED_CHAR;
+			return FALSE;
+		}
 
 		if (strchr(_T("{}"), *pWalker))
 		{
@@ -1609,7 +1624,7 @@ BOOL ParseStep(int nStepCnt)
 #endif
 
 		else if (cFuncName.Compare("ir_blaster_check") == 0)
-			pStep->SetTestType(VF_MEASURE_TEST);
+			pStep->SetTestType(IR_BLASTER_TEST);
 		else if (cFuncName.Compare("lan_dhcp_check") == 0)
 			pStep->SetTestType(LAN_TEST);
 		//_T("ir_blaster_check"),		_IR_Blaster_Check,	    MEAS_BOOL,

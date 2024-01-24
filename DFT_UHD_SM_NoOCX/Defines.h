@@ -11,6 +11,9 @@
 //#define ERR_DEBUG
 #endif
 
+#define _TVCOM_FLAG_SN				0x1		
+#define _TVCOM_FLAG_MODEL				0x00		
+
 
 //===========
 // Pass/Fail
@@ -79,6 +82,7 @@
 #define INPUT_DETECT_TEST		21
 #define VF_MEASURE_TEST			22
 #define AUTO_PORT_TEST			23
+#define IR_BLASTER_TEST			24
 
 
 

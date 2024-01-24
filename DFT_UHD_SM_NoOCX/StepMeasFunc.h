@@ -28,6 +28,11 @@ double	_MNT_EDID_Check();
 double	_MNT_HDCP_Check();
 double	_MNT_FAN_Check();
 double	_APD_ON_Check();
+double  _MNT_ALS_Sensor_Check();
+double  _MNT_BLS_Sensor_Check();
+double  _MNT_Front_Sensor_Check();
+double  _MNT_Proximity_Check();
+
 BOOL	Check_ToolOption(int nOptionNo, int nOptionValue);
 double	_Option_Check();
 double	_Option_CheckAll();
@@ -115,6 +120,7 @@ double _Port_Auto_Check();
 double _IR_Blaster_Check();
 double _Read_A_CAS_ID();
 double _LAN_HDCP_Check();
+double _DPMS_Check();
 
 #endif
 

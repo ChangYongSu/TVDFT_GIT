@@ -287,6 +287,8 @@ public :
 	int  ModelSNo_Read(int &nKeyVal, BOOL bFlag = TRUE); // 모델명 또는 S/N 데이터를 수신
 	BOOL ModelSNo_Write(CString sData, BOOL bFlag = TRUE); // 모델명 또는 S/N 데이터를 수신
 	int ModelSNo_Read(int &nKeyVal, CString &sRtnData, BOOL bFlag = TRUE);
+
+
 	BOOL Open_MacAdd_List();
 
 

@@ -50,7 +50,7 @@ extern CImageProc		g_ImageProc;
 //#define NO_GRAB_OPTION_TAB_ITEM 28
 //#define NO_GRAB_OPTION_TAB_ITEM 41
 //#define NO_GRAB_OPTION_TAB_ITEM 48
-#define NO_GRAB_OPTION_TAB_ITEM 52 //51 // 50
+#define NO_GRAB_OPTION_TAB_ITEM 54 //53 // 52 //51 // 50
 
 #define NO_USB_DIO_TAB_ITEM 26//21//15
 
@@ -88,7 +88,7 @@ int aGrabOptionItemNo[] =
 	IDC_RDO_LVDS_RESOLUTION9,	IDC_RDO_LVDS_RESOLUTION10,	IDC_RDO_LVDS_RESOLUTION11, 
 	IDC_RDO_LVDS_RESOLUTION12,	IDC_RDO_LVDS_RESOLUTION13,	IDC_RDO_LVDS_RESOLUTION14,
 	IDC_RDO_LVDS_RESOLUTION15,	IDC_RDO_LVDS_RESOLUTION16,  IDC_RDO_LVDS_RESOLUTION17,
-	IDC_RDO_LVDS_RESOLUTION18,	
+	IDC_RDO_LVDS_RESOLUTION18,  IDC_RDO_LVDS_RESOLUTION19,	IDC_RDO_LVDS_RESOLUTION20,
 
 	IDC_STATIC_LVDS_TYPE,
 	IDC_RDO_LVDS_MODE1,			IDC_RDO_LVDS_MODE2,			IDC_RDO_LVDS_MODE3,
@@ -323,7 +323,7 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_COMMAND_RANGE(IDC_BTN_REMOTE_DLG_1, IDC_BTN_REMOTE_DLG_73,OnRemoteButtonClick)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_CONTROL_TAB, OnSelchangeControlTab)
 	ON_BN_CLICKED(IDC_BTN_GRAB_OPTION_APPLY, OnBtnGrabOptionApply)
-	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION18,OnRdoLvdsResolution1)
+	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION20,OnRdoLvdsResolution1)
 	ON_COMMAND_RANGE(IDC_RDO_COLOR_DEPTH1, IDC_RDO_COLOR_DEPTH4,OnRdoColorDepth1)
 	ON_COMMAND_RANGE(IDC_RDO_3D_MODE1,IDC_RDO_3D_MODE3, OnRdo3dMode1)
 	ON_BN_CLICKED(IDC_RDO_AVSWITCH_CMD13, OnRdoAvswitchCmd13)
@@ -457,6 +457,8 @@ BOOL CGrabPage::OnInitDialog()
 	else if((CurrentSet->nLvdsWidth == 3840) && (CurrentSet->nLvdsHeight == 600)){	m_nLvdsResolutionIndex = W_3840_H_600;}
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540)) { m_nLvdsResolutionIndex = W_1920_H_540; }
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 1200)) { m_nLvdsResolutionIndex = W_1920_H_1200; }
+	else if ((CurrentSet->nLvdsWidth == 2048) && (CurrentSet->nLvdsHeight == 2560)) { m_nLvdsResolutionIndex = W_2048_H_2560; }
+	else if ((CurrentSet->nLvdsWidth == 3328) && (CurrentSet->nLvdsHeight == 1440)) { m_nLvdsResolutionIndex = W_3328_H_1440; }
 	else m_nLvdsResolutionIndex = -1;
 
 	if(g_nGrabberType == FHD_GRABBER)
@@ -2752,18 +2754,18 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 
 	if(g_nGrabberType == UHD_GRABBER){
-		for(i = 0; i<19; i++)
+		for(i = 0; i<21; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
 
-		for(i = 35; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 37; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		}
-		for(i = 19; i<35; i++)
+		for(i = 21; i<37; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2771,12 +2773,12 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 	}
 	else{
-		for(i = 0; i<35; i++)
+		for(i = 0; i<37; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
-		for(i = 35; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 37; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2933,6 +2935,18 @@ void CGrabPage::OnBtnGrabOptionApply()
 			case W_1920_H_540:
 				CurrentSet->nLvdsWidth = 1920;
 				CurrentSet->nLvdsHeight = 540;
+				break;
+			case W_1920_H_1200:
+				CurrentSet->nLvdsWidth = 1920;
+				CurrentSet->nLvdsHeight = 1200;
+				break;
+			case W_2048_H_2560:
+				CurrentSet->nLvdsWidth = 2048;
+				CurrentSet->nLvdsHeight = 2560;
+				break;
+			case W_3328_H_1440:
+				CurrentSet->nLvdsWidth = 3328;
+				CurrentSet->nLvdsHeight = 1440;
 				break;
 			
 			default :
@@ -3221,6 +3235,16 @@ void CGrabPage::OnRdoLvdsResolution1(UINT nButtonID)
 			m_nLvdsResolutionIndex = 17;
 			m_nNewLvdsWidth = 1920;
 			m_nNewLvdsHeight = 1200;
+			break;
+		case IDC_RDO_LVDS_RESOLUTION19:
+			m_nLvdsResolutionIndex = 18;//W_2048_H_2560
+			m_nNewLvdsWidth = 2048;
+			m_nNewLvdsHeight = 2560;
+			break;
+		case IDC_RDO_LVDS_RESOLUTION20:
+			m_nLvdsResolutionIndex = W_3328_H_1440;//W_2048_H_2560
+			m_nNewLvdsWidth = 3328;
+			m_nNewLvdsHeight = 1440;
 			break;
 
 		default : 

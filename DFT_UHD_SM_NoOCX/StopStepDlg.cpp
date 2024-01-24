@@ -189,6 +189,7 @@ CStopStepDlg::CStopStepDlg(CWnd* pParent /*=NULL*/)
 	m_szTestResultInfo1 = _T("");
 	m_szTestResultInfo2 = _T("");
 	m_szTestResultInfo3 = _T("");
+	m_szTestResultInfo4 = _T("");
 	//}}AFX_DATA_INIT
 	//+ 2007.11.5 Add BY USY
 	m_bActivate = FALSE;
@@ -197,7 +198,8 @@ CStopStepDlg::CStopStepDlg(CWnd* pParent /*=NULL*/)
 	//+add kwmoon 080618
 	m_szMsg1	= _T("");
 	m_szMsg2	= _T("");
-	m_szMsg3	= _T("");
+	m_szMsg3 = _T("");
+	m_szMsg4 = _T("");
 }
 
 
@@ -208,6 +210,7 @@ void CStopStepDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_STATIC_MSG1, m_szTestResultInfo1);
 	DDX_Text(pDX, IDC_STATIC_MSG2, m_szTestResultInfo2);
 	DDX_Text(pDX, IDC_STATIC_MSG3, m_szTestResultInfo3);
+	DDX_Text(pDX, IDC_STATIC_MSG4, m_szTestResultInfo4);
 	//}}AFX_DATA_MAP
 }
 
@@ -331,6 +334,11 @@ BOOL CStopStepDlg::OnInitDialog()
 	//	m_ctrlTestResultInfo3.SetCaption(m_szMsg3); 
 		m_szTestResultInfo3 = m_szMsg3; 
 	}
+	if(m_szMsg4 != _T(""))
+	{
+	//	m_ctrlTestResultInfo3.SetCaption(m_szMsg3); 
+		m_szTestResultInfo4 = m_szMsg4; 
+	}
 
 	GetDlgItem(IDC_BUTTON_ACONOFF)->SetFocus();
 
@@ -365,7 +373,13 @@ void CStopStepDlg::SetTestResultInfo(CString szResultMsg1,CString szResultMsg2, 
 	m_szMsg2 = szResultMsg2;
 	m_szMsg3 = szResultMsg3;
 }
-
+void CStopStepDlg::SetTestResultInfo(CString szResultMsg1,CString szResultMsg2, CString szResultMsg3, CString szResultMsg4)
+{
+	m_szMsg1 = szResultMsg1;
+	m_szMsg2 = szResultMsg2;
+	m_szMsg3 = szResultMsg3;
+	m_szMsg4 = szResultMsg4;
+}
 void CStopStepDlg::OnBtnStop2() 
 {
 	m_nRunType = STEP_STOP;

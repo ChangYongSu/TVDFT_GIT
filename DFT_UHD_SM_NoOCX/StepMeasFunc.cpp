@@ -2712,6 +2712,166 @@ double	_APD_ON_Check()
 		return 0.0;	
 	}
 }
+//_T("mnt_als_sensor_check"), _MNT_ALS_Sensor_Check, MEAS_BOOL,
+//_T("mnt_bls_sensor_check"), _MNT_BLS_Sensor_Check, MEAS_BOOL,
+//_T("mnt_front_sensor_check"), _MNT_Front_Sensor_Check, MEAS_BOOL,
+//_T("mnt_proximity_check"), _MNT_Proximity_Check, MEAS_BOOL,
+//
+//NULL, NULL, NULL
+//};
+/////////////////////////////////////////////////////////////////
+////int CI2cAdcCtrl::MNT_ALS_Sensor_Check();
+////int CI2cAdcCtrl::MNT_BLS_Sensor_Check();
+////int CI2cAdcCtrl::MNT_Front_Sensor_Check();
+////int CI2cAdcCtrl::MNT_Proximity_Check();
+double	_MNT_ALS_Sensor_Check()
+{
+	CString sCpuVersion = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+	//	int nData[3]   = {0,0,0};
+
+	if (!CurrentSet->nTVControlType)
+	{
+		return FALSE;
+	}
+
+	for (i = 0; i < 5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_ALS_Sensor_Check();
+		if (nI2cResult == TEST_PASS) break;
+	}
+
+	if (nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	if (bResult1)
+	{
+		return 1.0;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+double	_MNT_BLS_Sensor_Check()
+{
+	CString sCpuVersion = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+	//	int nData[3]   = {0,0,0};
+
+	if (!CurrentSet->nTVControlType)
+	{
+		return FALSE;
+	}
+
+	for (i = 0; i < 5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_BLS_Sensor_Check
+();
+		if (nI2cResult == TEST_PASS) break;
+	}
+
+	if (nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	if (bResult1)
+	{
+		return 1.0;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+double	_MNT_Front_Sensor_Check()
+{
+	CString sCpuVersion = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+	//	int nData[3]   = {0,0,0};
+
+	if (!CurrentSet->nTVControlType)
+	{
+		return FALSE;
+	}
+
+	for (i = 0; i < 5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_Front_Sensor_Check();
+		if (nI2cResult == TEST_PASS) break;
+	}
+
+	if (nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	if (bResult1)
+	{
+		return 1.0;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+double	_MNT_Proximity_Check()
+{
+	CString sCpuVersion = _T("");
+	BOOL bResult1 = TRUE;
+	int  nI2cResult;
+	int i;
+
+	if (!CurrentSet->nTVControlType)
+	{
+		return FALSE;	}
+
+	for (i = 0; i < 5; i++)
+	{
+		nI2cResult = I2cAdcCtrl.MNT_Proximity_Check();
+		if (nI2cResult == TEST_PASS) break;
+	}
+
+	if (nI2cResult != TEST_PASS)
+	{
+		return FALSE;
+	}
+	else
+	{
+		bResult1 = TRUE;
+	}
+
+	if (bResult1)
+	{
+		return 1.0;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+
 
 #ifdef SM_MODIFY_CODE__
 //2018.11.26 CYS
@@ -4535,6 +4695,17 @@ double _Read_A_CAS_ID()
 	double ldReturn;
 
 	ldReturn = g_pView->Read_A_CAS_ID();
+		
+
+	return ldReturn;
+	
+}
+
+double _DPMS_Check()
+{
+	double ldReturn;
+
+	ldReturn = gJigCtrl.DPMS_Read_Check();
 		
 
 	return ldReturn;

@@ -24,6 +24,7 @@ public:
 	CString	m_szTestResultInfo1;
 	CString	m_szTestResultInfo2;
 	CString	m_szTestResultInfo3;
+	CString	m_szTestResultInfo4;
 	//}}AFX_DATA
 
 
@@ -68,10 +69,12 @@ public:
 	CString m_szMsg1;
 	CString m_szMsg2;
 	CString m_szMsg3;
+	CString m_szMsg4;
 
 	//Function
 	//+add kwmoon 080618
-	void SetTestResultInfo(CString szResultMsg1,CString szResultMsg2,CString szResultMsg3);
+	void SetTestResultInfo(CString szResultMsg1, CString szResultMsg2, CString szResultMsg3);
+	void SetTestResultInfo(CString szResultMsg1, CString szResultMsg2, CString szResultMsg3, CString szResultMsg4);
 
 /////////////////////////////////////////////////////////////////////////////
 

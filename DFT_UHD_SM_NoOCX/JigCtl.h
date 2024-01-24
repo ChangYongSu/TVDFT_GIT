@@ -35,7 +35,6 @@ public :
 	BOOL			m_bJigUpStatus;
 	BOOL			m_bJigDownStatus;
 
-	
 	//Function
 	CJigCtrl();
 	~CJigCtrl();
@@ -58,6 +57,64 @@ public :
 	BOOL Set_Grabber_Power(BOOL bGrabPower);
 	BOOL Set_IF_Pack_Reset(BOOL bReset);
 	BOOL Set_Gender_Reset(BOOL bReset);
+
+
+	/////////////////////////////////////////////////////
+	//JIG Count Control
+	BOOL			m_bID_Ctrl_PortOpen;
+	CCommThread		m_ID_Ctrl_Com;
+	BYTE			m_strID_Ctrl_Receive[225];
+	BYTE			m_strID_Ctrl_Send[125];
+	CString			m_strID_Ctrl_ErrMsg;
+	CString			m_sID_Ctrl_Receive;
+	int				m_nID_Ctrl_PortID;
+	int				m_nID_Ctrl_ReceiveCnt;
+
+
+	CString		m_strID_CompanyInfo;
+	CString		m_strID_ChassisInfo;
+	CString		m_strID_DateInfo;
+	CString		m_strID_SerialNo;
+	CString		m_strID_JigFullInfo;
+	int			m_nJigID_UseCount;
+
+
+
+	BOOL ID_Ctrl_Create(CString sComPort, DWORD nBaudRate);
+	void ID_Ctrl_PortClose();
+	
+	//BOOL ID_Ctrl_SendByte(BYTE Data);
+	BOOL ID_Ctrl_SendCommString(BYTE* str, int nLength);
+	BOOL ID_Ctrl_IncCount();
+	BOOL ID_Ctrl_ReadID(CString &str, int nWaitLimit);
+	BOOL ID_Ctrl_ReadCount(CString &str, int nWaitLimit);
+	BOOL ID_Ctrl_ReceiveString(CString &str, int nWaitLimit);
+
+
+	/////////////////////////////////////////////////////
+	//DPMS Monitoring
+	BOOL			m_bDPMS_PortOpen;
+	CCommThread		m_DPMS_Com;
+	BYTE			m_strDPMS_Receive[225];
+	BYTE			m_strDPMS_Send[125];
+	CString			m_strDPMS_ErrMsg;
+	CString			m_sDPMS_Receive;
+	int				m_nDPMS_PortID;
+	int				m_nDPMS_ReceiveCnt;
+	double		m_fDPMS_WattData;
+
+
+
+
+	BOOL DPMS_Create(CString sComPort, DWORD nBaudRate);
+	void DPMS_PortClose();
+
+	//BOOL ID_Ctrl_SendByte(BYTE Data);
+	BOOL DPMS_SendCommString(BYTE* str, int nLength);
+	double DPMS_Read_Check();
+	BOOL DPMS_ReceiveString(int nCount,  int nWaitLimit);
+
+
 private:
 	void Delay();
 };

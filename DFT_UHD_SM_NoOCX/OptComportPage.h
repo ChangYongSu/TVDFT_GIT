@@ -30,6 +30,9 @@ public:
 	//{{AFX_DATA(COptComportPage)
 	enum { IDD = IDD_OPT_COMPORT_PAGE };
 	CButton	m_ctrlUseJigChk;
+	CButton	m_ctrlUseCountJigChk;
+	CButton	m_ctrlUseDPMSChk;
+
 	CButton	m_ctrlUseLnbChk;
 	CButton	m_ctrlUseAvcChk;
 	CComboBox	m_ctrlAvcComportCmb;
@@ -115,6 +118,8 @@ public:
 	void		SetI2cAdcGroup(BOOL bEnable);
 	void		SetVfmGroup(BOOL bEnable);
 	void		SetDPGroup(BOOL bEnable);
+	void		SetCountJigGroup(BOOL bEnable);
+	void		SetDPMSGroup(BOOL bEnable);
 	
 //////////////////////////////////////////////////////////////////////////
 
@@ -129,6 +134,8 @@ public:
 	afx_msg void OnBnClickedChkUseDpgen();
 	afx_msg void OnBnClickedRadioDpTime60();
 	afx_msg void OnBnClickedRadioDpTime30();
+	afx_msg void OnBnClickedChkUseCountJig();
+	afx_msg void OnBnClickedChkUseDpms();
 };
 
 //{{AFX_INSERT_LOCATION}}

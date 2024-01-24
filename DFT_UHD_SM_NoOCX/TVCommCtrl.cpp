@@ -4380,17 +4380,16 @@ BOOL CTVCommCtrl:: ModelSNo_Write(CString sData, BOOL bFlag) // ¸ðµ¨¸í ¶Ç´Â S/N 
 	int nI;
 	BOOL bREv = FALSE;
 
-//	m_strSendStr.Format("%c%c%s%c", 0xa0, 0x8f, sData, 0x0d);
-	if(bFlag){
+
+	if(bFlag == _TVCOM_FLAG_SN){
 		nI =  sData.GetLength();
 		if(nI < 10) {return FALSE;}
 		else if(nI > 10){sWriteData = sData.Left(10);}
 		else{sWriteData = sData;}
-
-//		m_strSendStr.Format("%c%c%c%c%s%c", 0xa0, 0x8f, 's', 'a', sData, 0x0d); 
+		
 		m_strSendStr.Format("%c%c%c%c%sFF%c", 0xa0, 0x90, 's', 'a', sWriteData, 0x0d); 
 	}
-	else{
+	else if (bFlag == _TVCOM_FLAG_MODEL) {
 		m_strSendStr.Format("%c%c%c%c%s%c", 0xa0, 0x8f, 's', 'b', sData, 0x0d); 
 	}
 
@@ -4430,7 +4429,7 @@ int CTVCommCtrl:: ModelSNo_Read(int &nKeyVal, BOOL bFlag) // ¸ðµ¨¸í ¶Ç´Â S/N µ¥À
 	int nI;
 	
 //	m_strSendStr.Format("%c%c%c%c%c", 0xa1, 0x8f, 's', 'a', 0x0d); 
-	if(bFlag){
+	if(bFlag == _TVCOM_FLAG_SN){
 		m_strSendStr.Format("%c%c%c%c%c", 0xa1, 0x8f, 's', 'a', 0x0d); 
 	}
 	else{
@@ -4469,6 +4468,8 @@ int CTVCommCtrl:: ModelSNo_Read(int &nKeyVal, BOOL bFlag) // ¸ðµ¨¸í ¶Ç´Â S/N µ¥À
 	}
 
 }
+//#define _TVCOM_FLAG_SN				0x1		
+//#define _TVCOM_FLAG_MODEL				0x00	
 
 
 int CTVCommCtrl::ModelSNo_Read(int &nKeyVal, CString &sRtnData, BOOL bFlag) // ¸ðµ¨¸í ¶Ç´Â S/N µ¥ÀÌÅÍ¸¦ ¼ö½Å
@@ -4480,7 +4481,7 @@ int CTVCommCtrl::ModelSNo_Read(int &nKeyVal, CString &sRtnData, BOOL bFlag) // ¸
 	int nI;
 
 	//	m_strSendStr.Format("%c%c%c%c%c", 0xa1, 0x8f, 's', 'a', 0x0d); 
-	if (bFlag) {
+	if (bFlag == _TVCOM_FLAG_SN) {
 		m_strSendStr.Format("%c%c%c%c%c", 0xa1, 0x8f, 's', 'a', 0x0d);
 	}
 	else {

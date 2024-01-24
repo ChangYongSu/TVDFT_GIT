@@ -705,11 +705,11 @@ BOOL CVF1000::CheckLanClear(CString &str, int nWaitLimit)
 		str = szData.Mid(nFind + 4, 11);
 		CString szMsg = "LAN CLEAR: PASS";
 		AddStringToStatus(szMsg);
-		g_pView->SaveMessageList(szMsg);
+		//g_pView->SaveMessageList(szMsg);
 	}
 	else 
 	{
-		g_pView->SaveMessageList("LAN CLEAR: FAIL");
+		//g_pView->SaveMessageList("LAN CLEAR: FAIL");
 		AddStringToStatus("LAN CLEAR: FAIL");
 		str = "";
 		bRev = FALSE;

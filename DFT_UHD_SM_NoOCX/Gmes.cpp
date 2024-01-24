@@ -9,6 +9,7 @@
 #include "global.h"
 #include "step.h"
 #include "parser.h"
+#include "JigCtl.h"
 
 #include "IcmpEcho.h"
 
@@ -1048,6 +1049,13 @@ CString CGmes::MakeElem_S6F1(CString sEquipmentID, CString sPcbID, BOOL bResult,
 
 	xmlTemp.AddChildElem("NAME", "PCBA_SW_VER");
 	xmlTemp.AddChildElem("VALUE", CurrentSet->sCPUVersionRead);// 
+
+	xmlTemp.AddChildElem("NAME", "JIG_ID");
+	xmlTemp.AddChildElem("VALUE", gJigCtrl.m_strID_JigFullInfo);// 
+	CString Stemp;
+	Stemp.Format("%d", gJigCtrl.m_nJigID_UseCount);
+	xmlTemp.AddChildElem("NAME", "JIG_ID_COUNT");
+	xmlTemp.AddChildElem("VALUE", Stemp);// 
 
 	if(!bResult){
 		POSITION Position = StepList.GetHeadPosition();

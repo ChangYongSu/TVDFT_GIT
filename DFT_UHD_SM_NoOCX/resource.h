@@ -1009,7 +1009,9 @@
 #define IDC_CHK_USE_I2C_ADC             1993
 #define IDC_CHK_USE_JIG                 1994
 #define IDC_CHK_USE_JIG2                1995
+#define IDC_CHK_USE_COUNT_JIG           1995
 #define IDC_CHK_USE_KEYINPUTBOX         1996
+#define IDC_CHK_USE_DPMS                1996
 #define IDC_CHK_USE_LNB                 1997
 #define IDC_CHK_USE_MASKIMG1            1998
 #define IDC_CHK_USE_MASKIMG2            1999
@@ -1048,7 +1050,9 @@
 #define IDC_CMB_BAUDRATE_I2C_ADC        2031
 #define IDC_CMB_BAUDRATE_JIG            2032
 #define IDC_CMB_BAUDRATE_JIG2           2033
+#define IDC_CMB_BAUDRATE_COUNT_JIG      2033
 #define IDC_CMB_BAUDRATE_KEYINPUTBOX    2034
+#define IDC_CMB_BAUDRATE_DPMS           2034
 #define IDC_CMB_BAUDRATE_LNB            2035
 #define IDC_CMB_BAUDRATE_MAINTENANCE    2036
 #define IDC_CMB_BAUDRATE_PATTERN        2037
@@ -1066,7 +1070,9 @@
 #define IDC_CMB_COMPORT_I2C_ADC         2047
 #define IDC_CMB_COMPORT_JIG             2048
 #define IDC_CMB_COMPORT_JIG2            2049
+#define IDC_CMB_COMPORT_COUNT_JIG       2049
 #define IDC_CMB_COMPORT_KEYINPUTBOX     2050
+#define IDC_CMB_COMPORT_DPMS            2050
 #define IDC_CMB_COMPORT_KEYINPUTBOX2    2051
 #define IDC_CMB_COMPORT_LNB             2052
 #define IDC_CMB_COMPORT_MAINTENANCE     2053
@@ -1151,6 +1157,7 @@
 #define IDC_ECHO_OFF_RADIO              2129
 #define IDC_ECHO_ON_RADIO               2130
 #define IDC_EDIT1                       2131
+#define IDC_EDIT_COUNT_JIG              2131
 #define IDC_EDIT1_HIGH_LIMIT            2132
 #define IDC_EDIT2                       2133
 #define IDC_EDIT3                       2134
@@ -1904,7 +1911,9 @@
 #define IDC_RDO_LVDS_GRABBER_TYPE_INT   2846
 #define IDC_RDO_LVDS_FORMAT18           2846
 #define IDC_RDO_LVDS_MODE1              2847
+#define IDC_RDO_LVDS_FORMAT19           2847
 #define IDC_RDO_LVDS_MODE2              2848
+#define IDC_RDO_LVDS_FORMAT20           2848
 #define IDC_RDO_LVDS_MODE3              2849
 #define IDC_RDO_LVDS_MODE4              2850
 #define IDC_RDO_LVDS_RESOLUTION1        2851
@@ -1928,7 +1937,9 @@
 #define IDC_RDO_OPTIC                   2868
 #define IDC_RDO_LVDS_RESOLUTION18       2868
 #define IDC_RDO_OPTICAL_INPUT           2869
+#define IDC_RDO_LVDS_RESOLUTION19       2869
 #define IDC_RDO_OSD_TEST                2870
+#define IDC_RDO_LVDS_RESOLUTION20       2870
 #define IDC_RDO_PIP_TEST                2871
 #define IDC_RDO_POSITION_TEST           2872
 #define IDC_RDO_PROCESSED_IMAGE         2873
@@ -2208,11 +2219,16 @@
 #define IDC_STATIC_IMAGE_VIEW2          3139
 #define IDC_STATIC_JIG_BAUDRATE         3140
 #define IDC_STATIC_JIG_BAUDRATE2        3141
+#define IDC_STATIC_COUNT_JIG_BAUDRATE   3141
 #define IDC_STATIC_JIG_COMPORT          3142
 #define IDC_STATIC_JIG_COMPORT2         3143
+#define IDC_STATIC_COUNT_JIG_COMPORT    3143
 #define IDC_STATIC_KEY_LIST             3144
+#define IDC_STATIC_DPMS_COMPORT         3144
 #define IDC_STATIC_KEYINPUTBOX_BAUDRATE 3145
+#define IDC_STATIC_DPMS_BAUDRATE        3145
 #define IDC_STATIC_KEYINPUTBOX_COMPORT  3146
+#define IDC_STATIC_COUNT_JIG_MAX        3146
 #define IDC_STATIC_L                    3147
 #define IDC_STATIC_LABEL_MHL            3148
 #define IDC_STATIC_LABEL_MHL2           3149
@@ -2239,6 +2255,7 @@
 #define IDC_STATIC_MSG2                 3170
 #define IDC_STATIC_MSG3                 3171
 #define IDC_STATIC_NAME                 3172
+#define IDC_STATIC_MSG4                 3172
 #define IDC_STATIC_NOTE                 3173
 #define IDC_STATIC_ORG_IMAGE_VIEW       3174
 #define IDC_STATIC_ORIGINAL_IMAGE       3175
@@ -2679,7 +2696,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        1252
+#define _APS_NEXT_RESOURCE_VALUE        1253
 #define _APS_NEXT_COMMAND_VALUE         32882
 #define _APS_NEXT_CONTROL_VALUE         3457
 #define _APS_NEXT_SYMED_VALUE           3526
