@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -18,17 +18,23 @@
     <ProjectName>DXD_AutoTester</ProjectName>
     <ProjectGuid>{4E04669B-896E-445E-A837-C123E6FFEC8B}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -77,11 +83,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-<<<<<<< HEAD
       <AdditionalIncludeDirectories>C:\Program Files\National Instruments\MeasurementStudioVS2010\VCNET\Include;C:\Program Files %28x86%29\National Instruments\MeasurementStudioVS2010\VCNET\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
-      <AdditionalIncludeDirectories>C:\Program Files\National Instruments\MeasurementStudioVS2010\VCNET\Include;C:\Program Files %28x86%29\National Instruments\MeasurementStudioVS2010\VCNET\Include;C:\opencv\build\include;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\api;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\ccmain;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\ccutil;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\ccstruct;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\classify;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\cube;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\cutil;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\dict;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\image;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\neural_networks\runtime;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\textord;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\viewer;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\wordrec;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\vs2008\include;C:\Program Files (x86)\Tesseract-OCR\tesseract-ocr\vs2008\include\leptonica;C:\Program Files (x86)\Tesseract-OCR\include\leptonica;C:\Program Files\Tesseract-OCR\tesseract-ocr\api;C:\Program Files\Tesseract-OCR\tesseract-ocr\ccmain;C:\Program Files\Tesseract-OCR\tesseract-ocr\ccutil;C:\Program Files\Tesseract-OCR\tesseract-ocr\ccstruct;C:\Program Files\Tesseract-OCR\tesseract-ocr\classify;C:\Program Files\Tesseract-OCR\tesseract-ocr\cube;C:\Program Files\Tesseract-OCR\tesseract-ocr\cutil;C:\Program Files\Tesseract-OCR\tesseract-ocr\dict;C:\Program Files\Tesseract-OCR\tesseract-ocr\image;C:\Program Files\Tesseract-OCR\tesseract-ocr\neural_networks\runtime;C:\Program Files\Tesseract-OCR\tesseract-ocr\textord;C:\Program Files\Tesseract-OCR\tesseract-ocr\viewer;C:\Program Files\Tesseract-OCR\tesseract-ocr\wordrec;C:\Program Files\Tesseract-OCR\tesseract-ocr;C:\Program Files\Tesseract-OCR\tesseract-ocr\vs2008\include;C:\Program Files\Tesseract-OCR\tesseract-ocr\vs2008\include\leptonica;C:\Program Files\Tesseract-OCR\include\leptonica;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -93,16 +95,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-<<<<<<< HEAD
       <AdditionalLibraryDirectories>C:\Program Files\National Instruments\MeasurementStudioVS2010\VCNET\Lib;C:\Program Files %28x86%29\National Instruments\MeasurementStudioVS2010\VCNET\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
-=======
-      <AdditionalLibraryDirectories>C:\Program Files\National Instruments\MeasurementStudioVS2010\VCNET\Lib;C:\Program Files %28x86%29\National Instruments\MeasurementStudioVS2010\VCNET\Lib;C:\opencv\build\x86\vc10\bin;C:\opencv\build\x86\vc10\lib;C:\Program Files (x86)\Tesseract-OCR\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_core2410d.lib;opencv_highgui2410d.lib;opencv_imgproc2410d.lib</AdditionalDependencies>
-      <DelayLoadDLLs>opencv_core2410d.dll;opencv_highgui2410d.dll;opencv_imgproc2410d.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

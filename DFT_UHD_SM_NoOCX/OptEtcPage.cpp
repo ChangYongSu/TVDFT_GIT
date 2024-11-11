@@ -6,6 +6,7 @@
 #include "OptEtcPage.h"
 #include "global.h"
 #include "PLC_Ctrl.h"
+#include "SoundCard.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -192,6 +193,7 @@ void COptEtcPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET2, m_bGrabBaseReset);
 	DDX_Check(pDX, IDC_CHECK_GRABBER_ONOFF_OPTION, m_bCheckGrabberOnOffCheck);
 	DDX_Check(pDX, IDC_CHECK_FUHD_OLED_RESET, m_bFHDUHD_OLED_Pack_Reset);
+//	DDX_Control(pDX, IDC_COMBO_AUDIO_CARD, m_cComboAudioCard);
 }
 
 
@@ -259,63 +261,63 @@ BOOL COptEtcPage::OnInitDialog()
 	m_bSaveIntermediateImage = CurrentSet->bSaveIntermediateImage;
 
 	//+del kwmoon 080716
-//	m_bSaveDistributionTable = CurrentSet->bSaveDistributionTable;
+	//	m_bSaveDistributionTable = CurrentSet->bSaveDistributionTable;
 	m_bSaveProcessingTimeData = CurrentSet->bSaveProcessingTimeData;
 
 	//+add kwmoon 080716
-	m_bSaveReviewData		= CurrentSet->bSaveReviewData;
-	m_bSaveDetailResultData	= CurrentSet->bSaveDetailResultData;
+	m_bSaveReviewData = CurrentSet->bSaveReviewData;
+	m_bSaveDetailResultData = CurrentSet->bSaveDetailResultData;
 
 	//+ 2007.11.27 Mod BY USY
-	m_nDisplayType			= DETAILEDGRID;
-//	m_nDisplayType			= CurrentSet->nDisplayType;
+	m_nDisplayType = DETAILEDGRID;
+	//	m_nDisplayType			= CurrentSet->nDisplayType;
+		//-
+
+		//+change kwmoon 080715
+	m_bResultSaveText = CurrentSet->bSaveResult2Txt;
+	m_bResultSaveHtml = CurrentSet->bSaveResult2Html;
+	m_bResultSaveCsv = CurrentSet->bSaveResult2Csv;
 	//-
 
-	//+change kwmoon 080715
-	m_bResultSaveText		= CurrentSet->bSaveResult2Txt;
-	m_bResultSaveHtml		= CurrentSet->bSaveResult2Html;
-	m_bResultSaveCsv		= CurrentSet->bSaveResult2Csv;
-	//-
-	
-	m_nNoRepeatExecution	= CurrentSet->nNoRepeatExecution;
+	m_nNoRepeatExecution = CurrentSet->nNoRepeatExecution;
 
 	//+del kwmoon 080715
-//	m_fAllowedErrorPixelPercentage  = CurrentSet->nNoAllowedErrorPixel;
+	//	m_fAllowedErrorPixelPercentage  = CurrentSet->nNoAllowedErrorPixel;
 	m_nNoFrameForRefImageCreation = CurrentSet->nNoFrameForRefImageCreation;
-	m_nNonBlackPixel  		= CurrentSet->nNonBlackPixel;
-	m_nPixelInMiddleRange	= CurrentSet->nPixelInMiddleRange;
-	m_nDelayPercentage		= CurrentSet->nDelayPercentage;
-	m_nNoRetry				= CurrentSet->nNoRetry;
+	m_nNonBlackPixel = CurrentSet->nNonBlackPixel;
+	m_nPixelInMiddleRange = CurrentSet->nPixelInMiddleRange;
+	m_nDelayPercentage = CurrentSet->nDelayPercentage;
+	m_nNoRetry = CurrentSet->nNoRetry;
 
 	//+add 090218(Modification No1)
-	m_nNoUsedColors  		= CurrentSet->nNoUsedColors;
+	m_nNoUsedColors = CurrentSet->nNoUsedColors;
 
 	//+del kwmoon 080715
-//	m_fAllowedErrorPixelPercentageForOsdTest  = CurrentSet->nNoAllowedErrorPixelForOsdTest;
+	//	m_fAllowedErrorPixelPercentageForOsdTest  = CurrentSet->nNoAllowedErrorPixelForOsdTest;
 
-	//+del kwmoon 080125
-	//+add kwmoon 071227
-//	m_nSpecMargin			= CurrentSet->nSpecMargin;
-	
-	//+add kwmoon 080123
-	m_nFreqMargin		= CurrentSet->nFreqMargin;
+		//+del kwmoon 080125
+		//+add kwmoon 071227
+	//	m_nSpecMargin			= CurrentSet->nSpecMargin;
 
-	m_ctrlNoRepeatExecution.SetRange(1,1000);
+		//+add kwmoon 080123
+	m_nFreqMargin = CurrentSet->nFreqMargin;
+
+	m_ctrlNoRepeatExecution.SetRange(1, 1000);
 	//+del kwmoon 080715
-//	m_ctrlNoAllowedErrorPixel.SetRange(0,10000);
-	m_ctrlNoFrame.SetRange(1,10);
+	//	m_ctrlNoAllowedErrorPixel.SetRange(0,10000);
+	m_ctrlNoFrame.SetRange(1, 10);
 
-	m_ctrlNonBlackPixel.SetRange(1,100);
-	m_ctrlPixelInMiddleRange.SetRange(1,100);
+	m_ctrlNonBlackPixel.SetRange(1, 100);
+	m_ctrlPixelInMiddleRange.SetRange(1, 100);
 
 	//+del kwmoon 080715
-//	m_ctrlNoAllowedErrorPixelForOsdTest.SetRange(0,10000);
+	//	m_ctrlNoAllowedErrorPixelForOsdTest.SetRange(0,10000);
 
-	m_ctrlNoRetry.SetRange(0,100);
-	m_ctrlDelayPercentage.SetRange(1,100);
-	m_ctrlAudioFreqSpecMargin.SetRange(0,100);
+	m_ctrlNoRetry.SetRange(0, 100);
+	m_ctrlDelayPercentage.SetRange(1, 100);
+	m_ctrlAudioFreqSpecMargin.SetRange(0, 100);
 	//+add kwmoon 080819
-	m_ctrlAudioLevelSpecMargin.SetRange(0,100);
+	m_ctrlAudioLevelSpecMargin.SetRange(0, 100);
 
 	//+add kwmoon 080715
 	m_fAllowedBand1ErrorPixelPercentage = CurrentSet->fAllowedBandErrorPixelPercentage[0];
@@ -333,24 +335,35 @@ BOOL COptEtcPage::OnInitDialog()
 
 
 	//+add kwmoon 081004
-	m_nNoTestedBoard  = g_nNoTested;
-	m_nNoFailedBoard  = g_nFailed;
-	m_nNoUserStop	  = g_nUserStop;
+	m_nNoTestedBoard = g_nNoTested;
+	m_nNoFailedBoard = g_nFailed;
+	m_nNoUserStop = g_nUserStop;
 
-	m_nAudioForce_HP_R		= CurrentSet->nAudioForce_HP_R;
-	m_nAudioForce_HP_L		= CurrentSet->nAudioForce_HP_L;
-	m_nAudioForce_Analog_L	= CurrentSet->nAudioForce_Analog_L;
-	m_nAudioForce_Analog_R	= CurrentSet->nAudioForce_Analog_R;
-	m_nAudioForce_HDMI_L	= CurrentSet->nAudioForce_HDMI_L;
-	m_nAudioForce_HDMI_R	= CurrentSet->nAudioForce_HDMI_R;
-	m_nAudioForce_RGB_L		= CurrentSet->nAudioForce_RGB_L;
-	m_nAudioForce_RGB_R		= CurrentSet->nAudioForce_RGB_R;
-	m_nAudioForce_SCART_L	= CurrentSet->nAudioForce_SCART_L;
-	m_nAudioForce_SCART_R	= CurrentSet->nAudioForce_SCART_R;
+	m_nAudioForce_HP_R = CurrentSet->nAudioForce_HP_R;
+	m_nAudioForce_HP_L = CurrentSet->nAudioForce_HP_L;
+	m_nAudioForce_Analog_L = CurrentSet->nAudioForce_Analog_L;
+	m_nAudioForce_Analog_R = CurrentSet->nAudioForce_Analog_R;
+	m_nAudioForce_HDMI_L = CurrentSet->nAudioForce_HDMI_L;
+	m_nAudioForce_HDMI_R = CurrentSet->nAudioForce_HDMI_R;
+	m_nAudioForce_RGB_L = CurrentSet->nAudioForce_RGB_L;
+	m_nAudioForce_RGB_R = CurrentSet->nAudioForce_RGB_R;
+	m_nAudioForce_SCART_L = CurrentSet->nAudioForce_SCART_L;
+	m_nAudioForce_SCART_R = CurrentSet->nAudioForce_SCART_R;
 
 
 	m_nARC_Force_Port_Number.SetCurSel(CurrentSet->nARC_Force_Port_Number);
 	m_nARC_Force_OnOffChannel.SetCurSel(CurrentSet->nARC_Force_OnOffChannel);
+	//g_SoundCard.SoundInMainSet();
+	//for (int i = 0; i < g_SoundCard.strDeviceNameArry.GetCount(); i++)
+	//{
+	//	CString str_SoundName = g_SoundCard.strDeviceNameArry.GetAt(i);
+	//	m_cComboAudioCard.AddString(str_SoundName);
+	//	if (CurrentSet->sMainMIC_Name.Find(str_SoundName) >= 0)
+	//	{
+	//		m_cComboAudioCard.SetCurSel(i);
+	//	}
+	//}
+	
 
 	UpdateData(FALSE);
 
@@ -451,6 +464,7 @@ void COptEtcPage::OnBtnEtcOptApply()
 	//+add kwmoon 080716
 	CurrentSet->nLevelMargin = m_nLevelMargin;
 
+	//m_cComboAudioCard.GetLBText(m_cComboAudioCard.GetCurSel(), CurrentSet->sMainMIC_Name);
 	//+add kwmoon 071227
 	g_pView->SaveRegistrySetting();
 

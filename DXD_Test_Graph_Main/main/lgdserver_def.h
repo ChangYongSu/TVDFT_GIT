@@ -196,7 +196,7 @@ typedef struct
 // LDCMD_GET_PARAMETER2
 
 //!        \brief   Definition of Detector parameter2
-
+#if 0
 typedef struct
 
 {
@@ -421,7 +421,261 @@ typedef struct
 
 } DETECTOR_PARAM2;
 
- 
+#endif
+
+
+/*! \brief Definition of Detector parameter - 40 Byte */
+typedef struct
+{
+	DWORD dwImageBitMode;  //!< \arg Default is 2
+	DWORD dwRefADC;  //!< \arg Default is 41
+	DWORD dwLPF;  //!< \arg Default is 1
+	DWORD dwCDS1;  //!< \arg Default is 400
+	DWORD dwCDS2; //!< \arg Default is 400
+	DWORD dwFA1; //!< \arg Default is 111
+	DWORD dwFA2; //!< \arg Default is 111
+	DWORD dwPeriod_ACLK3_ACLK4; //!< \arg Default is 350
+	DWORD dwGateOnDelay;  //!< \arg Default is 5
+	DWORD dwACLK0;  //!< \arg Default is 11
+	DWORD dwACLK7;  //!< \arg Default is 11
+	DWORD dwBackBias;  //!< \arg Default is 11
+	DWORD dwPowerMode;  //!< \arg Default is 11
+	DWORD dwStandbyMode;  //!< \arg Default is 11
+
+	DWORD dwInitFlushCnt;  //!< \arg Default is 11
+	DWORD dwCleanDummy;  //!< \arg Default is 11
+	DWORD dwDarkFlush;  //!< \arg Default is 11
+	DWORD dwBrightFlush;  //!< \arg Default is 11
+
+	DWORD dwFPGAVersion;  //!< \FPGA FW version
+	DWORD dwDSERVERVersion; //!< \Dserver version
+
+	DWORD dwFreeGatingInterval; //!< \arg Default is 3
+	DWORD dwFreeGatingCount; //!< \arg Default is 1
+	DWORD dwFreeGatingMode; //!< \arg Default is 2
+	DWORD dwFreeGatingEnable; //!< \arg Default is enable
+	DWORD dwFlushMode;  //!< \arg Default is 0
+	DWORD dwFreeGatingBackBias; //!< \arg Default is 0
+	DWORD dwDarkBackBias;  //!< \arg Default is 0
+	DWORD dwBrightBackBias; //!< \arg Default is 0
+	DWORD dwDarkFrontFlush; //!< \arg Default is 1
+	DWORD dwDarkBackFlush; //!< \arg Default is 1
+
+	DWORD dwAEDSensorMode; //!< \arg Default is 0
+	DWORD dwPanelSenTrigROICNo; //!< \arg Default is 5
+	DWORD dwPanelSen_Line1;  //!< \arg Default is 0
+	DWORD dwAEDLineCount;  //!< \arg Default is 8
+	DWORD dwPanelSenThreshold1;  //!< \arg Default is 30
+	DWORD dwAEDTriggermode; //!< \arg Default is 0
+
+	DWORD dwMicrochipVersion; //!< \ roic micom version
+	DWORD dwAVRVersion;  //!< \Aed Micom version
+
+	DWORD dwAutoReadyTime; //!< \ dummy
+	DWORD dwAutoExposureTime;  //!< \ dummy
+	DWORD dwCleanBackBias;  //!< \ dummy
+	DWORD dwCleanBackBiasCount;  //!< \ dummy
+	DWORD dwBackBiasStandbyMode;  //!< \ default 0(-1.2v)
+	DWORD dwAutoAEDExposureTime;  //!< \ dummy
+	DWORD dwFlushLineTime;  //!< \arg Default is 0
+	DWORD dwBackBiasOnTime;  //!< \ default 300
+	DWORD dwFreeGatingReadyToExposure;  //!< \ default enable
+	DWORD dwCleanSecondBackBias;  //!< \ dummy
+	DWORD dwFreeGatingFlushLineTime;  //!< \ dummy
+	DWORD dwCleanLineTime;  //!< \ dummy
+	DWORD dwCleanFlushMode;  //!< \ dummy
+	DWORD dwCleanLineTime2;  //!< \ dummy
+	DWORD dwCleanFlushMode2;  //!< \ dummy
+	DWORD dwBackBiasSetupTime;  //!< \ dummy
+	DWORD dwBackBiasFallingTime;  //!< \ dummy
+	DWORD dwCleanFlushGateRisingTime_1st;  //!< \ CLEANFLUSHGATERISINGTIME_1ST
+	DWORD dwCleanFlushGateFallingTime_1st;  //!< \ dummy
+	DWORD dwImageFlushGateRisingTime;  //!< \ FPGA_REG_FLUSHTYPE12GATERISINGTIME
+	DWORD dwImageFlushGateFallingTime;  //!< \ dummy
+	DWORD dwFGFlushGateRisingTime;  //!< \ FPGA_REG_FGFLUSHGATERISINGTIME
+	DWORD dwFGFlushGateFallingTime;  //!< \ dummy
+	DWORD dwCleanFlushGateRisingTime_2nd;  //!< \ CLEANFLUSHGATERISINGTIME_2ST
+	DWORD dwCleanFlushGateFallingTime_2nd;  //!< \ dummy
+	DWORD dwAEDTriggerThreshold;  //!< \ AED thrshold
+	DWORD dwADCBase1;  //!< \ dummy
+	DWORD dwADCBase2;  //!< \ dummy
+	DWORD dwADCBase3;  //!< \ dummy
+	DWORD dwADCBase4;  //!< \ dummy
+	DWORD dwADCBase5;  //!< \ dummy
+	DWORD dwADCBase6;  //!< \ dummy
+	DWORD dwADCBase7;  //!< \ dummy
+	DWORD dwAVRTriggerCount; //!< \ dummy
+	DWORD dwMeanDark;  //!< \ dummy
+	DWORD dwAEDSenThreshold_ch2; //!< Sensitivity value of Trigger
+	DWORD dwXonEnableTime;  //!< \ dummy
+	DWORD dwAgingMode;  //!< \ dummy
+	DWORD dwAEDScanmode; //!< \arg Default is 0
+	DWORD dwAEDLineTime;  //!< \arg Default is 10200
+	DWORD dwAEDGateOnTime; //!< \arg Default is 1000
+	DWORD dwAEDResetTime;  //!< \arg Default is 264
+	DWORD dwAEDCDS1;  //!< \arg Default is 2000
+	DWORD dwAEDCDS2;  //!< \arg Default is 2000
+	DWORD dwAEDFA1;  //!< \arg Default is 111
+	DWORD dwAEDFA2;  //!< \arg Default is 111
+	DWORD dwAEDPeriodACLK3ACLK4; //!< \arg Default is 1100
+	DWORD dwAEDGateOnDelay; //!< \arg Default is 5
+	DWORD dwAEDACLK0;  //!< \arg Default is 11
+	DWORD dwAEDACLK7Position; //!< \arg Default is 1
+	DWORD dwAEDPeriodACLK6ACLK7; //!< \arg Default is 50
+	DWORD dwPanelSenPwrModeOn; //!< \arg Default is 0
+	DWORD dwAEDKeepScanForce; //!< \arg Default is 0
+	DWORD dwAEDSenThreshold_ch3; //!< Sensitivity value of Trigger
+	DWORD dwAEDSenThreshold_ch4; //!< Sensitivity value of Trigger
+	DWORD dwAEDSenThreshold_ch5; //!< Sensitivity value of Trigger
+	DWORD dwAEDSenThreshold_ch6; //!< Sensitivity value of Trigger
+	DWORD dwAEDSenThreshold_ch7; //!< Sensitivity value of Trigger
+	DWORD dwEnableADC1;   //!< enable adc
+	DWORD dwEnableADC2;   //!< enable adc
+	DWORD dwEnableADC3;   //!< enable adc
+	DWORD dwEnableADC4;   //!< enable adc
+	DWORD dwEnableADC5;   //!< enable adc
+	DWORD dwEnableADC6;   //!< enable adc
+	DWORD dwEnableADC7;   //!< enable adc
+	DWORD dwGetBrightADCCount;   //!< adc count
+	DWORD dwGetBrightADCMode;   //!< upper 30% or total
+	DWORD dwKernelVersion;  //!< kernel version
+	DWORD dwSleepTest;  //!< Sleep Test
+	DWORD dwGateClockType;  //!< Gate clock type
+	DWORD dwAEDTimeout;  //!< Aed timeout 30s;1min, 2min,3min, 4min, 5min
+	DWORD dwADCPreThreshold;  //!< ADC pre threshold, default 20
+	DWORD dwADCPreThresholdTimeout;  //!< ADC pre threshold timeout, default 100ms
+	DWORD dwImageAckWaitTime;  // ack wait time for aed image
+	DWORD dwXonSignalInterval[5];  // xon signal interval
+	DWORD dwAEDPreThresholdCheck;  //!< AED pre threshold check, default 0
+	DWORD dwXONRefDAC;  //!< Xon Ref. DAC
+	DWORD dwXONOffOrder0;  //!< Xon off order, each use 4 bit, 0000 0000 0000 0000 gate3 gate2 gate1 gate0
+	DWORD dwXONOffOrder1;  //!< Xon off order, each use 4 bit, 0000 0000 0000 0000 0000 0000 gate5 gate4
+	DWORD dwXONRefDACMode;  //!< Xon Ref. DAC on/off mode
+	DWORD dw9SectionMean[9];  // !< 9 section mean
+	DWORD dwFlushCountManual;  // !< pre flush count for manual
+	DWORD dwFlushCountAED;  // !< pre flush count for aed
+	DWORD dwXONALLDarkWaitingTime;  // !< Dark waiting time for XONALL mode
+	DWORD dwSystemSleepTimeout;  // !< System sleep timeout
+	DWORD dwFactoryMode;  // !< set factory/user mode
+	DWORD dwPowerModeLocation;  // !< power mode location
+	DWORD dwPowerModeTime;  // !< power mode time
+	DWORD dwBrightDarkInterval;  // dummy
+	DWORD dwAutoExposureInterval;  // dummy
+	DWORD dwXONUseStopSignal;  // dummy
+	DWORD dwBrightDarkGatingInterval;  // dummy
+	DWORD dwBrightDarkWindowTime;  // dummy
+	DWORD dwBrightDarkGatingTime;  // dummy
+	DWORD dwFreegatingIntervalMode;  // 0 - mili second, 1 micro second
+	DWORD dwFreegatingMicroSecInterval;  // dummy
+	DWORD dwStableTime;
+	DWORD dwStableBaseWaitTime;
+	DWORD dwStableBrightWaitTime;
+	DWORD dwUnstableBaseWaitTime;
+	DWORD dwUnstableBrightWaitTime;
+	DWORD dwWaitAfterBrightTime;
+	DWORD dwDynamicOffsetMode;
+	DWORD dwPostDarkAtBackgroundDark;
+	DWORD dwRefreshMeanDarkAfterPostDark;
+	DWORD dwRefreshMeanDarkInterval;
+	DWORD dwPostDarkIntervalAfterBright;
+	DWORD dwPreDarkIntervalBeforeBright;
+	DWORD dwMaxCriteriaValue;
+	DWORD dwPanelSenROICPwrPreOnTime;
+	DWORD dwPanelSenROICPwrCtrl;
+	DWORD dw16SectionMean[16];
+	DWORD dwPanelSensingLineSel;
+	DWORD dwPanelSenThreshold2;
+	DWORD dwPanelSenThreshold3;
+	DWORD dwPanelSen_Line2;
+	DWORD dwPanelSen_Line3;
+	DWORD dwCleanStartDelay;
+	DWORD dwCleanCommandInterval;
+	DWORD dwCleanCommandCount;
+	DWORD dwBootDarkCount;
+	DWORD dwBootDarkInterval;
+	DWORD dwCleanAfterDark;
+	DWORD dwNetworkMode;             // 0:ethernet, 1:WiFi, 2:AP
+	DWORD dwRunDarkAfterBright;
+	DWORD dwDarkCountAfterBright;
+	DWORD dwPanelSenROICPwrOffDelay;
+	DWORD dwPwrLevel_BackBias; //2020_1207_yspark_1 : add parameter for the detector_param2
+	DWORD dwPwrLevel_VEE;
+	DWORD dwPwrLevel_VGG;
+	DWORD dwIsSubDarkForBriImg; //2020_1218_yspark_1 : add parameter for the option of bright image (dwIsSubDarkForBriImg)
+	DWORD dwImgAcquisitionMode;
+	DWORD dwAutoSaveMode;
+	DWORD dwBoardDebugLEDOnOff;
+	DWORD dwPanelSenPwrModeOff;
+	DWORD dwROICPipeLineMode;
+	DWORD dwROICDebugOnOff; //2021_0120_yspark_1 : add paramete2 to support roic midom debug on/off
+	DWORD dwDropMicomVersion;
+	DWORD dwPlatformType; //0-NXP 1-Zync
+	DWORD dwEnableBrightWithoutXray; //2021_0224_yspark_2 : add parameters dwEnableBrightWithoutXray
+	DWORD dwExcuteCleanAfterBright; //2021_0224_yspark_3 : add parameters dwExcuteCleanAfterBright
+	DWORD dwBinningMode;
+	DWORD dwROICDoutMode;
+	DWORD dwFPGADebugEnable;
+	DWORD dwImgAckEnInHotSwapMode; //2021_0405_yspark_1 : add parameter2 dwImgAckEnInHotSwapMode
+	DWORD dwManualTimeout;
+	DWORD dwPwrLevel_Clean_IsUse;
+	DWORD dwPwrLevel_Clean_BackBias;
+	DWORD dwPwrLevel_Clean_VEE;
+	DWORD dwPwrLevel_Clean_VGG;
+	DWORD dwDynamic_FrameInterval;
+	DWORD dwDynamic_ExposureTime;
+	DWORD dwDynamic_LineTime;
+	DWORD dwDynamic_GateonTime;
+	DWORD dwDynamic_ResetTime;
+	DWORD dwDynamic_CDS1;
+	DWORD dwDynamic_CDS2;
+	DWORD dwDynamic_FA1;
+	DWORD dwDynamic_FA2;
+	DWORD dwDynamic_Period_ACLK3_ACLK4;
+	DWORD dwDynamic_GateOnDelay;
+	DWORD dwDynamic_ACLK0;
+	DWORD dwDynamic_ACLK7_Pos;
+	DWORD dwDynamic_Period_ACLK6_ACLK7;
+	DWORD dwDynamic_ACLK8;
+	DWORD dwClean_FG_Mode;
+	DWORD dwClean_FG_Count;
+	DWORD dwClean_FG_LineTime;
+	DWORD dwClean_FG_RisingTime;
+	DWORD dwClean_FG_FallingTime;
+	DWORD dwClean_FG_OnTime;
+	DWORD dwClean_CleanAndPwrSetInterval; //Call FPGA_CMD_GEN_CLEAN ------ Delay(CleanAndPwrSetInterval) ------ Set PwrCtrl(BackBias and VEE) //2021_0416_yspark_4 : Add param2 for clean 
+	DWORD dwClean_CleanDoneReadyDelay; //After Clean DONE ---- delay(CleanDoneReadyDelay) -- Exit(Set Detector as READY)
+	DWORD dwLogSave_AutoSave;
+	DWORD dwLogSave_GetDark;
+	DWORD dwLogSave_GetBrightAuto;
+	DWORD dwLogSave_GetBrightManual;
+	DWORD dwLogSave_GetImgDynamic;
+	DWORD dwLogSave_KeyProcess;
+	DWORD dwLogSave_Network;
+	DWORD dwLogSave_ControlBox;
+	DWORD dwLogSave_Drop;
+	DWORD dwLogSave_AutoSleep;
+	DWORD dwLogSave_WebServer;
+	DWORD dwCpuClk_Speed;  // 0 - (300MHz 299999) 1 (400Mhz 399999), 2(600Mhz 599999), 3(1.2GHz 1199999)
+	DWORD dwWebServerVersion;
+	DWORD dwExcuteCleanAfterCancel; //2021_0817_yspark_3 : add excuteCleanAfterCancel in the param2
+	DWORD dwClean_CleanTypeFPGAorSoC; //0 - Excute clean by FPGA, 1 - Excute Clean by SoC
+	DWORD dwExpAckDelayManualMode; //2021_0927_yspark_3_1 : add parameter for the delay exp_ack for the manual mode
+	DWORD dwDarkAgingInterval;     //2021_1001_yspark_3 : Add param2 the interval of dark aging (step - sec)
+	DWORD dwAutoSaveExitDelay;     //2021_1001_yspark_4 : Add param2 the delay time for auto save exit
+	DWORD dwDebugLEDTestMode;      //2021_1018_yspark_2 : Add param2 for the led test mode
+	DWORD dwAECField;
+	DWORD dwAECKvP;
+	DWORD dwAECmAs;
+	DWORD dwAECMode;
+	DWORD dwAECGainAttenuation;
+	DWORD dwAECPotentioMeter1; //Ch1  Ch0  for AEC1
+	DWORD dwAECPotentioMeter2; //Ch1  Ch0  for AEC2
+	DWORD dwAECPotentioMeter3; //Ch1  Ch0  for AEC3
+	DWORD dwDummy[11];  // dummy
+
+//#if !defined(DOXYZEN)
+//} PACK_ATTR(4) DETECTOR_PARAM2;
+}DETECTOR_PARAM2;
 
 // LDCMD_GET_WIFI_MODULE
 

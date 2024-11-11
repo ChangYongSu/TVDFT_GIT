@@ -636,6 +636,7 @@
 #define IDC_BTN_SEND_COMMAND4           1684
 #define IDC_BTN_SEND_MODEL_CMD          1685
 #define IDC_BTN_GRAB_START              1685
+#define IDC_BTN_DPMS_CHECK              1685
 #define IDC_BTN_SEND_PATTERN            1686
 #define IDC_BTN_SEND_PATTERN2           1687
 #define IDC_BTN_GRAB_STOP               1687
@@ -1130,8 +1131,10 @@
 #define IDC_COMBO_HDMITYPE2             2102
 #define IDC_COMBO_LVDSMODE              2103
 #define IDC_COMBO_OUT_PORT              2104
+#define IDC_COMBO_LVDS_RESOLUTION       2104
 #define IDC_COMBO_OUT_PORT2             2105
 #define IDC_COMBO_PERIOD                2106
+#define IDC_COMBO_LVDS_RESOLUTION2      2106
 #define IDC_COMBO_RS232C_BAUD_RATE      2107
 #define IDC_COMBO_RS232C_COM_PORT       2108
 #define IDC_COMBO_STEP                  2109
@@ -2101,6 +2104,7 @@
 #define IDC_STATIC_AVSWITCH_VALUE_NAME1 3028
 #define IDC_STATIC_AVSWITCH_VALUE_NAME2 3029
 #define IDC_STATIC_AVSWITCHBOX_BAUDRATE 3030
+#define IDC_STATIC_DPMS_VALUE           3030
 #define IDC_STATIC_AVSWITCHBOX_COMPORT  3031
 #define IDC_STATIC_B                    3032
 #define IDC_STATIC_B_VAL                3033
@@ -2230,6 +2234,7 @@
 #define IDC_STATIC_KEYINPUTBOX_COMPORT  3146
 #define IDC_STATIC_COUNT_JIG_MAX        3146
 #define IDC_STATIC_L                    3147
+#define IDC_STATIC_COUNT_JIG_MAX2       3147
 #define IDC_STATIC_LABEL_MHL            3148
 #define IDC_STATIC_LABEL_MHL2           3149
 #define IDC_STATIC_LAST_UPDATE          3150
@@ -2572,9 +2577,15 @@
 #define IDC_STATIC_DP_TIME              3455
 #define IDC_EDIT_2AB_DATA2              3456
 #define IDC_MESSAGE_NEW                 3456
+#define IDC_STATIC_DP_TIME2             3456
 #define IDC_CHK_USE_DPGEN               3457
+#define IDC_STATIC_JIG_COUNT            3457
 #define IDC_RADIO_DP_TIME60             3458
+#define IDC_COMBO_MIC_TYPE              3458
 #define IDC_RADIO_DP_TIME30             3459
+#define IDC_COMBO_AUDIO_CARD            3459
+#define IDC_RADIO_DPMS_20P              3460
+#define IDC_RADIO_DPMS_100P             3461
 #define ID_AC_ONOFF                     32768
 #define ID_ACPOWER_                     32769
 #define ID_ACPOWER_ALL                  32770
@@ -2698,7 +2709,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        1253
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3457
+#define _APS_NEXT_CONTROL_VALUE         3460
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

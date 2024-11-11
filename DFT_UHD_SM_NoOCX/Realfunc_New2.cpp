@@ -109,6 +109,7 @@ BOOL _NotifyMessage()
 	CString sMsg2;
 	BOOL    bRetrun = TRUE;
 
+	
 	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
 	if (pos!= NULL)
 	{
@@ -140,6 +141,46 @@ BOOL _Delay()
 	}
 
 	if(!_Wait(nDelay)) return FALSE;
+	return TRUE;
+}
+
+BOOL _Check_Delay()
+{
+	UINT nDelay = 0;
+	
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+	if (pos!= NULL)
+	{
+		nDelay = GetInteger();
+		pCurStep->m_nCheckDelay = nDelay;
+		pCurStep->m_nCheckAgainDelay = 0;
+		
+	}
+	else
+	{
+		return FALSE;
+	}
+	return TRUE;
+}
+
+BOOL _Check_Again_Delay()
+{
+	UINT nDelay = 0;
+	
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+	if (pos!= NULL)
+	{
+		nDelay = GetInteger();
+		pCurStep->m_nCheckDelay = nDelay;
+		
+		nDelay = GetInteger();
+		pCurStep->m_nCheckAgainDelay = nDelay;
+		
+	}
+	else
+	{
+		return FALSE;
+	}
 	return TRUE;
 }
 
@@ -176,8 +217,47 @@ BOOL Work_Normal()
 	
 	if(pCurStep->m_pFunc != NULL)
 	{
-		reval = (*pCurStep->m_pFunc)();
-		CheckValue(reval);
+		if(pCurStep->m_nCheckDelay)
+		{
+			DWORD dwStartTick = 0, dwCurrentTick = 0;		
+			dwStartTick = GetTickCount();
+			dwCurrentTick = dwStartTick;
+			while (((int)(dwCurrentTick - dwStartTick) < pCurStep->m_nCheckDelay))
+			{
+				if (CurrentSet->bRunAbort)
+				{
+					break;
+				}
+
+				dwCurrentTick = GetTickCount();
+				reval = (*pCurStep->m_pFunc)();
+				CheckValue(reval);
+				if (pCurStep->GetResult() == TRUE)
+					break;
+
+				if (((int)(dwCurrentTick - dwStartTick) > pCurStep->m_nCheckDelay))
+				{
+					break;
+				}
+				Sleep(500);
+			}
+
+			if (pCurStep->m_nCheckAgainDelay > 0)
+			{
+				if (pCurStep->GetResult() == TRUE)
+				{
+					_Wait(pCurStep->m_nCheckAgainDelay);
+
+					reval = (*pCurStep->m_pFunc)();
+					CheckValue(reval);
+				}
+			}
+		}
+		else
+		{
+				reval = (*pCurStep->m_pFunc)();
+				CheckValue(reval);
+		}
 	}
 
 	if (pCurStep->m_nTestType == MODULE_TEST)
@@ -195,7 +275,12 @@ BOOL Work_Normal()
 
 	if(pCurStep->m_bRunVideoTest)
 	{ 
-		if(pCurStep->GetResult() == FALSE)
+		if (g_nCommandOnlyType == TRUE)
+		{
+			pCurStep->m_bVideoTestResult = TRUE;
+			//pCurStep->SetResult(TRUE);
+		}
+		else if(pCurStep->GetResult() == FALSE)
 		{
 			pCurStep->m_bVideoTestResult = FALSE;
 			gPLC_Ctrl.m_nCurrentVideoNG = 1;
@@ -217,116 +302,123 @@ BOOL Work_Normal()
 	//=================
 	if(pCurStep->m_bRunAudioTest == TRUE)
 	{
-//		if(CurrentSet->bUseAVSwitchBox == TRUE)
-		if(pCurStep->m_nTestType != AUDIO_TEST)
+		if (g_nCommandOnlyType == TRUE)
 		{
-			if(CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)	
+			pCurStep->m_bAudioTestResult = TRUE;
+		}
+		else
+		{
+			//		if(CurrentSet->bUseAVSwitchBox == TRUE)
+			if (pCurStep->m_nTestType != AUDIO_TEST)
 			{
-				if(!CurrentSet->bUseAVSwitchBox)
+				if (CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
 				{
-					pCurStep->m_bAudioTestResult = FALSE;
+					if (!CurrentSet->bUseAVSwitchBox)
+					{
+						pCurStep->m_bAudioTestResult = FALSE;
+					}
+					else
+					{
+						if (AvSwitchBoxCtrl.AudioMeasure() == TRUE)
+						{
+							AvSwitchBoxCtrl.AudioMeasure();
+						}
+					}
 				}
 				else
 				{
-					if(AvSwitchBoxCtrl.AudioMeasure() == TRUE)
+					if (!g_SoundCard.AudioMeasure())
 					{
-						AvSwitchBoxCtrl.AudioMeasure();
+						_Wait(800);
+						if (!g_SoundCard.AudioMeasure())
+						{
+							//	if((g_SoundCard.m_fMeasuredLeftLevel < (double)MIN_AUDIO_LEVEL)
+							//	|| (g_SoundCard.m_fMeasuredRightLevel < (double)MIN_AUDIO_LEVEL))
+							//	{
+							//		g_SoundCard.WaveRead_Stop();  _Wait(1000); 
+							//		g_SoundCard.WaveRead_Start(); _Wait(1500);
+							//	}
+							//	else{
+							_Wait(1500);
+							//	}
+							g_SoundCard.AudioMeasure();
+						}
 					}
 				}
+
+			}
+
+			if (((CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX) && (AvSwitchBoxCtrl.m_bResult == FALSE))
+				|| ((CurrentSet->nAudioCheckMethod == METHOD_SOUNDCARD) && (g_SoundCard.m_bResult == FALSE)))
+			{
+				pCurStep->m_bAudioTestResult = FALSE;
+				pCurStep->SetResult(FALSE);
+
+				sMsg.Format("[A/NG]");
 			}
 			else
 			{
-				if(!g_SoundCard.AudioMeasure())
-				{
-					_Wait(800);
-					if(!g_SoundCard.AudioMeasure())
-					{
-					//	if((g_SoundCard.m_fMeasuredLeftLevel < (double)MIN_AUDIO_LEVEL)
-					//	|| (g_SoundCard.m_fMeasuredRightLevel < (double)MIN_AUDIO_LEVEL))
-					//	{
-					//		g_SoundCard.WaveRead_Stop();  _Wait(1000); 
-					//		g_SoundCard.WaveRead_Start(); _Wait(1500);
-					//	}
-					//	else{
-							_Wait(1500);
-					//	}
-						g_SoundCard.AudioMeasure();
-					}
-				}
+				pCurStep->m_bAudioTestResult = TRUE;
+
+				sMsg.Format("[A/OK]");
 			}
 
-		}
+			if (CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
+			{
+				pCurStep->m_nLeftFreq[0] = (int)AvSwitchBoxCtrl.m_fTargetLeftFreq;
+				pCurStep->m_nRightFreq[0] = (int)AvSwitchBoxCtrl.m_fTargetRightFreq;
+				pCurStep->m_nLeftLevel[0] = (int)AvSwitchBoxCtrl.m_fTargetLeftLevel;
+				pCurStep->m_nRightLevel[0] = (int)AvSwitchBoxCtrl.m_fTargetRightLevel;
 
-		if(((CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX) && (AvSwitchBoxCtrl.m_bResult == FALSE))
-		|| ((CurrentSet->nAudioCheckMethod == METHOD_SOUNDCARD)	 && (g_SoundCard.m_bResult == FALSE)))
-		{
-			pCurStep->m_bAudioTestResult = FALSE;
-			pCurStep->SetResult(FALSE);
+				pCurStep->m_nLeftFreq[1] = (int)AvSwitchBoxCtrl.m_fMeasuredLeftFreq;
+				pCurStep->m_nRightFreq[1] = (int)AvSwitchBoxCtrl.m_fMeasuredRightFreq;
+				pCurStep->m_nLeftLevel[1] = (int)AvSwitchBoxCtrl.m_fMeasuredLeftLevel;
+				pCurStep->m_nRightLevel[1] = (int)AvSwitchBoxCtrl.m_fMeasuredRightLevel;
+			}
+			else
+			{
+				pCurStep->m_nLeftFreq[0] = (int)g_SoundCard.m_fTargetLeftFreq;
+				pCurStep->m_nRightFreq[0] = (int)g_SoundCard.m_fTargetRightFreq;
+				pCurStep->m_nLeftLevel[0] = (int)g_SoundCard.m_fTargetLeftLevel;
+				pCurStep->m_nRightLevel[0] = (int)g_SoundCard.m_fTargetRightLevel;
 
-			sMsg.Format("[A/NG]");
-		}
-		else
-		{
-			pCurStep->m_bAudioTestResult = TRUE;
+				pCurStep->m_nLeftFreq[1] = (int)g_SoundCard.m_fMeasuredLeftFreq;
+				pCurStep->m_nRightFreq[1] = (int)g_SoundCard.m_fMeasuredRightFreq;
+				pCurStep->m_nLeftLevel[1] = (int)g_SoundCard.m_fMeasuredLeftLevel;
+				pCurStep->m_nRightLevel[1] = (int)g_SoundCard.m_fMeasuredRightLevel;
+			}
 
-			sMsg.Format("[A/OK]");
-		}
+			if (CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
+			{
+				pCurStep->m_nAudioMargin = (int)AvSwitchBoxCtrl.m_fFreqMargin;
+			}
+			else
+			{
+				pCurStep->m_nAudioMargin = (int)g_SoundCard.m_fFreqMargin;
+			}
 
-		if(CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
-		{
-			pCurStep->m_nLeftFreq[0] 	 = (int)AvSwitchBoxCtrl.m_fTargetLeftFreq;
-			pCurStep->m_nRightFreq[0]	 = (int)AvSwitchBoxCtrl.m_fTargetRightFreq;
-			pCurStep->m_nLeftLevel[0]	 = (int)AvSwitchBoxCtrl.m_fTargetLeftLevel;
-			pCurStep->m_nRightLevel[0]	 = (int)AvSwitchBoxCtrl.m_fTargetRightLevel;
+			if (CurrentSet->bSaveProcessingTimeData)
+			{
+				DWORD dwFuncElapsedTime = GetTickCount() - pCurStep->m_dwCheckAudioTickCount;
+				DWORD dwStepElapsedTime = GetTickCount() - g_pView->m_dwStepElapsedTime;
 
-			pCurStep->m_nLeftFreq[1] 	 = (int)AvSwitchBoxCtrl.m_fMeasuredLeftFreq;
-			pCurStep->m_nRightFreq[1]	 = (int)AvSwitchBoxCtrl.m_fMeasuredRightFreq;
-			pCurStep->m_nLeftLevel[1]	 = (int)AvSwitchBoxCtrl.m_fMeasuredLeftLevel;
-			pCurStep->m_nRightLevel[1]	 = (int)AvSwitchBoxCtrl.m_fMeasuredRightLevel;
-		}
-		else
-		{
-			pCurStep->m_nLeftFreq[0] 	 = (int)g_SoundCard.m_fTargetLeftFreq;
-			pCurStep->m_nRightFreq[0]	 = (int)g_SoundCard.m_fTargetRightFreq;
-			pCurStep->m_nLeftLevel[0]	 = (int)g_SoundCard.m_fTargetLeftLevel;
-			pCurStep->m_nRightLevel[0]	 = (int)g_SoundCard.m_fTargetRightLevel;
+				CString szFuncElapsedTime;
+				szFuncElapsedTime.Format("  E-CheckAudio [%dms] (%dms)", dwFuncElapsedTime, dwStepElapsedTime);
+				AddTimeData(szFuncElapsedTime);
+			}
 
-			pCurStep->m_nLeftFreq[1] 	 = (int)g_SoundCard.m_fMeasuredLeftFreq;
-			pCurStep->m_nRightFreq[1]	 = (int)g_SoundCard.m_fMeasuredRightFreq;
-			pCurStep->m_nLeftLevel[1]	 = (int)g_SoundCard.m_fMeasuredLeftLevel;
-			pCurStep->m_nRightLevel[1]	 = (int)g_SoundCard.m_fMeasuredRightLevel;
-		}
+			g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg);
 
-		if(CurrentSet->nAudioCheckMethod == METHOD_AVSWITCHBOX)
-		{
-			pCurStep->m_nAudioMargin	 = (int)AvSwitchBoxCtrl.m_fFreqMargin;
-		}
-		else
-		{
-			pCurStep->m_nAudioMargin	 = (int)g_SoundCard.m_fFreqMargin;
-		}
-
-		if(CurrentSet->bSaveProcessingTimeData)
-		{
-			DWORD dwFuncElapsedTime = GetTickCount()-pCurStep->m_dwCheckAudioTickCount;
-			DWORD dwStepElapsedTime = GetTickCount()-g_pView->m_dwStepElapsedTime;
-			
-			CString szFuncElapsedTime;
-			szFuncElapsedTime.Format("  E-CheckAudio [%dms] (%dms)",dwFuncElapsedTime,dwStepElapsedTime);
-			AddTimeData(szFuncElapsedTime);
-		}
-
-		g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg); 
-
-		if(szPrevMsg != _T(""))
-		{
-			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " +sMsg);
-			pCurStep->m_strMsg = szPrevMsg + "; " + sMsg;
-		}
-		else
-		{
-			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, sMsg);
-			pCurStep->m_strMsg = sMsg;
+			if (szPrevMsg != _T(""))
+			{
+				g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + sMsg);
+				pCurStep->m_strMsg = szPrevMsg + "; " + sMsg;
+			}
+			else
+			{
+				g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, sMsg);
+				pCurStep->m_strMsg = sMsg;
+			}
 		}
 	}
 
@@ -2108,6 +2200,62 @@ UINT Grab_N_Load_Image_MakeRef_2in1()
 
 BOOL _Grab_Image_Check()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
+	BOOL bResult = FALSE;
+
+	if(g_nGrabberType == FHD_GRABBER)
+	{
+		g_pView->SetGrabInfo(&g_GrabImage);
+	}
+	if(g_nGrabberType == FHD_GRABBER)
+	{
+		if(g_pView->m_bContinuousLVDSGrabRunning)
+		{
+			g_pView->SendMessage(UM_CONTINUOUS_LVDS_GRAB,STOP_CONT_GRAB,0);
+		}
+	}
+
+	if(g_pView->m_bMakeReferenceMode)
+	{
+		bResult = Grab_Image_Check_MakeRef_2in1();
+	}
+	else
+	{
+		bResult = Grab_Image_Check_Normal_2in1();
+	}
+
+	if(g_nGrabberType == FHD_GRABBER)
+	{
+		if((pCurStep->m_nStepType == PROCESS_FUNCTION) && (pCurStep->m_bTest))				
+		{
+			if(!g_pView->m_bContinuousLVDSGrabRunning)
+			{
+				g_pView->SendMessage(UM_CONTINUOUS_LVDS_GRAB,START_CONT_GRAB,0);
+			}
+		}
+	
+		if((pCurStep->m_nTestType == ADC_TEST) && (pCurStep->m_bTest))
+		{
+			if(!g_pView->m_bContinuousLVDSGrabRunning)
+			{
+				g_pView->SendMessage(UM_CONTINUOUS_LVDS_GRAB,START_CONT_GRAB,0);
+			}
+		}
+	}
+
+	return bResult;
+}
+
+
+BOOL _Grab_FullImage_Check()
+{
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	BOOL bResult = FALSE;
 
 	if(g_nGrabberType == FHD_GRABBER)
@@ -2156,6 +2304,10 @@ BOOL _Grab_Image_Check()
 //+add PSH 080412
 BOOL _Grab_Image_OSD_Check()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	BOOL bResult = FALSE;
 
 	if(g_pView->m_bMakeReferenceMode)
@@ -2173,25 +2325,29 @@ BOOL _Grab_Image_OSD_Check()
 
 UINT Grab_Image_Check_Normal_2in1()
 {
-	int nMaxDelay		 = 0;
-	int nUseMaskImage	 = 0;	// 0 : Dont't Use, 1 : Use
-	int nTotalNoErrorPixel	= 0;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
+	int nMaxDelay = 0;
+	int nUseMaskImage = 0;	// 0 : Dont't Use, 1 : Use
+	int nTotalNoErrorPixel = 0;
 
-	CString sRefTmp					= _T("");
-	CString sGrabPath				= _T("");
-	CString sRefPath				= _T("");
-	CString sMsg					= _T("");
-	CString sMsg1					= _T("");
-	CString sMsg2					= _T("");
-	CString sMsg3					= _T("");
-	CString szFileName				= _T("");
-	CString szErrorMsg				= _T("");
+	CString sRefTmp = _T("");
+	CString sGrabPath = _T("");
+	CString sRefPath = _T("");
+	CString sMsg = _T("");
+	CString sMsg1 = _T("");
+	CString sMsg2 = _T("");
+	CString sMsg3 = _T("");
+	CString szFileName = _T("");
+	CString szErrorMsg = _T("");
 
-	DWORD dwElapsedTime				= 0;
-	DWORD dwTickCount				= GetTickCount();
+	DWORD dwElapsedTime = 0;
+	DWORD dwTickCount = GetTickCount();
 
-	DWORD dwFuncTickCount     = 0;
-	DWORD dwFuncElapsedTime   = 0;
+	DWORD dwFuncTickCount = 0;
+	DWORD dwFuncElapsedTime = 0;
 	CString szFuncElapsedTime = _T("");
 
 	POINT ptZeroPosition;
@@ -2204,187 +2360,425 @@ UINT Grab_Image_Check_Normal_2in1()
 	POINT ptResultPosition;
 	ptResultPosition.x = 0;
 	ptResultPosition.y = 0;
-	
-	float fMaxDifference  = 0.0;
+
+	float fMaxDifference = 0.0;
 
 
-	if(CurrentSet->bSaveProcessingTimeData)
+	if (CurrentSet->bSaveProcessingTimeData)
 	{
 		sMsg.Format("  B-GrabImageCheck");
 		AddTimeData(sMsg);
 		dwFuncTickCount = GetTickCount();
 	}
-	
+
 	CRect nImageRect;
-	CWnd* pImageWnd	= NULL;
+	CWnd* pImageWnd = NULL;
 	pImageWnd = g_pView->GetDlgItem(IDC_VIDEOVIEW);
 	pImageWnd->GetWindowRect(&nImageRect);
 
 	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
-	
-	if (pos!= NULL)
+
+	if (pos != NULL)
 	{
-		sRefTmp			= GetString();
-		nUseMaskImage	= GetInteger();
-		nMaxDelay		= GetInteger();
-		sMsg			= GetString();
+		sRefTmp = GetString();
+		nUseMaskImage = GetInteger();
+		nMaxDelay = GetInteger();
+		sMsg = GetString();
 	}
 
 	//================
 	// Skip GrabNload
 	//================
-	if((pCurStep->m_bStepRetryFlag) || (pCurStep->m_bStepInternalRetryFlag))
+	if ((pCurStep->m_bStepRetryFlag) || (pCurStep->m_bStepInternalRetryFlag))
 	{
 		//================
 		// Audio-NG Retry
 		//================
-		if((pCurStep->m_bAudioTestResult == FALSE) && (pCurStep->m_bVideoTestResult == TRUE))
+		if ((pCurStep->m_bAudioTestResult == FALSE) && (pCurStep->m_bVideoTestResult == TRUE))
 		{
-			sMsg3.Format("%d.GrabImageCheck is skipped",pCurStep->m_nStep);
+			sMsg3.Format("%d.GrabImageCheck is skipped", pCurStep->m_nStep);
 			AddStringToRemoteComLog(sMsg3);
 
-			if(sRefTmp != _T(""))
+			if (sRefTmp != _T(""))
 			{
-				if(!RefImage_DirectLoad(sRefTmp,nUseMaskImage)) return TEST_ABORT;
+				if (!RefImage_DirectLoad(sRefTmp, nUseMaskImage)) return TEST_ABORT;
 			}
 			return TEST_PASS;
 		}
 	}
 
-	if((g_ImageProc.m_nRoiWidth == 0)
-	&& (g_ImageProc.m_nRoiHeight == 0))
+	if ((g_ImageProc.m_nRoiWidth == 0)
+		&& (g_ImageProc.m_nRoiHeight == 0))
 	{
-	//	nRoiType = ROI_HALF_DN_SCREEN;
+		//	nRoiType = ROI_HALF_DN_SCREEN;
 		Set_Grab_Image_Check_Roi(CurrentSet->nGrabCheckArea);
 	}
 
 	g_CurSetting.m_szGrabRefImageName = sRefTmp;
-	sGrabPath.Format("%s_S%d_%s",CurrentSet->sGrabFolder, pCurStep->m_nStep, sRefTmp);
+	sGrabPath.Format("%s_S%d_%s", CurrentSet->sGrabFolder, pCurStep->m_nStep, sRefTmp);
 
-//	pCurStep->m_strGrabPath  = sGrabPath;
+	//	pCurStep->m_strGrabPath  = sGrabPath;
 	pCurStep->m_strGrabPath = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".jpg";
-	pCurStep->m_strProcPath  = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".rst";
-//	g_GrabImage.m_szFilePath = sGrabPath;
+	pCurStep->m_strProcPath = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".rst";
+	//	g_GrabImage.m_szFilePath = sGrabPath;
 	g_GrabImage.m_szFilePath = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".jpg";
 
 
-GRAB_START :
+GRAB_START:
 
 	sMsg1 = sMsg;
 	sMsg2 = _T("");
 
-	if(CurrentSet->bRunAbort)
+	if (CurrentSet->bRunAbort)
 	{
-		g_pView->m_nNoCurrentRepeatExecution = 1; 
+		g_pView->m_nNoCurrentRepeatExecution = 1;
 		return TEST_ABORT;
 	}
-	
-	if(sMsg1 == _T(""))
+
+	if (sMsg1 == _T(""))
 	{
-		sMsg1.Format("Wait %dms",nMaxDelay);
+		sMsg1.Format("Wait %dms", nMaxDelay);
 	}
 	else
 	{
-		sMsg2.Format("%s (Wait %dms)",sMsg1,nMaxDelay);
+		sMsg2.Format("%s (Wait %dms)", sMsg1, nMaxDelay);
 		sMsg1 = sMsg2;
 	}
 	ShowSubStepMessage(sMsg1, "Grab Image");
-	
+
 	//UHD
-	if(g_nGrabberType == UHD_GRABBER)
+	if (g_nGrabberType == UHD_GRABBER)
 	{
-		if(!Grab_Image_UHD(sRefTmp,nUseMaskImage))
+		if (!Grab_Image_UHD(sRefTmp, nUseMaskImage))
 		{
 			return TEST_ABORT;
 		}
 	}
 	else//FHD
 	{
-		if(!Grab_Image_FHD(sRefTmp,nUseMaskImage))
+		if (!Grab_Image_FHD(sRefTmp, nUseMaskImage))
 		{
 			return TEST_ABORT;
 		}
 	}
 
-	
+
 	ctrlImgProg.SetPos(80);
 
 	ctrlImgProg.SetPos(100);
 
 
-	if((pCurStep->GetFuncType() == MEAS_BOOL) || (pCurStep->m_nStepType == PROCESS_FUNCTION))
+	if ((pCurStep->GetFuncType() == MEAS_BOOL) || (pCurStep->m_nStepType == PROCESS_FUNCTION))
 	{
-		pCurStep->m_fLowLimit  = -30.0f;
+		pCurStep->m_fLowLimit = -30.0f;
 		pCurStep->m_fHighLimit = 30.0f;
 	}
 
 	g_ImageProc.m_ptPositionShift.x = 0;
 	g_ImageProc.m_ptPositionShift.y = 0;
 
-	g_ImageProc.SetColorLimit((float)pCurStep->m_fLowLimit,(float)pCurStep->m_fHighLimit);
-	g_ImageProc.SetAvgMaskSize(0,0,0); 
+	g_ImageProc.SetColorLimit((float)pCurStep->m_fLowLimit, (float)pCurStep->m_fHighLimit);
+	g_ImageProc.SetAvgMaskSize(0, 0, 0);
 
-	nResult = g_ImageProc.RGBTest(GRAB_CHECK_TEST,g_GrabImage,g_RefImage,g_MaskImage,
-								  ptResultPosition,fMaxDifference,nTotalNoErrorPixel,nUseMaskImage,ctrlImgProg);
+	nResult = g_ImageProc.RGBTest(GRAB_CHECK_TEST, g_GrabImage, g_RefImage, g_MaskImage,
+		ptResultPosition, fMaxDifference, nTotalNoErrorPixel, nUseMaskImage, ctrlImgProg);
 
-	g_ImageProc.SetAvgMaskSize(0,0,0); 
+	g_ImageProc.SetAvgMaskSize(0, 0, 0);
 
 	//+add kwmoon 080125
 	g_pView->InvalidateRect(nImageRect, FALSE);
 	g_pView->UpdateWindow(); _Wait(10);
 
-	if(nResult == TEST_ABORT)
+	if (nResult == TEST_ABORT)
 	{
-		if(CurrentSet->bSaveGrabImg)
+		if (CurrentSet->bSaveGrabImg)
 		{
-		//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
-			g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+			//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+			g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE, ctrlImgProg);
 		}
-		g_ImageProc.SetRoi(ptZeroPosition,ptZeroPosition); 
+		g_ImageProc.SetRoi(ptZeroPosition, ptZeroPosition);
 		return TEST_ABORT;
 	}
 
-	dwElapsedTime = GetTickCount()-dwTickCount;
- 
-	if(nResult == TEST_FAIL)
+	dwElapsedTime = GetTickCount() - dwTickCount;
+
+	if (nResult == TEST_FAIL)
 	{
-		if(CurrentSet->bRunAbort)
+		if (CurrentSet->bRunAbort)
 		{
-			if(CurrentSet->bSaveGrabImg)
+			if (CurrentSet->bSaveGrabImg)
 			{
-			//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
-				g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+				//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+				g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE, ctrlImgProg);
 			}
-			g_ImageProc.SetRoi(ptZeroPosition,ptZeroPosition); 
+			g_ImageProc.SetRoi(ptZeroPosition, ptZeroPosition);
 			return TEST_ABORT;
 		}
+
+		if (dwElapsedTime < (DWORD)nMaxDelay) goto GRAB_START;
 		
-		if(dwElapsedTime < (DWORD)nMaxDelay) goto GRAB_START;
 	}
 
-	g_ImageProc.SetRoi(ptZeroPosition,ptZeroPosition); 
-	
-	if(CurrentSet->bSaveProcessingTimeData)
-	{
-		DWORD dwStepElapsedTime = GetTickCount()-g_pView->m_dwStepElapsedTime;
+	g_ImageProc.SetRoi(ptZeroPosition, ptZeroPosition);
 
-		dwFuncElapsedTime = GetTickCount()-dwFuncTickCount;
-		szFuncElapsedTime.Format("  E-Grab_Image_Check [%dms] (%dms)",dwFuncElapsedTime,dwStepElapsedTime);
+	if (CurrentSet->bSaveProcessingTimeData)
+	{
+		DWORD dwStepElapsedTime = GetTickCount() - g_pView->m_dwStepElapsedTime;
+
+		dwFuncElapsedTime = GetTickCount() - dwFuncTickCount;
+		szFuncElapsedTime.Format("  E-Grab_Image_Check [%dms] (%dms)", dwFuncElapsedTime, dwStepElapsedTime);
 		AddTimeData(szFuncElapsedTime);
 	}
 
-	if(CurrentSet->bSaveGrabImg)
+	if (CurrentSet->bSaveGrabImg)
 	{
-	//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
-		g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+		//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+		g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE, ctrlImgProg);
 	}
 
 	return TEST_PASS;
 }
 
+UINT Grab_Image_Full_Check_Normal_2in1()
+{
+	
+	int nMaxDelay = 0;
+	int nUseMaskImage = 0;	// 0 : Dont't Use, 1 : Use
+	int nTotalNoErrorPixel = 0;
+
+	CString sRefTmp = _T("");
+	CString sGrabPath = _T("");
+	CString sRefPath = _T("");
+	CString sMsg = _T("");
+	CString sMsg1 = _T("");
+	CString sMsg2 = _T("");
+	CString sMsg3 = _T("");
+	CString szFileName = _T("");
+	CString szErrorMsg = _T("");
+
+	DWORD dwElapsedTime = 0;
+	DWORD dwTickCount = GetTickCount();
+	DWORD dwElapsedPassTime = 0;
+	DWORD dwPassTickCount = GetTickCount();
+
+	DWORD dwFuncTickCount = 0;
+	DWORD dwFuncElapsedTime = 0;
+	CString szFuncElapsedTime = _T("");
+
+	POINT ptZeroPosition;
+	ptZeroPosition.x = 0;
+	ptZeroPosition.y = 0;
+
+	// Compare Images
+	int nResult = TEST_FAIL;
+
+	POINT ptResultPosition;
+	ptResultPosition.x = 0;
+	ptResultPosition.y = 0;
+
+	float fMaxDifference = 0.0;
+
+
+	if (CurrentSet->bSaveProcessingTimeData)
+	{
+		sMsg.Format("  B-GrabImageCheck");
+		AddTimeData(sMsg);
+		dwFuncTickCount = GetTickCount();
+	}
+
+	CRect nImageRect;
+	CWnd* pImageWnd = NULL;
+	pImageWnd = g_pView->GetDlgItem(IDC_VIDEOVIEW);
+	pImageWnd->GetWindowRect(&nImageRect);
+
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+
+	if (pos != NULL)
+	{
+		sRefTmp = GetString();
+		nUseMaskImage = GetInteger();
+		nMaxDelay = GetInteger();
+		sMsg = GetString();
+	}
+
+	//================
+	// Skip GrabNload
+	//================
+	if ((pCurStep->m_bStepRetryFlag) || (pCurStep->m_bStepInternalRetryFlag))
+	{
+		//================
+		// Audio-NG Retry
+		//================
+		if ((pCurStep->m_bAudioTestResult == FALSE) && (pCurStep->m_bVideoTestResult == TRUE))
+		{
+			sMsg3.Format("%d.GrabImageCheck is skipped", pCurStep->m_nStep);
+			AddStringToRemoteComLog(sMsg3);
+
+			if (sRefTmp != _T(""))
+			{
+				if (!RefImage_DirectLoad(sRefTmp, nUseMaskImage)) return TEST_ABORT;
+			}
+			return TEST_PASS;
+		}
+	}
+
+	if ((g_ImageProc.m_nRoiWidth == 0)
+		&& (g_ImageProc.m_nRoiHeight == 0))
+	{
+		//	nRoiType = ROI_HALF_DN_SCREEN;
+		Set_Grab_Image_Check_Roi(CurrentSet->nGrabCheckArea);
+	}
+
+	g_CurSetting.m_szGrabRefImageName = sRefTmp;
+	sGrabPath.Format("%s_S%d_%s", CurrentSet->sGrabFolder, pCurStep->m_nStep, sRefTmp);
+
+	//	pCurStep->m_strGrabPath  = sGrabPath;
+	pCurStep->m_strGrabPath = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".jpg";
+	pCurStep->m_strProcPath = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".rst";
+	//	g_GrabImage.m_szFilePath = sGrabPath;
+	g_GrabImage.m_szFilePath = sGrabPath.Left(sGrabPath.ReverseFind('.')) + ".jpg";
+
+
+GRAB_START:
+
+	sMsg1 = sMsg;
+	sMsg2 = _T("");
+
+	if (CurrentSet->bRunAbort)
+	{
+		g_pView->m_nNoCurrentRepeatExecution = 1;
+		return TEST_ABORT;
+	}
+
+	if (sMsg1 == _T(""))
+	{
+		sMsg1.Format("Wait %dms", nMaxDelay);
+	}
+	else
+	{
+		sMsg2.Format("%s (Wait %dms)", sMsg1, nMaxDelay);
+		sMsg1 = sMsg2;
+	}
+	ShowSubStepMessage(sMsg1, "Grab Image");
+
+	//UHD
+	if (g_nGrabberType == UHD_GRABBER)
+	{
+		if (!Grab_Image_UHD(sRefTmp, nUseMaskImage))
+		{
+			return TEST_ABORT;
+		}
+	}
+	else//FHD
+	{
+		if (!Grab_Image_FHD(sRefTmp, nUseMaskImage))
+		{
+			return TEST_ABORT;
+		}
+	}
+
+
+	ctrlImgProg.SetPos(80);
+
+	ctrlImgProg.SetPos(100);
+
+
+	if ((pCurStep->GetFuncType() == MEAS_BOOL) || (pCurStep->m_nStepType == PROCESS_FUNCTION))
+	{
+		pCurStep->m_fLowLimit = -30.0f;
+		pCurStep->m_fHighLimit = 30.0f;
+	}
+
+	g_ImageProc.m_ptPositionShift.x = 0;
+	g_ImageProc.m_ptPositionShift.y = 0;
+
+	g_ImageProc.SetColorLimit((float)pCurStep->m_fLowLimit, (float)pCurStep->m_fHighLimit);
+	g_ImageProc.SetAvgMaskSize(0, 0, 0);
+
+	nResult = g_ImageProc.RGBTest(GRAB_CHECK_TEST, g_GrabImage, g_RefImage, g_MaskImage,
+		ptResultPosition, fMaxDifference, nTotalNoErrorPixel, nUseMaskImage, ctrlImgProg);
+
+	g_ImageProc.SetAvgMaskSize(0, 0, 0);
+
+	//+add kwmoon 080125
+	g_pView->InvalidateRect(nImageRect, FALSE);
+	g_pView->UpdateWindow(); _Wait(10);
+
+	if (nResult == TEST_ABORT)
+	{
+		if (CurrentSet->bSaveGrabImg)
+		{
+			//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+			g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE, ctrlImgProg);
+		}
+		g_ImageProc.SetRoi(ptZeroPosition, ptZeroPosition);
+		return TEST_ABORT;
+	}
+
+	dwElapsedTime = GetTickCount() - dwTickCount;
+
+	//DWORD dwElapsedPassTime = 0;
+	//DWORD dwPassTickCount = GetTickCount();
+	if (nResult == TEST_PASS)
+	{
+		dwElapsedPassTime =  GetTickCount() - dwPassTickCount;
+		if (dwElapsedPassTime >= (DWORD)(nMaxDelay))
+		{
+			nResult = TEST_PASS;
+		}
+		else
+		{
+			//if (dwElapsedTime < (DWORD)(nMaxDelay * 2))
+			goto GRAB_START;
+		}
+	}
+	else if (nResult == TEST_FAIL)
+	{
+		dwPassTickCount = GetTickCount();
+		if (CurrentSet->bRunAbort)
+		{
+			if (CurrentSet->bSaveGrabImg)
+			{		
+				g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE, ctrlImgProg);
+			}
+			g_ImageProc.SetRoi(ptZeroPosition, ptZeroPosition);
+			return TEST_ABORT;
+		}
+
+		if (dwElapsedTime < (DWORD)(nMaxDelay * 2))
+			goto GRAB_START;
+		else
+			return FALSE;
+	}
+
+	g_ImageProc.SetRoi(ptZeroPosition, ptZeroPosition);
+
+	if (CurrentSet->bSaveProcessingTimeData)
+	{
+		DWORD dwStepElapsedTime = GetTickCount() - g_pView->m_dwStepElapsedTime;
+
+		dwFuncElapsedTime = GetTickCount() - dwFuncTickCount;
+		szFuncElapsedTime.Format("  E-Grab_Image_Check [%dms] (%dms)", dwFuncElapsedTime, dwStepElapsedTime);
+		AddTimeData(szFuncElapsedTime);
+	}
+
+	if (CurrentSet->bSaveGrabImg)
+	{
+		//	g_GrabImage.SaveImage(pCurStep->m_strGrabPath, SNAP_IMAGE,ctrlImgProg);
+		g_GrabImage.SaveJpgImage(pCurStep->m_strGrabPath, SNAP_IMAGE, ctrlImgProg);
+	}
+
+	return nResult;
+}
+
 //+add PSH 080412
 UINT Grab_Image_Check_OSD_2in1()
 {
+
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TEST_PASS;
+	}
 	int nMaxDelay		 = 0;
 	int nUseMaskImage	 = 0;	// 0 : Dont't Use, 1 : Use
 
@@ -2574,6 +2968,10 @@ GRAB_START :
 
 BOOL Grab_Image_UHD(CString sRefImagePath, int nUseMaskImage)
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	int nWidth		= 0;
 	int nHeight		= 0;
 	int nBitCount	= 0;
@@ -2669,6 +3067,10 @@ BOOL Grab_Image_UHD(CString sRefImagePath, int nUseMaskImage)
 
 BOOL Grab_Image_FHD(CString sRefImagePath, int nUseMaskImage)
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	int nWidth		= 0;
 	int nHeight		= 0;
 	int nBitCount	= 0;
@@ -2765,6 +3167,10 @@ BOOL Grab_Image_FHD(CString sRefImagePath, int nUseMaskImage)
 
 UINT Grab_Image_Check_MakeRef_2in1()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	int	nMaxDelay		 = 0;
 	int nUseMaskImage	 = 0;	// 0 : Dont't Use, 1 : Use
 
@@ -3104,6 +3510,10 @@ UINT Grab_Image_Check_MakeRef_2in1()
 //+add PSH 080412
 UINT Grab_Image_Check_OSD_MakeRef_2in1()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	int	nMaxDelay		 = 0;
 	int nUseMaskImage	 = 0;	// 0 : Dont't Use, 1 : Use
 
@@ -3475,6 +3885,10 @@ UINT Grab_Image_Check_OSD_MakeRef_2in1()
 //+add kwmoon 080523
 BOOL _SetAudioCheckMethod()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	CString sMsg = _T("");
 
 	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
@@ -3513,7 +3927,10 @@ BOOL _CheckAudio()
 		AddTimeData(sMsg);
 		pCurStep->m_dwCheckAudioTickCount = GetTickCount();
 	}
-
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	//+add PSH 080816
 //	g_SoundCard.m_bMeasureAudio = FALSE;
 
@@ -3586,6 +4003,11 @@ BOOL _CheckAudio()
 //+add 090305
 BOOL _CheckAudio_Level()
 {
+
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	CString sCmd = _T("");
 	CString sMsg = _T("");
 
@@ -3655,6 +4077,11 @@ BOOL _CheckAudio_Level()
 //+add 090305
 BOOL _CheckAudio_Frequency()
 {
+
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	CString sCmd = _T("");
 	CString sMsg = _T("");
 
@@ -3723,6 +4150,10 @@ BOOL _CheckAudio_Frequency()
 //+add 090305
 BOOL _CheckAudio_Time_Level()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	CString sCmd = _T("");
 	CString sMsg = _T("");
 
@@ -3791,6 +4222,10 @@ BOOL _CheckAudio_Time_Level()
 //+add 220222
 BOOL _CheckAudio_Time_Frequency()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	CString sCmd = _T("");
 	CString sMsg = _T("");
 
@@ -3858,6 +4293,10 @@ BOOL _CheckAudio_Time_Frequency()
 
 BOOL _CheckAudio_Level_NoFrequency()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	CString sCmd = _T("");
 	CString sMsg = _T("");
 
@@ -3944,9 +4383,7 @@ BOOL _CheckAudio_Level_NoFrequency()
 	return TRUE;
 }
 
-
 // Global Function
-
 BOOL RefImage_DirectLoad(CString szFileName,int nUseMaskImage)
 {
 	//+chage kwmoon 080402
@@ -7533,6 +7970,9 @@ BOOL _HDMIGen_SetARC()
 
 	int nPort;
 	int nFlag;
+	if (g_nCommandOnlyType == TRUE)
+		return TRUE;
+
 
 	if(!CurrentSet->bUseHDMIGen) return TRUE;
 		
@@ -7939,9 +8379,45 @@ BOOL _TV_3DMode_Off()
 //-
 BOOL _AudioMeasureReset()
 {
+	//g_SoundCard.m_nSoundUSBDeviceFind = 0;
+	//g_SoundCard.m_nUSBDeviceID = -1;
+	//g_SoundCard.m_sUSBDeviceName = "N/A";
 	g_pView->AudioMeasureStop();
-	//_Wait(150);
+	_Wait(150);
 	g_pView->AudioMeasureStart();
+
+	return TRUE;
+}
+//-
+BOOL _AudioNewSearch()
+{
+	//CString  sSoundCard;
+	//g_pView->AudioMeasureSearch();
+	////_Wait(150);
+		
+
+	return TRUE;
+}
+//-
+BOOL _AudioSelectReset()
+{
+	//CString  sSoundCard;
+	//g_pView->AudioMeasureStop();
+	////_Wait(150);
+
+	//pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+	//if (pos != NULL)
+	//{
+	//	sSoundCard = GetString();
+
+	//	if (!g_pView->AudioMeasureStartUSB(sSoundCard))
+	//	{
+	//		return FALSE;;
+	//	}
+	//}
+	//else
+	//	return FALSE;
+	//
 
 	return TRUE;
 }
@@ -8494,6 +8970,10 @@ BOOL _Read_KeyItem()
 }
 BOOL _Epi_Pack_Reset()
 {
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 	g_pView->IF_Pack_Reset();
 	return TRUE;
 }
@@ -8675,6 +9155,8 @@ BOOL _Set_CylinderEarphone()
 	return bRet;
 
 }
+
+
 BOOL _Set_Cylinder()
 {
 	int nFlag1 ;
@@ -8715,6 +9197,81 @@ BOOL _Set_Cylinder()
 	
 	return bRet;
 }
+
+
+
+BOOL _Set_Cylinder3Bit()
+{
+	int nFlag1 ;
+	int nFlag2;
+	int nFlag3;
+	BOOL bRet = FALSE;
+	BOOL bEarPhone = FALSE;
+	BOOL bComp = FALSE;
+	BOOL bHdmi = FALSE;
+
+	if(g_nSysType != AUTO_SYS){return FALSE;}
+
+	pos = pCurFunc->m_ArgumentList.GetHeadPosition();
+	
+	if (pos!= NULL)
+	{
+		nFlag1 = GetInteger();
+		nFlag2 = GetInteger();
+		nFlag3 = GetInteger();
+	}
+	else 
+	{
+		return FALSE;
+	}
+
+	if(nFlag1 == 0){
+		bEarPhone = FALSE;
+	}
+	else{
+		bEarPhone = TRUE;
+	}
+
+	if (nFlag2 == 0) {
+		bComp = FALSE;
+	}
+	else {
+		bComp = TRUE;
+	}
+	if (nFlag3 == 0) {
+		bHdmi = FALSE;
+	}
+	else {
+		bHdmi = TRUE;
+	}
+	if (bEarPhone) {
+
+		gJigCtrl.m_nCylinder = gJigCtrl.m_nCylinder | ERAPHONE_SIGNAL ;
+	}
+	else {
+		gJigCtrl.m_nCylinder = gJigCtrl.m_nCylinder & (~ERAPHONE_SIGNAL);
+	}
+
+	if (bComp) {
+		gJigCtrl.m_nCylinder = gJigCtrl.m_nCylinder | COMPONENT_SIGNAL;
+	}
+	else {
+		gJigCtrl.m_nCylinder = gJigCtrl.m_nCylinder & (~COMPONENT_SIGNAL);
+	}
+
+	if (bHdmi) {
+		gJigCtrl.m_nCylinder = gJigCtrl.m_nCylinder |  HDMI_USB_SIGNAL;
+	}
+	else {
+		gJigCtrl.m_nCylinder = gJigCtrl.m_nCylinder & (~HDMI_USB_SIGNAL);
+	}
+
+	bRet = gJigCtrl.Set_CylinderAll(gJigCtrl.m_nCylinder);
+	
+	return bRet;
+}
+
+
 BOOL _IsFailePowerOn()
 {
 	if((pCurStep->m_bStepRetryFlag) || (pCurStep->m_bStepInternalRetryFlag)){

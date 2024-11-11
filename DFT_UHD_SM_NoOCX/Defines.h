@@ -164,6 +164,22 @@ struct BarcodeStruct
 	char sData[25];
 };
 
+
+struct USB_MIC_Struct
+{
+	int nMicCount;
+
+	int nNewMicRequest;
+	char sSystem1_MIC[25];
+	char sSystem2_MIC[25];
+	char sSystem3_MIC[25];
+
+	char sSystem1_USBMIC[25];
+	char sSystem2_USBMIC[25];
+	char sSystem3_USBMIC[25];
+
+};
+
 //struct DaqStruct
 //{
 //	int	 nFuncIndex;
@@ -307,6 +323,7 @@ typedef struct ProcessInformationStructure
 #define TIMER_PLC_TIMEOUT_ID				0x84
 #define TIMER_UPDATE_STATUS_INFO			0x100
 #define TIMER_MEASURE_AUDIO_OUTPUT			0x200
+#define TIMER_MEASURE_AUDIO_NEW_SEARCH		0x201
 #define TIMER_CONTINUOUS_LVDS_GRAB			0x300
 #define TIMER_UPDATE_ALL_SCREEN				0x400
 #define TIMER_START_AUTO_GRAB				0x500	

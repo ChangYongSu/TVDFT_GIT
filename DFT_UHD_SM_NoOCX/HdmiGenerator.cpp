@@ -964,6 +964,10 @@ BOOL CHdmiGenerator::CheckVer()
 	CString szCmdString;
 	CString szTemp;
 	CString szData;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		return TRUE;
+	}
 
 	if (g_nGrabberType == FHD_GRABBER)
 		return TRUE;

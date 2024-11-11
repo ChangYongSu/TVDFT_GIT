@@ -317,26 +317,20 @@ BOOL CStopStepDlg::OnInitDialog()
 	//+add kwmoon 080618
 	int nMsgLength = 0;
 
-	if(m_szMsg1 != _T(""))
-	{
-	//	m_ctrlTestResultInfo1.SetCaption(m_szMsg1); 
+	//if(m_szMsg1 != _T(""))
+	{	
 		m_szTestResultInfo1 = m_szMsg1; 
-	}
-	
-	if(m_szMsg2 != _T(""))
+	}	
+	//if(m_szMsg2 != _T(""))
 	{
-	//	m_ctrlTestResultInfo2.SetCaption(m_szMsg2); 
 		m_szTestResultInfo2 = m_szMsg2; 
 	}
-
-	if(m_szMsg3 != _T(""))
+	//if(m_szMsg3 != _T(""))
 	{
-	//	m_ctrlTestResultInfo3.SetCaption(m_szMsg3); 
 		m_szTestResultInfo3 = m_szMsg3; 
 	}
-	if(m_szMsg4 != _T(""))
+	//if(m_szMsg4 != _T(""))
 	{
-	//	m_ctrlTestResultInfo3.SetCaption(m_szMsg3); 
 		m_szTestResultInfo4 = m_szMsg4; 
 	}
 

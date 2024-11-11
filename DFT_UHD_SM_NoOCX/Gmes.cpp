@@ -1057,6 +1057,74 @@ CString CGmes::MakeElem_S6F1(CString sEquipmentID, CString sPcbID, BOOL bResult,
 	xmlTemp.AddChildElem("NAME", "JIG_ID_COUNT");
 	xmlTemp.AddChildElem("VALUE", Stemp);// 
 
+	POSITION	PosStep_EM;
+	CVFTestInfo *pCurStep_EM;
+	PosStep_EM = CurrentSet->VF_TestInfo.GetHeadPosition();
+	float gVfList[50];
+	int gRunEnable[50];
+	memset(gVfList, 0, sizeof(gVfList));
+	memset(gRunEnable, 0, sizeof(gRunEnable));
+	while (PosStep_EM != NULL)
+	{
+		pCurStep_EM = CurrentSet->VF_TestInfo.GetNext(PosStep_EM);
+
+		if (pCurStep_EM->bRun)
+		{
+
+
+
+			UINT nChNo = pCurStep_EM->nChNo;
+			if (nChNo <= 42) {
+
+				nChNo = nChNo - 1;
+				gVfList[nChNo] = (pCurStep_EM->dMaesure_Min + pCurStep_EM->dMaesure_Max) / 2.0;
+				gRunEnable[nChNo] = 1;
+			}
+			else if ((nChNo >= 101) && (nChNo <= 106))
+			{
+				nChNo = nChNo - 101 + 42;
+				gVfList[nChNo - 101 + 42] = (pCurStep_EM->dMaesure_Min + pCurStep_EM->dMaesure_Max) / 2.0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+
+//	CString Stemp;
+	for (int i = 0; i < 42; i++)
+	{
+		Stemp.Format("V%d", i + 1);
+		xmlTemp.AddChildElem("NAME", Stemp);
+		if (gRunEnable[i] == 1)
+		{
+			Stemp.Format("%.1f", gVfList[i]);
+		}
+		else
+		{
+			Stemp = "";
+		}		
+		xmlTemp.AddChildElem("VALUE", Stemp);// 	
+	}	
+	
+	for (int i = 42; i < 48; i++)
+	{
+		Stemp.Format("F%d", i - 41);
+		xmlTemp.AddChildElem("NAME", Stemp);
+		if (gRunEnable[i] == 1)
+		{
+			Stemp.Format("%.1f", gVfList[i]);
+		}
+		else
+		{
+			Stemp = "";
+		}
+		xmlTemp.AddChildElem("VALUE", Stemp);// 
+	}
+
+
+//////////////////////////////////////////////////////////////
 	if(!bResult){
 		POSITION Position = StepList.GetHeadPosition();
 		while (Position) 

@@ -84,7 +84,144 @@ int CFileControl::OpenModel(CString lFilename)
 #ifdef _CHANGE_MODEL_DEBUG__
 		AfxMessageBox(lbuf);
 #endif
-			if(lbuf[0] == '[')
+			if (strncmp(lbuf, "[FPGA EVENT]", strlen("[FPGA EVENT]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+				sscanf_s(&lbuf[strlen("[FPGA EVENT]")], "%d", &g_FPGA_Ver_event);
+
+			}
+			else if (strncmp(lbuf, "[FPGA MAJOR]", strlen("[FPGA MAJOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[FPGA MAJOR]")], "%d", &g_FPGA_Ver_major);
+
+			}
+			else if (strncmp(lbuf, "[FPGA MINOR]", strlen("[FPGA MINOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[FPGA MINOR]")], "%d", &g_FPGA_Ver_minor);
+			}
+			else if (strncmp(lbuf, "[DSERVER EVENT]", strlen("[DSERVER EVENT]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[DSERVER EVENT]")], "%d", &g_DSERVER_Ver_event);
+			}
+			else if (strncmp(lbuf, "[DSERVER MAJOR]", strlen("[DSERVER MAJOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[DSERVER MAJOR]")], "%d", &g_DSERVER_Ver_major);
+
+			}
+			else if (strncmp(lbuf, "[DSERVER MINOR]", strlen("[DSERVER MINOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[DSERVER MINOR]")], "%d", &g_DSERVER_Ver_minor);
+
+			}
+			else if (strncmp(lbuf, "[DSERVER RERLEASE]", strlen("[DSERVER RERLEASE]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[DSERVER RERLEASE]")], "%d", &g_DSERVER_Ver_release);
+			}
+			else if (strncmp(lbuf, "[MICOM EVENT]", strlen("[MICOM EVENT]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[MICOM EVENT]")], "%d", &g_Microchip_Ver_event);
+
+			}
+			else if (strncmp(lbuf, "[MICOM MAJOR]", strlen("[MICOM MAJOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[MICOM MAJOR]")], "%d", &g_Microchip_Ver_major);
+
+			}
+			else if (strncmp(lbuf, "[MICOM MINOR]", strlen("[MICOM MINOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[MICOM MINOR]")], "%d", &g_Microchip_Ver_minor);
+			}
+			else if (strncmp(lbuf, "[HKHQ  TYPE]", strlen("[HKHQ  TYPE]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[HKHQ  TYPE]")], "%d", &g_AVR_Type_HK_HQ);
+			}
+			else if (strncmp(lbuf, "[HKHQ  SET MODEL NAME]", strlen("[HKHQ  SET MODEL NAME]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+//				lbuf[lsize - 1] = '\0';
+				g_SetModelName = &lbuf[strlen("[HKHQ  SET MODEL NAME]")];				
+			}
+			else if (strncmp(lbuf, "[AVR EVENT]", strlen("[AVR EVENT]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[AVR EVENT]")], "%d", &g_AVR_Ver_event);
+			}
+			else if (strncmp(lbuf, "[AVR MAJOR]", strlen("[AVR MAJOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[AVR MAJOR]")], "%d", &g_AVR_Ver_major);
+			}
+			else if (strncmp(lbuf, "[AVR MINOR]", strlen("[AVR MINOR]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize - 1] = '\0';
+
+				sscanf_s(&lbuf[strlen("[AVR MINOR]")], "%d", &g_AVR_Ver_minor);
+			}
+			else if (strncmp(lbuf, "[ROIC MIN]", strlen("[ROIC MIN]")) == 0)
+			{
+				sscanf_s(&lbuf[strlen("[ROIC MIN]")], "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+					&g_RefMin_buf[0], &g_RefMin_buf[1], &g_RefMin_buf[2], &g_RefMin_buf[3], &g_RefMin_buf[4], &g_RefMin_buf[5], &g_RefMin_buf[6], &g_RefMin_buf[7],
+					&g_RefMin_buf[8], &g_RefMin_buf[9], &g_RefMin_buf[10], &g_RefMin_buf[11], &g_RefMin_buf[12], &g_RefMin_buf[13], &g_RefMin_buf[14], &g_RefMin_buf[15]
+				);
+			}
+			else if (strncmp(lbuf, "[ROIC MAX]", strlen("[ROIC MAX]")) == 0)
+			{
+				sscanf_s(&lbuf[strlen("[ROIC MAX]")], "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+					&g_RefMax_buf[0],
+					&g_RefMax_buf[1],
+					&g_RefMax_buf[2],
+					&g_RefMax_buf[3],
+					&g_RefMax_buf[4],
+					&g_RefMax_buf[5],
+					&g_RefMax_buf[6],
+					&g_RefMax_buf[7],
+					&g_RefMax_buf[8],
+					&g_RefMax_buf[9],
+					&g_RefMax_buf[10],
+					&g_RefMax_buf[11],
+					&g_RefMax_buf[12],
+					&g_RefMax_buf[13],
+					&g_RefMax_buf[14],
+					&g_RefMax_buf[15]
+				);
+			}	
+			else if(lbuf[0] == '[')
 			{
 				
 			
@@ -605,62 +742,68 @@ int CFileControl::SaveModel(CString lFilename)//gTestSeqData
 		sprintf(lbuf,"FILE=%s\n",gTestSeqData.strSeqFileName.GetBuffer());
 		fputs(lbuf,m_fp);
 		
-		//sprintf(lbuf,"CHECK SUM= 0x%02X 0x%02X\n", gTestSeqData.CheckSum[0] ,gTestSeqData.CheckSum[1]   );
-		//fputs(lbuf,m_fp);
+		fprintf(m_fp, "[FPGA EVENT]%d\n", g_FPGA_Ver_event);
+		fprintf(m_fp, "[FPGA MAJOR]%d\n", g_FPGA_Ver_major);
+		fprintf(m_fp, "[FPGA MINOR]%d\n", g_FPGA_Ver_minor);
 
-	/*	sprintf(lbuf,"FREQUENCY=%d %d %d %d %d %d %d %d %d %d \n", 
-						gTestSeqData.Frequency[0], gTestSeqData.Frequency[1], gTestSeqData.Frequency[2],  gTestSeqData.Frequency[3],
-						gTestSeqData.Frequency[4], gTestSeqData.Frequency[5], gTestSeqData.Frequency[6],  gTestSeqData.Frequency[7],
-						gTestSeqData.Frequency[8], gTestSeqData.Frequency[9]);	
-		fputs(lbuf,m_fp);
-	*/
-		sprintf(lbuf,"[REMOCON]\n");
-		fputs(lbuf,m_fp);
-		//if(gTestSeqData.nRemoconSigType == IR_REMOTE_CA)
-		//{
-		//	sprintf(lbuf,"TYPE=CA\n");
-		//}
-		//else
-		//{
-		//	sprintf(lbuf,"TYPE=RF\n");
-		//}
-		//fputs(lbuf,m_fp);
+		fprintf(m_fp, "[DSERVER EVENT]%d\n", g_DSERVER_Ver_event);
+		fprintf(m_fp, "[DSERVER MAJOR]%d\n", g_DSERVER_Ver_major);
+		fprintf(m_fp, "[DSERVER MINOR]%d\n", g_DSERVER_Ver_minor);
+		fprintf(m_fp, "[DSERVER RERLEASE]%d\n", g_DSERVER_Ver_release);
 
-		//sprintf(lbuf,"FILE=%s\n",gTestSeqData.strRemoconFileName.GetBuffer());
-		//fputs(lbuf,m_fp);
 
-		sprintf(lbuf,"[MES]\n");
-		fputs(lbuf,m_fp);
-		if(g_MesEnable == 1)
-		{
-			sprintf(lbuf,"ENABLE=1\n");
-		}
-		else
-		{
-			sprintf(lbuf,"ENABLE=0\n");
-		}
-		fputs(lbuf,m_fp);		
+		fprintf(m_fp, "[MICOM EVENT]%d\n", g_Microchip_Ver_event);
+		fprintf(m_fp, "[MICOM MAJOR]%d\n", g_Microchip_Ver_major);
+		fprintf(m_fp, "[MICOM MINOR]%d\n", g_Microchip_Ver_minor);
 
-		sprintf(lbuf,"IP=%s\n",g_nRemoteIPAddress.GetBuffer());
-		fputs(lbuf,m_fp);	
+		fprintf(m_fp, "[HKHQ  TYPE]%d\n", g_AVR_Type_HK_HQ);
+		fprintf(m_fp, "[HKHQ  SET MODEL NAME]%s\n", g_SetModelName.GetBuffer());
+		fprintf(m_fp, "[AVR EVENT]%d\n", g_AVR_Ver_event);
+		fprintf(m_fp, "[AVR MAJOR]%d\n", g_AVR_Ver_major);
+		fprintf(m_fp, "[AVR MINOR]%d\n", g_AVR_Ver_minor);
 
-		sprintf(lbuf,"PORT NUMBER=%d\n",g_nRemotePortNumber);//g_nRemotePortType
-		fputs(lbuf,m_fp);	
-		//sprintf(lbuf,"PORT TYPE=%d\n",g_nRemotePortType);//
-		//fputs(lbuf,m_fp);	
-		//sprintf(lbuf,"LOCAL NUMBER=%d\n",g_nLocalPortNumber);
-		//fputs(lbuf,m_fp);	
 
-	
-		sprintf(lbuf,"[CAMERA]\n");
-		fputs(lbuf,m_fp);
-	
-		//sprintf(lbuf,"IP=%s\n",gTestSeqData.strCameraIPAddress.GetBuffer());//gTestSeqData.strCameraIPAddress
-		//fputs(lbuf,m_fp);
-			
+		fprintf(m_fp, "[SCAN COM]%d %d %d\n", g_nPort_Scanner, g_nBaud_Scanner, g_nParity_Scanner);
 
-		fclose(m_fp);	
-		
+		fprintf(m_fp, "[ROIC MIN]%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+			g_RefMin_buf[0],
+			g_RefMin_buf[1],
+			g_RefMin_buf[2],
+			g_RefMin_buf[3],
+			g_RefMin_buf[4],
+			g_RefMin_buf[5],
+			g_RefMin_buf[6],
+			g_RefMin_buf[7],
+			g_RefMin_buf[8],
+			g_RefMin_buf[9],
+			g_RefMin_buf[10],
+			g_RefMin_buf[11],
+			g_RefMin_buf[12],
+			g_RefMin_buf[13],
+			g_RefMin_buf[14],
+			g_RefMin_buf[15]
+		);
+
+		fprintf(m_fp, "[ROIC MAX]%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+			g_RefMax_buf[0],
+			g_RefMax_buf[1],
+			g_RefMax_buf[2],
+			g_RefMax_buf[3],
+			g_RefMax_buf[4],
+			g_RefMax_buf[5],
+			g_RefMax_buf[6],
+			g_RefMax_buf[7],
+			g_RefMax_buf[8],
+			g_RefMax_buf[9],
+			g_RefMax_buf[10],
+			g_RefMax_buf[11],
+			g_RefMax_buf[12],
+			g_RefMax_buf[13],
+			g_RefMax_buf[14],
+			g_RefMax_buf[15]
+		);
+
+		fclose(m_fp);		
 
 	}
 	else
@@ -1002,41 +1145,49 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			
 		while(fgets(lbuf, 1024, m_fp) != NULL)
 		{
+			for (int i = 0; i < strlen(lbuf); i++)
+			{
+				if ((lbuf[i] == '\r') || (lbuf[i] == '\n'))
+				{
+					lbuf[i] = 0;
+					break;
+				}
+			}
 			if(strncmp(lbuf,"[PASS WORD]",strlen("[PASS WORD]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				g_strPassword = &lbuf[strlen("[PASS WORD]")];
 			}
 			else if(strncmp(lbuf,"[IP ADDRESS]",strlen("[IP ADDRESS]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				g_nRemoteIPAddress = &lbuf[strlen("[IP ADDRESS]")];
 			}						
 			else if(strncmp(lbuf,"[SERVER PORT]",strlen("[SERVER PORT]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				sscanf_s(&lbuf[strlen("[SERVER PORT]")], "%d", &g_nRemotePortNumber);
 			}
 			else if(strncmp(lbuf,"[SET IP ADDRESS]",strlen("[SET IP ADDRESS]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				g_nSetIPAddress = &lbuf[strlen("[SET IP ADDRESS]")];
 			}						
 			else if(strncmp(lbuf,"[FPGA EVENT]",strlen("[FPGA EVENT]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				sscanf_s(&lbuf[strlen("[FPGA EVENT]")], "%d", &g_FPGA_Ver_event);
 				
 			}		
 			else if(strncmp(lbuf,"[FPGA MAJOR]",strlen("[FPGA MAJOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[FPGA MAJOR]")], "%d", &g_FPGA_Ver_major);
 				
@@ -1044,21 +1195,21 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			else if(strncmp(lbuf,"[FPGA MINOR]",strlen("[FPGA MINOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[FPGA MINOR]")], "%d", &g_FPGA_Ver_minor);
 			}
 			else if(strncmp(lbuf,"[DSERVER EVENT]",strlen("[DSERVER EVENT]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[DSERVER EVENT]")], "%d",    &g_DSERVER_Ver_event);				
 			}		
 			else if(strncmp(lbuf,"[DSERVER MAJOR]",strlen("[DSERVER MAJOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[DSERVER MAJOR]")], "%d",    &g_DSERVER_Ver_major);
 			
@@ -1066,7 +1217,7 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			else if(strncmp(lbuf,"[DSERVER MINOR]",strlen("[DSERVER MINOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';				
+				//lbuf[lsize-1] = '\0';				
 				
 				sscanf_s(&lbuf[strlen("[DSERVER MINOR]")], "%d",    &g_DSERVER_Ver_minor);
 				
@@ -1074,14 +1225,14 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			else if(strncmp(lbuf,"[DSERVER RERLEASE]",strlen("[DSERVER RERLEASE]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';				
+				//lbuf[lsize-1] = '\0';				
 			
 				sscanf_s(&lbuf[strlen("[DSERVER RERLEASE]")], "%d", &g_DSERVER_Ver_release);
 			}
 			else if(strncmp(lbuf,"[MICOM EVENT]",strlen("[MICOM EVENT]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[MICOM EVENT]")], "%d", &g_Microchip_Ver_event);
 				
@@ -1089,7 +1240,7 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			else if(strncmp(lbuf,"[MICOM MAJOR]",strlen("[MICOM MAJOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[MICOM MAJOR]")], "%d", &g_Microchip_Ver_major);
 				
@@ -1097,28 +1248,35 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			else if(strncmp(lbuf,"[MICOM MINOR]",strlen("[MICOM MINOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 								
 				sscanf_s(&lbuf[strlen("[MICOM MINOR]")], "%d", &g_Microchip_Ver_minor);
+			}
+			else if(strncmp(lbuf,"[HKHQ  TYPE]",strlen("[HKHQ  TYPE]")) == 0)
+			{
+				int lsize = strlen(lbuf);
+				//lbuf[lsize-1] = '\0';
+				
+				sscanf_s(&lbuf[strlen("[HKHQ  TYPE]")], "%d", &g_AVR_Type_HK_HQ);
 			}
 			else if(strncmp(lbuf,"[AVR EVENT]",strlen("[AVR EVENT]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[AVR EVENT]")], "%d", &g_AVR_Ver_event);			
 			}
 			else if(strncmp(lbuf,"[AVR MAJOR]",strlen("[AVR MAJOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 				
 				sscanf_s(&lbuf[strlen("[AVR MAJOR]")], "%d", &g_AVR_Ver_major);				
 			}	
 			else if(strncmp(lbuf,"[AVR MINOR]",strlen("[AVR MINOR]")) == 0)
 			{
 				int lsize = strlen(lbuf);
-				lbuf[lsize-1] = '\0';
+				//lbuf[lsize-1] = '\0';
 						
 				sscanf_s(&lbuf[strlen("[AVR MINOR]")], "%d", &g_AVR_Ver_minor);
 			}
@@ -1126,7 +1284,42 @@ int  CFileControl::Read_ConfigSeqData()//SaveConfigData()
 			{
 				sscanf_s(&lbuf[strlen("[SCAN COM]")], "%d %d %d", &g_nPort_Scanner, &g_nBaud_Scanner, &g_nParity_Scanner);
 			}
-		
+			else
+			{
+
+				if (strncmp(lbuf, "[ROIC MIN]", strlen("[ROIC MIN]")) == 0)
+				{
+					sscanf_s(&lbuf[strlen("[ROIC MIN]")], "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", 
+						&g_RefMin_buf[0], &g_RefMin_buf[1], &g_RefMin_buf[2], &g_RefMin_buf[3], &g_RefMin_buf[4], &g_RefMin_buf[5], &g_RefMin_buf[6], &g_RefMin_buf[7],
+						&g_RefMin_buf[8], &g_RefMin_buf[9],	&g_RefMin_buf[10], &g_RefMin_buf[11], &g_RefMin_buf[12], &g_RefMin_buf[13], &g_RefMin_buf[14],&g_RefMin_buf[15]
+						 );
+				}
+				else if (strncmp(lbuf, "[ROIC MAX]", strlen("[ROIC MAX]")) == 0)
+				{
+					sscanf_s(&lbuf[strlen("[ROIC MAX]")], "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+						&g_RefMax_buf[0], 
+						&g_RefMax_buf[1], 
+						&g_RefMax_buf[2], 
+						&g_RefMax_buf[3], 
+						&g_RefMax_buf[4], 
+						&g_RefMax_buf[5], 
+						&g_RefMax_buf[6], 
+						&g_RefMax_buf[7],
+						&g_RefMax_buf[8], 
+						&g_RefMax_buf[9], 
+						&g_RefMax_buf[10], 
+						&g_RefMax_buf[11], 
+						&g_RefMax_buf[12], 
+						&g_RefMax_buf[13], 
+						&g_RefMax_buf[14],
+						&g_RefMax_buf[15]
+					);
+				}
+			}
+		/*
+		//		g_RefMin_buf[i] = _ttoi(m_EditRoicMinValue[i]);
+//		g_RefMax_buf[i] = _ttoi(m_EditRoicMaxValue[i]);
+		*/
 		}		
 
 		fclose(m_fp);		
@@ -1183,12 +1376,51 @@ int CFileControl::SaveConfigSeqData()//
 		fprintf(m_fp, "[MICOM MAJOR]%d\n", g_Microchip_Ver_major);
 		fprintf(m_fp, "[MICOM MINOR]%d\n", g_Microchip_Ver_minor);
 
+		fprintf(m_fp, "[HKHQ  TYPE]%d\n", g_AVR_Type_HK_HQ);
 		fprintf(m_fp, "[AVR EVENT]%d\n", g_AVR_Ver_event);
 		fprintf(m_fp, "[AVR MAJOR]%d\n", g_AVR_Ver_major);
 		fprintf(m_fp, "[AVR MINOR]%d\n", g_AVR_Ver_minor);
 
  	
 		fprintf(m_fp, "[SCAN COM]%d %d %d\n",  g_nPort_Scanner, g_nBaud_Scanner, g_nParity_Scanner );
+
+		fprintf(m_fp, "[ROIC MIN]%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", 
+			g_RefMin_buf[0], 
+			g_RefMin_buf[1], 
+			g_RefMin_buf[2], 
+			g_RefMin_buf[3], 
+			g_RefMin_buf[4], 
+			g_RefMin_buf[5],
+			g_RefMin_buf[6], 
+			g_RefMin_buf[7],
+			g_RefMin_buf[8], 
+			g_RefMin_buf[9], 
+			g_RefMin_buf[10], 
+			g_RefMin_buf[11], 
+			g_RefMin_buf[12], 
+			g_RefMin_buf[13],
+			g_RefMin_buf[14], 
+			g_RefMin_buf[15]
+		);
+		
+		fprintf(m_fp, "[ROIC MAX]%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+			g_RefMax_buf[0],
+			g_RefMax_buf[1],
+			g_RefMax_buf[2],
+			g_RefMax_buf[3],
+			g_RefMax_buf[4],
+			g_RefMax_buf[5],
+			g_RefMax_buf[6],
+			g_RefMax_buf[7],
+			g_RefMax_buf[8],
+			g_RefMax_buf[9],
+			g_RefMax_buf[10],
+			g_RefMax_buf[11],
+			g_RefMax_buf[12],
+			g_RefMax_buf[13],
+			g_RefMax_buf[14],
+			g_RefMax_buf[15]
+			);
 
 		fclose(m_fp);	
 	} 

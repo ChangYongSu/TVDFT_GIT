@@ -69,11 +69,7 @@
 #include "SerialPort.h"
 
 
-<<<<<<< HEAD
 //#include <opencv2\opencv.hpp>
-=======
-#include <opencv2\opencv.hpp>
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 #include "afxwin.h"
 
@@ -83,11 +79,7 @@
 
 #include <afxsock.h>
 
-<<<<<<< HEAD
 //using namespace cv;
-=======
-using namespace cv;
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 //#define __OK_CHECK_FAST_MODE__
 
@@ -237,12 +229,10 @@ extern DB_Set_DataT CurrentSet;
 #define TEST_SEQ_TYPE_GET_MACADDRESS			33
 #define TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE	34
 #define TEST_SEQ_TYPE_FACTORY_RESET				35
-<<<<<<< HEAD
 #define TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE			36
 #define TEST_SEQ_TYPE_SET_MESSAGE_1		37
 #define TEST_SEQ_TYPE_SET_MESSAGE_2		38
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
+#define TEST_SEQ_TYPE_SET_MODEL_NAME		39
 
 
 
@@ -440,6 +430,8 @@ extern UINT	g_DSERVER_Ver_event;
 extern UINT	g_DSERVER_Ver_major;
 extern UINT	g_DSERVER_Ver_minor;
 extern UINT	g_DSERVER_Ver_release;
+extern CString g_DSERVER_Ver_String;
+extern DWORD g_dwDSERVERVersion;
  		
 extern UINT	g_Microchip_Ver_event;
 extern UINT	g_Microchip_Ver_major;
@@ -448,6 +440,14 @@ extern UINT	g_Microchip_Ver_minor;
 extern UINT	g_AVR_Ver_event;
 extern UINT	g_AVR_Ver_major;
 extern UINT	g_AVR_Ver_minor;
+extern UINT	g_AVR_Type_HK_HQ;
+
+extern CString g_SetModelName;
+
+
+#define MICOM_TYPE_HK 0
+#define MICOM_TYPE_HQ 1
+
 
 extern BOOL g_MesEnable;
 
@@ -455,3 +455,17 @@ extern BOOL g_MesEnable;
 //extern CSerialPort m_ComPortPCB;
 //extern CSerialPort m_ComPortLED;
 extern CSerialPort m_ComPortScanner;
+
+extern int gNoRoic;
+extern int gNoGate;
+extern UINT   g_RefMin_buf[16];
+extern UINT   g_RefMax_buf[16];
+extern UINT   g_RoicMean[16];
+extern UINT   g_GateMean[16];
+
+extern UINT   g_TotalMin, g_TotalMax;
+
+#define DXD_MODEL_COUNT	7
+#define DXD_HK_MODEL_NUM	3
+extern CString gHQ_ModelNmae[DXD_MODEL_COUNT];// = { "10HQ701G", "14HQ701G", "14HQ901G", "17HQ701G", "17HQ901G", "14HQ721G", "17HQ901G_D" };
+extern CString gHK_ModelName[DXD_HK_MODEL_NUM];// = { "17HK700G", "14HK701G", "17HK701G" };

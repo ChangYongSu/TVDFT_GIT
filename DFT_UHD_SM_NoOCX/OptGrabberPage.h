@@ -113,6 +113,7 @@ public:
 	BOOL m_nHdmiHdcpControl;
 	afx_msg void OnCbnSelchangeComboGrabmode();
 	afx_msg void OnCbnSelchangeComboUhdtype();
+	CComboBox m_cComboLvdsFormat;
 };
 
 //{{AFX_INSERT_LOCATION}}

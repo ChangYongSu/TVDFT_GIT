@@ -57,6 +57,7 @@ void CImageTotalDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Radio(pDX, IDC_RADIO_MEASURE_START, m_nRadioAudioMeasureStart);
 	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_CHK_AUTO_ROBOT_PAGE, m_ctrlAutoRobotPageChk);
+	//DDX_Control(pDX, IDC_COMBO_MIC_TYPE, m_cComboMIC_Type);
 }
 
 
@@ -91,6 +92,7 @@ BEGIN_MESSAGE_MAP(CImageTotalDlg, CDialog)
 	ON_MESSAGE(UM_UPDATE_ALL_VIEW_TAB, UpdateAllViewTab)
 	ON_BN_CLICKED(IDC_CHK_AUTO_ROBOT_PAGE, &CImageTotalDlg::OnBnClickedChkAutoRobotPage)
 	//ON_BN_CLICKED(IDOK, &CImageTotalDlg::OnBnClickedOk)
+	//ON_CBN_SELCHANGE(IDC_COMBO_MIC_TYPE, &CImageTotalDlg::OnCbnSelchangeComboMicType)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -941,6 +943,8 @@ BOOL CImageTotalDlg::OnInitDialog()
 
 	ShowWindow(SW_SHOW);
 
+	//m_cComboMIC_Type.
+
 	SetTimer(1,1000,NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -951,6 +955,30 @@ BOOL CImageTotalDlg::OnInitDialog()
 void CImageTotalDlg::InitAudioMeasurement() 
 {
 	m_ctrlSoundCard.Creat(this);
+	//m_cComboMIC_Type.ResetContent();
+	//int numDevice = m_ctrlSoundCard.strDeviceNameArry.GetSize();
+	//for (int i = 0; i < numDevice; i++)
+	//{
+	//	m_cComboMIC_Type.AddString(m_ctrlSoundCard.strDeviceNameArry.GetAt(i));
+	//}
+	//if (g_nRunningProcessNo == 1) {
+	//	//+add PSH 080527
+	//	if (numDevice >= 1) {
+	//		m_cComboMIC_Type.SetCurSel(0);
+	//	}
+	//	
+	//}
+	//else if (g_nRunningProcessNo == 2) {
+	//	if (numDevice >= 2) {
+	//		m_cComboMIC_Type.SetCurSel(1);
+	//	}
+	//}
+	//else {
+	//	if (numDevice >= 3) {
+	//		m_cComboMIC_Type.SetCurSel(2);
+	//	}
+	//}
+	
 }
 
 void CImageTotalDlg::OnLButtonDown(UINT nFlags, CPoint point) 
@@ -1618,12 +1646,60 @@ void CImageTotalDlg::OnTimer(UINT nIDEvent)
 }
 
 //+recover kwmoon 080724
-void CImageTotalDlg::OnRadioMeasure() 
+//void CImageTotalDlg::OnRadioMeasure() 
+//{
+//	UpdateData(TRUE);
+//
+//	// TODO: Add your control notification handler code here
+//	if(m_nRadioAudioMeasureStart == AUDIO_MEASURE_START)
+//	{
+//		//+ 2007.10.16 Mod BY USY
+//	//	AvSwitchBoxCtrl.SendRun((BYTE)AUDIO_SIGNAL_ON_OFF,1,0); // ON
+////		AvSwitchBoxCtrl.SendRun((BYTE)AUDIO_SIGNAL_ON,1,0); // ON
+//		//-
+//
+//
+//		if(!m_ctrlSoundCard.wIn_Flag) m_ctrlSoundCard.WaveRead_Start();	
+//
+//		int lID = m_cComboMIC_Type.GetCurSel();
+//		m_cComboMIC_Type.ResetContent();
+//		int numDevice = m_ctrlSoundCard.strDeviceNameArry.GetSize();
+//		for (int i = 0; i < numDevice; i++)
+//		{
+//			m_cComboMIC_Type.AddString(m_ctrlSoundCard.strDeviceNameArry.GetAt(i));
+//		}
+//
+//		m_cComboMIC_Type.SetCurSel(m_ctrlSoundCard.m_nDeviceID);
+//		SetTimer(TIMER_CHECK_AUDIO_IN,500,NULL);
+//	}
+//	else // m_nRadioAudioMeasureStart == AUDIO_MEASURE_STOP : 
+//	{
+//		//+ 2007.10.16 Mod BY USY
+//	//	AvSwitchBoxCtrl.SendRun((BYTE)AUDIO_SIGNAL_ON_OFF,0,0); // OFF
+////		AvSwitchBoxCtrl.SendRun((BYTE)AUDIO_SIGNAL_OFF,0,0); // OFF
+//		//-
+//		int lID = m_cComboMIC_Type.GetCurSel();
+//		m_cComboMIC_Type.ResetContent();
+//		int numDevice = m_ctrlSoundCard.strDeviceNameArry.GetSize();
+//		for (int i = 0; i < numDevice; i++)
+//		{
+//			m_cComboMIC_Type.AddString(m_ctrlSoundCard.strDeviceNameArry.GetAt(i));
+//		}
+//		
+//		m_cComboMIC_Type.SetCurSel(lID);
+//
+//		if(m_ctrlSoundCard.wIn_Flag) m_ctrlSoundCard.WaveRead_Stop();
+//
+//		KillTimer(TIMER_CHECK_AUDIO_IN);
+//	}
+//}
+
+void CImageTotalDlg::OnRadioMeasure()
 {
 	UpdateData(TRUE);
 
 	// TODO: Add your control notification handler code here
-	if(m_nRadioAudioMeasureStart == AUDIO_MEASURE_START)
+	if (m_nRadioAudioMeasureStart == AUDIO_MEASURE_START)
 	{
 		//+ 2007.10.16 Mod BY USY
 	//	AvSwitchBoxCtrl.SendRun((BYTE)AUDIO_SIGNAL_ON_OFF,1,0); // ON
@@ -1631,9 +1707,9 @@ void CImageTotalDlg::OnRadioMeasure()
 		//-
 
 
-		if(!m_ctrlSoundCard.wIn_Flag) m_ctrlSoundCard.WaveRead_Start();	
-		
-		SetTimer(TIMER_CHECK_AUDIO_IN,500,NULL);
+		if (!m_ctrlSoundCard.wIn_Flag) m_ctrlSoundCard.WaveRead_Start();
+
+		SetTimer(TIMER_CHECK_AUDIO_IN, 500, NULL);
 	}
 	else // m_nRadioAudioMeasureStart == AUDIO_MEASURE_STOP : 
 	{
@@ -1642,11 +1718,12 @@ void CImageTotalDlg::OnRadioMeasure()
 //		AvSwitchBoxCtrl.SendRun((BYTE)AUDIO_SIGNAL_OFF,0,0); // OFF
 		//-
 
-		if(m_ctrlSoundCard.wIn_Flag) m_ctrlSoundCard.WaveRead_Stop();
+		if (m_ctrlSoundCard.wIn_Flag) m_ctrlSoundCard.WaveRead_Stop();
 
 		KillTimer(TIMER_CHECK_AUDIO_IN);
 	}
 }
+
 
 
 void CImageTotalDlg::OnChkAveragePage() 
@@ -1782,12 +1859,25 @@ void CImageTotalDlg::OnSelchangeCmbSelImage()
 
 
 
-//
-//
-//void CImageTotalDlg::OnBnClickedOk()
+
+
+
+//void CImageTotalDlg::OnCbnSelchangeComboMicType()
 //{
 //	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	//m_cComboMIC_Type.ResetContent();
+//	//int numDevice = m_ctrlSoundCard.strDeviceNameArry.GetSize();
+//	//for (int i = 0; i < numDevice; i++)
+//	//{
+//	//	m_cComboMIC_Type.AddString(m_ctrlSoundCard.strDeviceNameArry.GetAt(i));
+//	//}
+//	int lSel_Id = m_cComboMIC_Type.GetCurSel();
+//	CString strDevName;
+//	m_cComboMIC_Type.GetLBText(lSel_Id, strDevName);
+//	
+//	if (m_ctrlSoundCard.wIn_Flag) 
+//		m_ctrlSoundCard.WaveRead_Stop();
 //
-//	gPLC_Ctrl.CommandClear();
-//	CDialog::OnOK();
+//	if (!m_ctrlSoundCard.wIn_Flag)
+//		m_ctrlSoundCard.WaveRead_StartUSB(strDevName,1);
 //}

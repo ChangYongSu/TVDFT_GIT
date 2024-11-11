@@ -11,7 +11,7 @@
 #include "DlgConfig.h"
 
 //#include "DlgImage.h"
-
+extern CAcqVoltageSamples_IntClkDlg *m_P_Main;
 
 // DlgModelSetupSeq 대화 상자입니다.
 
@@ -23,6 +23,11 @@ DlgModelSetupSeq::DlgModelSetupSeq(CWnd* pParent /*=NULL*/)
 	//, m_ServerPortNumber(_T(""))
 	//, m_EditCheckSum(_T(""))
 	//, m_EditFreq[0](_T(""))
+	, m_EditFPGAVer(_T(""))
+	, m_EditDXD_ServerVer(_T(""))
+	, m_EditMicomVer(_T(""))
+	, m_EditAVR_Ver(_T(""))
+	, m_Radio_HK_HQ(0)
 {
 
 }
@@ -41,7 +46,7 @@ void DlgModelSetupSeq::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LABEL_MODEL_NAME, m_TextModelName);
 
 
-//	DDX_Check(pDX, IDC_CHECK_MES_ENABLE, m_CheckMesEnable);	
+	//	DDX_Check(pDX, IDC_CHECK_MES_ENABLE, m_CheckMesEnable);	
 	//DDX_Control(pDX, IDC_LABEL_MES_TNS, m_TextMesTns);
 	//DDX_Control(pDX, IDC_LABEL_MES_AVN, m_TextMesAvn);
 	//DDX_Control(pDX, IDC_LABEL_MES_USERID, m_TextMesUserID);
@@ -51,20 +56,50 @@ void DlgModelSetupSeq::DoDataExchange(CDataExchange* pDX)
 
 	//DDX_Control(pDX, IDC_COMBO_RMT_SEQ_TYPE, m_cComboRmtType);
 	//DDX_IPAddress(pDX, IDC_IPADDRESS_GMES, m_IPaddressGmes);
-//	DDX_Text(pDX, IDC_EDIT_SERVER_PORT1, m_ServerPortNumber);
-//	DDX_Text(pDX, IDC_EDIT_CHECKSUM, m_EditCheckSum);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET1, m_EditFreq[0]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET2, m_EditFreq[1]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET3, m_EditFreq[2]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET4, m_EditFreq[3]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET5, m_EditFreq[4]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET6, m_EditFreq[5]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET7, m_EditFreq[6]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET8, m_EditFreq[7]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET9, m_EditFreq[8]);
-	//DDX_Text(pDX, IDC_EDIT_FREQ_SET10, m_EditFreq[9]);
+	//	DDX_Text(pDX, IDC_EDIT_SERVER_PORT1, m_ServerPortNumber);
+	DDX_Text(pDX, IDC_EDIT_FPGA_VER_MD, m_EditFPGAVer);
+	DDX_Text(pDX, IDC_EDIT_DXD_SERVER_VER_MD, m_EditDXD_ServerVer);
+	DDX_Text(pDX, IDC_EDIT_MICOM_VER_MD, m_EditMicomVer);
+	DDX_Text(pDX, IDC_EDIT_AVR_VER_MD, m_EditAVR_Ver);
+	//	DDX_Radio(pDX, IDC_RADIO_HK, m_Radio_HK_HQ);
+	//DDX_Radio(pDX, IDC_RADIO_HK, m_Radio_HK_HQ);
+	DDX_Control(pDX, IDC_COMBO_MICOM_HKHQ_TYPE_MD, m_cComboMicomHKHQ);
 
-//	DDX_Control(pDX, IDC_COMBO_MES_PORT_TYPE, m_cComboPortType);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN1, m_EditRoicMinValue[0]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN2, m_EditRoicMinValue[1]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN3, m_EditRoicMinValue[2]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN4, m_EditRoicMinValue[3]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN5, m_EditRoicMinValue[4]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN6, m_EditRoicMinValue[5]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN7, m_EditRoicMinValue[6]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN8, m_EditRoicMinValue[7]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN9, m_EditRoicMinValue[8]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN10, m_EditRoicMinValue[9]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN11, m_EditRoicMinValue[10]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN12, m_EditRoicMinValue[11]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN13, m_EditRoicMinValue[12]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN14, m_EditRoicMinValue[13]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN15, m_EditRoicMinValue[14]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN16, m_EditRoicMinValue[15]);
+
+
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX1, m_EditRoicMaxValue[0]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX2, m_EditRoicMaxValue[1]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX3, m_EditRoicMaxValue[2]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX4, m_EditRoicMaxValue[3]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX5, m_EditRoicMaxValue[4]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX6, m_EditRoicMaxValue[5]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX7, m_EditRoicMaxValue[6]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX8, m_EditRoicMaxValue[7]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX9, m_EditRoicMaxValue[8]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX10, m_EditRoicMaxValue[9]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX11, m_EditRoicMaxValue[10]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX12, m_EditRoicMaxValue[11]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX13, m_EditRoicMaxValue[12]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX14, m_EditRoicMaxValue[13]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX15, m_EditRoicMaxValue[14]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX16, m_EditRoicMaxValue[15]);
+	DDX_Control(pDX, IDC_COMBO_MODEL_NAME_MD, m_cComboSetModelName);
 }
 
 
@@ -80,6 +115,9 @@ BEGIN_MESSAGE_MAP(DlgModelSetupSeq, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &DlgModelSetupSeq::OnBnClickedCancel)
 //	ON_CBN_SELCHANGE(IDC_COMBO_MES_PORT_TYPE, &DlgModelSetupSeq::OnCbnSelchangeComboMesPortType)
 //	ON_BN_CLICKED(IDC_BUTTON_SAVEAS, &DlgModelSetupSeq::OnBnClickedButtonSaveas)
+ON_BN_CLICKED(IDC_BUTTON_GESWVER_MD, &DlgModelSetupSeq::OnBnClickedButtonGeswverMd)
+ON_CBN_SELCHANGE(IDC_COMBO_MICOM_HKHQ_TYPE_MD, &DlgModelSetupSeq::OnCbnSelchangeComboMicomHkhqTypeMd)
+ON_BN_CLICKED(IDC_BUTTON_GET_MODEL_NAME, &DlgModelSetupSeq::OnBnClickedButtonGetModelName)
 END_MESSAGE_MAP()
 
 
@@ -92,147 +130,7 @@ BOOL DlgModelSetupSeq::OnInitDialog()
 	int lXpos = 0;
 	int lYpos = 0;
 //
-//	this->SetWindowPos(NULL,0, 0,1340,760,SWP_ASYNCWINDOWPOS|SWP_NOMOVE);
-//
-//	m_LabelDispMainMark.SetWindowPos(NULL,5, 5,1320,40,SWP_ASYNCWINDOWPOS);
-//	GetDlgItem(IDC_STATIC_MODEL_GROUP)->SetWindowPos(NULL,5, 45,1320,55,SWP_ASYNCWINDOWPOS);
-//
-//	GetDlgItem(IDC_COMBO_MODEL)->SetWindowPos(NULL,20, 65,320,500,SWP_ASYNCWINDOWPOS);
-//	m_TextModelName.SetWindowPos(NULL,360, 60,520,30,SWP_ASYNCWINDOWPOS);
-//
-//	m_cBtnModelCreate.SetWindowPos(NULL,950, 60,100,30,SWP_ASYNCWINDOWPOS);
-//	m_cBtnModelSave.SetWindowPos(NULL,1070, 60,100,30,SWP_ASYNCWINDOWPOS);
-//	m_cBtnModelRemove.SetWindowPos(NULL,1190, 60,100,30,SWP_ASYNCWINDOWPOS);
-//
-//
-//	m_LabelDispAudioProcess.SetWindowPos(NULL,20, 115,320,20,SWP_ASYNCWINDOWPOS);
-//	m_LabelDispReadyCode.SetWindowPos(NULL,20, 140,120,20,SWP_ASYNCWINDOWPOS);
-////	GetDlgItem(IDC_EDIT_READY_CODE)->SetWindowPos(NULL,145, 140,195,20,SWP_ASYNCWINDOWPOS);
-//
-//	
-//
-//	m_LabelDispAudioTest1.SetWindowPos(NULL,380, 115,344,22,SWP_ASYNCWINDOWPOS);
-//	GetDlgItem(IDC_CHECK_LEVEL_SKIP1)->SetWindowPos(NULL,730, 115, 100, 25,SWP_ASYNCWINDOWPOS );
-//	
-//	int ltestorgX = 380;
-//	int ltestorgY = 115;
-//
-//	GetDlgItem(IDC_STATIC_TEST_MARK1)->SetWindowPos(NULL,ltestorgX -2 , ltestorgY+25, 120, 23,SWP_ASYNCWINDOWPOS|SWP_NOSIZE );
-//
-//	
-//
-//
-//	m_LabelDispAudioTest3.SetWindowPos(NULL,865, 115,344,22,SWP_ASYNCWINDOWPOS);
-//	GetDlgItem(IDC_CHECK_LEVEL_SKIP3)->SetWindowPos(NULL,1215, 115, 100, 25,SWP_ASYNCWINDOWPOS );
-//	ltestorgX = 865;
-//	ltestorgY = 115;
-//
-//	GetDlgItem(IDC_STATIC_TEST_MARK3)->SetWindowPos(NULL,ltestorgX -2 , ltestorgY+25, 120, 23,SWP_ASYNCWINDOWPOS|SWP_NOSIZE );
-//
-//
-//	m_LabelDispAudioTest4.SetWindowPos(NULL,865, 325,344,22,SWP_ASYNCWINDOWPOS);
-//	GetDlgItem(IDC_CHECK_LEVEL_SKIP4)->SetWindowPos(NULL,1215, 325, 100, 25,SWP_ASYNCWINDOWPOS );
-//	ltestorgX = 865;
-//	ltestorgY = 325;
-//
-//	GetDlgItem(IDC_STATIC_TEST_MARK4)->SetWindowPos(NULL,ltestorgX -2 , ltestorgY+25, 120, 23,SWP_ASYNCWINDOWPOS|SWP_NOSIZE );
-//
-//
-//	m_LabelMark_RemoteSet.SetWindowPos(NULL, 380 , 545, 280, 22,SWP_ASYNCWINDOWPOS );
-//	GetDlgItem(IDC_COMBO_RECOMON)->SetWindowPos(NULL,380 , 575, 280, 500,SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_IR_Signal.SetWindowPos(NULL,380 , 615, 80, 22,SWP_ASYNCWINDOWPOS );
-//	GetDlgItem(IDC_COMBO_RMT_TYPE)->SetWindowPos(NULL,380 , 645, 130, 500,SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_IR_Code.SetWindowPos(NULL,520 , 615, 120, 22,SWP_ASYNCWINDOWPOS );
-//	GetDlgItem(IDC_COMBO_RMT_CODE)->SetWindowPos(NULL,520 , 645, 140, 500,SWP_ASYNCWINDOWPOS );
-//	GetDlgItem(IDOK)->SetWindowPos(NULL,1185 , 685, 100, 30,SWP_ASYNCWINDOWPOS );
-//
-//	//    
-//
-//	m_LabelMark_MesInform.SetWindowPos(NULL, 680 , 545, 629, 22,SWP_ASYNCWINDOWPOS );
-//	GetDlgItem(IDC_CHECK_MES_ENABLE)->SetWindowPos(NULL,683 , 575, 15, 23,SWP_ASYNCWINDOWPOS );
-//	m_LabelMark_MesEnable.SetWindowPos(NULL, 700 , 575, 130, 22,SWP_ASYNCWINDOWPOS );
-//
-//	m_cBtnModelConfig.SetWindowPos(NULL, 700 , 620, 100, 35,SWP_ASYNCWINDOWPOS );
-//
-//
-//	m_LabelMark_MesTns.SetWindowPos(NULL, 845 , 575, 90, 22,SWP_ASYNCWINDOWPOS );
-//	m_TextMesTns.SetWindowPos(NULL, 940 , 575, 120, 22,SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_MesAvn.SetWindowPos(NULL, 1080 , 575, 95, 22,SWP_ASYNCWINDOWPOS );
-//	m_TextMesAvn.SetWindowPos(NULL, 1180 , 575, 130, 22,SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_MesUid.SetWindowPos(NULL, 845 , 610, 90, 22, SWP_ASYNCWINDOWPOS );
-//	m_TextMesUserID.SetWindowPos(NULL, 940 , 610, 120, 22, SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_MesPwrd.SetWindowPos(NULL, 1080 , 610, 95, 22, SWP_ASYNCWINDOWPOS );
-//	m_TextMesPassword.SetWindowPos(NULL, 1180 , 610, 130, 22, SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_MesLineCode.SetWindowPos(NULL, 845 , 645, 90, 22, SWP_ASYNCWINDOWPOS );
-//	m_TextMesLine.SetWindowPos(NULL, 940 , 645, 120, 22, SWP_ASYNCWINDOWPOS );
-//
-//	m_LabelMark_MesInStep.SetWindowPos(NULL, 1080 , 645, 95, 22, SWP_ASYNCWINDOWPOS );
-//	m_TextMesInspStep.SetWindowPos(NULL, 1180 , 645, 130, 22, SWP_ASYNCWINDOWPOS );
-//	
-//  
-//
-//
-//	m_CtrlComboStart.AddString("BARCODE_SCAN");
-//	m_CtrlComboStart.AddString("START_SW_ON");
-//	m_CtrlComboStart.AddString("SENSOR+START_SW");
-//	m_CtrlComboStart.SetCurSel(0);
-//
-//	for(int i = 0; i < 20; i++)
-//	{
-//		m_ComboSeq[i].AddString(" END "); 
-//		m_ComboSeq[i].AddString("DELAY"); 
-//		m_ComboSeq[i].AddString("MP_KEY"); 
-//		//m_ComboSeq[i].AddString("PRE_KEY"); 
-//		m_ComboSeq[i].AddString("TEST_1"); 
-//		m_ComboSeq[i].AddString("TEST_2"); 
-//		m_ComboSeq[i].AddString("TEST_3"); 
-//		m_ComboSeq[i].AddString("TEST_4"); 
-//		m_ComboSeq[i].AddString("REPEAT_KEY"); 
-//		m_ComboSeq[i].AddString("LAN_TEST"); 
-//		m_ComboSeq[i].AddString("USB1_TEST"); 
-//		m_ComboSeq[i].AddString("USB2_TEST"); 
-//		m_ComboSeq[i].SetCurSel(0);
-//	}
-//
-//	m_cComboRmtType.AddString("IR REMOTE");
-//	m_cComboRmtType.AddString("CABLE WIRE");
-//	m_cComboRmtType.SetCurSel(0);
-//
-//	UpdateData(FALSE);
-//
-//	SetTestEnable();
-//	//SetUIData();
-//
-//	GetModelList();
-//	GetRemoconList();
-//
-//	LoadTestData();
-//	DisplayTestData();
-//
-//	m_TextMesTns.put_Caption(g_strMesTns);
-//	m_TextMesAvn.put_Caption(g_strMesAvn);
-//	m_TextMesUserID.put_Caption(g_strMesUserID);
-//	m_TextMesPassword.put_Caption(g_strMesPassword);
-//	m_TextMesLine.put_Caption(g_strMesLine);
-//	m_TextMesInspStep.put_Caption(g_strMesInspStep);
-//
-//
-//
-//	GetRmtCodeList(gTestSeqData.strRemoconFileName);
 
-//	m_cComboPortType.AddString("CM4/5");
-//	m_cComboPortType.AddString("CM8/9");
-//	m_cComboPortType.SetCurSel(0);
-
-	//m_cComboRmtType.AddString("IR REMOTE");
-	//m_cComboRmtType.AddString("CABLE WIRE");
-	//m_cComboRmtType.SetCurSel(0);
 
 	GetModelList();
 	GetSeqList();
@@ -860,45 +758,82 @@ void DlgModelSetupSeq::DisplayTestData()
 {
 	SetSubListControl();
 	
-	//for(int i = 0 ; i < m_nRecomonCount; i++)
-	//{				
-	//	m_cRemoconCombo.AddString(m_strRemoconList[i]);
-	//			
-	//	if(m_strRemoconList[i].Compare(gTestSeqData.strRemoconFileName) == 0)
-	//	{
-	//		g_nRemoconSelNum = i;
-	//	}
-	//}
+	m_EditFPGAVer.Format(_T("%d.%d.%d"),
+		g_FPGA_Ver_event,
+		g_FPGA_Ver_major,
+		g_FPGA_Ver_minor);
 
-	//m_cRemoconCombo.SetCurSel(g_nRemoconSelNum);
-	//m_cComboRmtType.SetCurSel(gTestSeqData.nRemoconSigType);
+	m_EditDXD_ServerVer.Format(_T("%d.%d%d.%02d"),
+		g_DSERVER_Ver_event,
+		g_DSERVER_Ver_major,
+		g_DSERVER_Ver_minor,
+		g_DSERVER_Ver_release);
 
-	//m_CheckMesEnable = gTestSeqData.bMesEnable;
-	//m_cComboPortType.SetCurSel( g_nRemotePortType);
+	m_EditMicomVer.Format(_T("%d.%d.%d"),
+		g_Microchip_Ver_event,
+		g_Microchip_Ver_major,
+		g_Microchip_Ver_minor);
 
+	m_EditAVR_Ver.Format(_T("%d.%d.%d"),
+		g_AVR_Ver_event,
+		g_AVR_Ver_major,
+		g_AVR_Ver_minor);
 
+	m_cComboMicomHKHQ.SetCurSel(g_AVR_Type_HK_HQ);// m_Radio_HK_HQ = g_AVR_Type_HK_HQ;
 
-	//m_TextModelName.put_Caption(gTestSeqData.strModelName);
-	//if(g_nRemotePortType == 1)
-	//{
-	//	m_ServerPortNumber.Format(_T("%d"), g_nRemotePortNumberCM89);
-	//}
-	//else
-	//{
-	//	m_ServerPortNumber.Format(_T("%d"), g_nRemotePortNumberCM45);
-	//}
+	if (g_AVR_Type_HK_HQ == MICOM_TYPE_HQ)
+	{
+		SetDlgItemText(IDC_STATIC_AED_DROP, "Drop Micom ver.");//
+		m_cComboSetModelName.ResetContent();
+		//char *modelName[DXD_MODEL_COUNT] = { "10HQ701G", "14HQ701G", "14HQ901G", "17HQ701G", "17HQ901G", "14HQ721G", "17HQ901G_D" };
+		int lSeL = 0;
+		for (int i = 0; i < DXD_MODEL_COUNT; i++)
+		{
+			m_cComboSetModelName.AddString(gHQ_ModelNmae[i].GetString());
+			if (gHQ_ModelNmae[i].Compare(g_SetModelName) == 0)
+			{
+				lSeL = i;
+			}
+			m_cComboSetModelName.SetCurSel(lSeL);
+		}
+		//m_cComboSetModelName.AddString("10HQ701G");
+		//m_cComboSetModelName.AddString("14HQ701G");
+		//m_cComboSetModelName.AddString("14HQ901G");
+		//m_cComboSetModelName.AddString("17HQ701G");
+		//m_cComboSetModelName.AddString("17HQ901G");
+		//m_cComboSetModelName.AddString("14HQ721G");
+		//m_cComboSetModelName.AddString("17HQ901G_D");
+	}
+	else
+	{
+		SetDlgItemText(IDC_STATIC_AED_DROP, "AED Micom ver.");//
+		
+		m_cComboSetModelName.ResetContent();
+		//char *gHK_ModelName[DXD_HK_MODEL_NUM] = { "17HK700G", "14HK701G", "17HK701G"};
+		int lSeL = 0;
+		for (int i = 0; i < DXD_HK_MODEL_NUM; i++)
+		{
+			m_cComboSetModelName.AddString(gHK_ModelName[i].GetString());
+			if (gHK_ModelName[i].Compare(g_SetModelName) == 0)
+			{
+				lSeL = i;
+			}
+			m_cComboSetModelName.SetCurSel(lSeL);
+		}
+		//m_cComboSetModelName.AddString("17HK700G");
+		//m_cComboSetModelName.AddString("14HK701G");
+		//m_cComboSetModelName.AddString("17HK701G");		
+	}
 
-	//for(int i = 0; i < 10; i++)
-	//{
-	//	m_EditFreq[i].Format(_T("%d"),  gTestSeqData.Frequency[i]);
-	//}
-
-	//m_EditCheckSum.Format(_T("0x%02X 0x%02X"), gTestSeqData.CheckSum[0], gTestSeqData.CheckSum[1]);
-
+	for (int i = 0; i < 16; i++)
+	{
+		m_EditRoicMinValue[i].Format("%d", g_RefMin_buf[i]);
+		m_EditRoicMaxValue[i].Format("%d", g_RefMax_buf[i]);
+	}
 
 
 	UpdateData(FALSE);
-	SetDlgItemText(IDC_EDIT_IPADDRESS_GMES1, g_nRemoteIPAddress);	
+	//SetDlgItemText(IDC_EDIT_IPADDRESS_GMES1, g_nRemoteIPAddress);	
 	//SetDlgItemText( IDC_EDIT_CAMERA_IPADDRESS, gTestSeqData.strCameraIPAddress);
 	//SetDlgItemText( IDC_IPADDRESS_CAMERA, gTestSeqData.strCameraIPAddress);
 }
@@ -932,41 +867,7 @@ void DlgModelSetupSeq::ClickButtonModelCreate()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 		// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	//CDlgNewModelName lDlg;
-
-	//if(lDlg.DoModal() == IDOK)
-	//{
-	//	if(lDlg.m_NewName.GetLength() < 3)
-	//	{
-	//		MessageBox("New Name Is Too Short !!");
-	//		return;
-	//	}
-
-	//	for(int i = 0 ; i < lDlg.m_NewName.GetLength(); i++)
-	//	{
-	//		if((lDlg.m_NewName.GetAt(i) == ' ')||(lDlg.m_NewName.GetAt(i) == '\t'))
-	//		{
-	//			lDlg.m_NewName.SetAt(i, '_');
-	//		}
-	//	}
-
-	//	if(NameListCheckAndADD(lDlg.m_NewName))
-	//	{
-	//		int lok = MessageBoxA(_T("New Name Is IN MODEL LIST !!") , _T("Used Found"), MB_YESNO |MB_DEFBUTTON2  );
-	//		if(IDYES != lok)
-	//		{
-	//			return;
-	//		}
-	//	}
-
-	//	SaveModel(lDlg.m_NewName);
-	//	gTestSeqData.strModelName = lDlg.m_NewName;
-	//	m_cModelComboSeq.SetCurSel(m_cModelComboSeq.GetCount()-1);
-
-	//	LoadTestData();
-	//	DisplayTestData();
-
-	//}
+	
 
 	OnBnClickedButtonSaveas();
 }
@@ -1025,11 +926,104 @@ void DlgModelSetupSeq::SaveModel(CString lFilename)//gTestSeqData
 
 int  DlgModelSetupSeq::UpdateTestData()//gTestSeqData
 {
+	CString strTemp;
+	CString strTemp1;
+	CString strTemp2;
+	CString strTemp3;
+	CString strTemp4;
+	int lPos = 0;
+	int lNumber = 0;
 	UpdateData();
 
 	CString lstrModelName;	
 	m_cModelComboSeq.GetLBText(m_cModelComboSeq.GetCurSel(),lstrModelName);
 	gTestSeqData.strModelName = lstrModelName;
+
+
+	lPos = m_EditFPGAVer.Find(".");
+	strTemp1 = m_EditFPGAVer.Left(lPos);
+	strTemp = m_EditFPGAVer.Mid(lPos + 1);
+	strTemp2 = strTemp.Left(lPos);
+	lPos = strTemp.Find(".");
+	strTemp = strTemp.Mid(lPos + 1);
+	strTemp3 = strTemp;
+
+
+	g_FPGA_Ver_event = _ttoi(strTemp1);
+	g_FPGA_Ver_major = _ttoi(strTemp2);
+	g_FPGA_Ver_minor = _ttoi(strTemp3);
+
+
+
+
+	lPos = m_EditDXD_ServerVer.Find(".");
+	strTemp = m_EditDXD_ServerVer.Mid(lPos + 1);
+	strTemp1 = m_EditDXD_ServerVer.Left(lPos);
+
+	lPos = strTemp.Find(".");
+	strTemp2 = strTemp.Left(lPos);
+	strTemp3 = strTemp2.Mid(1);
+	strTemp2 = strTemp2.Left(1);
+
+	strTemp = strTemp.Mid(lPos + 1);
+	strTemp4 = strTemp;
+
+
+	g_DSERVER_Ver_event = _ttoi(strTemp1);
+	g_DSERVER_Ver_major = _ttoi(strTemp2);
+	g_DSERVER_Ver_minor = _ttoi(strTemp3);
+	g_DSERVER_Ver_release = _ttoi(strTemp4);
+
+
+	lPos = m_EditMicomVer.Find(".");
+	strTemp = m_EditMicomVer.Mid(lPos + 1);
+	strTemp1 = m_EditMicomVer.Left(lPos);
+	strTemp2 = strTemp.Left(lPos);
+	lPos = strTemp.Find(".");
+	strTemp = strTemp.Mid(lPos + 1);
+	strTemp3 = strTemp;
+
+
+	g_Microchip_Ver_event = _ttoi(strTemp1);
+	g_Microchip_Ver_major = _ttoi(strTemp2);
+	g_Microchip_Ver_minor = _ttoi(strTemp3);
+
+	/*
+	lPos = m_EditAVR_Ver.Find(".");
+	strTemp = m_EditAVR_Ver.Mid(lPos + 1);
+	strTemp1 = m_EditAVR_Ver.Left(lPos);
+	strTemp = strTemp.Mid(lPos + 1);
+	strTemp2 = strTemp.Left(lPos);
+	strTemp3 = strTemp;*/
+
+	lPos = m_EditAVR_Ver.Find(".");
+	strTemp = m_EditAVR_Ver.Mid(lPos + 1);
+	strTemp1 = m_EditAVR_Ver.Left(lPos);
+	strTemp2 = strTemp.Left(lPos);
+	lPos = strTemp.Find(".");
+	strTemp = strTemp.Mid(lPos + 1);
+	strTemp3 = strTemp;
+
+
+	g_AVR_Type_HK_HQ = m_cComboMicomHKHQ.GetCurSel(); //g_AVR_Type_HK_HQ = m_Radio_HK_HQ;
+
+
+	m_cComboSetModelName.GetLBText(m_cComboSetModelName.GetCurSel(), strTemp);
+	g_SetModelName = strTemp;
+
+
+	g_AVR_Ver_event = _ttoi(strTemp1);
+	g_AVR_Ver_major = _ttoi(strTemp2);
+	g_AVR_Ver_minor = _ttoi(strTemp3);
+
+
+	for (int i = 0; i < 16; i++)
+	{
+		g_RefMin_buf[i] = _ttoi(m_EditRoicMinValue[i]);
+		g_RefMax_buf[i] = _ttoi(m_EditRoicMaxValue[i]);
+
+	}
+
 
 	//m_cSeqProcessCombo.GetLBText(m_cSeqProcessCombo.GetCurSel(),lstrModelName);
 	int lpos = gTestSeqData.strSeqFileName.Find(".seq");
@@ -2196,4 +2190,114 @@ void DlgModelSetupSeq::OnBnClickedButtonSaveas()
 		
 
 	} 
+}
+
+
+void DlgModelSetupSeq::OnBnClickedButtonGeswverMd()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int lMicomTypeOld =  m_cComboMicomHKHQ.GetCurSel();// g_AVR_Type_HK_HQ); m_Radio_HK_HQ;
+	//g_AVR_Type_HK_HQ = m_cComboMicomHKHQ.GetCurSel();// g_AVR_Type_HK_HQ); m_Radio_HK_HQ;
+
+	if (m_P_Main->GetDetParam())
+	{
+
+		m_EditFPGAVer.Format(_T("%d.%d.%d"),
+			m_P_Main->m_FPGA_Ver_event,
+			m_P_Main->m_FPGA_Ver_major,
+			m_P_Main->m_FPGA_Ver_minor);
+
+		m_EditDXD_ServerVer.Format(_T("%d.%d%d.%02d"),
+			m_P_Main->m_DSERVER_Ver_event,
+			m_P_Main->m_DSERVER_Ver_major,
+			m_P_Main->m_DSERVER_Ver_minor,
+			m_P_Main->m_DSERVER_Ver_release);
+
+		m_EditMicomVer.Format(_T("%d.%d.%d"),
+			m_P_Main->m_Microchip_Ver_event,
+			m_P_Main->m_Microchip_Ver_major,
+			m_P_Main->m_Microchip_Ver_minor);
+
+		m_EditAVR_Ver.Format(_T("%d.%d.%d"),
+			m_P_Main->m_AVR_Ver_event,
+			m_P_Main->m_AVR_Ver_major,
+			m_P_Main->m_AVR_Ver_minor);
+		if (lMicomTypeOld != g_AVR_Type_HK_HQ)
+		{
+			m_cComboMicomHKHQ.SetCurSel(g_AVR_Type_HK_HQ);
+			OnCbnSelchangeComboMicomHkhqTypeMd();
+		}
+		UpdateData(FALSE);
+	}
+}
+
+
+void DlgModelSetupSeq::OnCbnSelchangeComboMicomHkhqTypeMd()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	static CString lModelNameHQ;
+	static CString lModelNameHK;
+
+	int lSel = m_cComboMicomHKHQ.GetCurSel();
+	g_AVR_Type_HK_HQ = lSel;
+	if (g_AVR_Type_HK_HQ == MICOM_TYPE_HQ)
+	{
+		SetDlgItemText(IDC_STATIC_AED_DROP, "Drop Micom ver.");//
+		m_cComboSetModelName.ResetContent();
+		//char *modelName[DXD_MODEL_COUNT] = { "10HQ701G", "14HQ701G", "14HQ901G", "17HQ701G", "17HQ901G", "14HQ721G", "17HQ901G_D" };
+		int lSeL = 0;
+		for (int i = 0; i < DXD_MODEL_COUNT; i++)
+		{
+			m_cComboSetModelName.AddString(gHQ_ModelNmae[i].GetString());
+				if (gHQ_ModelNmae[i].Compare(g_SetModelName) == 0)
+				{
+					lModelNameHQ = g_SetModelName;
+					lSeL = i;
+				}
+		}
+			m_cComboSetModelName.SetCurSel(lSeL);
+		//m_cComboSetModelName.AddString("10HQ701G");
+		//m_cComboSetModelName.AddString("14HQ701G");
+		//m_cComboSetModelName.AddString("14HQ901G");
+		//m_cComboSetModelName.AddString("17HQ701G");
+		//m_cComboSetModelName.AddString("17HQ901G");
+		//m_cComboSetModelName.AddString("14HQ721G");
+		//m_cComboSetModelName.AddString("17HQ901G_D");
+	}
+	else
+	{
+		SetDlgItemText(IDC_STATIC_AED_DROP, "AED Micom ver.");//		
+		m_cComboSetModelName.ResetContent();
+		//char *gHK_ModelName[DXD_HK_MODEL_NUM] = { "17HK700G", "14HK701G", "17HK701G"};
+		int lSeL = 0;
+		for (int i = 0; i < DXD_HK_MODEL_NUM; i++)
+		{
+			m_cComboSetModelName.AddString(gHK_ModelName[i].GetString());
+			if (gHK_ModelName[i].Compare(g_SetModelName) == 0)
+			{
+				lModelNameHK = g_SetModelName;
+				lSeL = i;
+			}
+		}
+			m_cComboSetModelName.SetCurSel(lSeL);
+		//m_cComboSetModelName.AddString("17HK700G");
+		//m_cComboSetModelName.AddString("14HK701G");
+		//m_cComboSetModelName.AddString("17HK701G");		
+	}
+
+}
+
+
+void DlgModelSetupSeq::OnBnClickedButtonGetModelName()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strModelName;
+	if (m_P_Main->GetModelname(strModelName))
+	{
+		SetDlgItemText(IDC_STATIC_READ_MODEL_NAME, strModelName);
+	}
+	else
+	{
+		MessageBox("Read Name Fail!!");
+	}
 }

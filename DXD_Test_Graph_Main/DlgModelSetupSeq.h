@@ -3,7 +3,7 @@
 #include "afxwin.h"
 #include "label_text.h"
 
-
+#include "AcqVoltageSamples_IntClkDlg.h"
 // DlgModelSetupSeq 대화 상자입니다.
 
 class DlgModelSetupSeq : public CDialogEx
@@ -110,4 +110,27 @@ public:
 	//CComboBox m_cComboPortType;
 	//afx_msg void OnCbnSelchangeComboMesPortType();
 	afx_msg void OnBnClickedButtonSaveas();
+	afx_msg void OnBnClickedButtonGeswverMd();
+
+
+	//////////////////////////////////////////////////
+	CString m_EditFPGAVer;
+	CString m_EditDXD_ServerVer;
+	CString m_EditMicomVer;
+	CString m_EditAVR_Ver;
+	//afx_msg void OnBnClickedButtonSave();
+
+	//afx_msg void OnBnClickedButtonScannerPortCheck();
+	//afx_msg void OnCbnSelchangeComboComportScan();
+	//	BOOL m_Radio_HK_HQ;
+	int m_Radio_HK_HQ;
+	CComboBox m_cComboMicomHKHQ;
+	//afx_msg void OnCbnSelchangeComboMicomHkhqType();
+	//afx_msg void OnBnClickedCancel();
+
+	CString m_EditRoicMinValue[16];
+	CString m_EditRoicMaxValue[16];
+	CComboBox m_cComboSetModelName;
+	afx_msg void OnCbnSelchangeComboMicomHkhqTypeMd();
+	afx_msg void OnBnClickedButtonGetModelName();
 };

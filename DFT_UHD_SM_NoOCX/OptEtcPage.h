@@ -133,6 +133,7 @@ public:
 	BOOL m_bGrabBaseReset;
 	BOOL m_bCheckGrabberOnOffCheck;
 	BOOL m_bFHDUHD_OLED_Pack_Reset;
+//	CComboBox m_cComboAudioCard;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -143,7 +143,7 @@ protected:
 	afx_msg void OnRemoteButtonClick(UINT nButtonID);
 	afx_msg void OnSelchangeControlTab(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBtnGrabOptionApply();
-	afx_msg void OnRdoLvdsResolution1(UINT nButtonID);
+	//afx_msg void OnRdoLvdsResolution1(UINT nButtonID);
 	afx_msg void OnRdoColorDepth1(UINT nButtonID);
 	afx_msg void OnRdo3dMode1(UINT nButtonID);
 	afx_msg void OnRdoAvswitchCmd13();
@@ -283,6 +283,9 @@ public:
 		afx_msg void OnCbnSelchangeComboUhdtype2();
 		afx_msg void OnBnClickedBtnLanTest();
 		afx_msg void OnBnClickedBtnLanClear();
+		afx_msg void OnBnClickedBtnDpmsCheck();
+		CComboBox m_cComboLvdsFormat;
+		afx_msg void OnCbnSelchangeComboLvdsResolution2();
 };
 
 //{{AFX_INSERT_LOCATION}}

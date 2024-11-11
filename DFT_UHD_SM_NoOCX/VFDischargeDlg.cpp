@@ -265,7 +265,8 @@ BOOL  CVFDischargeDlg::VfMeasureCheck()
 	}
 
 	m_bTestRunning = TRUE;
-
+	//POSITION	PosStep_EM;
+	//CVFTestInfo *pCurStep_EM;
 	PosStep_EM = CurrentSet->VF_TestInfo.GetHeadPosition();
 
 	m_nNoFailed = 0;

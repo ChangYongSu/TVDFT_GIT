@@ -274,6 +274,17 @@ _InternalFunction Predefined[] =
 	{ _T("Delay"), _T("")},
 	{NORMAL_EDIT_TYPE, NULL_TYPE},
 
+	_T("check_delay"), _Check_Delay,
+	{LP, INTEGER, RP, TNULL},
+	{ _T("CheckDelay"), _T("")},
+	{NORMAL_EDIT_TYPE, NULL_TYPE},
+
+
+	_T("check_double_delay"), _Check_Again_Delay,
+	{LP, INTEGER,COMMA,INTEGER, RP, TNULL},
+	{ _T("CheckDelay"),_T("CheckAgainDelay"), _T("")},
+	{NORMAL_EDIT_TYPE, NULL_TYPE},
+
 	_T("work"), _Work,
 	{LP, RP, TNULL},
 	{_T("")},
@@ -354,6 +365,13 @@ _InternalFunction Predefined[] =
 	{LP, STRING, COMMA, INTEGER, COMMA,INTEGER, COMMA,STRING,RP, TNULL},
 	{_T("Ref File"), _T("Use Mask"),_T("Max Delay"),_T("Message"),_T("")},
 	{FILE_SEL_TYPE,USE_SEL_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NULL_TYPE},
+
+	
+	_T("grab_fullimage_check"), _Grab_FullImage_Check,
+	{ LP, STRING, COMMA, INTEGER, COMMA,INTEGER, COMMA,STRING,RP, TNULL },
+	{ _T("Ref File"), _T("Use Mask"),_T("Max Delay"),_T("Message"),_T("") },
+	{ FILE_SEL_TYPE,USE_SEL_TYPE,NORMAL_EDIT_TYPE,NORMAL_EDIT_TYPE,NULL_TYPE },
+
 
 	//+add PSH 080412
 	_T("grab_image_osd_check"), _Grab_Image_OSD_Check,
@@ -666,6 +684,17 @@ _InternalFunction Predefined[] =
 	{_T("")},
 	{NULL_TYPE},
 
+	_T("audio_list_read"), _AudioNewSearch,
+	{LP, RP, TNULL},
+	{_T("")},
+	{NULL_TYPE},
+
+	_T("audio_sel_reset"), _AudioSelectReset,
+	{ LP, STRING, RP, TNULL },
+	{ _T("")},
+	{ NORMAL_EDIT_TYPE,NULL_TYPE },
+
+
 	_T("set_macadd"), _Set_MacAddress,
 	{LP, STRING, RP, TNULL},
 	{_T("")},
@@ -738,6 +767,11 @@ _InternalFunction Predefined[] =
 
 	_T("jig_cylindercontrol"), _Set_Cylinder,
 	{LP, INTEGER, COMMA, INTEGER, RP, TNULL},
+	{_T("")},
+	{NORMAL_EDIT_TYPE,NULL_TYPE},
+
+	_T("jig_cylindercontrol_3bit"), _Set_Cylinder3Bit,
+	{LP, INTEGER, COMMA, INTEGER, COMMA, INTEGER, RP, TNULL},
 	{_T("")},
 	{NORMAL_EDIT_TYPE,NULL_TYPE},
 
@@ -3422,6 +3456,7 @@ BOOL  SyntexChecking(char* achFunc)
     
 	//+ 2007.10.4 Add BY USY
 	int	nCheck = 0;	// 0 : no check, 1 : set rf channel check, 2 : set input source check
+	int	nCheckCount = 0;
 	//-
 
     for(nIndex = 0; Predefined[nIndex].pszFunc != NULL; nIndex++)
@@ -3436,11 +3471,12 @@ BOOL  SyntexChecking(char* achFunc)
 			{
 				nCheck = 1;
 			}
-			else if(strcmp(Predefined[nIndex].pszFunc, _T("set_input_source")) == 0)
+			else if (strcmp(Predefined[nIndex].pszFunc, _T("set_input_source")) == 0)
 			{
 				nCheck = 2;
 			}
-			//-
+			
+			
                     
             while(Predefined[nIndex].achPara[cbSyntex] != TNULL)                  
             {
@@ -3453,6 +3489,8 @@ BOOL  SyntexChecking(char* achFunc)
                             continue;
 					}
 				}
+				
+
                 if (pToken->type != Predefined[nIndex].achPara[cbSyntex])
                 {
                     if (Predefined[nIndex].achPara[cbSyntex] == SIGN)

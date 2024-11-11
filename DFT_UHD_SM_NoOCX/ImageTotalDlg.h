@@ -60,6 +60,7 @@ public:
 	CButton	m_ctrlGrabPageChk;
 	CButton m_ctrlAutoRobotPageChk;
 	int		m_nRadioAudioMeasureStart;
+	//CComboBox m_cComboMIC_Type;
 	//}}AFX_DATA
 
 
@@ -184,6 +185,7 @@ public:
 	afx_msg void OnBnClickedChkAutoRobotPage();
 	
 //	afx_msg void OnBnClickedOk();
+	//afx_msg void OnCbnSelchangeComboMicType();
 };
 
 //{{AFX_INSERT_LOCATION}}

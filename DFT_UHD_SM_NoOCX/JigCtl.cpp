@@ -22,6 +22,7 @@ CJigCtrl::CJigCtrl()
 	m_nCylinder = 0x03;
 	m_bGet_JigReady = FALSE;
 	m_bAcPowerOnOff = FALSE;
+	m_nDPMS_5CheckFlag = 0;
 }
 
 CJigCtrl::~CJigCtrl()
@@ -475,49 +476,103 @@ BOOL CJigCtrl::Set_Cylinder(BOOL bEarPhone, BOOL bComp)
 	CString szCmdString;
 	CString		szData;
 
-	if(!m_bPortOpen) return FALSE;
-	
-	if(bEarPhone){
+	if (!m_bPortOpen) return FALSE;
+
+	if (bEarPhone) {
 		//m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL ;
 		m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL | HDMI_USB_SIGNAL;
 	}
-	else{
+	else {
 		m_nCylinder = m_nCylinder & (~ERAPHONE_SIGNAL);
 	}
 
-	if(bComp){
+	if (bComp) {
 		m_nCylinder = m_nCylinder | COMPONENT_SIGNAL;
 	}
-	else{
+	else {
 		m_nCylinder = m_nCylinder & (~COMPONENT_SIGNAL);
 	}
 
 	m_ctrlJigCom.ClearPort();
 	memset(m_strSend, 0, 5);
-	
+
 	m_strSend[0] = 0x02;
 	m_strSend[1] = 0x43;  //C
 	m_strSend[2] = m_nCylinder;
 	m_strSend[3] = 0x03;
-	
-//	szCmdString.Format("%cC%02X%c",STX,nData,ETX);
 
-//	::ResetEvent(m_hReadEvent);
-	if(!SendCommString(m_strSend, 4))
+	//	szCmdString.Format("%cC%02X%c",STX,nData,ETX);
+
+	//	::ResetEvent(m_hReadEvent);
+	if (!SendCommString(m_strSend, 4))
 	{
 		return FALSE;
 	}
-	if(!ReceiveString(szData, 3000))
+	if (!ReceiveString(szData, 3000))
 	{
 		return FALSE;
 	}
-	if(szData == "02580103"){
+	if (szData == "02580103") {
 		return TRUE;
 	}
-	else{
+	else {
 		return FALSE;
 	}
 }
+
+
+BOOL CJigCtrl::Set_CylinderAll(BYTE Data)
+{
+	CString szCmdString;
+	CString		szData;
+
+	if (!m_bPortOpen) return FALSE;
+
+	//if (bEarPhone) {
+	//	//m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL ;
+	//	m_nCylinder = m_nCylinder | ERAPHONE_SIGNAL | HDMI_USB_SIGNAL;
+	//}
+	//else {
+	//	m_nCylinder = m_nCylinder & (~ERAPHONE_SIGNAL);
+	//}
+
+	//if (bComp) {
+	//	m_nCylinder = m_nCylinder | COMPONENT_SIGNAL;
+	//}
+	//else {
+	//	m_nCylinder = m_nCylinder & (~COMPONENT_SIGNAL);
+	//}
+	if (m_nCylinder != Data)
+		m_nCylinder = Data;
+		
+	m_ctrlJigCom.ClearPort();
+	memset(m_strSend, 0, 5);
+
+	m_strSend[0] = 0x02;
+	m_strSend[1] = 0x43;  //C
+	m_strSend[2] = m_nCylinder;
+	m_strSend[3] = 0x03;
+
+	//	szCmdString.Format("%cC%02X%c",STX,nData,ETX);
+
+	//	::ResetEvent(m_hReadEvent);
+	if (!SendCommString(m_strSend, 4))
+	{
+		return FALSE;
+	}
+	if (!ReceiveString(szData, 3000))
+	{
+		return FALSE;
+	}
+	if (szData.Find("02580103") >= 0) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+
+
 BOOL CJigCtrl::Get_JigReady()
 {
 	CString szCmdString;
@@ -564,6 +619,7 @@ BOOL CJigCtrl::Set_Grabber_Power(BOOL bGrabPower)
 {
 	CString szCmdString;
 	CString		szData;
+
 
 	if (!m_bPortOpen) return FALSE;
 
@@ -623,6 +679,10 @@ BOOL CJigCtrl::Set_Grabber_Power(BOOL bGrabPower)
 
 BOOL CJigCtrl::Set_IF_Pack_Reset(BOOL bReset)
 {
+
+	if (g_nCommandOnlyType == TRUE)
+		return FALSE;
+
 	CString szCmdString;
 	CString		szData;
 
@@ -988,7 +1048,78 @@ BOOL CJigCtrl::ID_Ctrl_IncCount()
 	//‘Inc\n
 	CString szCmdString;
 	CString		szData;
+	CString strReadData2;
+	CString sTemp;
+	int lnPos;
+#ifdef _DEBUG
+	sTemp = "Tx LGEKR WBS03 2024/01/03 0001 255\r";;//m_sID_Ctrl_Receive;
 
+	sTemp.Trim();
+	 lnPos = sTemp.Find("Tx ");
+	if (lnPos < 0)
+	{
+		return FALSE;
+	}
+	sTemp = sTemp.Mid(lnPos + 3);
+	lnPos = sTemp.Find(" ");
+	if (lnPos < 0)
+	{
+		return FALSE;
+	}
+	m_strID_CompanyInfo = sTemp.Left(lnPos);
+	//CompanyInfo ChassisInfo DateInfo SerialNo CounterData
+	strReadData2 = _T("CompanyInfo : ");
+	strReadData2 += m_strID_CompanyInfo;
+	AddStringToStatus(strReadData2);
+
+	sTemp = sTemp.Mid(lnPos + 1);
+	lnPos = sTemp.Find(" ");
+	if (lnPos < 0)
+	{
+		return FALSE;
+	}
+	m_strID_ChassisInfo = sTemp.Left(lnPos);
+	strReadData2 = _T("ChassisInfo : ");
+	strReadData2 += m_strID_ChassisInfo;
+	AddStringToStatus(strReadData2);
+
+	sTemp = sTemp.Mid(lnPos + 1);
+	lnPos = sTemp.Find(" ");
+	if (lnPos < 0)
+	{
+		return FALSE;
+	}
+	m_strID_DateInfo = sTemp.Left(lnPos);
+	strReadData2 = _T("DateInfo : ");
+	strReadData2 += m_strID_DateInfo;
+	AddStringToStatus(strReadData2);
+
+	sTemp = sTemp.Mid(lnPos + 1);
+	lnPos = sTemp.Find(" ");
+	if (lnPos < 0)
+	{
+		return FALSE;
+	}
+	m_strID_SerialNo = sTemp.Left(lnPos);
+	strReadData2 = _T("SerialNo : ");
+	strReadData2 += m_strID_SerialNo;
+	AddStringToStatus(strReadData2);
+
+	sTemp = sTemp.Mid(lnPos + 1);
+	lnPos = sTemp.GetLength();
+	if (lnPos < 0)
+	{
+		return FALSE;
+	}
+	m_nJigID_UseCount = _ttoi(sTemp);
+
+	//CompanyInfo ChassisInfo DateInfo SerialNo CounterData
+	strReadData2 = _T("CounterData : ");
+	strReadData2 += sTemp;
+	AddStringToStatus(strReadData2);
+
+	
+#endif
 	if (!m_bID_Ctrl_PortOpen) return FALSE;
 
 	m_ID_Ctrl_Com.ClearPort();
@@ -1006,16 +1137,16 @@ BOOL CJigCtrl::ID_Ctrl_IncCount()
 		return FALSE;
 	}
 
-	CString strReadData2;
-	CString sTemp = m_sID_Ctrl_Receive;
+	
+	sTemp = m_sID_Ctrl_Receive;
 	
 	sTemp.Trim();
-	int lnPos = sTemp.Find("Tx ");
+	 lnPos = sTemp.Find("Tx ");
 	if (lnPos < 0)
 	{
 		return FALSE;
 	}
-	sTemp = sTemp.Mid(lnPos);
+	sTemp = sTemp.Mid(lnPos+3);
 	lnPos = sTemp.Find(" ");
 	if (lnPos < 0)
 	{
@@ -1184,7 +1315,7 @@ BOOL CJigCtrl::DPMS_ReceiveString(int nCount, int nWaitLimit)
 
 	while (bDoing)
 	{
-	
+		Sleep(10);
 		//nTemp = m_sDPMS_Receive.GetLength();
 		if (m_nDPMS_ReceiveCnt >= nCount)
 		{
@@ -1263,13 +1394,38 @@ BOOL CJigCtrl::DPMS_ReceiveString(int nCount, int nWaitLimit)
 }
 
 
-double CJigCtrl::DPMS_Read_Check()
+double CJigCtrl::DPMS_Read_Check( int Manual )
 {
 	CString szCmdString;
 	CString		szData;
 	CString		sMsg;
 
-	if (!m_bDPMS_PortOpen) return FALSE;
+	if (!m_bDPMS_PortOpen)
+	{
+		//sMsg.Format("DPMS COM Port Not Open ERROR !! ", CurrentSet->m_nDPMS_5CheckCnt);
+		AddStringToStatus("DPMS COM Port Not Open ERROR !! ");
+		return -1000;//FALSE;//  FALSE;
+	}
+	
+	//if (gJigCtrl.m_nDPMS_5CheckFlag != 1)
+	//{
+	//	gJigCtrl.m_nDPMS_5CheckFlag = 1;
+	//}
+	//if (CurrentSet->bGMES_Connection && CurrentSet->bUploadMes )
+	//{
+	//	if (CurrentSet->m_nDPMS_5CheckCnt % 5 == 0)
+	//	{
+	//		//m_nDPMS_5CheckCnt;
+	//	}
+	//	else
+	//	{
+	//		sMsg.Format("DPMS Check Skip:%d ", CurrentSet->m_nDPMS_5CheckCnt);
+	//		AddStringToStatus(sMsg);
+	//		return ((pCurStep->GetHighLimit() + pCurStep->GetLowLimit())/2);
+	//		
+	//	}
+	//}
+
 
 	m_DPMS_Com.ClearPort();
 	memset(m_strDPMS_Send, 0, sizeof(m_strDPMS_Send));
@@ -1289,42 +1445,88 @@ double CJigCtrl::DPMS_Read_Check()
 	if (!DPMS_SendCommString(m_strDPMS_Send, 8))
 	{
 
-		return FALSE;
+		return  -1000;//FALSE;// FALSE;
 
 	}
+	//if (Manual == 1)
+	//{
+	//	return 1;
+	//}
+
 	if (!DPMS_ReceiveString(7, 3000))
 	{
-		return FALSE;
+		return  -1000;//FALSE;//FALSE;
 	}
 
 	//요청(HEX Data 8 bytes) : 0x02 0x03 0x00 0x11 0x00 0x01 0xd4 0x3c + 1초이상 wait
 	//	응답(HEX Data 8 bytes)) :       0x02 0x03 0x00 0x02 MSB LSB CRC1 CRC2
 
 	//	2.Power 계산
+	if (m_fDPMS_WattData == 0)
+		m_fDPMS_WattData = 0.00001;
 
 	//	Watt = (MSB * 256 + LSB) / 10
-
-	if ((m_fDPMS_WattData >= pCurStep->m_fLowLimit) && (m_fDPMS_WattData <= pCurStep->m_fHighLimit))
+	if (Manual == 1)
 	{
-		sMsg.Format("DPMS OK: %0.1f [%0.1f~%0.1f]", m_fDPMS_WattData, pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
+
+		sMsg.Format("DPMS : %0.1f ", m_fDPMS_WattData );
 		AddStringToStatus(sMsg);
 		return  m_fDPMS_WattData;
-		//return TRUE;// m_fDPMS_WattData;
 	}
 	else
 	{
-		sMsg.Format("DPMS NG: %0.1f [%0.1f~%0.1f]", m_fDPMS_WattData, pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
-		AddStringToStatus(sMsg);
-		return   m_fDPMS_WattData;
-		//return FALSE;//  m_fDPMS_WattData;
+		if ((m_fDPMS_WattData >= pCurStep->m_fLowLimit) && (m_fDPMS_WattData <= pCurStep->m_fHighLimit))
+		{
+			sMsg.Format("DPMS OK: %0.1f [%0.1f~%0.1f]", m_fDPMS_WattData, pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
+			AddStringToStatus(sMsg);
+			return  m_fDPMS_WattData;
+			//return TRUE;// m_fDPMS_WattData;
+		}
+		else
+		{
+			sMsg.Format("DPMS NG: %0.1f [%0.1f~%0.1f]", m_fDPMS_WattData, pCurStep->m_fLowLimit, pCurStep->m_fHighLimit);
+			AddStringToStatus(sMsg);
+			return   m_fDPMS_WattData;
+			//return FALSE;//  m_fDPMS_WattData;
+		}
 	}
-
-	
 	//CompanyInfo ChassisInfo DateInfo SerialNo CounterData
 
+}
 
-	
-	
 
+bool CJigCtrl::DPMS_Count_Check()
+{
+	CString szCmdString;
+	CString		szData;
+	CString		sMsg;
+
+	if (CurrentSet->nDPMS_SampleRate == 1)
+	{
+		return 1;
+	}
 	
+	if (gJigCtrl.m_nDPMS_5CheckFlag != 1)
+	{
+		gJigCtrl.m_nDPMS_5CheckFlag = 1;
+	}
+	if (CurrentSet->bGMES_Connection && CurrentSet->bUploadMes)
+	{
+		if (CurrentSet->m_nDPMS_5CheckCnt % 5 == 1)
+		{
+			return 1;
+		}
+		else
+		{
+			sMsg.Format("DPMS Check Skip:%d ", CurrentSet->m_nDPMS_5CheckCnt);
+			AddStringToStatus(sMsg);
+			return 0;
+
+		}
+	}
+	return 1;
+
+
+
+
 }

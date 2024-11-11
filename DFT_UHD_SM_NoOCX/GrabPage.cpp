@@ -30,6 +30,8 @@ extern CBaseImage	g_GrabImage;
 extern HWND g_hCommWnd;
 extern CImageProc		g_ImageProc;
 
+
+#define _DPMSWAIT_ID 5
 //////////////////////////////////////////////////////////////////////////
 #define MANUAL_GRAB		0
 #define AUTO_GRAB		1
@@ -50,9 +52,9 @@ extern CImageProc		g_ImageProc;
 //#define NO_GRAB_OPTION_TAB_ITEM 28
 //#define NO_GRAB_OPTION_TAB_ITEM 41
 //#define NO_GRAB_OPTION_TAB_ITEM 48
-#define NO_GRAB_OPTION_TAB_ITEM 54 //53 // 52 //51 // 50
+#define NO_GRAB_OPTION_TAB_ITEM 35 // 54 //53 // 52 //51 // 50
 
-#define NO_USB_DIO_TAB_ITEM 26//21//15
+#define NO_USB_DIO_TAB_ITEM 28//26//21//15
 
 /////////////////////////////////////////////////////////////////////////////
 // CGrabPage dialog
@@ -82,13 +84,14 @@ int aLAN_CheckerItemNo[] =
 };
 int aGrabOptionItemNo[] =
 {
-	IDC_STATIC_RESOLUTION, 		IDC_RDO_LVDS_RESOLUTION1,	IDC_RDO_LVDS_RESOLUTION2, 
+	IDC_STATIC_RESOLUTION, 		/*IDC_RDO_LVDS_RESOLUTION1,	IDC_RDO_LVDS_RESOLUTION2, 
 	IDC_RDO_LVDS_RESOLUTION3,	IDC_RDO_LVDS_RESOLUTION4,	IDC_RDO_LVDS_RESOLUTION5, 
 	IDC_RDO_LVDS_RESOLUTION6,	IDC_RDO_LVDS_RESOLUTION7,	IDC_RDO_LVDS_RESOLUTION8, 
 	IDC_RDO_LVDS_RESOLUTION9,	IDC_RDO_LVDS_RESOLUTION10,	IDC_RDO_LVDS_RESOLUTION11, 
 	IDC_RDO_LVDS_RESOLUTION12,	IDC_RDO_LVDS_RESOLUTION13,	IDC_RDO_LVDS_RESOLUTION14,
 	IDC_RDO_LVDS_RESOLUTION15,	IDC_RDO_LVDS_RESOLUTION16,  IDC_RDO_LVDS_RESOLUTION17,
-	IDC_RDO_LVDS_RESOLUTION18,  IDC_RDO_LVDS_RESOLUTION19,	IDC_RDO_LVDS_RESOLUTION20,
+	IDC_RDO_LVDS_RESOLUTION18,  IDC_RDO_LVDS_RESOLUTION19,	IDC_RDO_LVDS_RESOLUTION20,*/
+	IDC_COMBO_LVDS_RESOLUTION2,
 
 	IDC_STATIC_LVDS_TYPE,
 	IDC_RDO_LVDS_MODE1,			IDC_RDO_LVDS_MODE2,			IDC_RDO_LVDS_MODE3,
@@ -112,7 +115,8 @@ int aUsbDioItemNo[NO_USB_DIO_TAB_ITEM] =
 	IDC_STATIC_LABEL_MHL2, IDC_CHECK_MHL_LINE, IDC_STATIC_ARC, IDC_CHECK_ARC, IDC_COMBO_OUT_PORT2,
 	IDC_STATIC_JIG_UP_DOWN,IDC_BTN_MAIN_JIG_UP,IDC_BTN_MAIN_JIG_DOWN,
 	IDC_STATIC_HDMI_USB_CYL, IDC_CHECK_HDMI_USB_CYL, IDC_STATIC_EARPHONE, IDC_CHECK_EARPHONE, IDC_CHECK_COMP, IDC_STATIC_COMP,
-	IDC_STATIC_GRAB_POWER,IDC_CHECK_GRAB_POWER,IDC_STATIC_IFPACK_RESET,IDC_BTN_RESET_IFPACK,IDC_BTN_RESET_GRAB,IDC_BTN_RESET_GENDER
+	IDC_STATIC_GRAB_POWER,IDC_CHECK_GRAB_POWER,IDC_STATIC_IFPACK_RESET,IDC_BTN_RESET_IFPACK,IDC_BTN_RESET_GRAB,IDC_BTN_RESET_GENDER,
+	IDC_BTN_DPMS_CHECK,IDC_STATIC_DPMS_VALUE
 };
 
 #define NO_PLC_ROBOT_DIO_TAB_ITEM 20 
@@ -241,7 +245,7 @@ void CGrabPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHK_AUTO_GRAB, m_ctrlAutoGrabChk);
 	DDX_Radio(pDX, IDC_RADIO_NTSC, m_nAnalogSignalType);
 	DDX_Text(pDX, IDC_LEDLABEL_GRAB, m_szGrabStatus);
-	DDX_Radio(pDX, IDC_RDO_LVDS_RESOLUTION1, m_nLvdsResolutionIndex);
+	//DDX_Radio(pDX, IDC_RDO_LVDS_RESOLUTION1, m_nLvdsResolutionIndex);
 	DDX_Radio(pDX, IDC_RDO_LVDS_MODE1, m_nUranousMode);
 	DDX_Radio(pDX, IDC_RDO_COLOR_DEPTH1, m_nBitMode);
 	DDX_Check(pDX, IDC_CHK_ODD_DE_ONLY, m_bOddDE_Only);
@@ -285,6 +289,7 @@ void CGrabPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHK_DE_HSYNC_GRAB, m_bDeHsyncEnable);
 	DDX_Check(pDX, IDC_CHK_HSYNC_EDGE_GRAB, m_bHyncEdgeEnable);
 	DDX_Control(pDX, IDC_COMBO_Y20_SW_MODE, m_cComboY20SwMode);
+	DDX_Control(pDX, IDC_COMBO_LVDS_RESOLUTION2, m_cComboLvdsFormat);
 }
 BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	//{{AFX_MSG_MAP(CGrabPage)
@@ -323,7 +328,7 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_COMMAND_RANGE(IDC_BTN_REMOTE_DLG_1, IDC_BTN_REMOTE_DLG_73,OnRemoteButtonClick)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_CONTROL_TAB, OnSelchangeControlTab)
 	ON_BN_CLICKED(IDC_BTN_GRAB_OPTION_APPLY, OnBtnGrabOptionApply)
-	ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION20,OnRdoLvdsResolution1)
+	//ON_COMMAND_RANGE(IDC_RDO_LVDS_RESOLUTION1, IDC_RDO_LVDS_RESOLUTION20,OnRdoLvdsResolution1)
 	ON_COMMAND_RANGE(IDC_RDO_COLOR_DEPTH1, IDC_RDO_COLOR_DEPTH4,OnRdoColorDepth1)
 	ON_COMMAND_RANGE(IDC_RDO_3D_MODE1,IDC_RDO_3D_MODE3, OnRdo3dMode1)
 	ON_BN_CLICKED(IDC_RDO_AVSWITCH_CMD13, OnRdoAvswitchCmd13)
@@ -378,6 +383,8 @@ BEGIN_MESSAGE_MAP(CGrabPage, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_UHDTYPE2, &CGrabPage::OnCbnSelchangeComboUhdtype2)
 	ON_BN_CLICKED(IDC_BTN_LAN_TEST, &CGrabPage::OnBnClickedBtnLanTest)
 	ON_BN_CLICKED(IDC_BTN_LAN_CLEAR, &CGrabPage::OnBnClickedBtnLanClear)
+	ON_BN_CLICKED(IDC_BTN_DPMS_CHECK, &CGrabPage::OnBnClickedBtnDpmsCheck)
+	ON_CBN_SELCHANGE(IDC_COMBO_LVDS_RESOLUTION2, &CGrabPage::OnCbnSelchangeComboLvdsResolution2)
 END_MESSAGE_MAP()
 
 //	ON_COMMAND_RANGE(IDC_RADIO_MHL,IDC_RADIO_MHL2, OnRadioMhl)
@@ -458,8 +465,35 @@ BOOL CGrabPage::OnInitDialog()
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540)) { m_nLvdsResolutionIndex = W_1920_H_540; }
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 1200)) { m_nLvdsResolutionIndex = W_1920_H_1200; }
 	else if ((CurrentSet->nLvdsWidth == 2048) && (CurrentSet->nLvdsHeight == 2560)) { m_nLvdsResolutionIndex = W_2048_H_2560; }
+	else if ((CurrentSet->nLvdsWidth == 3584) && (CurrentSet->nLvdsHeight == 720))
+	{ 
+		m_nLvdsResolutionIndex = W_3584_H_720;
+	}
 	else if ((CurrentSet->nLvdsWidth == 3328) && (CurrentSet->nLvdsHeight == 1440)) { m_nLvdsResolutionIndex = W_3328_H_1440; }
 	else m_nLvdsResolutionIndex = -1;
+
+	m_cComboLvdsFormat.AddString("1024 x 768(XGA)     ");	//#define		W_1024_H_768			0
+	m_cComboLvdsFormat.AddString("1280 x 768(WXGA)    ");	//#define		W_1280_H_768			1
+	m_cComboLvdsFormat.AddString("1280 x 1024         ");	//#define		W_1280_H_1024			2
+	m_cComboLvdsFormat.AddString("1364 x 768          ");	//#define		W_1364_H_768			3
+	m_cComboLvdsFormat.AddString("1366 x 768(HD)      ");	//#define		W_1366_H_768			4
+	m_cComboLvdsFormat.AddString("1440 x 900          ");	//#define		W_1440_H_900			5
+	m_cComboLvdsFormat.AddString("1600 x 900          ");	//#define		W_1600_H_900			6
+	m_cComboLvdsFormat.AddString("1680 x 1050         ");	//#define		W_1680_H_1050			7
+	m_cComboLvdsFormat.AddString("1920 x 1080(FHD,60Hz)");	//#define		W_1920_H_1080_60		8
+	m_cComboLvdsFormat.AddString("1920 x 1080(FHD,120Hz)");	//#define		W_1920_H_1080_120		9
+	m_cComboLvdsFormat.AddString("2560 x 1080(120Hz)  ");	//#define		W_2560_H_1080			10
+	m_cComboLvdsFormat.AddString("2560 x 1440         ");	//#define		W_2560_H_1440			11
+	m_cComboLvdsFormat.AddString("3440 x 1440         ");	//#define		W_3440_H_1440			12
+	m_cComboLvdsFormat.AddString("3840 x 2160(UHD)    ");	//#define		W_3840_H_2160			13
+	m_cComboLvdsFormat.AddString("1920 x 300          ");	//#define		W_1920_H_300			14
+	m_cComboLvdsFormat.AddString("3840 x 600          ");	//#define		W_3840_H_600			15
+	m_cComboLvdsFormat.AddString("1920 x 540          ");	//#define		W_1920_H_540			16
+	m_cComboLvdsFormat.AddString("1920 x 1200         ");	//#define		W_1920_H_1200			17
+	m_cComboLvdsFormat.AddString("2048 x 2560         ");	//#define		W_2048_H_2560			18
+	m_cComboLvdsFormat.AddString("3584x 720(3440x1440)");	//#define		3584x 740(3440x1440) 	19
+	m_cComboLvdsFormat.AddString("3328 x 1440         ");	//#define		W_3328_H_1440			20
+	m_cComboLvdsFormat.SetCurSel(m_nLvdsResolutionIndex);
 
 	if(g_nGrabberType == FHD_GRABBER)
 	{
@@ -544,6 +578,7 @@ BOOL CGrabPage::OnInitDialog()
 	m_ctrlGrabMode.AddString(" 16. Type17 : 8K T-CONLESS");
 	m_ctrlGrabMode.AddString(" 17. Type18 : LM21A HKC 220307");
 	m_ctrlGrabMode.AddString(" 18. Type19 : QHD_FULL_SPEED");
+	m_ctrlGrabMode.AddString(" 19. Type20 : Shuffle 4");
 	//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 	m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
 	
@@ -634,10 +669,10 @@ BOOL CGrabPage::OnInitDialog()
         ScreenToClient(&rect);
 //		rect.top	 = rect.top	- 450;
 //		rect.bottom  = rect.bottom  - 450;
-		rect.top	 = rect.top	- 320;
-		rect.bottom  = rect.bottom  - 320;
-		rect.left	 = rect.left	+ 300;
-		rect.right  = rect.right  + 300;
+		rect.top	 = rect.top	- 360;
+		rect.bottom  = rect.bottom  - 360;
+		rect.left	 = rect.left	+ 290;
+		rect.right  = rect.right  + 290;
 
 		pButton->MoveWindow(&rect);
 	}
@@ -927,7 +962,11 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 					else if (CurrentSet->nUHD_Grab_Mode == 18) {
 
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
-					}						
+					}
+					else if (CurrentSet->nUHD_Grab_Mode == 19) {
+
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
+					}
 					else {
 
 #ifdef SM_MODIFY_CODE__	
@@ -1220,6 +1259,9 @@ void CGrabPage::GrabStart(int nGrabMode)
 	int nImageOffset;
 	int	nLvdsType = 0;
 
+	if (g_nCommandOnlyType == TRUE)
+		return;
+
 	//UHD
 	if(g_nGrabberType == UHD_GRABBER)
 	{
@@ -1385,6 +1427,10 @@ void CGrabPage::GrabStop()
 	DWORD dwThreadResult = 0;
 	DWORD dwExitCode = 0;
 
+	if (g_nCommandOnlyType == TRUE)
+		return;
+
+
 	//UHD
 	if(g_nGrabberType == UHD_GRABBER)
 	{
@@ -1544,6 +1590,10 @@ void CGrabPage::OnBtnManualGrab()
 {
 	DWORD dwThreadResult = 0;
 	DWORD dwExitCode = 0;
+
+	if (g_nCommandOnlyType == TRUE)
+		return;
+
 
 	CButton* pButton = (CButton*)GetDlgItem(IDC_BTN_GRAB);
 	pButton->EnableWindow(FALSE);
@@ -2678,6 +2728,67 @@ void CGrabPage::OnRdoAvswitchCmd13()
 void CGrabPage::OnTimer(UINT nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
+	static int sDPMS_Count = 0;
+	double lReadVal;
+	CString StrMsg;
+	CString sTmp;
+	CString strReadData2 = _T("DPMS>> PC ");
+
+
+	switch (nIDEvent)
+	{
+	case _DPMSWAIT_ID:
+		if (gJigCtrl.m_nDPMS_ReceiveCnt >= 7)
+		{			
+			if ((gJigCtrl.m_strDPMS_Receive[0] == 0x02)
+				&& (gJigCtrl.m_strDPMS_Receive[1] == 0x03))
+				//&&(m_strDPMS_Receive[2] == 0x02))
+			{
+				lReadVal = (gJigCtrl.m_strDPMS_Receive[3] * 256. + gJigCtrl.m_strDPMS_Receive[4]) / 10.0;
+				gJigCtrl.m_fDPMS_WattData = lReadVal;
+				for (int idx1 = 0; idx1 < gJigCtrl.m_nDPMS_ReceiveCnt; idx1++)
+				{
+					//(gJigCtrl.m_ctrlJigCom.m_QueueRead).GetByte(&str);
+
+					sTmp.Format("%02X ", gJigCtrl.m_strDPMS_Receive[idx1]);
+					strReadData2 = strReadData2 + sTmp;
+				}
+				//strReadData2 += str;
+				AddStringToStatus(strReadData2);
+				StrMsg.Format("%2.1f W", lReadVal);
+				SetDlgItemText(IDC_STATIC_DPMS_VALUE, StrMsg);
+				KillTimer(_DPMSWAIT_ID);
+				sDPMS_Count = 0;
+			}
+			else
+			{
+				sDPMS_Count = 0;
+				SetDlgItemText(IDC_STATIC_DPMS_VALUE, "Fail!");
+				KillTimer(_DPMSWAIT_ID);
+			}
+		}
+		else
+		{
+			sDPMS_Count++;
+			if (sDPMS_Count > 50)
+			{
+				sDPMS_Count = 0;
+				SetDlgItemText(IDC_STATIC_DPMS_VALUE, "Time Out!");
+				KillTimer(_DPMSWAIT_ID);
+			}
+			else
+			{
+				StrMsg.Format("Rcv Wait %d", sDPMS_Count/10+1);
+				SetDlgItemText(IDC_STATIC_DPMS_VALUE, StrMsg);
+			}
+			
+			
+		}
+		break;
+	default:
+		break;
+	}
+
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -2754,18 +2865,18 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 
 	if(g_nGrabberType == UHD_GRABBER){
-		for(i = 0; i<21; i++)
+		for (i = 0; i < 2; i++)//for (i = 0; i < 21; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
 
-		for(i = 37; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 18; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		}
-		for(i = 21; i<37; i++)
+		for (i = 2; i < 18; i++)//for (i = 21; i < 37; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2773,12 +2884,12 @@ void CGrabPage::ShowGrabberOptionGroup(BOOL bShow)
 
 	}
 	else{
-		for(i = 0; i<37; i++)
+		for (i = 0; i < 18; i++)//for (i = 0; i < 37; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(bShow);
 		} 
-		for(i = 37; i<NO_GRAB_OPTION_TAB_ITEM; i++)
+		for(i = 18; i<NO_GRAB_OPTION_TAB_ITEM; i++)
 		{
 			pButton = (CButton*)GetDlgItem(aGrabOptionItemNo[i]);
 			pButton->ShowWindow(FALSE);
@@ -2940,15 +3051,21 @@ void CGrabPage::OnBtnGrabOptionApply()
 				CurrentSet->nLvdsWidth = 1920;
 				CurrentSet->nLvdsHeight = 1200;
 				break;
+	
+
 			case W_2048_H_2560:
 				CurrentSet->nLvdsWidth = 2048;
 				CurrentSet->nLvdsHeight = 2560;
+				break;
+			case W_3584_H_720:
+				CurrentSet->nLvdsWidth = 3584;
+				CurrentSet->nLvdsHeight = 720;
 				break;
 			case W_3328_H_1440:
 				CurrentSet->nLvdsWidth = 3328;
 				CurrentSet->nLvdsHeight = 1440;
 				break;
-			
+
 			default :
 				CurrentSet->nLvdsWidth = 1366; CurrentSet->nLvdsHeight = 768;		break;
 		}
@@ -3125,135 +3242,140 @@ void CGrabPage::OnBtnGrabOptionApply()
 	} 
 
 }
-
-void CGrabPage::OnRdoLvdsResolution1(UINT nButtonID)
-{
-	switch(nButtonID) 
-	{
-		case IDC_RDO_LVDS_RESOLUTION1: 
-			m_nLvdsResolutionIndex	 = 0;	
-			m_nNewLvdsWidth			= 1024; 
-			m_nNewLvdsHeight		= 768;  
-		break;
-		
-		case IDC_RDO_LVDS_RESOLUTION2:
-			m_nLvdsResolutionIndex	= 1;	
-			m_nNewLvdsWidth			= 1280; 
-			m_nNewLvdsHeight		= 768;  
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION3: 
-			m_nLvdsResolutionIndex	= 2;	
-			m_nNewLvdsWidth			= 1280; 
-			m_nNewLvdsHeight		= 1024; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION4: 
-			m_nLvdsResolutionIndex	= 3;
-			m_nNewLvdsWidth			= 1364; 
-			m_nNewLvdsHeight		= 768; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION5: 
-			m_nLvdsResolutionIndex	= 4;	
-			m_nNewLvdsWidth			= 1366; 
-			m_nNewLvdsHeight		= 768;  
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION6: 
-			m_nLvdsResolutionIndex	= 5;	
-			m_nNewLvdsWidth			= 1440; 
-			m_nNewLvdsHeight		= 900;  
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION7: 
-			m_nLvdsResolutionIndex	= 6;	
-			m_nNewLvdsWidth			= 1600; 
-			m_nNewLvdsHeight		= 900;  
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION8: 
-			m_nLvdsResolutionIndex	= 7;	
-			m_nNewLvdsWidth			= 1680; 
-			m_nNewLvdsHeight		= 1050; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION9: 
-			m_nLvdsResolutionIndex	= 8;
-			m_nNewLvdsWidth			= 1920; 
-			m_nNewLvdsHeight		= 1080; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION10: 
-			m_nLvdsResolutionIndex	= 9;
-			m_nNewLvdsWidth			= 1920; 
-			m_nNewLvdsHeight		= 1080; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION11: 
-			m_nLvdsResolutionIndex	= 10;
-			m_nNewLvdsWidth			= 2560; 
-			m_nNewLvdsHeight		= 1080; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION12: 
-			m_nLvdsResolutionIndex	= 11;
-			m_nNewLvdsWidth			= 2560; 
-			m_nNewLvdsHeight		= 1440; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION13: 
-			m_nLvdsResolutionIndex	= 12;		
-			m_nNewLvdsWidth			= 3440; 
-			m_nNewLvdsHeight		= 1440;   
-		break;
-		
-
-		case IDC_RDO_LVDS_RESOLUTION14: 
-			m_nLvdsResolutionIndex	= 13;
-			m_nNewLvdsWidth			= 3840; 
-			m_nNewLvdsHeight		= 2160; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION15: 
-			m_nLvdsResolutionIndex	= 14;
-			m_nNewLvdsWidth			= 1920; 
-			m_nNewLvdsHeight		= 300; 
-			break;
-
-		case IDC_RDO_LVDS_RESOLUTION16:
-			m_nLvdsResolutionIndex = 15;
-			m_nNewLvdsWidth = 3840;
-			m_nNewLvdsHeight = 600;
-			break;
-		case IDC_RDO_LVDS_RESOLUTION17:
-			m_nLvdsResolutionIndex = 16;
-			m_nNewLvdsWidth = 1920;
-			m_nNewLvdsHeight = 540;
-			break;
-		case IDC_RDO_LVDS_RESOLUTION18:
-			m_nLvdsResolutionIndex = 17;
-			m_nNewLvdsWidth = 1920;
-			m_nNewLvdsHeight = 1200;
-			break;
-		case IDC_RDO_LVDS_RESOLUTION19:
-			m_nLvdsResolutionIndex = 18;//W_2048_H_2560
-			m_nNewLvdsWidth = 2048;
-			m_nNewLvdsHeight = 2560;
-			break;
-		case IDC_RDO_LVDS_RESOLUTION20:
-			m_nLvdsResolutionIndex = W_3328_H_1440;//W_2048_H_2560
-			m_nNewLvdsWidth = 3328;
-			m_nNewLvdsHeight = 1440;
-			break;
-
-		default : 
-			m_nLvdsResolutionIndex	= 5;
-			m_nNewLvdsWidth			= 1366; 
-			m_nNewLvdsHeight		= 768;	
-			break;
-	}
-}
+//
+//void CGrabPage::OnRdoLvdsResolution1(UINT nButtonID)
+//{
+//	switch(nButtonID) 
+//	{
+//		case IDC_RDO_LVDS_RESOLUTION1: 
+//			m_nLvdsResolutionIndex	 = 0;	
+//			m_nNewLvdsWidth			= 1024; 
+//			m_nNewLvdsHeight		= 768;  
+//		break;
+//		
+//		case IDC_RDO_LVDS_RESOLUTION2:
+//			m_nLvdsResolutionIndex	= 1;	
+//			m_nNewLvdsWidth			= 1280; 
+//			m_nNewLvdsHeight		= 768;  
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION3: 
+//			m_nLvdsResolutionIndex	= 2;	
+//			m_nNewLvdsWidth			= 1280; 
+//			m_nNewLvdsHeight		= 1024; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION4: 
+//			m_nLvdsResolutionIndex	= 3;
+//			m_nNewLvdsWidth			= 1364; 
+//			m_nNewLvdsHeight		= 768; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION5: 
+//			m_nLvdsResolutionIndex	= 4;	
+//			m_nNewLvdsWidth			= 1366; 
+//			m_nNewLvdsHeight		= 768;  
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION6: 
+//			m_nLvdsResolutionIndex	= 5;	
+//			m_nNewLvdsWidth			= 1440; 
+//			m_nNewLvdsHeight		= 900;  
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION7: 
+//			m_nLvdsResolutionIndex	= 6;	
+//			m_nNewLvdsWidth			= 1600; 
+//			m_nNewLvdsHeight		= 900;  
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION8: 
+//			m_nLvdsResolutionIndex	= 7;	
+//			m_nNewLvdsWidth			= 1680; 
+//			m_nNewLvdsHeight		= 1050; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION9: 
+//			m_nLvdsResolutionIndex	= 8;
+//			m_nNewLvdsWidth			= 1920; 
+//			m_nNewLvdsHeight		= 1080; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION10: 
+//			m_nLvdsResolutionIndex	= 9;
+//			m_nNewLvdsWidth			= 1920; 
+//			m_nNewLvdsHeight		= 1080; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION11: 
+//			m_nLvdsResolutionIndex	= 10;
+//			m_nNewLvdsWidth			= 2560; 
+//			m_nNewLvdsHeight		= 1080; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION12: 
+//			m_nLvdsResolutionIndex	= 11;
+//			m_nNewLvdsWidth			= 2560; 
+//			m_nNewLvdsHeight		= 1440; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION13: 
+//			m_nLvdsResolutionIndex	= 12;		
+//			m_nNewLvdsWidth			= 3440; 
+//			m_nNewLvdsHeight		= 1440;   
+//		break;
+//		
+//
+//		case IDC_RDO_LVDS_RESOLUTION14: 
+//			m_nLvdsResolutionIndex	= 13;
+//			m_nNewLvdsWidth			= 3840; 
+//			m_nNewLvdsHeight		= 2160; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION15: 
+//			m_nLvdsResolutionIndex	= 14;
+//			m_nNewLvdsWidth			= 1920; 
+//			m_nNewLvdsHeight		= 300; 
+//			break;
+//
+//		case IDC_RDO_LVDS_RESOLUTION16:
+//			m_nLvdsResolutionIndex = 15;
+//			m_nNewLvdsWidth = 3840;
+//			m_nNewLvdsHeight = 600;
+//			break;
+//		case IDC_RDO_LVDS_RESOLUTION17:
+//			m_nLvdsResolutionIndex = 16;
+//			m_nNewLvdsWidth = 1920;
+//			m_nNewLvdsHeight = 540;
+//			break;
+//		case IDC_RDO_LVDS_RESOLUTION18:
+//			m_nLvdsResolutionIndex = 17;
+//			m_nNewLvdsWidth = 1920;
+//			m_nNewLvdsHeight = 1200;
+//			break;
+//		case IDC_RDO_LVDS_RESOLUTION19:
+//			m_nLvdsResolutionIndex = 18;//W_2048_H_2560
+//			m_nNewLvdsWidth = 2048;
+//			m_nNewLvdsHeight = 2560;
+//			break;
+//		case IDC_RDO_LVDS_RESOLUTION20:
+//			m_nLvdsResolutionIndex = W_3328_H_1440;//W_2048_H_2560
+//			m_nNewLvdsWidth = 3328;
+//			m_nNewLvdsHeight = 1440;
+//			break;
+//		case IDC_RDO_LVDS_RESOLUTION20:
+//			m_nLvdsResolutionIndex = W_3584_H_740;
+//			m_nNewLvdsWidth = 3854;
+//			m_nNewLvdsHeight = 740;
+//			break;
+//
+//		default : 
+//			m_nLvdsResolutionIndex	= 5;
+//			m_nNewLvdsWidth			= 1366; 
+//			m_nNewLvdsHeight		= 768;	
+//			break;
+//	}
+//}
 
 void CGrabPage::OnRdoColorDepth1(UINT nButtonID)
 {
@@ -4058,4 +4180,164 @@ void CGrabPage::OnBnClickedBtnLanClear()
 		SetDlgItemText(IDC_EDIT_LAN_OUT, "PASS");//return TRUE;
 	}
 	
+}
+
+
+void CGrabPage::OnBnClickedBtnDpmsCheck()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//double ldReturn;
+	
+	if (gJigCtrl.DPMS_Read_Check(1))
+	{
+		SetTimer(_DPMSWAIT_ID, 100, NULL);
+		SetDlgItemText(IDC_STATIC_DPMS_VALUE, "Rev Wait");
+	}
+	else
+	{
+		SetDlgItemText(IDC_STATIC_DPMS_VALUE, "Send Fail");
+	}
+	//CString StrMsg;
+	//StrMsg.Format("%2.1f mW",ldReturn);
+	//SetDlgItemText(IDC_EDIT_LAN_OUT, StrMsg);
+}
+
+
+void CGrabPage::OnCbnSelchangeComboLvdsResolution2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	
+	UINT nButtonID;
+	m_nLvdsResolutionIndex = m_cComboLvdsFormat.GetCurSel();
+	switch (m_nLvdsResolutionIndex)
+	{
+	case 0:
+		m_nLvdsResolutionIndex = 0;
+		m_nNewLvdsWidth = 1024;
+		m_nNewLvdsHeight = 768;
+		break;
+
+	case 1:
+		m_nLvdsResolutionIndex = 1;
+		m_nNewLvdsWidth = 1280;
+		m_nNewLvdsHeight = 768;
+		break;
+
+	case 2:
+		m_nLvdsResolutionIndex = 2;
+		m_nNewLvdsWidth = 1280;
+		m_nNewLvdsHeight = 1024;
+		break;
+
+	case 3:
+		m_nLvdsResolutionIndex = 3;
+		m_nNewLvdsWidth = 1364;
+		m_nNewLvdsHeight = 768;
+		break;
+
+	case 4:
+		m_nLvdsResolutionIndex = 4;
+		m_nNewLvdsWidth = 1366;
+		m_nNewLvdsHeight = 768;
+		break;
+
+	case 5:
+		m_nLvdsResolutionIndex = 5;
+		m_nNewLvdsWidth = 1440;
+		m_nNewLvdsHeight = 900;
+		break;
+
+	case 6:
+		m_nLvdsResolutionIndex = 6;
+		m_nNewLvdsWidth = 1600;
+		m_nNewLvdsHeight = 900;
+		break;
+
+	case 7:
+		m_nLvdsResolutionIndex = 7;
+		m_nNewLvdsWidth = 1680;
+		m_nNewLvdsHeight = 1050;
+		break;
+
+	case 8:
+		m_nLvdsResolutionIndex = 8;
+		m_nNewLvdsWidth = 1920;
+		m_nNewLvdsHeight = 1080;
+		break;
+
+	case 9:
+		m_nLvdsResolutionIndex = 9;
+		m_nNewLvdsWidth = 1920;
+		m_nNewLvdsHeight = 1080;
+		break;
+
+	case 10:
+		m_nLvdsResolutionIndex = 10;
+		m_nNewLvdsWidth = 2560;
+		m_nNewLvdsHeight = 1080;
+		break;
+
+	case 11:
+		m_nLvdsResolutionIndex = 11;
+		m_nNewLvdsWidth = 2560;
+		m_nNewLvdsHeight = 1440;
+		break;
+
+	case 12:
+		m_nLvdsResolutionIndex = 12;
+		m_nNewLvdsWidth = 3440;
+		m_nNewLvdsHeight = 1440;
+		break;
+
+
+	case 13:
+		m_nLvdsResolutionIndex = 13;
+		m_nNewLvdsWidth = 3840;
+		m_nNewLvdsHeight = 2160;
+		break;
+
+	case 14:
+		m_nLvdsResolutionIndex = 14;
+		m_nNewLvdsWidth = 1920;
+		m_nNewLvdsHeight = 300;
+		break;
+
+	case 15:
+		m_nLvdsResolutionIndex = 15;
+		m_nNewLvdsWidth = 3840;
+		m_nNewLvdsHeight = 600;
+		break;
+	case 16:
+		m_nLvdsResolutionIndex = 16;
+		m_nNewLvdsWidth = 1920;
+		m_nNewLvdsHeight = 540;
+		break;
+	case 17:
+		m_nLvdsResolutionIndex = 17;
+		m_nNewLvdsWidth = 1920;
+		m_nNewLvdsHeight = 1200;
+		break;
+	case 18:
+		m_nLvdsResolutionIndex = 18;//W_2048_H_2560
+		m_nNewLvdsWidth = 2048;
+		m_nNewLvdsHeight = 2560;
+		break;
+	case 19:
+		m_nLvdsResolutionIndex = W_3584_H_720;
+		m_nNewLvdsWidth = 3854;
+		m_nNewLvdsHeight = 720;
+		break;
+	case 20:
+		m_nLvdsResolutionIndex = W_3328_H_1440;//W_2048_H_2560
+		m_nNewLvdsWidth = 3328;
+		m_nNewLvdsHeight = 1440;
+		break;
+
+	default:
+		m_nLvdsResolutionIndex = 5;
+		m_nNewLvdsWidth = 1366;
+		m_nNewLvdsHeight = 768;
+		break;
+	}
 }

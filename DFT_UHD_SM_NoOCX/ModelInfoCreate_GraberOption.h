@@ -77,6 +77,7 @@ public:
 	BOOL m_bRedBlueSwap;
 	BOOL m_bDeHsyncEnable;
 	BOOL m_bHyncEdgeEnable;
+	CComboBox m_cComboLvdsFormat;
 };
 
 //{{AFX_INSERT_LOCATION}}

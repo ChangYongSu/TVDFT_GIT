@@ -184,6 +184,7 @@ public :
 		//+add psh 090306
 		m_nMeasureAudioType = -1;
 		m_bWorkFunc = FALSE;
+		m_nCheckDelay = 0;
 	}
 
 	~CStep()
@@ -301,6 +302,9 @@ public :
 	BOOL	m_bAdcValueCheckStep;
 	CString	m_szAdcValue;
 	BOOL	m_bWorkFunc;
+
+	int     m_nCheckDelay;
+	int     m_nCheckAgainDelay;
 
 protected :                      
 	

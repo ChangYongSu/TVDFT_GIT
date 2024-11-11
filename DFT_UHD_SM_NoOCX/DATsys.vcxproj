@@ -47,7 +47,7 @@
     <SccLocalPath />
     <Keyword>MFCProj</Keyword>
     <ProjectGuid>{62DE560E-73BC-ECA1-0845-24EE51266D9F}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT2|Win32'" Label="Configuration">
@@ -58,9 +58,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2in1_DFT2|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -236,14 +236,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>
       </StringPooling>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM1;_DFT_3IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -252,7 +252,7 @@
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Release\DFT1_3in1.exe D:\DFT\DFT1_3in1.exe</Command>
@@ -282,19 +282,21 @@
       <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT3|Win32'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>
       </StringPooling>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM3;_DFT_3IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release_DFT3\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -302,7 +304,7 @@
       <ObjectFileName>.\Release_DFT3\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release_DFT3\</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Release_DFT3\DFT3_3in1.exe D:\DFT\DFT3_3in1.exe</Command>
@@ -337,14 +339,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Reeasse_2IN1_1|Win32'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>
       </StringPooling>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM1;_DFT_2IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release_2in1_1\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -352,7 +354,8 @@
       <ObjectFileName>.\Release_2in1_1\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release_2in1_1\</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Release_2in1_1\DFT1.exe D:\DFT</Command>
@@ -382,19 +385,20 @@
       <StackReserveSize>4194304</StackReserveSize>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_2IN1_2|Win32'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>
       </StringPooling>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM2;_DFT_2IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release_2in1_2\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -402,7 +406,7 @@
       <ObjectFileName>.\Release_2in1_2\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release_2in1_2\</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Release_2in1_2\DFT2.exe D:\DFT</Command>
@@ -432,19 +436,20 @@
       <StackReserveSize>4194304</StackReserveSize>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <IgnoreSpecificDefaultLibraries>LIBCMT.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DFT2|Win32'">
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>
       </StringPooling>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>./EditLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_DFT_SYSTEM2;_DFT_3IN1;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release_DFT2\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -452,7 +457,7 @@
       <ObjectFileName>.\Release_DFT2\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release_DFT2\</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Release_DFT2\DFT2_3in1.exe D:\DFT\DFT2_3in1.exe</Command>
@@ -538,7 +543,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_2IN1|Win32'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
@@ -551,8 +556,9 @@
       <PrecompiledHeaderOutputFile>.\Debug_2IN1\DATsys.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Debug_2IN1\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug_2IN1\</ProgramDataBaseFileName>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Debug_2IN1\DFT1_D.exe D:\DFT</Command>
@@ -577,14 +583,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>Debug_2IN1/DFT1_D.exe</OutputFile>
-      <AdditionalLibraryDirectories>PsApi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>dft3_dll.lib;psapi.lib;version.lib;winmm.lib;ws2_32.lib;Keydll1.lib;Keydll2.lib;Keydll3.lib;jpeglib.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>
       </AdditionalOptions>
       <StackReserveSize>4194304</StackReserveSize>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <IgnoreSpecificDefaultLibraries>LIBCMTD.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DFT3|Win32'">
@@ -699,6 +705,7 @@
       <ObjectFileName>.\Debug_DFT2\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug_DFT2\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Debug_DFT2\DFT2_D.exe D:\DFT</Command>

@@ -3326,7 +3326,7 @@ int CI2cAdcCtrl::MNT_ALS_Sensor_Check()
 
 	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] ALS Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3342,10 +3342,10 @@ int CI2cAdcCtrl::MNT_ALS_Sensor_Check()
 	// (Reg4-Reg7 : C9 00 00 CS)
 	//===========================
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
-	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
-	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+	szCmd.Format(">%02x%02x%s000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sCommandHexStr, CR, LF);//szCmd.Format(">%02x%02x%s000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sCommandHexStr, CR, LF);
+	//szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] ALS Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3365,7 +3365,7 @@ int CI2cAdcCtrl::MNT_ALS_Sensor_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] ALS Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3396,7 +3396,7 @@ int CI2cAdcCtrl::MNT_ALS_Sensor_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] ALS REEAD ACK \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3481,7 +3481,7 @@ int CI2cAdcCtrl::MNT_BLS_Sensor_Check()
 
 	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] BLS Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3497,10 +3497,10 @@ int CI2cAdcCtrl::MNT_BLS_Sensor_Check()
 	// (Reg4-Reg7 : C9 00 00 CS)
 	//===========================
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
-	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
-	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+	szCmd.Format(">%02x%02x%s000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sCommandHexStr, CR, LF);//
+	//szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] BLS Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3520,7 +3520,7 @@ int CI2cAdcCtrl::MNT_BLS_Sensor_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] BLS Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3551,7 +3551,7 @@ int CI2cAdcCtrl::MNT_BLS_Sensor_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] BLS REEAD ACK \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3636,7 +3636,7 @@ int CI2cAdcCtrl::MNT_Front_Sensor_Check()
 
 	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] Front Sensor  Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3652,10 +3652,10 @@ int CI2cAdcCtrl::MNT_Front_Sensor_Check()
 	// (Reg4-Reg7 : C9 00 00 CS)
 	//===========================
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
-	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
-	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
+	szCmd.Format(">%02x%02x%s000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sCommandHexStr, CR, LF);//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
+	//szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB]  Front Sensor  Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3675,7 +3675,7 @@ int CI2cAdcCtrl::MNT_Front_Sensor_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB]  Front Sensor  Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3706,7 +3706,7 @@ int CI2cAdcCtrl::MNT_Front_Sensor_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB]  Front Sensor  REEAD ACK \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3723,7 +3723,6 @@ int CI2cAdcCtrl::MNT_Front_Sensor_Check()
 		if (m_szI2cAdcReadString.GetAt(CMD_LENGTH + 1) == '1')
 		{
 			nResult = TEST_PASS;
-
 		}
 		else
 		{
@@ -3734,10 +3733,9 @@ int CI2cAdcCtrl::MNT_Front_Sensor_Check()
 	{
 		nResult = TEST_FAIL;
 	}
-
-
 	return nResult;
 }
+
 int CI2cAdcCtrl::MNT_Proximity_Check()
 {
 	int nResult = TEST_FAIL;
@@ -3791,7 +3789,7 @@ int CI2cAdcCtrl::MNT_Proximity_Check()
 
 	szCmd.Format(">%02x%02x6E%02X8403%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG1, nHostAdd, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] Proximity Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3807,10 +3805,8 @@ int CI2cAdcCtrl::MNT_Proximity_Check()
 	// (Reg4-Reg7 : C9 00 00 CS)
 	//===========================
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
-	//szCmd.Format(">%02x%02xCD00%s00%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sFANHexStr, CR, LF);
-	szCmd.Format(">%02x%02xA10001%02x%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, nCheckSum, CR, LF);
-
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	szCmd.Format(">%02x%02x%s000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_WR_REG2, sCommandHexStr, CR, LF);
+	m_szCurrentStatusMsg.Format("[2AB] Proximity Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3830,7 +3826,7 @@ int CI2cAdcCtrl::MNT_Proximity_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x%02x000000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_CMD3, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN Check \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] Proximity Check \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{
@@ -3861,7 +3857,7 @@ int CI2cAdcCtrl::MNT_Proximity_Check()
 	if (m_nI2cAdcSeqNo >= 0xff) m_nI2cAdcSeqNo = 0;
 	szCmd.Format(">%02x%02x00%02x0000%c%c", m_nI2cAdcSeqNo++, HM_IIC_RD_BUF, nReadByte, CR, LF);
 
-	m_szCurrentStatusMsg.Format("[2AB] FAN REEAD ACK \t Send :  %s", szCmd);
+	m_szCurrentStatusMsg.Format("[2AB] Proximity REEAD ACK \t Send :  %s", szCmd);
 
 	if ((nResult = SendI2cCmd(szCmd)) != TEST_PASS)
 	{

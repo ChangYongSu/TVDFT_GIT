@@ -34,7 +34,8 @@ public:
 	CString	m_sErrorMsg;
 
 //	char	m_sReadBuffer[4096];	
-	char	m_sReadBuffer[8192];	
+	char	m_sReadBuffer[8192];
+	float   m_gVFlist[48];
 
 
 	BOOL    SoketCom_Creat(CString sIpAdd, int nPort);

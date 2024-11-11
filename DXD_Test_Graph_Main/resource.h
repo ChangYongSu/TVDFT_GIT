@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by AcqVoltageSamples_IntClk.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// AcqVoltageSamples_IntClk.rc에서 사용되고 있습니다.
 //
 #define IDCANCLE                        2
 #define IDOK2                           3
@@ -89,6 +89,7 @@
 #define IDC_COMBO_RM_TEST10             1027
 #define IDC_COMBO_NAME_2                1027
 #define IDC_COMBO_COMPORT_MAIN          1027
+#define IDC_COMBO_MICOM_HKHQ_TYPE       1027
 #define IDC_CWGRAPH8                    1028
 #define IDC_COMBO_RM_TEST11             1028
 #define IDC_COMBO_NAME_3                1028
@@ -169,11 +170,13 @@
 #define IDC_BUTTON_CHNG_RMT             1048
 #define IDC_COMBO_PORT18                1048
 #define IDC_BUTTON_LED_PORT_CHECK2      1048
+#define IDC_BUTTON_GESWVER_MD           1048
 #define IDC_TEXTBOX_OKNG2               1049
 #define IDC_STATIC_RMT_FILE             1049
 #define IDC_BUTTON_MODEL_CREATE2        1049
 #define IDC_COMBO_PORT19                1049
 #define IDC_BUTTON_SCANNER_PORT_CHECK   1049
+#define IDC_BUTTON_GET_MODEL_NAME       1049
 #define IDC_TEXTBOX_OKNG3               1050
 #define IDC_EDIT_MPKEY1                 1050
 #define IDC_BUTTON_FIND_RMKEY           1050
@@ -676,14 +679,56 @@
 #define IDC_LABEL_DISP_CM5_PIN          1373
 #define IDC_EDIT_AVR_VER                1373
 #define IDC_BUTTON_CHECKER_PIN_COUNT_RESET2 1374
+#define IDC_STATIC_AED_DROP             1374
+#define IDC_RADIO_HK                    1375
+#define IDC_EDIT_ROIC_MIN1              1375
+#define IDC_RADIO_HQ                    1376
+#define IDC_EDIT_ROIC_MIN2              1376
+#define IDC_EDIT_ROIC_MIN3              1377
+#define IDC_EDIT_ROIC_MIN4              1378
+#define IDC_EDIT_ROIC_MIN5              1379
+#define IDC_EDIT_ROIC_MIN6              1380
+#define IDC_EDIT_ROIC_MIN7              1381
+#define IDC_EDIT_ROIC_MIN8              1382
+#define IDC_EDIT_ROIC_MIN9              1383
+#define IDC_EDIT_ROIC_MIN10             1384
+#define IDC_EDIT_ROIC_MIN11             1385
+#define IDC_EDIT_ROIC_MIN12             1386
+#define IDC_EDIT_ROIC_MIN13             1387
+#define IDC_EDIT_ROIC_MIN14             1388
+#define IDC_EDIT_ROIC_MIN15             1389
+#define IDC_EDIT_ROIC_MIN16             1390
+#define IDC_EDIT_ROIC_MAX1              1391
+#define IDC_EDIT_ROIC_MAX2              1392
+#define IDC_EDIT_ROIC_MAX3              1393
+#define IDC_EDIT_ROIC_MAX4              1394
+#define IDC_EDIT_ROIC_MAX5              1395
+#define IDC_EDIT_ROIC_MAX6              1396
+#define IDC_EDIT_ROIC_MAX7              1397
+#define IDC_EDIT_ROIC_MAX8              1398
+#define IDC_EDIT_ROIC_MAX9              1399
+#define IDC_EDIT_ROIC_MAX10             1400
+#define IDC_EDIT_ROIC_MAX11             1401
+#define IDC_EDIT_ROIC_MAX12             1402
+#define IDC_EDIT_ROIC_MAX13             1403
+#define IDC_EDIT_ROIC_MAX14             1404
+#define IDC_EDIT_ROIC_MAX15             1405
+#define IDC_EDIT_ROIC_MAX16             1406
+#define IDC_EDIT_FPGA_VER_MD            1407
+#define IDC_EDIT_MICOM_VER_MD           1408
+#define IDC_EDIT_DXD_SERVER_VER_MD      1409
+#define IDC_EDIT_AVR_VER_MD             1410
+#define IDC_COMBO_MICOM_HKHQ_TYPE_MD    1411
+#define IDC_COMBO_MODEL_NAME_MD         1412
+#define IDC_STATIC_READ_MODEL_NAME      1414
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        149
+#define _APS_NEXT_RESOURCE_VALUE        152
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1370
+#define _APS_NEXT_CONTROL_VALUE         1415
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

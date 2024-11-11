@@ -85,7 +85,7 @@ void COptGrabberPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHK_ODD_DE_ONLY, m_ctrlOddDE_Only);
 	DDX_Control(pDX, IDC_COMBO_PERIOD, m_ctrlPeriod);
 	DDX_Radio(pDX, IDC_RDO_ANALOG_FORMAT1, m_nAnalogFormat);
-	DDX_Radio(pDX, IDC_RDO_LVDS_FORMAT1, m_nLvdsFormat);
+	//DDX_Radio(pDX, IDC_RDO_LVDS_FORMAT1, m_nLvdsFormat);
 	DDX_Radio(pDX, IDC_RDO_URANOUS_MODE1, m_nUranousMode);
 	DDX_Radio(pDX, IDC_RDO_RGB_RES_1, m_nBitMode);
 	DDX_Radio(pDX, IDC_RDO_AVSWITCHBOX, m_nAudioMeasureMethod);
@@ -108,6 +108,7 @@ void COptGrabberPage::DoDataExchange(CDataExchange* pDX)
 	//DDX_Check(pDX, IDC_CHK_GRAB_BASE_RESET, m_bGrabBaseReset);
 	DDX_Radio(pDX, IDC_RADIO_HDMI_EDID_CONTROL1, m_nHdmiEdidControl);
 	DDX_Radio(pDX, IDC_RADIO_HDMI_HDCP_CONTROL1, m_nHdmiHdcpControl);
+	DDX_Control(pDX, IDC_COMBO_LVDS_RESOLUTION, m_cComboLvdsFormat);
 }
 
 
@@ -163,7 +164,7 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 	CurrentSet->nFullHd120Hz = 0;
 	CurrentSet->nImageRotation = 0;
 	CurrentSet->nRedBlueSwap = 0;
-
+	m_nLvdsFormat = m_cComboLvdsFormat.GetCurSel();
 	switch(m_nLvdsFormat) 
 	{
 		case W_1024_H_768: 
@@ -292,6 +293,10 @@ void COptGrabberPage::OnBtnGrabberOptApply()
 		case W_2048_H_2560:
 			CurrentSet->nLvdsWidth = 2048;
 			CurrentSet->nLvdsHeight = 2560;
+			break;
+		case W_3584_H_720:
+			CurrentSet->nLvdsWidth = 3584;
+			CurrentSet->nLvdsHeight = 720;
 			break;
 		case W_3328_H_1440:
 			CurrentSet->nLvdsWidth = 3328;
@@ -501,9 +506,35 @@ BOOL COptGrabberPage::OnInitDialog()
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 540))  m_nLvdsFormat = W_1920_H_540;
 	else if ((CurrentSet->nLvdsWidth == 1920) && (CurrentSet->nLvdsHeight == 1200))  m_nLvdsFormat = W_1920_H_1200;
 	else if ((CurrentSet->nLvdsWidth == 2048) && (CurrentSet->nLvdsHeight == 2560))  m_nLvdsFormat = W_2048_H_2560;
+	else if ((CurrentSet->nLvdsWidth == 3584) && (CurrentSet->nLvdsHeight == 740))
+	{
+		m_nLvdsFormat = W_3584_H_720;
+	}
 	else if ((CurrentSet->nLvdsWidth == 3328) && (CurrentSet->nLvdsHeight == 1440))  m_nLvdsFormat = W_3328_H_1440;
 	else m_nLvdsFormat = -1;
-
+	
+	m_cComboLvdsFormat.AddString("1024 x 768(XGA)     ");	//#define		W_1024_H_768			0
+	m_cComboLvdsFormat.AddString("1280 x 768(WXGA)    ");	//#define		W_1280_H_768			1
+	m_cComboLvdsFormat.AddString("1280 x 1024         ");	//#define		W_1280_H_1024			2
+	m_cComboLvdsFormat.AddString("1364 x 768          ");	//#define		W_1364_H_768			3
+	m_cComboLvdsFormat.AddString("1366 x 768(HD)      ");	//#define		W_1366_H_768			4
+	m_cComboLvdsFormat.AddString("1440 x 900          ");	//#define		W_1440_H_900			5
+	m_cComboLvdsFormat.AddString("1600 x 900          ");	//#define		W_1600_H_900			6
+	m_cComboLvdsFormat.AddString("1680 x 1050         ");	//#define		W_1680_H_1050			7
+	m_cComboLvdsFormat.AddString("1920 x 1080(FHD,60Hz)");	//#define		W_1920_H_1080_60		8
+	m_cComboLvdsFormat.AddString("1920 x 1080(FHD,120Hz)");	//#define		W_1920_H_1080_120		9
+	m_cComboLvdsFormat.AddString("2560 x 1080(120Hz)  ");	//#define		W_2560_H_1080			10
+	m_cComboLvdsFormat.AddString("2560 x 1440         ");	//#define		W_2560_H_1440			11
+	m_cComboLvdsFormat.AddString("3440 x 1440         ");	//#define		W_3440_H_1440			12
+	m_cComboLvdsFormat.AddString("3840 x 2160(UHD)    ");	//#define		W_3840_H_2160			13
+	m_cComboLvdsFormat.AddString("1920 x 300          ");	//#define		W_1920_H_300			14
+	m_cComboLvdsFormat.AddString("3840 x 600          ");	//#define		W_3840_H_600			15
+	m_cComboLvdsFormat.AddString("1920 x 540          ");	//#define		W_1920_H_540			16
+	m_cComboLvdsFormat.AddString("1920 x 1200         ");	//#define		W_1920_H_1200			17
+	m_cComboLvdsFormat.AddString("2048 x 2560         ");	//#define		W_2048_H_2560			18
+	m_cComboLvdsFormat.AddString("3584x 740(3440x1440)");	//#define		3584x 740(3440x1440) 	19
+	m_cComboLvdsFormat.AddString("3328 x 1440         ");	//#define		W_3328_H_1440			20
+	m_cComboLvdsFormat.SetCurSel(m_nLvdsFormat);
 	m_nAnalogFormat = CurrentSet->nAnalogType;
 
 	m_nGrabCheckArea = CurrentSet->nGrabCheckArea;
@@ -628,6 +659,7 @@ BOOL COptGrabberPage::OnInitDialog()
 		m_ctrlGrabMode.AddString("16. Type17 : 8K T-CONLESS");
 		m_ctrlGrabMode.AddString("17. Type18 : LM21A HKC 220307");
 		m_ctrlGrabMode.AddString("18. Type19 : QHD_FULL_SPEED");
+		m_ctrlGrabMode.AddString("19. Type20 : Shuffle 4");
 		//m_ctrlGrabMode.AddString(" 16. Type17 : Y20_SW_Mode_02");
 		//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 		m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
@@ -934,10 +966,10 @@ void COptGrabberPage::OnHdmiResolution4()
 }
 void COptGrabberPage::InitItem(BOOL bFlag)
 {
-	GetDlgItem(IDC_RDO_LVDS_FORMAT13)->EnableWindow(bFlag);
-	GetDlgItem(IDC_RDO_LVDS_FORMAT14)->EnableWindow(bFlag);
-	GetDlgItem(IDC_RDO_LVDS_FORMAT15)->EnableWindow(bFlag);
-	GetDlgItem(IDC_RDO_LVDS_FORMAT16)->EnableWindow(bFlag);
+	//GetDlgItem(IDC_RDO_LVDS_FORMAT13)->EnableWindow(bFlag);
+	//GetDlgItem(IDC_RDO_LVDS_FORMAT14)->EnableWindow(bFlag);
+	//GetDlgItem(IDC_RDO_LVDS_FORMAT15)->EnableWindow(bFlag);
+	//GetDlgItem(IDC_RDO_LVDS_FORMAT16)->EnableWindow(bFlag);
 
 	GetDlgItem(IDC_COMBO_LVDSMODE)->EnableWindow(bFlag);
 	GetDlgItem(IDC_COMBO_UHDTYPE)->EnableWindow(bFlag);

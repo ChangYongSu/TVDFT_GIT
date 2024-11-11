@@ -722,6 +722,11 @@ public:
 	CString		sPCBID_Scan;
 	CString		sPCBID_Read;
 	UINT		nDP_TimeSel;
+	UINT m_nDPMS_5CheckCnt;
+	UINT nDPMS_SampleRate;
+	CString		sMainMIC_Name;
+
+
 
 };
 
@@ -731,7 +736,7 @@ enum GrabberType
 };
 enum SystemType
 {
-	MANUAL_SYS = 0, AUTO_SYS
+	MANUAL_SYS = 0, AUTO_SYS, COMMAND_SYS
 };
 
 
@@ -1126,7 +1131,8 @@ const COLORREF COLOR_BLACK       = RGB(   1,   1,   1 );
 #define		W_1920_H_540			16
 #define		W_1920_H_1200			17
 #define		W_2048_H_2560			18
-#define		W_3328_H_1440			19
+#define		W_3584_H_720			19
+#define		W_3328_H_1440			20
 
 //Mode Register Setting Define
 #define		JEIDA_DUAL			0x81
@@ -1364,6 +1370,7 @@ extern UINT			g_nGrabberType;
 extern UINT			g_nSysType;
 extern UINT			g_nSysRobotType;
 extern UINT			g_nUseNoScanType;
+extern UINT			g_nCommandOnlyType;
 
 extern CString			g_sData_MD5;
 

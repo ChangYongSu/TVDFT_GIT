@@ -484,6 +484,8 @@ BOOL CreateModelIniFile(CString sModelIni)
 
 	m_Ini.SetProfileInt(GENERAL_S, "Scanner Skip", CurrentSet->bScanNotUse);
 	m_Ini.SetProfileInt(GENERAL_S, "DP Time Set", CurrentSet->nDP_TimeSel);
+	m_Ini.SetProfileInt(GENERAL_S, "DPMS Sample Rate", CurrentSet->nDPMS_SampleRate);
+	
 	
 	//============
 	// I2C Option
@@ -687,6 +689,7 @@ BOOL SaveModelIniFile(CString sIniPath)
 
 	m_Ini.SetProfileInt(GENERAL_S, "Scanner Skip", CurrentSet->bScanNotUse);
 	m_Ini.SetProfileInt(GENERAL_S, "DP Time Set", CurrentSet->nDP_TimeSel);
+	m_Ini.SetProfileInt(GENERAL_S, "DPMS Sample Rate", CurrentSet->nDPMS_SampleRate);
 
 
 	//============
@@ -843,7 +846,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->nUHD_Type = m_Ini.GetProfileInt(GRAB_S, "UHD Type");
 		CurrentSet->nUHD_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "UHD Grab BitShift");
 		CurrentSet->nUHD_Grab_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Mode");
-		if(CurrentSet->nUHD_Grab_Mode > 18){CurrentSet->nUHD_Grab_Mode = 13;}
+		if(CurrentSet->nUHD_Grab_Mode > 19){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
 		if (CurrentSet->nUHD_Y20_SW_Mode > 16) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
@@ -995,6 +998,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 
 	CurrentSet->bScanNotUse = m_Ini.GetProfileInt(GENERAL_S, "Scanner Skip");
 	CurrentSet->nDP_TimeSel = m_Ini.GetProfileInt(GENERAL_S, "DP Time Set",0);
+	CurrentSet->nDPMS_SampleRate = m_Ini.GetProfileInt(GENERAL_S, "DPMS Sample Rate",0);
 	//if (CurrentSet->nDP_TimeSel == 0) CurrentSet->wTVBaudRate = 115200;
 
 
@@ -3505,6 +3509,7 @@ BOOL OpenSystemInfoFile(CString sIniPath)
 	g_nGrabberType = -1;
 	g_nUseNoScanType = -1;
 	g_nSysRobotType = -1;
+	g_nCommandOnlyType = FALSE;
 
 
 	fopen_s(&l_fp, (LPCSTR)sIniPath, "r");
@@ -3524,7 +3529,7 @@ BOOL OpenSystemInfoFile(CString sIniPath)
 			sTmp = lbuf;
 
 			sTmp.MakeUpper();
-			if (sTmp.Find("[") >= 0)
+			if ((sTmp.Find("[") >= 0)||(sTmp.Find("//") >= 0))
 			{
 				continue;
 			}
@@ -3561,7 +3566,7 @@ BOOL OpenSystemInfoFile(CString sIniPath)
 				{
 					g_nSysType = AUTO_SYS;
 					g_nSysRobotType = AUTO_SYS;
-				}
+				}			
 				else {
 					AfxMessageBox("System Type Error");
 					return FALSE;
@@ -3582,8 +3587,21 @@ BOOL OpenSystemInfoFile(CString sIniPath)
 					else
 					{
 						g_nUseNoScanType = TRUE;//g_nSysType = AUTO_SYS
-					}			
+					}
 				}
+			}
+			else if (sTmp.Find("COMMAND") >= 0)//COMMAND ONLY
+			{
+				
+					if (sTmp.Find("YES") >= 0)
+					{
+						g_nCommandOnlyType = TRUE;
+					}
+					else
+					{
+						g_nCommandOnlyType = FALSE;//g_nSysType = AUTO_SYS
+					}
+				
 			}
 		}
 		fclose(l_fp);
@@ -3856,7 +3874,20 @@ void SaveResultSummary(CString strWipid, BOOL bResult, CString sTime)
 #if 1
 		szOutputString.Format("GMES PORT,Read_ID,Scan ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,PCBA_SW_VER,\
 KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
-STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write\r\n");
+STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write");
+		for (int i = 1; i <= 42; i++)
+		{
+			sTemp.Format(",V%d", i);
+			szOutputString += sTemp;
+		}	
+		
+		for (int i = 1; i <= 6; i++)
+		{
+			sTemp.Format(",F%d", i);
+			szOutputString += sTemp;
+		}
+		szOutputString += "\r\n";
+
 #else
 		szOutputString.Format(	"GMES PORT,SET_ID,INSP_JUDGE_CODE,A_MEASURE_1,A_TARGET_1,CHASSIS,HDMI_GEN_VER,PCBA_SW_VER,\
 KEYCHECK_LOG,LOWER_LIMIT_1,MACHINE_NO,MEASURE_1,MESSAGE_1,RUN_1,SEQ,STEP_NAME_1,\
@@ -3913,7 +3944,7 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write
 //STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ\r\n");
 
 #if 1
-		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+		szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,  ,%s,%s,%s,%s,%s,%s,%s,%s",
 			sGMES_PortNo, CurrentSet->sPCBID_Read, CurrentSet->sPCBID_Scan, szResultTotal, sAudioMeasure, sAudioTarget,CurrentSet->sChassisName,
 			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo,sMeasured,
 			sMsg, sRun, sSeqNo,/* pStep->m_sName,*/sStepNo, 
@@ -3927,7 +3958,7 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write
 			sNominal, sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite
 			);
 #endif
-		pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
+		//pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 	}
 	else
 	{
@@ -4018,15 +4049,66 @@ STEP_NO_1,TARGET_1,TIME_1,TOTAL_TIME,UPPER_LIMIT_1,ACTDTTM,INSP_SEQ,PCBAID_Write
 			//	sTime,
 			//	sStepNo, pStep->m_sName, sResult, sMeasured, sNominal, sLowLimit, sHighLimit, sAudioTarget,
 			//	sAudioMeasure, sElapsedTime, sMsg, HDMIGeneratorCtrl.m_FW_Ver);
-			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n",
+			szOutputString.Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 				sGMES_PortNo, CurrentSet->sPCBID_Read, CurrentSet->sPCBID_Scan, szResultTotal, sAudioMeasure, sAudioTarget, CurrentSet->sChassisName,
 			HDMIGeneratorCtrl.m_FW_Ver, CurrentSet->sCPUVersionRead, sKeyDL_Log, sLowLimit, sSystemNo, sMeasured,
 			sMsg, sRun, sSeqNo, pStep->m_sName,sStepNo, 
 			sNominal,sElapsedTime, sTime, sHighLimit, sDayTime, sSPEC_SEQ, sPCBID_Rewrite);
 
-			pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
+			//pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 		}
 	}
+	POSITION	PosStep_EM;
+	CVFTestInfo *pCurStep_EM;
+	PosStep_EM = CurrentSet->VF_TestInfo.GetHeadPosition();
+	float gVfList[50];
+	int gRunEnable[50];
+	memset(gVfList, 0, sizeof(gVfList));
+	memset(gRunEnable, 0, sizeof(gRunEnable));
+	while (PosStep_EM != NULL)
+	{
+		pCurStep_EM = CurrentSet->VF_TestInfo.GetNext(PosStep_EM);
+
+		if (pCurStep_EM->bRun)
+		{
+
+
+
+			UINT nChNo = pCurStep_EM->nChNo;
+			if (nChNo <= 42) {
+
+				nChNo = nChNo - 1;
+				gVfList[nChNo] = (pCurStep_EM->dMaesure_Min + pCurStep_EM->dMaesure_Max) / 2.0;
+				gRunEnable[nChNo] = 1;
+			}
+			else if ((nChNo >= 101) && (nChNo <= 106))
+			{
+				nChNo = nChNo - 101 + 42;
+				gVfList[nChNo - 101 + 42] = (pCurStep_EM->dMaesure_Min + pCurStep_EM->dMaesure_Max) / 2.0;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+
+		CString Stemp;
+	for (int i = 0; i < 48; i++)
+	{
+		
+		if (gRunEnable[i] == 1)
+		{
+			Stemp.Format(",%.1f", gVfList[i]);
+		}
+		else
+		{
+			Stemp = ",N";
+		}
+		szOutputString +=  Stemp;// 	
+	}
+	szOutputString += "\r\n";// 	
+	pFile.Write((LPSTR)(LPCTSTR)szOutputString, szOutputString.GetLength() + 1);
 
 	pFile.Close();
 }

@@ -90,6 +90,11 @@ double	_Color_Test()
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
 	
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	//if (g_pView->CheckGrabberStatus())
 	//{
 	//	AddStringToStatus("Grabber Update PASS!");
@@ -438,6 +443,11 @@ double	_Noise_Test()
 
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	//+add kwmoon 080819
 	g_ImageProc.m_ptPositionShift.x = 0;
 	g_ImageProc.m_ptPositionShift.y = 0;
@@ -623,6 +633,11 @@ double	_Bright_Test()
 	int nBrightMarginLevel = (int)pCurStep->m_fHighLimit;
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 
 	if(g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
 	{
@@ -786,6 +801,11 @@ double	_Position_Test()
 	CString szPrevMsg;
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 
 	if(g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
 	{
@@ -872,6 +892,11 @@ double	_Osd_Test()
 
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	if(CurrentSet->bSaveProcessingTimeData)
 	{
 		sMsg.Format("  B-OsdTest");
@@ -1132,6 +1157,11 @@ double	_Size_Test()
 
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	if(g_GrabImage.m_bImageLoaded && g_RefImage.m_bImageLoaded)
 	{
 		nResult = g_ImageProc.PatternMatching(SIZE_TEST,g_GrabImage,g_RefImage,ptResultPosition,fMatchRate,ctrlImgProg);
@@ -1350,6 +1380,11 @@ double	_Audio_Test()
 
 	pCurStep->m_nTestType	  = AUDIO_TEST;
 	pCurStep->m_bRunAudioTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 
 	if(g_pView->m_bMakeReferenceMode)
 	{
@@ -1528,6 +1563,11 @@ double _Moving_Pic_Test()
 	g_GrabImage.m_szFilePath = sGrabPath;
 
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	//090324
 	
 	CString szMsg1 = _T("");
@@ -1541,7 +1581,10 @@ double _Moving_Pic_Test()
 	float fLeftFreqMin = 50000;
 	float fRightFreqMax = 0;
 	float fRightFreqMin = 50000;
-	_AudioMeasureReset();// g_pView->AudioMeasureStart();
+	g_pView->AudioMeasureStop();
+	_Wait(150);
+	g_pView->AudioMeasureStart();
+	//_AudioMeasureReset();// g_pView->AudioMeasureStart();
 
 	float fRightFreqArry[50];
 	float fLeftFreqArry[50];
@@ -1916,6 +1959,11 @@ double _Caption_Test()
 //	}
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	
 	if(g_RefImage.m_bImageLoaded == FALSE) 
 	{
@@ -2091,6 +2139,11 @@ double _Digital_Eye_Test()
 	
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 	//==============
 	// Set DIO Port
 	//==============
@@ -2298,6 +2351,12 @@ double _Color_Bias_Test()
 	}
 	//090324
 	pCurStep->m_bRunVideoTest = TRUE;
+
+	if (g_nCommandOnlyType == TRUE)
+	{
+		pCurStep->m_bResult = TRUE;
+		return 1.0;
+	}
 
 	g_ImageProc.SetColorLimit((float)pCurStep->m_fLowLimit,(float)pCurStep->m_fHighLimit);
 

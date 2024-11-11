@@ -7195,8 +7195,124 @@ int	CImageProc::DFT3_UHDPuzzleLocal(int nMode, unsigned char *bufIn, unsigned ch
 
 		break;
 
+	case 19:
+
+		if (nRotate == 0) {
+
+			for (i = 0; i < nHeight; i++) {
+
+				for (j = 0; j < nWidth / 16; j++) {
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 0 + 3 * k + 0] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 0 + nWidth * 3 * 0 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 0 + 3 * k + 1] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 1 + nWidth * 3 * 0 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 0 + 3 * k + 2] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 2 + nWidth * 3 * 0 / 4];
+
+					}
 
 
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 12 + 3 * k + 0] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 0 + nWidth * 3 * 1 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 12 + 3 * k + 1] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 1 + nWidth * 3 * 1 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 12 + 3 * k + 2] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 2 + nWidth * 3 * 1 / 4];
+
+					}
+
+
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 24 + 3 * k + 0] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 0 + nWidth * 3 * 2 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 24 + 3 * k + 1] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 1 + nWidth * 3 * 2 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 24 + 3 * k + 2] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 2 + nWidth * 3 * 2 / 4];
+
+					}
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 36 + 3 * k + 0] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 0 + nWidth * 3 * 3 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 36 + 3 * k + 1] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 1 + nWidth * 3 * 3 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 36 + 3 * k + 2] = bufIn[(nHeight - 1 - i)*nWidth * 3 + j * 12 + 3 * k + 2 + nWidth * 3 * 3 / 4];
+
+					}
+
+				}
+
+			}
+
+		}
+
+		else {
+
+			for (i = 0; i < nHeight; i++) {
+
+				for (j = 0; j < nWidth / 16; j++) {
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 0 + 3 * k + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 0 - nWidth * 3 * 0 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 0 + 3 * k + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 1 - nWidth * 3 * 0 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 0 + 3 * k + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 2 - nWidth * 3 * 0 / 4];
+
+					}
+
+
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 12 + 3 * k + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 0 - nWidth * 3 * 1 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 12 + 3 * k + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 1 - nWidth * 3 * 1 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 12 + 3 * k + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 2 - nWidth * 3 * 1 / 4];
+
+					}
+
+
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 24 + 3 * k + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 0 - nWidth * 3 * 2 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 24 + 3 * k + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 1 - nWidth * 3 * 2 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 24 + 3 * k + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 2 - nWidth * 3 * 2 / 4];
+
+					}
+
+					for (k = 0; k < 4; k++) {
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 36 + 3 * k + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 0 - nWidth * 3 * 3 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 36 + 3 * k + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 1 - nWidth * 3 * 3 / 4];
+
+						bufOut[(i)*nWidth * 3 + j * 48 + 36 + 3 * k + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 12 - 3 * k + 2 - nWidth * 3 * 3 / 4];
+
+					}
+
+				}
+
+			}
+
+
+		}
+
+
+
+		break;
 	default:
 		if (nRotate == 0) {
 			for (i = 0; i < nHeight; i = i + 1) {

@@ -14,11 +14,7 @@
 #include "DlgMessage.h"
 #include "DlgSimpleInform.h"
 
-<<<<<<< HEAD
 //#include <opencv2\opencv.hpp>
-=======
-#include <opencv2\opencv.hpp>
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 //#include <allheaders.h>
 //#include <baseapi.h>
 #include "afxcmn.h"
@@ -29,11 +25,7 @@
 #pragma comment(lib, "libtesseract302")
 
 using namespace std;
-<<<<<<< HEAD
 //using namespace cv;
-=======
-using namespace cv;
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 //using namespace tesseract;
 
 
@@ -138,6 +130,7 @@ public:
 	int m_nPanelWidth;
 	int	m_nPanelHeight;
 	int	m_nExposure;
+	int m_dwDataSize;
 
 	
 
@@ -152,12 +145,15 @@ public:
 	void AddLogHandShake(DWORD dwCode, BOOL bSend);
 
 	void CAcqVoltageSamples_IntClkDlg::SaveFileLogData(const CCommPacket & pktCommm, BOOL bSend);
-
+	void CAcqVoltageSamples_IntClkDlg::SaveFileLog(CString	str);
 
 	void OnBnClickedBtnWifimodulecheck();
 	void OnBnClickedBtnGetdark();
 	void SaveImage(const CCommPacket & packet, BOOL bDark);
+	void SaveImage(char *pData, int  dwDataSize, BOOL bDark);
 	void DisplayImage(TCHAR *filename);
+	void DisplayCheckErrorImage(const CCommPacket & packet);
+	void DisplayCheckErrorImage(char *buffer);
 	void ClearImage();
 	void OnBnClickedBtnGetbright();
 	static DWORD WINAPI GetBrightThread(LPVOID pParam);
@@ -315,26 +311,44 @@ public:
 	int WifiCheck();
 	//int CheckImage(char *buffer);
 	//int Getdark();
+	void CAcqVoltageSamples_IntClkDlg::GetMinMaxFromImgbuf(unsigned short *img_buf,  int img_width, int img_height);
+	void CAcqVoltageSamples_IntClkDlg::UpdateMeanMedianFromImgbuf(unsigned short *img_buf, double* mean_buf, unsigned int* median_buf, int img_width, int img_height);
+	void CAcqVoltageSamples_IntClkDlg::UpdateMeanMedianFromImgbufRoic(unsigned short *img_buf, double* mean_buf, unsigned int* median_buf, int img_width, int img_height, int no_roic);
+	void CAcqVoltageSamples_IntClkDlg::UpdateMeanMedianFromImgbufGate(unsigned short *img_buf, double* mean_buf, unsigned int* median_buf, int img_width, int img_height, int no_roic);
+	double CAcqVoltageSamples_IntClkDlg::getMean(unsigned short *img_buf, int start_x, int start_y, int height, int width, int imageWidth);
+	int CAcqVoltageSamples_IntClkDlg::GetMedian(unsigned short *img_buf, int start_x, int start_y, int height, int width, int imageWidth);
+
+
 	int CheckImage(char *buffer, unsigned int lMin, unsigned int lMax);
+	int CheckDarkImage(char *buffer, unsigned int lMin, unsigned int lMax);
+	int CheckDarkImage(char *buffer, unsigned int lWidth,
+		unsigned int  lHeight, unsigned int lMin, unsigned int lMax);
+	
 	int GetdarkCheck(unsigned int lMin, unsigned int lMax);
 	int GetAedSensor();
 	int CheckMacRead();
 
 	void DisplayClear();
 	int SetManualExposureMode();
-<<<<<<< HEAD
 	int SetAutoExposureMode();
 	int GetExposureMode();
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	int FactoryReset();
+	int Set_ModelName();
+	int  Set_ModelName_HQ();
+	int SetModelname_HK();
+	int GetModelname(CString &ReadModelName);
 
 //	int m_TimeID_Reset;
 
 	unsigned int m_ImageMin;
 	unsigned int m_ImageMax;
-	unsigned int m_ImageAvg;
-
+	int m_RoicAvgNG[16];
+	int m_GateAvgNG[16];
+	int m_MatrixAvgNG[16][16];
+	unsigned int  m_TotalNG;
+	unsigned int m_WidthRcv, m_HeightRcv;
+	int m_RoicWidthEnd;
+	int m_GateHeightEnd;
 
 	int mCheckAll;
 
@@ -353,11 +367,8 @@ public:
 	CString		m_PrestrMP_Key;
 
 	CString		m_strUserMessage;
-<<<<<<< HEAD
 	CString		m_strButtonMessage1;
 	CString		m_strButtonMessage2;
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	int			m_intUserMessageTime;
 	CString		m_strImageName;
 
@@ -372,7 +383,11 @@ public:
 	UINT	m_DSERVER_Ver_major;
 	UINT	m_DSERVER_Ver_minor;
 	UINT	m_DSERVER_Ver_release;
+	CString m_DSERVER_Ver_String;
+
 	
+	DWORD   m_dwDSERVERVersion;
+
 	UINT	m_Microchip_Ver_event;
 	UINT	m_Microchip_Ver_major;
 	UINT	m_Microchip_Ver_minor;
@@ -624,4 +639,5 @@ public:
 	CLabel_text m_cLb_ImageHeight;
 	CLabel_text m_cLb_MAC;
 	void ClickLabelMacCheckMark();
+	void ClickLabelBarcodeMark();
 };

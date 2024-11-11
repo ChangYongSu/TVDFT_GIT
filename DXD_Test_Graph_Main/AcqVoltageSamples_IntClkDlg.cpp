@@ -60,8 +60,8 @@
 
 #include "stdafx.h"
 #include "AcqVoltageSamples_IntClk.h"
-#include "DlgTestPage.h"
 #include "AcqVoltageSamples_IntClkDlg.h"
+#include "DlgTestPage.h"
 
 
 //#include "DlgModelSetup.h"
@@ -1782,7 +1782,7 @@ void CAcqVoltageSamples_IntClkDlg::OnBnClickedStart()
 	{
 		return;
 	}
-
+	AddLogData("****************START***************");
 	if(g_MesEnable)
 	{
 		if(m_WipID.GetLength() > 5)
@@ -1938,19 +1938,9 @@ void CAcqVoltageSamples_IntClkDlg::OnBnClickedStart()
 		gTestSeqData.TestStepList[i].m_Result = 1;
 		
 	}
-<<<<<<< HEAD
 	m_strButtonMessage1 = "Ready 버튼을 누르시오.";
 	m_strButtonMessage2 = "Exposure 버튼을 누르시오.";
 
-=======
-
-	//for(int i = 0; i < 8; i++)
-	//{
-	//			
-	//	m_graph[i].Axes.Item("YAxis-1").Maximum = 1.2;
-	//	m_graph[i].Axes.Item("YAxis-1").Minimum = -1.2;
-	//}
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 	gTestSeqData.m_TotalResult = 3;
 
@@ -2159,7 +2149,6 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		m_FunctionType = TEST_SEQ_TYPE_CHECK_MESSAGE_MANUAL;
 		int lpos, lendpos;
 
-<<<<<<< HEAD
 		lpos = m_FunctionParameter.Find("\"");	
 
 		CString str1 = m_FunctionParameter.Mid(lpos+1);
@@ -2172,20 +2161,6 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		str2 = str1.Mid(lpos+1);		
 		lpos = str2.Find(",");
 		str2 = str2.Mid(lpos+1);
-=======
-		lpos = m_FunctionParameter.Find(",");	
-
-		CString str1 = m_FunctionParameter.Left(lpos);
-		CString str2 = m_FunctionParameter.Mid(lpos+1);
-		
-		lpos = str1.Find("\"");
-		CString strtemp = str1.Mid(lpos+1);
-		lendpos = strtemp.Find("\"");
-
-		strtemp = strtemp.Left(lendpos);
-		m_strUserMessage = strtemp;//Message 
-
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 		m_intUserMessageTime = _ttoi(str2);
 
@@ -2195,13 +2170,10 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		//
 		//m_strImageName = strtemp;
 
-<<<<<<< HEAD
 		if(m_intUserMessageTime < 50)
 		{
 			m_intUserMessageTime = 1000;
 		}
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 
 		if(m_CheckDelayTime < 50)
 		{
@@ -2321,8 +2293,8 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		for(int i =  0; i < 7; i++)
 		{
 			lpos = str2.Find(",");	
-			str1 = m_FunctionParameter.Left(lpos);
-			str2 = m_FunctionParameter.Mid(lpos+1);
+			str1 = str2.Left(lpos);
+			str2 = str2.Mid(lpos+1);
 			m_AED_SensorMin[i] = _ttoi(str1);
 
 			lpos = str2.Find(",");	
@@ -2360,11 +2332,7 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 	}
 	//		TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE	34
 //#define TEST_SEQ_TYPE_FACTORY_RESET				35
-<<<<<<< HEAD
 	else if(m_FunctionName.Compare("set_manual_exposure") == 0)
-=======
-	else if(m_FunctionName.Compare("manual_exposure") == 0)
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	{
 		m_FunctionType = TEST_SEQ_TYPE_SET_MANUAL_EXPOSURE_MODE;
 		m_CheckDelayTime = _ttoi(m_FunctionParameter);
@@ -2373,7 +2341,6 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 			m_CheckDelayTime = 1000;
 		}
 	}//TEST_SEQ_TYPE_BEEP
-<<<<<<< HEAD
 	else if(m_FunctionName.Compare("set_auto_exposure") == 0)
 	{
 		m_FunctionType = TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE;
@@ -2392,7 +2359,7 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 
 		CString str1 = m_FunctionParameter.Mid(lpos+1);
 		lpos = str1.Find("\"");
-		CString str2 = m_FunctionParameter.Left(lpos);		
+		CString str2 = str1.Left(lpos);
 
 		m_strButtonMessage1 = str2;//		
 	}	
@@ -2405,12 +2372,10 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 
 		CString str1 = m_FunctionParameter.Mid(lpos+1);
 		lpos = str1.Find("\"");
-		CString str2 = m_FunctionParameter.Left(lpos);		
+		CString str2 = str1.Left(lpos);
 
 		m_strButtonMessage2 = str2;//	
 	}
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	else if(m_FunctionName.Compare("factory_reset") == 0)
 	{
 		m_FunctionType = TEST_SEQ_TYPE_FACTORY_RESET;
@@ -2419,12 +2384,18 @@ void CAcqVoltageSamples_IntClkDlg::SetFunction()
 		{
 			m_CheckDelayTime = 1000;
 		}
-<<<<<<< HEAD
 	}//TEST_SEQ_TYPE_BEEP	
-	
-=======
-	}//TEST_SEQ_TYPE_BEEP
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
+	else if (m_FunctionName.Compare("set_model_name") == 0)
+	{
+		m_FunctionType = TEST_SEQ_TYPE_SET_MODEL_NAME;
+		m_CheckDelayTime = _ttoi(m_FunctionParameter);
+		if (m_CheckDelayTime < 0)
+		{
+			m_CheckDelayTime = 1000;
+		}
+	}//TEST_SEQ_TYPE_BEEP	
+
+
 	m_OKcnt = 0;
 	SetTimeCheck(1);
 }
@@ -2565,13 +2536,19 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 			{
 				if(GetDetParam() )
 				{
+
+					g_DSERVER_Ver_String.Format(_T("%d.%d%d.%02d"),
+						g_DSERVER_Ver_event, g_DSERVER_Ver_major, g_DSERVER_Ver_minor, g_DSERVER_Ver_release);
+					m_DSERVER_Ver_String.Format(_T("%d.%d%d.%02d"),
+						m_DSERVER_Ver_event, m_DSERVER_Ver_major, m_DSERVER_Ver_minor, m_DSERVER_Ver_release);
 					if((g_FPGA_Ver_event ==		m_FPGA_Ver_event)	
 						&&(g_FPGA_Ver_major == 		m_FPGA_Ver_major)
-						&&(g_FPGA_Ver_minor == 		m_FPGA_Ver_minor)					
-						&&(g_DSERVER_Ver_event == 	m_DSERVER_Ver_event)
+						&&(g_FPGA_Ver_minor == 		m_FPGA_Ver_minor)	
+						&& (g_DSERVER_Ver_String == m_DSERVER_Ver_String)
+						/*&&(g_DSERVER_Ver_event == 	m_DSERVER_Ver_event)
 						&&(g_DSERVER_Ver_major == 	m_DSERVER_Ver_major)
 						&&(g_DSERVER_Ver_minor == 	m_DSERVER_Ver_minor)
-						&&(g_DSERVER_Ver_release == m_DSERVER_Ver_release)					
+						&&(g_DSERVER_Ver_release == m_DSERVER_Ver_release)*/					
 						&&(g_Microchip_Ver_event == m_Microchip_Ver_event)
 						&&(g_Microchip_Ver_major == m_Microchip_Ver_major)
 						&&(g_Microchip_Ver_minor == m_Microchip_Ver_minor)					
@@ -2593,10 +2570,11 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 								g_FPGA_Ver_event, g_FPGA_Ver_major, g_FPGA_Ver_minor, 
 								m_FPGA_Ver_event, m_FPGA_Ver_major, m_FPGA_Ver_minor);
 						}
-						else if((g_DSERVER_Ver_event != 	m_DSERVER_Ver_event)
+					/*	else if((g_DSERVER_Ver_event != 	m_DSERVER_Ver_event)
 						||(g_DSERVER_Ver_major != 	m_DSERVER_Ver_major)
 						||(g_DSERVER_Ver_minor != 	m_DSERVER_Ver_minor)
-						||(g_DSERVER_Ver_release != m_DSERVER_Ver_release))
+						||(g_DSERVER_Ver_release != m_DSERVER_Ver_release))*/
+						else if(g_DSERVER_Ver_String == m_DSERVER_Ver_String)
 						{
 							m_Deisplay_ErrorName = "GET SW VER ERROR";
 							m_Deisplay_ErrorName += "\r\nDXD SERVER VER ERROR";
@@ -2724,7 +2702,7 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 		{
 			if(sWaitCnt == 0)
 			{
-				if(GetdarkCheck(m_ImageMin, m_ImageMax))//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+				if(GetdarkCheck(m_ImageMin, m_ImageMax))//
 				{
 					gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 1;
 					
@@ -2733,6 +2711,28 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 					////	m_Deisplay_ErrorName += "\r\nTIME OUT";
 					//	m_Deisplay_ErrorDetail = "";
 					m_nCurrentStep = 2;
+					AddLogData("Get Dark Check OK");
+					m_Deisplay_ErrorDetail = "ROIC:";
+					AddLogData(m_Deisplay_ErrorDetail);
+					CString sTemp;
+					for (int i = 0; i < gNoRoic; i++)
+					{
+						sTemp.Format(" %d:%d[%d~%d]", i, g_RoicMean[i], m_ImageMin, m_ImageMax);
+						AddLogData(sTemp);
+						m_Deisplay_ErrorDetail += sTemp;
+
+					}
+					AddLogData(m_Deisplay_ErrorDetail);
+
+					m_Deisplay_ErrorDetail = "GATE:";
+					AddLogData(m_Deisplay_ErrorDetail);
+					for (int i = 0; i < gNoGate; i++)
+					{
+						sTemp.Format(" %d:%d[%d~%d]", i, g_GateMean[i], m_ImageMin, m_ImageMax);
+						AddLogData(sTemp);
+						m_Deisplay_ErrorDetail += sTemp;
+					}
+					AddLogData(m_Deisplay_ErrorDetail);
 					
 				}
 				else
@@ -2746,11 +2746,45 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 						gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
 						m_nCurrentStep = 2;
 					}
-				/*	else
+					CString sTemp ;
+					m_Deisplay_ErrorDetail += "ROIC:";
+					AddLogData("ROIC");
+					for (int i = 0; i < gNoRoic; i++)
 					{
-						sWaitCnt = 100;
-					}	*/				
-				
+						if (m_RoicAvgNG[i] == 1)
+						{
+							sTemp.Format(" %d:NG %d[%d~%d]", i, g_RoicMean[i], m_ImageMin, m_ImageMax);
+							AddLogData(sTemp);
+							m_Deisplay_ErrorDetail += sTemp;
+						}
+						/*else
+						{
+							sTemp.Format(" %d:OK %d[%d~%d]", i, g_RoicMean[i], m_ImageMin, m_ImageMax);
+						}*/
+						
+
+					}
+					m_Deisplay_ErrorDetail += "\nGATE:";
+					AddLogData("GATE");
+					for (int i = 0; i < gNoGate; i++)
+					{
+						//sTemp.Format(" %d:%d[%d~%d]", i, g_GateMean[i], m_ImageMin, m_ImageMax);
+						if (m_GateAvgNG[i] == 1)
+						{
+							sTemp.Format(" %d:NG %d[%d~%d]", i, g_GateMean[i], m_ImageMin, m_ImageMax);
+							AddLogData(sTemp);
+							m_Deisplay_ErrorDetail += sTemp;
+						}
+				/*		else
+						{
+							sTemp.Format(" %d:OK %d[%d~%d]", i, g_GateMean[i], m_ImageMin, m_ImageMax);
+						}*/
+						
+					}
+
+					//AddLogData(m_Deisplay_ErrorDetail);
+					AddLogData(m_Deisplay_ErrorName);
+					AddLogData(m_Deisplay_ErrorDetail);
 				}
 			}		
 		}
@@ -2763,44 +2797,153 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 	//	m_ImageAvg
 		if(m_InterProcess == 0)
 		{
+		//	MessageInformDisplay("S I Z E T E S T 1 2 3 4 5 6 7 8 9 0", 10000);
 			sWaitCnt = 50;
 			m_InterProcess = 1;
 			m_SetComError = 0;
 			m_SetComFinished = 0;
-			m_ImageAvg = 0;
-		}
+			//m_ImageAvg = 0;
+		}	
 		else if(m_InterProcess == 1)
 		{	
 			if(sWaitCnt == 0)
-			{
-				sWaitCnt = 50;
-				m_InterProcess = 2;
-				OnBnClickedBtnGetbright();
+			{	
+				if (m_detParam.dwExposureMode != EXP_MODE_AUTO)
+				{
+					sWaitCnt = 50;
+					m_InterProcess = 2;
+				}
+				else
+				{
+					if (GetAedSensor())
+					{
+						int lNg = 0;
+						for (int i = 0; i < 7; i++)
+						{
+
+							if (m_AED_Sensor[i] <= 100)
+							{
+								m_cLb_AED_Sensor[i].put_ForeColor(0x00FF00);
+							}
+							else
+							{
+								lNg = 1;
+								m_cLb_AED_Sensor[i].put_ForeColor(0x0000FF);
+							}
+						}
+						if (lNg)
+						{
+							m_Deisplay_ErrorName = "Get Bright Check ERROR";
+							m_Deisplay_ErrorName += "\r\nAED Sensor Check Value Over";
+							CString sTemp;
+							m_Deisplay_ErrorDetail = "AED READ:";
+							for (int i = 0; i < 7; i++)
+							{
+								sTemp.Format("[%d]:%d,", i, m_AED_Sensor[i]);
+								m_Deisplay_ErrorDetail += sTemp;
+							}
+							//AddLogData("");
+							gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
+							m_nCurrentStep = 2;
+
+						}
+						else
+						{
+							sWaitCnt = 50;
+							m_InterProcess = 2;
+						}
+					}
+					else
+					{
+						m_Deisplay_ErrorName = "Get Bright Check ERROR";
+						m_Deisplay_ErrorName += "\r\nAED Sensor Check Error";
+						gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
+						m_nCurrentStep = 2;
+					}
+				}
 			}
 		}
 		else if(m_InterProcess == 2)
+		{
+			
+			if(sWaitCnt == 0)
+			{
+				sWaitCnt = 50;
+				m_InterProcess = 3;
+				OnBnClickedBtnGetbright();
+			}
+		}
+		else if(m_InterProcess == 3)
 		{
 			if(sWaitCnt == 0)
 			{
 				
 				if(m_SetComFinished == 1)//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
 				{					
-					if((m_SetComError == 0)&&(m_ImageAvg > m_ImageMin)&&(m_ImageAvg < m_ImageMax))//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+					//if((m_SetComError == 0)&&(m_ImageAvg > m_ImageMin)&&(m_ImageAvg < m_ImageMax))//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+					if((m_SetComError == 0)&&(m_TotalNG == 0))//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
 					{
 						gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 1;
 						m_nCurrentStep = 2;
-						//m_Deisplay_ErrorName = "OK";
-						////m_Deisplay_ErrorName += "\r\nTIME OUT";
-						//m_Deisplay_ErrorDetail = "";
+						
+						AddLogData("Get Bright Check OK");
+						//m_Deisplay_ErrorDetail.Format("m_ImageAvg:%d[Min:%d, Max:%d]", m_ImageAvg, m_ImageMin, m_ImageMax);
+						//
+						CString sTemp;
+						for (int i = 0; i < gNoRoic; i++)
+						{
+							sTemp.Format(" %d:%d[%d~%d]", i, g_RoicMean[i], g_RefMin_buf[i], g_RefMax_buf[i]);
+							m_Deisplay_ErrorDetail += sTemp;
+							
+						}
+						AddLogData(m_Deisplay_ErrorDetail);
 					}
 					else
 					{
+						OnBnClickedBtnCancel2();
 						m_Deisplay_ErrorName = "Get Bright Check ERROR";
-						m_Deisplay_ErrorName += "\r\nGet Bright Image Fail";
-						m_Deisplay_ErrorDetail = "Get Dark Image Fail";
+						if (m_SetComError == 1)
+						{
+							m_Deisplay_ErrorName += "\r\nSet Communition Fail";
+							//m_Deisplay_ErrorDetail = "Get Bright Image Fail";
+						}
+						else if (m_TotalNG > 0) // (m_ImageAvg > m_ImageMin) && (m_ImageAvg < m_ImageMax))
+						{
+							m_Deisplay_ErrorName += "\r\nGet Bright Image Average Fail";
+							m_Deisplay_ErrorDetail = "CHECK :";
+							CString sTemp;
+							for (int i = 0; i < gNoRoic; i++)
+							{
+								if (m_RoicAvgNG[i] == 1)
+								{
+									sTemp.Format("ROIC %d:NG %d[%d~%d]", i, g_RoicMean[i], g_RefMin_buf[i], g_RefMax_buf[i]);
+									m_Deisplay_ErrorDetail += sTemp;
+								}
+								else
+								{
+								//	sTemp.Format(" %d:OK %d[%d~%d]", i, g_RoicMean[i], g_RefMin_buf[i], g_RefMax_buf[i]);
+								}
+							}
+							
+							for (int i = 0; i < gNoGate; i++)
+							{
+								if (m_GateAvgNG[i] == 1)
+								{
+									sTemp.Format("GATE %d:NG %d[%d~%d]", i, g_GateMean[i], g_RefMin_buf[i], g_RefMax_buf[i]);
+									m_Deisplay_ErrorDetail += sTemp;
+								}
+								else
+								{
+								//	sTemp.Format(" %d:OK %d[%d~%d]", i, g_RoicMean[i], g_RefMin_buf[i], g_RefMax_buf[i]);
+								}
+							}						
+						}
 					
 						gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
 						m_nCurrentStep = 2;
+
+						AddLogData(m_Deisplay_ErrorName);
+						AddLogData(m_Deisplay_ErrorDetail);
 					}
 					
 				}
@@ -2808,12 +2951,16 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 				{
 					if(GetTimeCheck(1) > m_CheckDelayTime)
 					{
+						OnBnClickedBtnCancel2();
 						m_Deisplay_ErrorName = "Get Bright Check ERROR";
 						m_Deisplay_ErrorName += "\r\nGet Bright Image Fail";
-						m_Deisplay_ErrorDetail = "Get Dark Image Fail";
+						m_Deisplay_ErrorDetail = "Get Bright Image Time Out";
 					
 						gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
 						m_nCurrentStep = 2;
+						AddLogData(m_Deisplay_ErrorName);
+						AddLogData(m_Deisplay_ErrorDetail);
+
 					}
 					else
 					{
@@ -2994,7 +3141,6 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 
 		break;
 
-<<<<<<< HEAD
 
 		case   TEST_SEQ_TYPE_SET_AUTO_EXPOSURE_MODE:
 		
@@ -3027,8 +3173,6 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 
 		break;
 
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 		case   TEST_SEQ_TYPE_FACTORY_RESET:
 		
 		if(m_InterProcess == 0)
@@ -3059,7 +3203,36 @@ void CAcqVoltageSamples_IntClkDlg::RunFunction()
 		}
 
 		break;	
+		case   TEST_SEQ_TYPE_SET_MODEL_NAME:
+		
+		if(m_InterProcess == 0)
+		{
+			sWaitCnt = 50;
+			m_InterProcess = 1;
+		}
+		else if(m_InterProcess == 1)
+		{
+			if(sWaitCnt == 0)
+			{
+				if(Set_ModelName() )
+				{					
+					gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 1;	
+					m_nCurrentStep = 2;	
+				}
+				else
+				{
+					m_Deisplay_ErrorName = "\r\nSET_MODEL_NAME";
+					//m_Deisplay_ErrorName += "MAC ADDRESS Value";
+					m_Deisplay_ErrorDetail = "SET_MODEL_NAME Error";
+					
+					gTestSeqData.TestStepList[m_nCurrentNumber].m_Result = 0;
+					m_nCurrentStep = 2;		
+				
+				}
+			}		
+		}
 
+		break;	
 	default:
 		m_nCurrentStep = 2;
 		break;
@@ -3515,929 +3688,6 @@ void CAcqVoltageSamples_IntClkDlg::OnCancel()
     CDialog::OnCancel();
 }
 
-/*
-
-0 : HDMI_ANA_AUD_OUT_R
-1 : HDMI_ANA_AUD_OUT_L
-2 : DIG_2_ANA_AUD_R
-3 : DIG_2_ANA_AUD_L
-4 : 7.1_AUDIO_OUT_R1
-5 : 7.1_AUDIO_OUT_L1
-6 : 7.1_AUDIO_OUT_R2
-7 : 7.1_AUDIO_OUT_L2
-8 : 7.1_AUDIO_OUT_R3
-9 : 7.1_AUDIO_OUT_L3
-10 : 7.1_AUDIO_OUT_R4
-11 : 7.1_AUDIO_OUT_L4
-12 : ANA_AUDIO_OUT_R
-13 : ANA_AUDIO_OUT_L
-14 : P_ANA_AUDIO_OUT_R
-15 : P_ANA_AUDIO_OUT_L
-16 : P_ANA_AUDIO_OUT_R
-17 : P_ANA_AUDIO_OUT_L
-
-*/
-//
-//void CAcqVoltageSamples_IntClkDlg::CheckDigitalPort()
-//{
-//	int lDigtalFound = 0;
-//	TestPort_T lPortData;
-//	for(int i = 0; i < 20; i ++)
-//	{
-//		if(lDigtalFound)
-//			break;
-//		//if(gTestSeqData.TestProcess.aSeqData[i].nSeqType == TEST_SEQ_TYPE_TEST_1)
-//		//{	
-//		//	
-//		//	for(int j = 0; j < 6; j++)
-//		//	{
-//		//		lPortData = gTestSeqData.SetPortTest_1[j];
-//		//		
-//		//		if((lPortData.nInput == 2) || (lPortData.nInput == 3))
-//		//		{				
-//		//			m_DigitalPort = DIG_OPTICAL_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//		else if((lPortData.nInput == 16) || (lPortData.nInput == 17))
-//		//		{				
-//		//			m_DigitalPort = DIG_COAX_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//	}
-//		//}
-//		//else if(gTestSeqData.TestProcess.aSeqData[i].nSeqType == TEST_SEQ_TYPE_TEST_2)
-//		//{	
-//		//	
-//		//	for(int j = 0; j < 6; j++)
-//		//	{
-//		//		lPortData = gTestSeqData.SetPortTest_2[j];
-//		//		
-//		//		if((lPortData.nInput == 2) || (lPortData.nInput == 3))
-//		//		{				
-//		//			m_DigitalPort = DIG_OPTICAL_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//		else if((lPortData.nInput == 16) || (lPortData.nInput == 17))
-//		//		{				
-//		//			m_DigitalPort = DIG_COAX_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//	}
-//		//}		
-//		//else if(gTestSeqData.TestProcess.aSeqData[i].nSeqType == TEST_SEQ_TYPE_TEST_3)
-//		//{	
-//		//	
-//		//	for(int j = 0; j < 6; j++)
-//		//	{
-//		//		lPortData = gTestSeqData.SetPortTest_3[j];
-//		//		
-//		//		if((lPortData.nInput == 2) || (lPortData.nInput == 3))
-//		//		{				
-//		//			m_DigitalPort = DIG_OPTICAL_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//		else if((lPortData.nInput == 16) || (lPortData.nInput == 17))
-//		//		{				
-//		//			m_DigitalPort = DIG_COAX_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//	}
-//		//}	
-//		//else if(gTestSeqData.TestProcess.aSeqData[i].nSeqType == TEST_SEQ_TYPE_TEST_4)
-//		//{	
-//		//	
-//		//	for(int j = 0; j < 6; j++)
-//		//	{
-//		//		lPortData = gTestSeqData.SetPortTest_4[j];
-//		//		
-//		//		if((lPortData.nInput == 2) || (lPortData.nInput == 3))
-//		//		{				
-//		//			m_DigitalPort = DIG_OPTICAL_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//		else if((lPortData.nInput == 16) || (lPortData.nInput == 17))
-//		//		{				
-//		//			m_DigitalPort = DIG_COAX_SELECT;
-//		//			lDigtalFound = 1;
-//		//			break;
-//		//		}
-//		//	}
-//		//}		
-//	}
-//
-//	//SetDigitalPortSelect(m_DigitalPort, 1);
-//}
-
-//void CAcqVoltageSamples_IntClkDlg::SetDigitalPortSelect(int lDigSel, int lRefresh)
-//{
-//
-//	if(lRefresh)
-//	{
-//		m_DigitalPort_Save = lDigSel;
-//	}
-//	else if(m_DigitalPort_Save == lDigSel)
-//	{
-//		return;
-//	}
-//
-//	BYTE lbuf[128]; 
-//	int lcnt;
-//	CString str;
-//	//UINT m_EditFreq1;
-//	UpdateData();
-//
-//	lbuf[0] = 0x02;
-//	
-//	//sprintf((char *)&lbuf[1], "CFREQ%02d%03d", 
-//	sprintf((char *)&lbuf[1], "CA_SEL_%02d", lDigSel);
-//	
-//	lbuf[10] = 0x03;
-//	lbuf[11] = 0x0d;
-//	lbuf[12] = 0x0a;
-//	//ReceiveData[18] == 0x03) && (ReceiveData[19] == 0x0d) && (ReceiveData[20] == 0x0a
-//	SendData(lbuf, 13);
-//
-//	//m_TESTPAGE_COM_PROCESS = COM_MODE_WAIT_ACK;
-//	// m_ComAck =COM_ACK_WAIT;
-//	// m_WaitCnt = 0;
-//	// m_ResendCnt = 0;
-//	
-//	//MessageDisplay(2, "Frequency Set !");
-//}
-
-//
-//void CAcqVoltageSamples_IntClkDlg::SetChannelData(int lTestNumber)
-//{
-//	
-//	//int lCheckID[6] = {0,1,2,3,14,15};
-//	/*CString lStrName[18] = {
-//		_T("HDMI_R"),_T("HDMI_L"),
-//		_T("OPTICAL_R"),_T("OPTICAL_L"),
-//		_T("SPEAKER_1R"),_T("SPEAKER_1L"),
-//		_T("SPEAKER_2R"),_T("SPEAKER_2L"),
-//		_T("SPEAKER_3R"),_T("SPEAKER_3L"),
-//		_T("SPEAKER_4R"),_T("SPEAKER_4L"),
-//		_T("AUX_R"),_T("AUX_L"),
-//		_T("PORTABLE_R"),_T("PORTABLE_L"), 
-//		_T("COAX_R"),_T("COAX_L")};	*/
-//		
-//		CString lStrName[18] = {
-//		_T("HDMI_R"),_T("HDMI_L"),
-//		_T("OPTICAL_R"),_T("OPTICAL_L"),
-//		_T("Front R"),_T("Front L"),
-//		_T("Rear R"),_T("Rear L"),
-//		_T("Center"),_T("Woofer"),
-//		_T("SPEAKER_4R"),_T("SPEAKER_4L"),
-//		_T("AUX_R"),_T("AUX_L"),
-//		_T("PORTABLE_R"),_T("PORTABLE_L"), 
-//		_T("COAX_R"),_T("COAX_L")};
-//
-//	double l_RefVoltageMin[6] = {300,300,300,300,300,300};
-//	double l_RefVoltageMax[6] = {1500,1500,1500,1500,1500,1500};
-//	double l_FrequencyMin[6] = {10,10,10,10,10,10};
-//	double l_FrequencyMax[6] = {1200,1200,1200,1200,1200,1200};
-//
-//	
-//	m_cLb_Test1.put_Caption(_T("WAIT"));
-//	m_cLb_Test1.put_BackColor(0x0000FFFF);
-//	
-//	m_cLb_Test2.put_Caption(_T("WAIT"));
-//	m_cLb_Test2.put_BackColor(0x0000FFFF);
-//	
-//	m_cLb_Test3.put_Caption(_T("WAIT"));
-//	m_cLb_Test3.put_BackColor(0x0000FFFF);
-//
-//	
-//
-//
-//	//m_OkNgLabel.put_Text(_T("WAIT"));
-//	//m_OkNgLabel.put_BackColor(0x0000FFFF);
-//	
-//	m_cLbOkNg.put_Caption(_T("WAIT"));
-//	m_cLbOkNg.put_BackColor(0x0000FFFF);
-//
-//
-//	m_TotalOK = 3;
-//
-//	//m_LevelSkip = 1;
-//	
-//
-//
-//	for(int i = 0; i < 8; i++)
-//	{
-//		m_CheckEnable[i] = 1;
-//		if(m_CheckEnable[i] )
-//		{							
-//			m_DigitalPort = DIG_OPTICAL_SELECT;					
-//			m_CheckID[i] = i+4;			
-//
-//			m_ChnnelName[i] = lStrName[i+4];
-//			//m_NameLabel[i].put_Caption(m_ChnnelName[i]);
-//
-//			m_RefVoltageMin[i] = l_RefVoltageMin[i];
-//			m_RefVoltageMax[i] = l_RefVoltageMax[i];
-//			m_FrequencyMin[i] = l_FrequencyMin[i];
-//			m_FrequencyMax[i] = l_FrequencyMax[i];
-//		}
-//		else
-//		{
-//			//m_NameLabel[i].put_Caption(_T(" N/A "));
-//		}
-//
-//		m_ChannelOK[i] = 3;
-//		m_VoltageOK[i] = 3;
-//		m_FrequencyOK[i] = 3;
-//
-//		m_ChannelOKCNT[i] = 0;
-//	}	
-//
-//	//SetDigitalPortSelect(m_DigitalPort, 0);
-//}
-
-//void CAcqVoltageSamples_IntClkDlg::SetChannelDataManual(int lTestNumber)
-//{
-//
-//		CString lStrName[18] = {
-//		_T("HDMI_R"),_T("HDMI_L"),
-//		_T("OPTICAL_R"),_T("OPTICAL_L"),
-//		_T("Front R"),_T("Front L"),
-//		_T("Rear R"),_T("Rear L"),
-//		_T("Center"),_T("Woofer"),
-//		_T("SPEAKER_4R"),_T("SPEAKER_4L"),
-//		_T("AUX_R"),_T("AUX_L"),
-//		_T("PORTABLE_R"),_T("PORTABLE_L"), 
-//		_T("COAX_R"),_T("COAX_L")};
-//
-//	double l_RefVoltageMin[6] = {300,300,300,300,300,300};
-//	double l_RefVoltageMax[6] = {1500,1500,1500,1500,1500,1500};
-//	double l_FrequencyMin[6] = {10,10,10,10,10,10};
-//	double l_FrequencyMax[6] = {1200,1200,1200,1200,1200,1200};
-//
-//	
-//	m_cLb_Test1.put_Caption(_T("WAIT"));
-//	m_cLb_Test1.put_BackColor(0x0000FFFF);
-//	
-//	m_cLb_Test2.put_Caption(_T("WAIT"));
-//	m_cLb_Test2.put_BackColor(0x0000FFFF);
-//	
-//	m_cLb_Test3.put_Caption(_T("WAIT"));
-//	m_cLb_Test3.put_BackColor(0x0000FFFF);
-//
-//	
-//
-//
-//	//m_OkNgLabel.put_Text(_T("WAIT"));
-//	//m_OkNgLabel.put_BackColor(0x0000FFFF);
-//	
-//	m_cLbOkNg.put_Caption(_T("WAIT"));
-//	m_cLbOkNg.put_BackColor(0x0000FFFF);
-//
-//
-//	m_TotalOK = 3;
-//
-//	//m_LevelSkip = 1;
-//	
-//
-//
-//	for(int i = 0; i < 8; i++)
-//	{
-//		m_CheckEnable[i] = 1;
-//		if(m_CheckEnable[i] )
-//		{							
-//			m_DigitalPort = DIG_OPTICAL_SELECT;					
-//			m_CheckID[i] = g_ManualId[i];
-//
-//			m_ChnnelName[i] = lStrName[g_ManualId[i]];
-//			//m_NameLabel[i].put_Caption(m_ChnnelName[i]);
-//
-//			//m_RefVoltageMin[i] = l_RefVoltageMin[i];
-//			//m_RefVoltageMax[i] = l_RefVoltageMax[i];
-//			//m_FrequencyMin[i] = l_FrequencyMin[i];
-//			//m_FrequencyMax[i] = l_FrequencyMax[i];
-//		}
-//		else
-//		{
-//			//m_NameLabel[i].put_Caption(_T(" N/A "));
-//		}
-//
-//		m_ChannelOK[i] = 3;
-//		m_VoltageOK[i] = 3;
-//		m_FrequencyOK[i] = 3;
-//
-//		m_ChannelOKCNT[i] = 0;
-//	}	
-//
-//	//SetDigitalPortSelect(m_DigitalPort, 0);
-//}
-
-//
-//void CAcqVoltageSamples_IntClkDlg::SetChannelDataSeq(int lTestChannel, int lSource)
-//{	
-//	CString lStrName[18] = {
-//	_T("HDMI_R"),_T("HDMI_L"),
-//	_T("OPTICAL_R"),_T("OPTICAL_L"),
-//	_T("Front R"),_T("Front L"),
-//	_T("Rear R"),_T("Rear L"),
-//	_T("Center"),_T("Woofer"),
-//	_T("SPEAKER_4R"),_T("SPEAKER_4L"),
-//	_T("AUX_R"),_T("AUX_L"),
-//	_T("PORTABLE_R"),_T("PORTABLE_L"), 
-//	_T("COAX_R"),_T("COAX_L")};
-//	
-//	if((lTestChannel > 0)&&(lTestChannel < 7))//Zero Base Index
-//	{
-//		lTestChannel -= 1;
-//	}
-//
-//	if((lSource > 0)&&(lSource < 19))//Zero Base Index
-//	{
-//		lSource -= 1;
-//	}
-//		
-//	if((lSource == 2) || (lSource == 3))
-//	{				
-//		m_DigitalPort = DIG_OPTICAL_SELECT;
-//	}
-//	else if((lSource == 16) || (lSource == 17))
-//	{				
-//		m_DigitalPort = DIG_COAX_SELECT;
-//	}
-//
-//	if(lSource == 16)
-//	{
-//		m_CheckID[lTestChannel] = 2;
-//		//m_DigitalPort = DIG_COAX_SELECT;//DIG_OPTICAL_SELECT;
-//	}
-//	else if(lSource == 17)
-//	{
-//		m_CheckID[lTestChannel] = 3;
-//		//m_DigitalPort = DIG_COAX_SELECT;//DIG_OPTICAL_SELECT;
-//	}
-//	else if((lSource >= 0)&&(lSource <= 15))
-//	{
-//		m_CheckID[lTestChannel] = lSource;
-//	}
-//	else
-//	{
-//		m_CheckEnable[lTestChannel] = 0;
-//	}
-//
-//	m_ChnnelName[lTestChannel] = lStrName[lSource];
-//	//m_NameLabel[lTestChannel].put_Caption(m_ChnnelName[lTestChannel]);
-//	if((lSource == 2) || (lSource == 3)||(lSource == 16) || (lSource == 17))
-//	{				
-//	//	m_DigitalPort = DIG_COAX_SELECT;	
-//		SetDigitalPortSelect(m_DigitalPort, 0);
-//	}
-//}
-//
-//
-//void CAcqVoltageSamples_IntClkDlg::SetChannelDataRangeSeq(int lTestChannel,int l_RefVoltageMin,int l_RefVoltageMax,int l_FrequencyMin,int l_FrequencyMax)
-//{	
-//
-//	if((lTestChannel > 0)&&(lTestChannel < 7))//Zero Base Index
-//	{
-//		lTestChannel -= 1;
-//	}
-//			
-//	m_CheckEnable[lTestChannel] = 1;
-//	InitChannelOne(lTestChannel+1);
-//	m_RefVoltageMin[lTestChannel] = l_RefVoltageMin;
-//	m_RefVoltageMax[lTestChannel] = l_RefVoltageMax;
-//	m_FrequencyMin[lTestChannel] = l_FrequencyMin;
-//	m_FrequencyMax[lTestChannel] = l_FrequencyMax;	
-//
-//	//m_VoltageBalnce[lTestChannel] = 0;
-//}
-
-//
-//void CAcqVoltageSamples_IntClkDlg::SetChannelDataRangeSeq(int lTestChannel,int l_RefVoltageMin,int l_RefVoltageMax,int l_FrequencyMin,int l_FrequencyMax, int l_TmpVoltageBalnce)
-//{	
-//
-//	if((lTestChannel > 0)&&(lTestChannel < 7))//Zero Base Index
-//	{
-//		lTestChannel -= 1;
-//	}
-//			
-//	m_CheckEnable[lTestChannel] = 1;
-//	InitChannelOne(lTestChannel+1);
-//	m_RefVoltageMin[lTestChannel] = l_RefVoltageMin;
-//	m_RefVoltageMax[lTestChannel] = l_RefVoltageMax;
-//	m_FrequencyMin[lTestChannel] = l_FrequencyMin;
-//	m_FrequencyMax[lTestChannel] = l_FrequencyMax;	
-//
-//	//m_VoltageBalnce[lTestChannel] = l_TmpVoltageBalnce;
-//}
-
-//
-//void CAcqVoltageSamples_IntClkDlg::InitChannelOne(int lch)
-//{
-//
-//
-//	if((lch > 0)&&(lch < 7))//Zero Base Index
-//	{
-//		lch -= 1;
-//	}
-//
-//    CWaitCursor wait;
-////	CString physicalChannel1;
-//    CString physicalChannel, referenceTriggerSource;
-//    double minimum, maximum, sampleRate;
-//    
-//
-//    UpdateData(true);
-//    //m_physicalChannel.GetWindowText(physicalChannel);
-//   // CNiString(m_minimum) >> minimum;
-//  //  CNiString(m_maximum) >> maximum;
-//	minimum = -5;
-//	maximum = 5;
-//    //CNiString(m_rate) >> sampleRate;
-//	sampleRate = NI_SAMPLE_RATE;//200000;
-//	samplesPerChannel = NI_SAMPLE_COUNT;//6000;
-//   // CNiString(m_samplesPerChannel) >> samplesPerChannel;
-//
-//    //m_startButton.EnableWindow(false);
-//    RemoveEventHandler();
-// //   CleanUpIfNecessary();
-//
-//	int i = lch;
-//	//for(int i = 0 ; i < 6; i++)
-//	{
-//		m_data[i].SetSize(1,NI_SAMPLE_COUNT);
-//	}
-//	//for(int i = 0 ; i < 6; i++)
-//	{
-//
-//	//	m_data[i].SetSize(1,3000);
-//		if(m_CheckEnable[i] == 0)
-//		{
-//			return;
-//		}
-//
-//
-//	m_InitAiChannel = 1;
-//
-//
-//		
-//		try
-//		{
-//			// Create a new task
-//			m_task[i] = std::auto_ptr<CNiDAQmxTask>(new CNiDAQmxTask());
-//
-//			physicalChannel.Format(_T("Dev1/ai%d"),m_CheckID[i]);
-//			// Create a channel
-//		//	m_task[i]->AIChannels.CreateVoltageChannel(physicalChannel, "", 
-//		//		static_cast<DAQmxAITerminalConfiguration>(-1), minimum, maximum, 
-//		//		DAQmxAIVoltageUnitsVolts);
-//			m_task[i]->AIChannels.CreateVoltageChannel(physicalChannel, "", 
-//				DAQmxAITerminalConfigurationRse, minimum, maximum, 
-//				DAQmxAIVoltageUnitsVolts);
-//
-//			// Configure timing specs    
-//			m_task[i]->Timing.ConfigureSampleClock("", sampleRate, DAQmxSampleClockActiveEdgeRising, 
-//				DAQmxSampleQuantityModeFiniteSamples, samplesPerChannel);
-//
-//			// Verify the task
-//			m_task[i]->Control(DAQmxTaskVerify);
-//
-//		
-//		}
-//		catch (CException* e)
-//		{
-//			//e->ReportError();
-//			e->Delete();
-//
-//			m_InitAiChannel = 0;
-//			//break;
-//		 }
-//	}
-//
-//	CString str;
-//		
-//		
-//	//for(int i = 0; i < 6; i++)
-//	{
-//		
-//		m_avg_PPVoltage[i][0] = 0 ;	
-//		m_avg_PPVoltage[i][1] = 0 ;	
-//		m_avg_PPVoltage[i][2] = 0 ;	
-//		m_avg_Freg[i][0] = 0;
-//		m_avg_Freg[i][1] = 0;
-//		m_avg_Freg[i][2] = 0;
-//		
-//		double lavgpp = (m_avg_PPVoltage[i][0]+m_avg_PPVoltage[i][1]+m_avg_PPVoltage[i][2]) / 3;
-//		double lavghz = (m_avg_Freg[i][0]+m_avg_Freg[i][1]+m_avg_Freg[i][2]) / 3;
-//	
-//		str.Format(_T("%4.0f Hz"), lavghz);
-//		//m_FreqLabel[i].put_Caption(str);
-//		//m_FreqLabel[i].put_ForeColor(0x0000ff00);
-//	
-//		str.Format(_T("%4.0f mV"), lavgpp);
-//		//m_VoltLabel[i].put_Caption(str);
-//		//m_VoltLabel[i].put_ForeColor(0x0000ff00);
-//
-//		m_graph[i].Plots.RemoveAll();
-//		
-//	}
-//
-//	
-////	for(int i = 0; i < 6; i++)
-//	{
-//		m_ChannelOK[i] = 3;
-//		m_VoltageOK[i] = 3;
-//		m_FrequencyOK[i] = 3;
-//
-//		m_ChannelOKCNT[i] = 0;
-//	}	
-//	UpdateData(false);
-//}
-//
-//void CAcqVoltageSamples_IntClkDlg::InitChannel()
-//{
-//
-//
-//
-//
-//    CWaitCursor wait;
-////	CString physicalChannel1;
-//    CString physicalChannel, referenceTriggerSource;
-//    double minimum, maximum, sampleRate;
-//    
-//
-//    UpdateData(true);
-//    //m_physicalChannel.GetWindowText(physicalChannel);
-//   // CNiString(m_minimum) >> minimum;
-//  //  CNiString(m_maximum) >> maximum;
-//	minimum = -5;
-//	maximum = 5;
-//    //CNiString(m_rate) >> sampleRate;
-//	//sampleRate = 100000;
-//	//samplesPerChannel = 3000;
-//	sampleRate = NI_SAMPLE_RATE;//200000;
-//	samplesPerChannel = NI_SAMPLE_COUNT;//6000;
-//   // CNiString(m_samplesPerChannel) >> samplesPerChannel;
-//
-//    //m_startButton.EnableWindow(false);
-//    RemoveEventHandler();
-//    CleanUpIfNecessary();
-//	m_InitAiChannel = 1;
-//	for(int i = 0 ; i < 8; i++)
-//	{
-//		m_data[i].SetSize(1,NI_SAMPLE_COUNT);
-//	}
-//	m_InitAiChannel = 1;
-//	for(int i = 0 ; i < 8; i++)
-//	{
-//
-//	//	m_data[i].SetSize(1,3000);
-//		if(m_CheckEnable[i] == 0)
-//		{
-//			continue;
-//		}
-//
-//		/*
-//		m_CheckID[i] = lCheckID[i];
-//		m_ChnnelName[i] = lCheckName[i];
-//		//m_NameLabel[i].put_Text(m_ChnnelName[i]);
-//
-//
-//		m_RefVoltageMin[i] = l_RefVoltageMin[i];
-//		m_RefVoltageMax[i] = l_RefVoltageMax[i];
-//		m_FrequencyMin[i] = l_FrequencyMin[i];
-//		m_FrequencyMax[i] = l_FrequencyMax[i];
-//
-//		m_ChannelOK[i] = 3;
-//		*/
-//
-//
-///*
-//	double m_RefVoltageMin[6];
-//	double m_RefVoltageMax[6];
-//	double m_FrequencyMin[6];
-//	double m_FrequencyMax[6];
-//
-////	double m_ChannelOK[6];
-////	double m_TotalOK[6];
-//*/
-//
-///*		
-//	CTextbox_okng //m_FreqLabel[6];
-//	CTextbox_okng //m_VoltLabel[6];
-//	CTextbox_okng //m_NameLabel[6];
-//*/
-//	//SetDlgItemText();
-//
-//
-//		
-//		try
-//		{
-//			// Create a new task
-//			m_task[i] = std::auto_ptr<CNiDAQmxTask>(new CNiDAQmxTask());
-//
-//			physicalChannel.Format(_T("Dev1/ai%d"),m_CheckID[i]);
-//			// Create a channel
-//		//	m_task[i]->AIChannels.CreateVoltageChannel(physicalChannel, "", 
-//		//		static_cast<DAQmxAITerminalConfiguration>(-1), minimum, maximum, 
-//		//		DAQmxAIVoltageUnitsVolts);
-//			m_task[i]->AIChannels.CreateVoltageChannel(physicalChannel, "", 
-//				DAQmxAITerminalConfigurationRse, minimum, maximum, 
-//				DAQmxAIVoltageUnitsVolts);
-//
-//			// Configure timing specs    
-//			m_task[i]->Timing.ConfigureSampleClock("", sampleRate, DAQmxSampleClockActiveEdgeRising, 
-//				DAQmxSampleQuantityModeFiniteSamples, samplesPerChannel);
-//
-//			// Verify the task
-//			m_task[i]->Control(DAQmxTaskVerify);
-//
-//		
-//		}
-//		catch (CException* e)
-//		{
-//			//e->ReportError();
-//			e->Delete();
-//
-//			m_InitAiChannel = 0;
-//			//break;
-//		 }
-//	}
-//
-//	CString str;
-//		
-//		
-//	for(int i = 0; i < 8; i++)
-//	{
-//		
-//		m_avg_PPVoltage[i][0] = 0 ;	
-//		m_avg_PPVoltage[i][1] = 0 ;	
-//		m_avg_PPVoltage[i][2] = 0 ;	
-//		m_avg_Freg[i][0] = 0;
-//		m_avg_Freg[i][1] = 0;
-//		m_avg_Freg[i][2] = 0;
-//		
-//		double lavgpp = (m_avg_PPVoltage[i][0]+m_avg_PPVoltage[i][1]+m_avg_PPVoltage[i][2]) / 3;
-//		double lavghz = (m_avg_Freg[i][0]+m_avg_Freg[i][1]+m_avg_Freg[i][2]) / 3;
-//	
-//		str.Format(_T("%4.0f Hz"), lavghz);
-//		//m_FreqLabel[i].put_Caption(str);
-//		//m_FreqLabel[i].put_ForeColor(0x0000ff00);
-//	
-//		str.Format(_T("%4.0f mV"), lavgpp);
-//		//m_VoltLabel[i].put_Caption(str);
-//		//m_VoltLabel[i].put_ForeColor(0x0000ff00);
-//
-//		m_graph[i].Plots.RemoveAll();
-//		
-//	}
-//
-//	
-//	for(int i = 0; i < 8; i++)
-//	{
-//		m_ChannelOK[i] = 3;
-//		m_VoltageOK[i] = 3;
-//		m_FrequencyOK[i] = 3;
-//
-//		m_ChannelOKCNT[i] = 0;
-//	}	
-//	UpdateData(false);
-//}
-//
-//void CAcqVoltageSamples_IntClkDlg::InitClearChannel()
-//{
-//
-//
-//
-//
-//    CWaitCursor wait;
-////	CString physicalChannel1;
-//    CString physicalChannel, referenceTriggerSource;
-//    double minimum, maximum, sampleRate;
-//    
-//
-//    UpdateData(true);
-//    //m_physicalChannel.GetWindowText(physicalChannel);
-//   // CNiString(m_minimum) >> minimum;
-//  //  CNiString(m_maximum) >> maximum;
-//	minimum = -5;
-//	maximum = 5;
-//    //CNiString(m_rate) >> sampleRate;
-//	//sampleRate = 100000;
-//	//samplesPerChannel = NI_SAMPLE_COUNT;
-//   // CNiString(m_samplesPerChannel) >> samplesPerChannel;
-//
-//    //m_startButton.EnableWindow(false);
-//    RemoveEventHandler();
-//    CleanUpIfNecessary();
-//	m_InitAiChannel = 1;
-//	for(int i = 0 ; i < 8; i++)
-//	{
-//		m_data[i].SetSize(1,NI_SAMPLE_COUNT);
-//	}
-//	for(int i = 0 ; i < 8; i++)
-//	{
-//
-//		m_CheckEnable[i] = 0;
-//
-//	//	m_data[i].SetSize(1,3000);
-//		if(m_CheckEnable[i] == 0)
-//		{
-//			continue;
-//		}
-//
-//	
-//	}
-//
-//	CString str;
-//		
-//		
-//	for(int i = 0; i < 8; i++)
-//	{
-//		
-//		m_avg_PPVoltage[i][0] = 0 ;	
-//		m_avg_PPVoltage[i][1] = 0 ;	
-//		m_avg_PPVoltage[i][2] = 0 ;	
-//		m_avg_Freg[i][0] = 0;
-//		m_avg_Freg[i][1] = 0;
-//		m_avg_Freg[i][2] = 0;
-//		
-//		double lavgpp = (m_avg_PPVoltage[i][0]+m_avg_PPVoltage[i][1]+m_avg_PPVoltage[i][2]) / 3;
-//		double lavghz = (m_avg_Freg[i][0]+m_avg_Freg[i][1]+m_avg_Freg[i][2]) / 3;
-//	
-//		str.Format(_T("%4.0f Hz"), lavghz);
-//		//m_FreqLabel[i].put_Caption(str);
-//		//m_FreqLabel[i].put_ForeColor(0x0000ff00);
-//	
-//		str.Format(_T("%4.0f mV"), lavgpp);
-//		//m_VoltLabel[i].put_Caption(str);
-//		//m_VoltLabel[i].put_ForeColor(0x0000ff00);
-//
-//		m_graph[i].Plots.RemoveAll();
-//		
-//	}
-//
-//	
-//	for(int i = 0; i < 8; i++)
-//	{
-//		m_ChannelOK[i] = 3;
-//		m_VoltageOK[i] = 3;
-//		m_FrequencyOK[i] = 3;
-//
-//		m_ChannelOKCNT[i] = 0;
-//	}	
-//	UpdateData(false);
-//}
-//
-//
-//void CAcqVoltageSamples_IntClkDlg::ReadChannel(int lch)
-//{
-//   if(m_InitAiChannel == 0)
-//   {
-//	   return;
-//   }
-//
-//	if(m_CheckEnable[lch] == 0)
-//		return;
-//
-//
-//    try
-//    {
-//		// Create multi-channel reader
-//		m_reader[lch] = std::auto_ptr<CNiDAQmxAnalogMultiChannelReader>(new CNiDAQmxAnalogMultiChannelReader(m_task[lch]->Stream));
-//
-//		// Start asynchronous read
-//		m_reader[lch]->ReadMultiSample(samplesPerChannel, m_data[lch]);
-//
-//    }
-//    catch (CException* e)
-//    {
-//        e->ReportError();
-//        e->Delete();
-//		m_InitAiChannel = 0;
-//     //   m_startButton.EnableWindow(true);
-//     }
-//}
-
-//
-//void CAcqVoltageSamples_IntClkDlg::ReadChannel()
-//{
-//   if(m_InitAiChannel == 0)
-//   {
-//	   return;
-//   }
-//
-//	if(m_CheckEnable[lch] == 0)
-//		return;
-//
-//
-//    try
-//    {
-//		// Create multi-channel reader
-//		m_reader[lch] = std::auto_ptr<CNiDAQmxAnalogMultiChannelReader>(new CNiDAQmxAnalogMultiChannelReader(m_task[lch]->Stream));
-//
-//		// Start asynchronous read
-//		m_reader[lch]->ReadMultiSample(samplesPerChannel, m_data[lch]);
-//
-//    }
-//    catch (CException* e)
-//    {
-//        e->ReportError();
-//        e->Delete();
-//		m_InitAiChannel = 0;
-//     //   m_startButton.EnableWindow(true);
-//     }
-//}
-
-
-
-//
-//void CAcqVoltageSamples_IntClkDlg::UpdatePlot(int lch)
-//{
-//   
-//	//m_PPVoltage[CheckID] = PPVoltage;	
-//	//m_Frequency[CheckID] = Frequency;
-//			if((m_PPVoltage[lch] < 10)
-//				||((m_PPVoltage[lch] < 100) 
-//					&& (( m_CheckID[lch] < 4) || (m_CheckID[lch] > 11))))
-//			{
-//				m_graph[lch].Axes.Item("YAxis-1").Maximum = 1.2;
-//				m_graph[lch].Axes.Item("YAxis-1").Minimum = -1.2;
-//			}
-//			else if(m_PPVoltage[lch] < 100)
-//			{
-//   				if((m_graph[lch].Axes.Item("YAxis-1").Maximum > m_PPVoltage[lch]/2000*1.4 *3)||(m_graph[lch].Axes.Item("YAxis-1").Maximum < m_PPVoltage[lch]/2000 *3))
-//				{
-//					m_graph[lch].Axes.Item("YAxis-1").Maximum = m_PPVoltage[lch] * 1.2 / 2000 *5 ;
-//					m_graph[lch].Axes.Item("YAxis-1").Minimum = -m_PPVoltage[lch] * 1.2 / 2000 *5;
-//				}
-//			}			
-//			else if(m_PPVoltage[lch] < 500)
-//			{
-//   				if((m_graph[lch].Axes.Item("YAxis-1").Maximum > m_PPVoltage[lch]/2000*2.5)||(m_graph[lch].Axes.Item("YAxis-1").Maximum < m_PPVoltage[lch]/2000*2.5))
-//				{
-//					m_graph[lch].Axes.Item("YAxis-1").Maximum = m_PPVoltage[lch] * 1.2 / 2000 *3;
-//					m_graph[lch].Axes.Item("YAxis-1").Minimum = -m_PPVoltage[lch] * 1.2 / 2000 *3;
-//				}
-//			}
-//			else if(m_PPVoltage[lch] < 1000)
-//			{
-//   				if((m_graph[lch].Axes.Item("YAxis-1").Maximum > m_PPVoltage[lch]/2000*1.4*2)||(m_graph[lch].Axes.Item("YAxis-1").Maximum < m_PPVoltage[lch]/2000*2))
-//				{
-//					m_graph[lch].Axes.Item("YAxis-1").Maximum = m_PPVoltage[lch] * 1.2 / 2000 *2.5;
-//					m_graph[lch].Axes.Item("YAxis-1").Minimum = -m_PPVoltage[lch] * 1.2 / 2000 *2.5;
-//				}
-//			}
-//			else if(m_PPVoltage[lch] < 2000)
-//			{
-//   				if((m_graph[lch].Axes.Item("YAxis-1").Maximum > m_PPVoltage[lch]/2000*1.4 *1.5)||(m_graph[lch].Axes.Item("YAxis-1").Maximum < m_PPVoltage[lch]/2000 *1.5))
-//				{
-//					m_graph[lch].Axes.Item("YAxis-1").Maximum = m_PPVoltage[lch] * 1.2 / 2000 *1.5;
-//					m_graph[lch].Axes.Item("YAxis-1").Minimum = -m_PPVoltage[lch] * 1.2 / 2000 *1.5;
-//				}
-//			}
-//			else if(m_PPVoltage[lch] < 4000)
-//			{
-//   				if((m_graph[lch].Axes.Item("YAxis-1").Maximum > m_PPVoltage[lch]/2000*1.4)||(m_graph[lch].Axes.Item("YAxis-1").Maximum < m_PPVoltage[lch]/2000))
-//				{
-//					m_graph[lch].Axes.Item("YAxis-1").Maximum = m_PPVoltage[lch] * 1.3 / 2000;
-//					m_graph[lch].Axes.Item("YAxis-1").Minimum = -m_PPVoltage[lch] * 1.3 / 2000;
-//				}
-//			}
-//			else
-//			{
-//				m_graph[lch].Axes.Item("YAxis-1").Maximum = 2.4;
-//				m_graph[lch].Axes.Item("YAxis-1").Minimum = -2.4;
-//			}
-//
-//			// Plot data
-//			m_graph[lch].Plots.RemoveAll();
-//
-//		//	for (unsigned int i = 0; i < m_task[lch]->AIChannels.Count; i++)
-//			for (unsigned int i = 0; i < 8; i++)
-//			{
-//				m_graph[lch].Plots.Add();
-//				//m_graph[lch].Plots.Item(i+1).LineColor = m_colors[i % 8];
-//				m_graph[lch].Plots.Item(i+1).LineColor = m_colors[0];
-//			}
-///*	
-//			for (unsigned int i = 0; i < 500; i++)
-//			{
-//				m_graph[lch].PlotY( Check_data[lch][i]);
-//			}
-//*/
-//
-//			m_graph[lch].PlotY(Check_data[lch]);
-//
-//		
-//}
-//
-//
 
 
 
@@ -4682,40 +3932,25 @@ void CAcqVoltageSamples_IntClkDlg::OnTimer(UINT_PTR nIDEvent)
 					if(GetTimeCheck(_TIME_ID_RESFRESH_) > 5000)
 					{
 						RefreshTimeOn = 0;
-						CLOSE_Result_Display();
-						DisplayClear();
+						if (m_TEST_Result == 1)
+						{
+							CLOSE_Result_Display();
+							DisplayClear();
 
-						m_cLbOkNg.put_Caption(_T("STOP"));
-						m_cLbOkNg.put_BackColor(0x0000FFFF);
+							m_cLbOkNg.put_Caption(_T("STOP"));
+							m_cLbOkNg.put_BackColor(0x0000FFFF);
 
-						m_GMES_CommError = 0;
-						for(int  i = 0; i < gTestSeqData.TestCnt; i++)
-						{		
-
-							m_CtrlListMainProcess.SetItem(i, 2, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL);   
-							m_CtrlListMainProcess.SetItem(i, 3, LVIF_TEXT, _T("0"), NULL, NULL, NULL, NULL);   	
-						//	m_CtrlListTestProcess.SetItem(i, 9, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL);   
-
-						/*	if(m_CtrlListMainProcess.GetCheck(i))
+							m_GMES_CommError = 0;
+							for (int i = 0; i < gTestSeqData.TestCnt; i++)
 							{
-								gTestSeqData.TestStepList[i].bEnable = 1;			
+								m_CtrlListMainProcess.SetItem(i, 2, LVIF_TEXT, _T(""), NULL, NULL, NULL, NULL);
+								m_CtrlListMainProcess.SetItem(i, 3, LVIF_TEXT, _T("0"), NULL, NULL, NULL, NULL);
+					
+								m_CtrlListMainProcess.Update(i);
+
+								gTestSeqData.TestStepList[i].m_Result = 1;
+
 							}
-							else
-							{
-								if(g_MesEnable)
-								{
-									gTestSeqData.TestStepList[i].bEnable = 1;	
-									m_CtrlListMainProcess.SetCheck(i);
-								}
-								else
-								{
-									gTestSeqData.TestStepList[i].bEnable = 0;
-								}
-							}*/
-							m_CtrlListMainProcess.Update(i);
-
-							gTestSeqData.TestStepList[i].m_Result = 1;
-		
 						}
 					}
 				}
@@ -6890,6 +6125,7 @@ BEGIN_EVENTSINK_MAP(CAcqVoltageSamples_IntClkDlg, CDialog)
 	ON_EVENT(CAcqVoltageSamples_IntClkDlg, IDC_LABEL_WIFI_CHECK, DISPID_CLICK, CAcqVoltageSamples_IntClkDlg::ClickLabelWifiCheck, VTS_NONE)
 	ON_EVENT(CAcqVoltageSamples_IntClkDlg, IDC_LABEL_GET_AED_SENSOR, DISPID_CLICK, CAcqVoltageSamples_IntClkDlg::ClickLabelAEDSensor, VTS_NONE)
 	ON_EVENT(CAcqVoltageSamples_IntClkDlg, IDC_LABEL_MAC_CHECK_MARK, DISPID_CLICK, CAcqVoltageSamples_IntClkDlg::ClickLabelMacCheckMark, VTS_NONE)
+	ON_EVENT(CAcqVoltageSamples_IntClkDlg, IDC_LABEL_BARCODE_MARK, DISPID_CLICK, CAcqVoltageSamples_IntClkDlg::ClickLabelBarcodeMark, VTS_NONE)
 END_EVENTSINK_MAP()
 
 
@@ -8018,6 +7254,31 @@ int CAcqVoltageSamples_IntClkDlg::GetDetParam()
 		m_nPanelWidth = m_detParam.dwImgCol;
 		m_nPanelHeight = m_detParam.dwImgRow;
 
+		gNoRoic = m_nPanelWidth / 256;
+		m_RoicWidthEnd = 256;
+		if (m_nPanelWidth % 256 != 0)
+		{
+			unsigned int lRoicWidthRsv = m_nPanelWidth - gNoRoic * 256;
+			if (lRoicWidthRsv > 0)
+			{
+				m_RoicWidthEnd = lRoicWidthRsv;// (lRoicWidthRsv + 256) / 2;
+				gNoRoic += 1;
+			}
+		}
+
+		gNoGate = m_nPanelHeight / 512;
+		m_GateHeightEnd = 512;
+		if (m_nPanelHeight % 512 != 0)
+		{
+			unsigned int lGateHeightRsv = m_nPanelHeight - gNoGate * 512;
+			if (lGateHeightRsv > 0)
+			{
+				m_GateHeightEnd = lGateHeightRsv;// (lRoicHeightRsv + 512) / 2;
+				gNoGate += 1;
+			}
+		}
+
+
 		//wsprintf(str, _T("%d"), m_detParam.dwImgCol);
 		//m_staticPanelWidth.SetWindowText(str);
 		//wsprintf(str, _T("%d"), m_detParam.dwImgRow);
@@ -8096,6 +7357,8 @@ int CAcqVoltageSamples_IntClkDlg::GetDetParam()
 		m_DSERVER_Ver_major = version_major;
 		m_DSERVER_Ver_minor = version_minor;
 		m_DSERVER_Ver_release = version_release;
+
+		m_dwDSERVERVersion = m_detParam2.dwDSERVERVersion;
 	
 
 
@@ -8111,8 +7374,26 @@ int CAcqVoltageSamples_IntClkDlg::GetDetParam()
 		m_Microchip_Ver_major = version_major;
 		m_Microchip_Ver_minor = version_minor;
 
+		if (g_AVR_Type_HK_HQ != m_detParam2.dwPlatformType)
+		{
+			//CString 
+			if (m_detParam2.dwPlatformType == MICOM_TYPE_HK)
+				MessageBox("Change HK Platform \r\n Check SET MODEL NAME ","DETECT HK Platform");
+			else
+				MessageBox("Change HQ Platform \r\n Check SET MODEL NAME ", "DETECT HQ Platform");
 
-		version = m_detParam2.dwAVRVersion;
+		}
+		g_AVR_Type_HK_HQ = m_detParam2.dwPlatformType;
+
+		if (g_AVR_Type_HK_HQ == MICOM_TYPE_HK)
+		{
+			version = m_detParam2.dwAVRVersion;
+		}
+		else
+		{
+			version = m_detParam2.dwDropMicomVersion;
+		}
+
 		version_minor = version & 0x0ff;
 		version >>= 8;
 		version_major = version & 0x0ff;
@@ -8387,6 +7668,8 @@ void CAcqVoltageSamples_IntClkDlg::AddLogData(LPCTSTR pszMesg)
 	int		nIdx = m_listLog.AddString(str);
 	m_listLog.SetCurSel(nIdx);
 
+	SaveFileLog(str);
+
 	//m_listLog.AddString(_T("1"));
 	//m_listLog.AddString(_T("2"));
 	//m_listLog.AddString(_T("3"));
@@ -8420,6 +7703,47 @@ void CAcqVoltageSamples_IntClkDlg::AddLogData(const CCommPacket & pktCommm, BOOL
 	SaveFileLogData(pktCommm, bSend);
 
 
+}
+
+void CAcqVoltageSamples_IntClkDlg::SaveFileLog(CString	str)
+{
+	//if (! ::IsWindow(m_listLog.m_hWnd))
+	//	return;
+
+
+//	CString	str;
+	char	szCmdName[128], szResName[128];
+
+
+
+		SYSTEMTIME	st;
+	GetLocalTime(&st);//PATH_BASE_DIR
+
+//	::CreateDirectory(g_theApp.m_strSavePath, NULL);
+	CString m_strPath;
+	m_strPath = PATH_BASE_DIR;
+	m_strPath += "\\Log";
+
+	TCHAR	szMesg[4096], szPath[256];
+	int lSize = 0;
+
+
+	_stprintf(szPath, _T("%s\\%s_%04d%02d%02d_%02d.logdbg"),
+		(LPCTSTR)m_strPath,
+		m_WipID,
+		st.wYear, st.wMonth, st.wDay, st.wHour);
+
+	FILE*	fp;
+	if ((fp = _tfopen(szPath, _T("a+"))) != NULL)
+	{		
+		
+			lSize = _stprintf(szMesg,_T("%s\r\n"), str.GetBuffer());
+
+			fwrite(szMesg, lSize, 1, fp);
+
+		
+			fclose(fp);
+	}	
 }
 
 void CAcqVoltageSamples_IntClkDlg::SaveFileLogData(const CCommPacket & pktCommm, BOOL bSend)
@@ -8629,6 +7953,7 @@ void CAcqVoltageSamples_IntClkDlg::OnBnClickedBtnGetdark()
 int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int lResult = 0;
 	CWTCPClient	tcpCli;
 	CCommPacket	pktRecv, pktSend;
 
@@ -8654,24 +7979,209 @@ int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int l
 	}
 
 	DisconnectToDetector(tcpCli);
-
+	m_dwDataSize = pktRecv.dwDataSize;
 	SaveImage(pktRecv, TRUE);
+//	CheckImage((char *)pktRecv.m_pDataBuf, lMin, lMax);
 
-	if(CheckImage((char *)pktRecv.m_pDataBuf, lMin, lMax))
+	if (CheckDarkImage((char *)pktRecv.m_pDataBuf, lMin, lMax))	//if (CheckDarkImage((char *)&pktRecv.m_pDataBuf[8], lMin, lMax))//if (CheckDarkImage((char *)pktRecv.m_pDataBuf, lMin, lMax))	
 	{
-			//packet.m_pDataBuf + 8, packet.dwDataSize - 8
+		//packet.m_pDataBuf + 8, packet.dwDataSize - 8
+		lResult = 1;
 	}
-	return 1;
+	else
+	{
+		lResult = 0;
+	}
+	DisplayCheckErrorImage((char *)&pktRecv.m_pDataBuf[8]); //DisplayCheckErrorImage(pktRecv);
+	
+	return lResult;
+
 	
 }
-
-int CAcqVoltageSamples_IntClkDlg::CheckImage(char *buffer, unsigned int lMin, unsigned int lMax)//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+void CAcqVoltageSamples_IntClkDlg::GetMinMaxFromImgbuf(unsigned short *img_buf, int img_width, int img_height)
 {
-//#define WIDTH 3328
-//#define HEIGHT 2816
-//	BITMAPINFOHEADER bmiHeader;
-	//char *buffer;
-//	FILE *fp;
+	int MaxCount[10], MinCount[10];
+	double MaxAry[10], MinAry[10];
+	for (int i = 0; i < 10; i++) {
+		MaxCount[i] = 0;
+		MinCount[i] = 0;
+		MaxAry[i] = 0;
+		MinAry[i] = 65535;
+	}
+
+	for (int y = 1; y < img_height; y++)
+	{
+		for (int i = 1; i < img_width-1; i++)
+		{
+			if ((g_TotalMin > img_buf[y*img_width + i])&&(30 < img_buf[y*img_width + i]))
+				g_TotalMin = img_buf[y*img_width + i];
+
+			if ((g_TotalMax < img_buf[y*img_width + i]) && (65000 > img_buf[y*img_width + i]))
+			{
+				g_TotalMax = (img_buf[y*img_width + i]- g_TotalMax)/100.+ g_TotalMax;
+
+				//for (int m = 0; m < 10; m++) {
+				//	
+				//	if (MaxAry[m] < img_buf[y*img_width + i]  )
+				//	{
+				//		MaxCount[m]++;
+				//		if (MaxCount[m] > 10)
+				//		{
+				//			MaxAry[m] = img_buf[y*img_width + i];
+				//			g_TotalMax = MaxAry[m];
+				//		}
+				//	}
+				//	else
+				//	{
+				//		//MaxAry[m] = img_buf[y*img_width + i];
+				//		break;
+				//	}
+				//}
+			}
+		}
+	}
+}
+//5000~15000
+void CAcqVoltageSamples_IntClkDlg::UpdateMeanMedianFromImgbuf(unsigned short *img_buf, double* mean_buf, unsigned int* median_buf, int img_width, int img_height)
+{
+	int x_offset = 0, y_offset = 0;
+
+	//*(mean_buf) = getMean(img_buf, x_offset, 0, img_height, m_RoicWidthEnd, img_width);
+	//*(median_buf) = GetMedian(img_buf, x_offset, 0, img_height, m_RoicWidthEnd, img_width);
+
+	//x_offset = m_RoicWidthEnd;
+	for (int i_y = 0; i_y < gNoGate - 1; i_y++)
+	{
+		
+	//	*(mean_buf + i) = getMean(img_buf, 0, y_offset, 512, img_width, img_width);
+	//	*(median_buf + i) = GetMedian(img_buf, 0, y_offset, 512, img_width, img_width);
+	
+		x_offset = 0;
+
+		for (int i = 0; i < gNoRoic - 1; i++) {
+
+			*(mean_buf + i_y* gNoRoic + i) = getMean(img_buf, x_offset, y_offset, 512, 256, img_width);
+			*(median_buf + i_y * gNoRoic + i) = GetMedian(img_buf, x_offset, y_offset, 512, 256, img_width);
+			x_offset = 256 * (i + 1);
+			TRACE("Mean:%d \n", i_y* gNoRoic + i);
+		}
+
+		*(mean_buf + i_y * gNoRoic+gNoRoic - 1) = getMean(img_buf, x_offset, y_offset, 512,  m_RoicWidthEnd, img_width);
+		*(median_buf + i_y * gNoRoic + gNoRoic - 1) = GetMedian(img_buf, x_offset, y_offset, 512,  m_RoicWidthEnd, img_width);
+		y_offset = 512 * (i_y + 1);
+		TRACE("Mean:%d \n", i_y * gNoRoic + gNoRoic - 1);
+	}
+
+	//*(mean_buf + gNoGate - 1) = getMean(img_buf, 0, y_offset, m_RoicHeightEnd, img_width, img_width);
+	//*(median_buf + gNoGate - 1) = GetMedian(img_buf, 0, y_offset, m_RoicHeightEnd, img_width, img_width);
+
+	for (int i = 0; i < gNoRoic ; i++) {
+
+		*(mean_buf + (gNoGate - 1) * gNoRoic + i) = getMean(img_buf, x_offset, y_offset, m_GateHeightEnd, 256, img_width);
+		*(median_buf + (gNoGate - 1) * gNoRoic + i) = GetMedian(img_buf, x_offset, y_offset, m_GateHeightEnd, 256, img_width);
+		x_offset = 256 * (i + 1);
+		TRACE("Mean:%d \n", (gNoGate - 1) * gNoRoic + i);
+	}
+
+	/**(mean_buf + (gNoGate) * gNoRoic + gNoRoic - 1) = getMean(img_buf, x_offset, y_offset, m_GateHeightEnd, m_RoicWidthEnd, img_width);
+	*(median_buf + (gNoGate ) * gNoRoic + gNoRoic - 1) = GetMedian(img_buf, x_offset, y_offset, m_GateHeightEnd, m_RoicWidthEnd, img_width);
+	TRACE("Mean:%d \n", (gNoGate)* gNoRoic + gNoRoic - 1);*/
+}
+
+
+void CAcqVoltageSamples_IntClkDlg::UpdateMeanMedianFromImgbufRoic(unsigned short *img_buf, double* mean_buf, unsigned int* median_buf, int img_width, int img_height, int no_roic)
+{
+	int x_offset = 0, y_offset = 0;
+
+	//*(mean_buf) = getMean(img_buf, x_offset, 0, img_height, m_RoicWidthEnd, img_width);
+	//*(median_buf) = GetMedian(img_buf, x_offset, 0, img_height, m_RoicWidthEnd, img_width);
+
+	//x_offset = m_RoicWidthEnd;
+	for (int i = 0; i < no_roic - 1; i++) {
+
+		*(mean_buf + i) = getMean(img_buf, x_offset, 0, img_height, 256, img_width);
+		*(median_buf + i) = GetMedian(img_buf, x_offset, 0, img_height, 256, img_width);
+		x_offset = 256 * (i+1);
+	}
+
+	*(mean_buf + no_roic - 1) = getMean(img_buf, x_offset, 0, img_height, m_RoicWidthEnd, img_width);
+	*(median_buf + no_roic - 1) = GetMedian(img_buf, x_offset, 0, img_height, m_RoicWidthEnd, img_width);
+
+}
+void CAcqVoltageSamples_IntClkDlg::UpdateMeanMedianFromImgbufGate(unsigned short *img_buf, 
+	double* mean_buf, unsigned int* median_buf, int img_width, int img_height, int no_gate)
+{
+	int x_offset = 0, y_offset = 0;
+
+	//*(mean_buf) = getMean(img_buf, 0, y_offset, m_RoicHeightEnd, img_width, img_width  );
+	//*(median_buf) = GetMedian(img_buf, 0, y_offset, m_RoicHeightEnd, img_width, img_width);
+	
+	//y_offset = m_RoicHeightEnd;
+	for (int i = 0; i < no_gate - 1; i++) {
+
+		*(mean_buf + i) = getMean(img_buf, 0, y_offset, 512, img_width, img_width);
+		*(median_buf + i) = GetMedian(img_buf, 0, y_offset, 512, img_width, img_width);
+		y_offset = 512 * (i+1);
+	}
+
+	*(mean_buf + no_gate - 1) = getMean(img_buf, 0, y_offset, m_GateHeightEnd, img_width, img_width);
+	*(median_buf + no_gate - 1) = GetMedian(img_buf, 0, y_offset, m_GateHeightEnd, img_width, img_width);
+
+}
+
+double CAcqVoltageSamples_IntClkDlg::getMean(unsigned short *img_buf, int start_x, int start_y, int height, int width, int imageWidth) {
+	double total = 0;
+	double ImgVal = 0;
+	double Imean = 0;
+	int nNumber = 0;
+
+	for (int y = start_y; y < height + start_y; y++)
+	{
+		if (y % 100 == 0)
+		{
+			Imean = 0;
+		}
+		for (int x = start_x; x < width + start_x; x++)
+		{
+			 ImgVal = img_buf[y*imageWidth + x];
+			 total += ImgVal;
+			 nNumber++;
+		}
+	}
+	Imean = total / (height*width);
+	return Imean;// total / (height*width);
+}
+
+int CAcqVoltageSamples_IntClkDlg::GetMedian(unsigned short *img_buf, int start_x, int start_y, int height, int width, int imageWidth) {
+	int median = 0;
+	//int index = 0;
+	//int size = height * width;// glory
+
+	//WORD *temp = new WORD[size + 1];
+	//for (int y = start_y; y < height + start_y; y++)
+	//	for (int x = start_x; x < width + start_x; x++)
+	//		temp[index++] = img_buf[y*imageWidth + x];
+	////temp[index++] = image[y*rCol + x];
+
+ // //memcpy(temp, image, sizeof(WORD)*size); //2019_0523_yspark_1 : remove line (it is error code)
+ // //qsort(temp, size, sizeof(WORD), compare_ascending_order);
+	//quicksort(temp, 0, size - 1); //2018_0331_yspark_3 : change qsort => quicksort
+	//median = temp[size / 2];
+	//delete[] temp;
+
+	return median;
+}
+
+
+int CAcqVoltageSamples_IntClkDlg::CheckDarkImage(char *buffer, unsigned int lMin, unsigned int lMax)//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+{
+
+#if 0
+	//#define WIDTH 3328
+	//#define HEIGHT 2816
+	//	BITMAPINFOHEADER bmiHeader;
+		//char *buffer;
+	//	FILE *fp;
 	unsigned int lWidth, lHeight;
 	unsigned int color;
 	int i;
@@ -8679,7 +8189,7 @@ int CAcqVoltageSamples_IntClkDlg::CheckImage(char *buffer, unsigned int lMin, un
 	int len;
 
 	WORD *ptr;
-	
+
 	//HWND hwnd;
 	//HDC hdc;
 	//RECT rc;
@@ -8690,24 +8200,29 @@ int CAcqVoltageSamples_IntClkDlg::CheckImage(char *buffer, unsigned int lMin, un
 	//fp = _tfopen(filename, _T("rb"));
 	//len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
 	//fclose(fp);
+	if (buffer == NULL)
+	{
+		MessageBox("Get Dark Image Fail!");
+		return 0;
+	}
 	unsigned long sum = 0;
 	int lcnt = 0;
 	memcpy(&lWidth, buffer, 4);
 	memcpy(&lHeight, &buffer[4], 4);
-	ptr = (WORD *)(buffer+8);
+	ptr = (WORD *)(buffer + 8);
 	// change color to grayscale
-	for (i = 0; i < lWidth * lHeight; i++) 
+	for (i = 0; i < lWidth * lHeight; i++)
 	{
 		color = *ptr;
 		//color = (int)(*(buffer + i*2));
-		
+
 		b = color & 0x001f;
 		color >>= 5;
 		g = color & 0x001f;
 		color >>= 5;
 		r = color & 0x003f;
 
-		gray = (r + g + b) / 3 +4;
+		gray = (r + g + b) / 3 + 4;
 		//gray = ((float)r*0.3 + (float)g*0.59 + (float)b*0.11);
 		//gray = ((float)r*0.299 + (float)g*0.587 + (float)b*0.114) + 4;
 
@@ -8719,14 +8234,179 @@ int CAcqVoltageSamples_IntClkDlg::CheckImage(char *buffer, unsigned int lMin, un
 		//*(buffer + i*2) = color;
 		*ptr++ = color;
 		lcnt++;
-		
+
 		sum += gray;
 
 	}
+#endif
+	if (buffer == NULL)
+	{
+		MessageBox("Get Dark Image Fail!");
+		return 0;
+	}
+	char TempBuf[4096];
+	short Tempimg_buf[30000];
 
-	UINT lavg = (UINT)(sum / (lWidth * lHeight));
-	m_ImageAvg = lavg;
-	if((lavg > lMin)&&(lavg < lMax))
+	unsigned int lWidth, lHeight;
+	//memcpy(&lHeight, buffer, 4);
+	//memcpy(&lWidth, &buffer[4], 4);
+	//m_dwDataSize
+	
+	if ((m_nPanelWidth *m_nPanelHeight *2+8) != m_dwDataSize)//if ((m_nPanelWidth != lWidth) || (m_nPanelHeight != lHeight))
+	{
+	MessageBox("Pannel Size Error! \r\n Ger SWver First!!");
+	return 0;
+	}
+
+	if ((m_nPanelWidth < 4096) && (m_nPanelHeight < 4096))
+	{
+		m_WidthRcv = m_nPanelWidth;
+		m_HeightRcv = m_nPanelHeight;
+		lWidth = m_nPanelWidth; ;
+		lHeight = m_nPanelHeight;
+	}
+	else
+	{
+		MessageBox("Get Dark Image Size Fail!");
+		return 0;
+	}
+	double  mean_buf[256];
+	double   *mean_Roic_buf;
+	double   *mean_gate_buf;
+	unsigned int    *median_buf;
+	unsigned int    *median_Roic_buf;
+	unsigned int    *median_Gate_buf;
+	unsigned short *img_buf;
+	img_buf = new unsigned short[lWidth * lHeight];
+	gNoRoic = lWidth / 256;
+	m_RoicWidthEnd = 256;
+	if (lWidth % 256 != 0)
+	{
+		unsigned int lRoicWidthRsv = lWidth - gNoRoic * 256;
+		if (lRoicWidthRsv > 0)
+		{
+			m_RoicWidthEnd = lRoicWidthRsv;// (lRoicWidthRsv + 256) / 2;
+			gNoRoic += 1;
+		}
+		//	 m_RoicWidthEnd
+
+	}
+
+	gNoGate = lHeight / 512;
+	m_GateHeightEnd = 512;
+	if (lHeight % 512 != 0)
+	{
+		unsigned int lGateHeightRsv = lHeight - gNoGate * 512;
+		if (lGateHeightRsv > 0)
+		{
+			m_GateHeightEnd = lGateHeightRsv;// (lRoicHeightRsv + 512) / 2;
+			gNoGate += 1;
+		}
+	}
+
+	//mean_buf = new double[256];//gNoRoic*gNoGate];
+	mean_Roic_buf = new double[gNoRoic];
+	mean_gate_buf = new double[gNoGate];
+	median_buf = new unsigned int[gNoRoic*gNoGate];
+	median_Roic_buf = new unsigned int[gNoRoic];
+	median_Gate_buf = new unsigned int[gNoGate];
+
+	//error = ReadImgFromFile_Unsigned(img_buf, cImagePath, img_width, img_height);
+	memcpy(img_buf, &buffer[8], lWidth * lHeight * 2);// sizeof(img_buf));
+
+	memcpy(TempBuf, buffer, 4096);// sizeof(img_buf));
+	
+
+	g_TotalMin = 0xFFFF;
+	g_TotalMax = 0;
+
+	UpdateMeanMedianFromImgbuf((unsigned short *)img_buf, mean_buf, median_buf, lWidth, lHeight);
+	UpdateMeanMedianFromImgbufRoic((unsigned short *)img_buf, mean_Roic_buf, median_Roic_buf, lWidth, lHeight, gNoRoic);
+	UpdateMeanMedianFromImgbufGate((unsigned short *)img_buf, mean_gate_buf, median_Gate_buf, lWidth, lHeight, gNoGate);
+
+	int lNg[16];
+	m_TotalNG = 0;
+
+	for (int i = 0; i < gNoRoic; i++)
+	{
+		m_RoicAvgNG[i] = 1;
+		for (int g_i = 0; g_i < gNoGate; g_i++)
+		{
+
+			if ((mean_buf[g_i*gNoRoic + i] > lMin) && (mean_buf[g_i*gNoRoic + i] < lMax))//if ((mean_buf[g_i*gNoRoic + i] > g_RefMin_buf[i]) && (mean_buf[g_i*gNoRoic + i] < g_RefMax_buf[i]))
+			{
+				m_RoicAvgNG[i] = 0;
+				continue;
+			}
+			else
+			{
+				m_TotalNG++;
+
+			}
+		}
+	}
+
+	for (int g_i = 0; g_i < gNoGate; g_i++)
+	{
+		m_GateAvgNG[g_i] = 1;
+		for (int i = 0; i < gNoRoic; i++)
+		{
+			if ((mean_buf[g_i*gNoRoic + i] > lMin) && (mean_buf[g_i*gNoRoic + i] < lMax))//if ((mean_buf[g_i*gNoRoic + i] > g_RefMin_buf[i]) && (mean_buf[g_i*gNoRoic + i] < g_RefMax_buf[i]))
+			{
+				m_GateAvgNG[g_i] = 0;
+				continue;
+			}
+			else
+			{
+				m_TotalNG++;
+			}
+		}
+	}
+	for (int i = 0; i < gNoRoic; i++)
+	{
+		g_RoicMean[i] = mean_Roic_buf[i];
+	}
+
+	for (int i = 0; i < gNoGate; i++)
+	{
+		g_GateMean[i] = mean_gate_buf[i];
+	
+	}
+
+
+	//for (int i = 0; i < gNoRoic; i++)
+	//{
+	//	g_RoicMean[i] = mean_Roic_buf[i];
+	//	m_RoicAvgNG[i] = 0;
+	////	if ((g_RoicMean[i] > g_RefMin_buf[i]) && (g_RoicMean[i] < g_RefMax_buf[i]))
+	//	if ((g_RoicMean[i] > lMin) && (g_RoicMean[i] < lMax))
+	//	{
+	//		continue;
+	//	}
+	//	else
+	//	{
+	//		m_TotalNG++;
+	//		m_RoicAvgNG[i] = 1;
+	//	}
+	//}
+
+	//for (int i = 0; i < gNoGate; i++)
+	//{
+	//	g_GateMean[i] = mean_gate_buf[i];
+	//	m_GateAvgNG[i] = 0;
+	//	//	if ((g_RoicMean[i] > g_RefMin_buf[i]) && (g_RoicMean[i] < g_RefMax_buf[i]))
+	//	if ((g_GateMean[i] > lMin) && (g_GateMean[i] < lMax))
+	//	{
+	//		continue;
+	//	}
+	//	else
+	//	{
+	//		m_TotalNG++;
+	//		m_GateAvgNG[i] = 1;
+	//	}
+	//}
+
+	if (m_TotalNG == 0)
 	{
 		return 1;
 	}
@@ -8734,20 +8414,438 @@ int CAcqVoltageSamples_IntClkDlg::CheckImage(char *buffer, unsigned int lMin, un
 	{
 		return 0;
 	}
+
+	//UINT lavg = (UINT)(sum / (lWidth * lHeight));
+	//m_ImageAvg = lavg;
+	//if((lavg > lMin)&&(lavg < lMax))
+	//{
+	//	return 1;
+	//}
+	//else
+	//{
+	//	return 0;
+	//}
 }
+
+int CAcqVoltageSamples_IntClkDlg::CheckDarkImage(char *buffer, unsigned int lWidth,  unsigned int  lHeight, unsigned int lMin, unsigned int lMax)//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+{
+
+
+	if (buffer == NULL)
+	{
+		MessageBox("Get Dark Image Fail!");
+		return 0;
+	}
+	char TempBuf[4096];
+	short Tempimg_buf[30000];
+
+
+	
+
+	if ((lWidth < 4096) && (lHeight < 4096))
+	{
+		m_WidthRcv = lWidth;
+		m_HeightRcv = lHeight;
+	}
+	else
+	{
+		MessageBox("Get Dark Image Size Fail!");
+		return 0;
+	}
+	double   mean_buf[256];
+	double   *mean_Roic_buf;
+	double   *mean_gate_buf;
+	unsigned int    *median_buf;
+	unsigned int    *median_Roic_buf;
+	unsigned int    *median_Gate_buf;
+	unsigned short *img_buf;
+	img_buf = new unsigned short[lWidth * lHeight];
+	gNoRoic = lWidth / 256;
+	m_RoicWidthEnd = 256;
+	if (lWidth % 256 != 0)
+	{
+		unsigned int lRoicWidthRsv = lWidth - gNoRoic * 256;
+		if (lRoicWidthRsv > 0)
+		{
+			m_RoicWidthEnd = lRoicWidthRsv;// (lRoicWidthRsv + 256) / 2;
+			gNoRoic += 1;
+		}
+	}
+
+	gNoGate = lHeight / 512;
+	m_GateHeightEnd = 512;
+	if (lHeight % 512 != 0)
+	{
+		unsigned int lGateHeightRsv = lHeight - gNoGate * 512;
+		if (lGateHeightRsv > 0)
+		{
+			m_GateHeightEnd = lGateHeightRsv;// (lRoicHeightRsv + 512) / 2;
+			gNoGate += 1;
+		}
+	}
+
+	//mean_buf = new double[gNoRoic*gNoGate];
+	mean_Roic_buf = new double[gNoRoic];
+	mean_gate_buf = new double[gNoGate];
+	median_buf = new unsigned int[gNoRoic*gNoGate];
+	median_Roic_buf = new unsigned int[gNoRoic];
+	median_Gate_buf = new unsigned int[gNoGate];
+
+	//error = ReadImgFromFile_Unsigned(img_buf, cImagePath, img_width, img_height);
+	memcpy(img_buf, buffer, lWidth * lHeight * 2);// sizeof(img_buf));
+
+	//memcpy(TempBuf, buffer, 4096);// sizeof(img_buf));
+
+
+	g_TotalMin = 0xFFFF;
+	g_TotalMax = 0;
+
+	UpdateMeanMedianFromImgbuf((unsigned short *)img_buf, mean_buf, median_buf, lWidth, lHeight);
+	UpdateMeanMedianFromImgbufRoic((unsigned short *)img_buf, mean_Roic_buf, median_Roic_buf, lWidth, lHeight, gNoRoic);
+	UpdateMeanMedianFromImgbufGate((unsigned short *)img_buf, mean_gate_buf, median_Gate_buf, lWidth, lHeight, gNoGate);
+
+	int lNg[16];
+	m_TotalNG = 0;
+
+	for (int i = 0; i < gNoRoic; i++)
+	{
+		m_RoicAvgNG[i] = 1;
+		for (int g_i = 0; g_i < gNoGate; g_i++)
+		{
+
+			if ((mean_buf[g_i*gNoRoic + i] > lMin) && (mean_buf[g_i*gNoRoic + i] < lMax))//if ((mean_buf[g_i*gNoRoic + i] > g_RefMin_buf[i]) && (mean_buf[g_i*gNoRoic + i] < g_RefMax_buf[i]))
+			{
+				m_RoicAvgNG[i] = 0;
+				continue;
+			}
+			else
+			{
+				m_TotalNG++;
+
+			}
+		}
+	}
+
+	for (int g_i = 0; g_i < gNoGate; g_i++)
+	{
+		m_GateAvgNG[g_i] = 1;
+		for (int i = 0; i < gNoRoic; i++)
+		{
+			if ((mean_buf[g_i*gNoRoic + i] > lMin) && (mean_buf[g_i*gNoRoic + i] < lMax))//if ((mean_buf[g_i*gNoRoic + i] > g_RefMin_buf[i]) && (mean_buf[g_i*gNoRoic + i] < g_RefMax_buf[i]))
+			{
+				m_GateAvgNG[g_i] = 0;
+				continue;
+			}
+			else
+			{
+				m_TotalNG++;
+			}
+		}
+	}
+	for (int i = 0; i < gNoRoic; i++)
+	{
+		g_RoicMean[i] = mean_Roic_buf[i];
+	}
+
+	for (int i = 0; i < gNoGate; i++)
+	{
+		g_GateMean[i] = mean_gate_buf[i];
+
+	}
+
+
+	
+
+	if (m_TotalNG == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+
+	
+}
+
+int CAcqVoltageSamples_IntClkDlg::CheckImage(char *buffer, unsigned int lMin, unsigned int lMax)//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+{
+
+#if 0
+	//#define WIDTH 3328
+	//#define HEIGHT 2816
+	//	BITMAPINFOHEADER bmiHeader;
+		//char *buffer;
+	//	FILE *fp;
+	unsigned int lWidth, lHeight;
+	unsigned int color;
+	int i;
+	unsigned int r, g, b, gray;
+	int len;
+
+	WORD *ptr;
+
+	//HWND hwnd;
+	//HDC hdc;
+	//RECT rc;
+
+
+	//buffer = (char *)malloc(WIDTH*HEIGHT * 2);
+
+	//fp = _tfopen(filename, _T("rb"));
+	//len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
+	//fclose(fp);
+	if (buffer == NULL)
+	{
+		MessageBox("Get Dark Image Fail!");
+		return 0;
+	}
+	unsigned long sum = 0;
+	int lcnt = 0;
+	memcpy(&lWidth, buffer, 4);
+	memcpy(&lHeight, &buffer[4], 4);
+	ptr = (WORD *)(buffer + 8);
+	// change color to grayscale
+	for (i = 0; i < lWidth * lHeight; i++)
+	{
+		color = *ptr;
+		//color = (int)(*(buffer + i*2));
+
+		b = color & 0x001f;
+		color >>= 5;
+		g = color & 0x001f;
+		color >>= 5;
+		r = color & 0x003f;
+
+		gray = (r + g + b) / 3 + 4;
+		//gray = ((float)r*0.3 + (float)g*0.59 + (float)b*0.11);
+		//gray = ((float)r*0.299 + (float)g*0.587 + (float)b*0.114) + 4;
+
+		color = gray;
+		color <<= 5;
+		color |= gray;
+		color <<= 5;
+		color |= gray;
+		//*(buffer + i*2) = color;
+		*ptr++ = color;
+		lcnt++;
+
+		sum += gray;
+
+	}
+#endif
+	if (buffer == NULL)
+	{
+		MessageBox("Get Bright Image Fail!");
+		return 0;
+	}
+	unsigned int lWidth, lHeight;
+	//memcpy(&lWidth, buffer, 4);
+	//memcpy(&lHeight, &buffer[4], 4);
+	//memcpy(&lHeight, buffer, 4);
+	//memcpy(&lWidth, &buffer[4], 4);
+
+	if ((m_nPanelWidth *m_nPanelHeight * 2 + 8) != m_dwDataSize)//if ((m_nPanelWidth != lWidth) || (m_nPanelHeight != lHeight))
+	{
+		MessageBox("Pannel Size Error! \r\n Ger SW ver First!!");
+		return 0;
+	}
+	if ((m_nPanelWidth < 4096) && (m_nPanelHeight < 4096))
+	{
+		m_WidthRcv = m_nPanelWidth;
+		m_HeightRcv = m_nPanelHeight;
+		lWidth = m_nPanelWidth; ;
+		lHeight = m_nPanelHeight;
+	}
+	else
+	{
+		MessageBox("Get  Image Size Fail!");
+		return 0;
+	}
+	/*if ((lWidth < 4096) && (lHeight < 4096))
+	{
+		m_WidthRcv = lWidth;
+		m_HeightRcv = lHeight;
+	}
+	else
+	{
+		MessageBox("Get Bright Image Size Fail!");
+		return 0;
+	}*/
+
+	double   *mean_buf;
+	double   *mean_Roic_buf;
+	double   *mean_gate_buf;
+	unsigned int    *median_buf;
+	unsigned int    *median_Roic_buf;
+	unsigned int    *median_Gate_buf;
+
+	//double   *mean_buf;
+	//unsigned int    *median_buf;
+	unsigned short *img_buf;
+	img_buf = new unsigned short[lWidth * lHeight];
+	gNoRoic = lWidth / 256;
+	
+	m_RoicWidthEnd = 256;
+	if (lWidth % 256 != 0)
+	{
+		unsigned int lRoicWidthRsv = lWidth - gNoRoic * 256;
+		if (lRoicWidthRsv > 0)
+		{
+			m_RoicWidthEnd = lRoicWidthRsv;// (lRoicWidthRsv + 256) / 2;
+			gNoRoic += 1;
+		}
+		//	 m_RoicWidthEnd
+
+	}
+
+	gNoGate = lHeight / 512;
+	m_GateHeightEnd = 512;
+	if (lHeight % 512 != 0)
+	{
+		unsigned int lGateHeightRsv = lHeight - gNoGate * 512;
+		if (lGateHeightRsv > 0)
+		{
+			m_GateHeightEnd = lGateHeightRsv;// (lRoicHeightRsv + 512) / 2;
+			gNoGate += 1;
+		}
+	}
+
+	 
+	mean_buf = new double[gNoRoic*gNoGate];
+	mean_Roic_buf = new double[gNoRoic];
+	mean_gate_buf = new double[gNoGate];
+	median_buf = new unsigned int[gNoRoic*gNoGate];
+	median_Roic_buf = new unsigned int[gNoRoic];
+	median_Gate_buf = new unsigned int[gNoGate];
+
+	//error = ReadImgFromFile_Unsigned(img_buf, cImagePath, img_width, img_height);
+	memcpy(img_buf, &buffer[8], lWidth * lHeight * 2);// sizeof(img_buf));
+
+//	memcpy(TempBuf, buffer, 4096);// sizeof(img_buf));
+
+//	mean_buf = new double[gNoRoic];
+//	median_buf = new unsigned int[gNoRoic];
+////error = ReadImgFromFile_Unsigned(img_buf, cImagePath, img_width, img_height);
+//	memcpy(img_buf, &buffer[8], lWidth * lHeight * 2); //sizeof(img_buf));
+//	UpdateMeanMedianFromImgbuf((unsigned short *)img_buf, mean_buf, median_buf, lWidth, lHeight, gNoRoic);
+	//char TempBuf[4096];
+	//short Tempimg_buf[2048];
+	//   
+	//memcpy(TempBuf, buffer, 4096);// sizeof(img_buf));
+	//memcpy(Tempimg_buf, buffer, 4096);// sizeof(img_buf));
+	g_TotalMin = 0xFFFF;
+	g_TotalMax = 0;
+
+	UpdateMeanMedianFromImgbuf((unsigned short *)img_buf, mean_buf, median_buf, lWidth, lHeight);
+	UpdateMeanMedianFromImgbufRoic((unsigned short *)img_buf, mean_Roic_buf, median_Roic_buf, lWidth, lHeight, gNoRoic);
+	UpdateMeanMedianFromImgbufGate((unsigned short *)img_buf, mean_gate_buf, median_Gate_buf, lWidth, lHeight, gNoGate);
+	int lNg[16];
+	m_TotalNG = 0;
+	
+	for (int i = 0; i < gNoRoic; i++)
+	{	
+		m_RoicAvgNG[i] = 1;
+		for (int g_i = 0; g_i < gNoGate; g_i++)
+		{
+			
+			if ((mean_buf[g_i*gNoRoic +i] > g_RefMin_buf[i]) && (mean_buf[g_i*gNoRoic + i] < g_RefMax_buf[i]))
+			{
+				m_RoicAvgNG[i] = 0;
+				continue;
+			}
+			else
+			{
+				m_TotalNG++;				
+				
+			}
+		}
+	}
+
+	for (int g_i = 0; g_i < gNoGate; g_i++)
+	{	
+		m_GateAvgNG[g_i] = 1;
+		for (int i = 0; i < gNoRoic; i++)
+		{
+			if ((mean_buf[g_i*gNoRoic + i] > g_RefMin_buf[i]) && (mean_buf[g_i*gNoRoic + i] < g_RefMax_buf[i]))
+			{
+				m_GateAvgNG[g_i] = 0;
+				continue;
+			}
+			else
+			{
+				m_TotalNG++;
+			}
+		}
+	}
+
+	for (int i = 0; i < gNoRoic; i++)
+	{
+		g_RoicMean[i] = mean_Roic_buf[i];
+	}
+
+	for (int i = 0; i < gNoGate; i++)
+	{
+		g_GateMean[i] = mean_gate_buf[i];
+
+	}
+
+	//for (int i = 0; i < gNoRoic; i++)
+	//{
+	//	g_RoicMean[i] = mean_Roic_buf[i];
+	//	m_RoicAvgNG[i] = 0;
+	//	if ((g_RoicMean[i] > g_RefMin_buf[i]) && (g_RoicMean[i] < g_RefMax_buf[i]))
+	//	{
+	//		continue;
+	//	}
+	//	else
+	//	{
+	//		m_TotalNG++;
+	//		m_RoicAvgNG[i] = 1;
+	//	}
+	//}
+
+	//for (int i = 0; i < gNoGate; i++)
+	//{
+	//	g_GateMean[i] = mean_gate_buf[i];
+	//	m_GateAvgNG[i] = 0;
+	//	//	if ((g_RoicMean[i] > g_RefMin_buf[i]) && (g_RoicMean[i] < g_RefMax_buf[i]))
+	//	if ((g_GateMean[i] > lMin) && (g_GateMean[i] < lMax))
+	//	{
+	//		continue;
+	//	}
+	//	else
+	//	{
+	//		m_TotalNG++;
+	//		m_GateAvgNG[i] = 1;
+	//	}
+	//}
+
+
+	if (m_TotalNG == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+
+	
+}
+
 
 
 void CAcqVoltageSamples_IntClkDlg::SaveImage(const CCommPacket & packet, BOOL bDark)
 {
 	SYSTEMTIME	st;
-	GetLocalTime(&st);//PATH_BASE_DIR
+	GetLocalTime(&st);
 
-	::CreateDirectory(g_theApp.m_strSavePath, NULL);
 
 	TCHAR	szMesg[256], szPath[256];
 
-	_stprintf(szPath, _T("%s\\%s_%04d%02d%02d_%02d%02d%02d.raw"),
-		(LPCTSTR)g_theApp.m_strSavePath,
+	_stprintf(szPath, _T("%s\\Image\\%s_%04d%02d%02d_%02d%02d%02d.raw"),
+		(LPCTSTR)PATH_BASE_DIR,
 		(bDark) ? _T("Dark") : _T("Bright"),
 		st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 
@@ -8781,15 +8879,48 @@ void CAcqVoltageSamples_IntClkDlg::SaveImage(const CCommPacket & packet, BOOL bD
 		AddLogData(_T("Save to file fail..."));
 
 	DisplayImage(szPath);
-	DeleteFile(szPath);
+	//DeleteFile(szPath);
+}
+
+void CAcqVoltageSamples_IntClkDlg::SaveImage(char *pData, int  dwDataSize, BOOL bDark)
+{
+	SYSTEMTIME	st;
+	GetLocalTime(&st);
+
+
+	TCHAR	szMesg[256], szPath[256];
+
+	_stprintf(szPath, _T("%s\\Image\\%s_%04d%02d%02d_%02d%02d%02d.raw"),
+		(LPCTSTR)PATH_BASE_DIR,
+		(bDark) ? _T("Dark") : _T("Bright"),
+		st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+
+	FILE*	fp;
+	if ((fp = _tfopen(szPath, _T("wb"))) != NULL)
+	{
+		fwrite(pData, dwDataSize , 1, fp);
+		
+		fclose(fp);
+
+		LPTSTR	ptrName = _tcsrchr(szPath, '\\');
+
+		_stprintf(szMesg, _T("Saveto %s"), ptrName + 1);
+
+		AddLogData(szMesg);
+	}
+	else
+		AddLogData(_T("Save to file fail..."));
+
+	DisplayImage(szPath);
+	//DeleteFile(szPath);
 }
 
 void CAcqVoltageSamples_IntClkDlg::DisplayImage(TCHAR *filename)
 {
-#define WIDTH 3328
-#define HEIGHT 2816
 	BITMAPINFOHEADER bmiHeader;
+	char headbuffer[16];
 	char *buffer;
+	char *bufferDest;
 	FILE *fp;
 	unsigned int color;
 	int i;
@@ -8797,31 +8928,168 @@ void CAcqVoltageSamples_IntClkDlg::DisplayImage(TCHAR *filename)
 	int len;
 
 	WORD *ptr;
+	char *Destptr;
+
 	
+
 	HWND hwnd;
 	HDC hdc;
 	RECT rc;
-
-
-	buffer = (char *)malloc(WIDTH*HEIGHT * 2);
-
+	//unsigned int lWidth, lHeight;
+	
 	fp = _tfopen(filename, _T("rb"));
-	len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
-	fclose(fp);
 
+	fseek(fp, 0, SEEK_SET);
+	len = fread(headbuffer, 1, 16, fp);
+	ptr = (WORD *)headbuffer;
+
+	m_WidthRcv = *(ptr + 1);
+	m_HeightRcv = *(ptr + 2);
+
+	buffer = (char *)malloc(m_WidthRcv*m_HeightRcv * 2);
+	bufferDest = (char *)malloc(m_WidthRcv*m_HeightRcv * 3);
+
+	
+	fseek(fp, 0, SEEK_END);
+	int fileLength = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	len = fread(buffer, 1, fileLength, fp);
+	fclose(fp);
+	
 	ptr = (WORD *)buffer;
+//
+//	
+//	//18, 743, 296
+//
+//
+////	buffer = (char *)malloc(WIDTH*HEIGHT * 2);
+//
+//
+//	//fp = _tfopen(filename, _T("rb"));
+//	//len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
+//	//fclose(fp);
+//	//fwrite(packet.m_pDataBuf + 8, packet.dwDataSize - 8, 1, fp);
+//
+//	unsigned int lWidth, lHeight;
+//	memcpy(&lHeight, packet.m_pDataBuf, 4);
+//	memcpy(&lWidth, &packet.m_pDataBuf[4], 4);
+//
+//
+//	//	memcpy(buffer, (char *)(packet.m_pDataBuf + 8), packet.dwDataSize - 8);// WIDTH*HEIGHT * 2);
+//	memcpy(buffer, (char *)(packet.m_pDataBuf + 8), m_WidthRcv*m_HeightRcv * 2);// WIDTH*HEIGHT * 2);
+//	ptr = (WORD *)buffer;
+	Destptr = bufferDest;
+	g_TotalMin = 0;// 0xFFFF;
+	g_TotalMax = 16000;
+	double lExpandRatio = 1;
+
+//	GetMinMaxFromImgbuf(ptr, m_WidthRcv, m_HeightRcv);
+	lExpandRatio = (65536. - 0x0000) / (g_TotalMax - g_TotalMin);
+	unsigned int lWidthOffset;
+	unsigned int n_Gate;
+	unsigned int l_OldColor = 0;
+	for (i = 0; i < m_HeightRcv; i++)
+	{
+
+		n_Gate = i / 512;
+		for (int k = 0; k < m_WidthRcv; k++)
+		{
+
+			color = *(ptr + i * m_WidthRcv + k);
+#if 1
+			if (color < g_TotalMin)
+				color = 0;
+			else
+				color -= g_TotalMin;
+			
+
+			gray = (unsigned int)(color *(lExpandRatio) / 256.);
+			if (gray >= 255)
+				gray = 255;
+			if ((abs(int(l_OldColor) - int(gray)) > 30) && ((gray) < 30))
+				l_OldColor = gray;
+
+			l_OldColor = gray;
+			
+#else
+
+			gray = (unsigned int)(color / 256.);
+			if (gray >= 255)
+				gray = 255;
+
+			if (gray < 0)
+				gray = 0;
+#endif
+			//if ((n_Gate % 2) && (k < 50))
+			//{
+			//	b = 0;
+
+			//	g = 0;
+
+			//	r = 255;
+			//}
+			//else if (i < 100)
+			//{
+			//	b = 0;
+
+			//	g = 255;
+
+			//	r = 0;
+			//}
+			//else
+			{
+
+				//gray = color >> 8;
+				b = gray;
+				//color >>= 5;
+				g = gray;
+				//color >>= 5;
+				r = gray;
+			}
+
+			//*(Destptr + (i * m_WidthRcv + k) * 3) = (char)(b & 0xFF);
+			//*(Destptr + (i * m_WidthRcv + k) * 3 + 1) = (char)(g & 0xFF);
+			//*(Destptr + (i * m_WidthRcv + k) * 3 + 2) = (char)(r & 0xFF);
+			*(Destptr + (i * m_WidthRcv + k) * 3) = (b & 0xFF);
+			*(Destptr + (i * m_WidthRcv + k) * 3 + 1) = (g & 0xFF);
+			*(Destptr + (i * m_WidthRcv + k) * 3 + 2) = (r & 0xFF);
+
+
+		}
+	}
+
+
+	memset(&bmiHeader, 0, sizeof(bmiHeader));
+	bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bmiHeader.biWidth = m_WidthRcv;
+	bmiHeader.biHeight = -m_HeightRcv;
+	bmiHeader.biPlanes = 1;
+	bmiHeader.biBitCount = 24;//16;
+	bmiHeader.biCompression = BI_RGB;
+	
+	hwnd = m_pic.m_hWnd;
+	::GetClientRect(hwnd, &rc);
+	hdc = ::GetDC(hwnd);
+	//	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, WIDTH, HEIGHT, buffer1, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, m_WidthRcv, m_HeightRcv, bufferDest, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	//StretchDIBits(hdc, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, buffer, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	::ReleaseDC(hwnd, hdc);
+
+	free(buffer);
+	free(bufferDest);
+#if 0
 	// change color to grayscale
-	for (i = 0; i < WIDTH * HEIGHT; i++) {
+	for (i = 0; i < lWidth * lHeight; i++) {
 		color = *ptr;
 		//color = (int)(*(buffer + i*2));
-		
+
 		b = color & 0x001f;
 		color >>= 5;
 		g = color & 0x001f;
 		color >>= 5;
 		r = color & 0x003f;
 
-		gray = (r + g + b) / 3 +4;
+		gray = (r + g + b) / 3 + 4;
 		//gray = ((float)r*0.3 + (float)g*0.59 + (float)b*0.11);
 		//gray = ((float)r*0.299 + (float)g*0.587 + (float)b*0.114) + 4;
 
@@ -8846,7 +9114,7 @@ void CAcqVoltageSamples_IntClkDlg::DisplayImage(TCHAR *filename)
 	//bmiHeader.biSizeImage = bmiHeader.biWidth * bmiHeader.biHeight * 2;
 
 	//hwnd = m_staticView.m_hWnd;
-	
+
 //	hwnd = m_PicturView.m_hWnd;
 	hwnd = m_pic.m_hWnd;
 	::GetClientRect(hwnd, &rc);
@@ -8856,6 +9124,541 @@ void CAcqVoltageSamples_IntClkDlg::DisplayImage(TCHAR *filename)
 	::ReleaseDC(hwnd, hdc);
 
 	free(buffer);
+#endif
+}
+
+//
+//void CAcqVoltageSamples_IntClkDlg::DisplayImage(TCHAR *filename)
+//{
+//#define WIDTH 3328
+//#define HEIGHT 2816
+//	BITMAPINFOHEADER bmiHeader;
+//	char *buffer;
+//	FILE *fp;
+//	unsigned int color;
+//	int i;
+//	unsigned int r, g, b, gray;
+//	int len;
+//
+//	WORD *ptr;
+//
+//	HWND hwnd;
+//	HDC hdc;
+//	RECT rc;
+//
+//
+//	buffer = (char *)malloc(WIDTH*HEIGHT * 2);
+//
+//	fp = _tfopen(filename, _T("rb"));
+//	len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
+//	fclose(fp);
+//
+//	ptr = (WORD *)buffer;
+//	// change color to grayscale
+//	for (i = 0; i < WIDTH * HEIGHT; i++) {
+//		color = *ptr;
+//		//color = (int)(*(buffer + i*2));
+//
+//		b = color & 0x001f;
+//		color >>= 5;
+//		g = color & 0x001f;
+//		color >>= 5;
+//		r = color & 0x003f;
+//
+//		gray = (r + g + b) / 3 + 4;
+//		//gray = ((float)r*0.3 + (float)g*0.59 + (float)b*0.11);
+//		//gray = ((float)r*0.299 + (float)g*0.587 + (float)b*0.114) + 4;
+//
+//		color = gray;
+//		color <<= 5;
+//		color |= gray;
+//		color <<= 5;
+//		color |= gray;
+//		//*(buffer + i*2) = color;
+//		*ptr++ = color;
+//	}
+//
+//
+//
+//	memset(&bmiHeader, 0, sizeof(bmiHeader));
+//	bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+//	bmiHeader.biWidth = WIDTH;
+//	bmiHeader.biHeight = -HEIGHT;
+//	bmiHeader.biPlanes = 1;
+//	bmiHeader.biBitCount = 16;
+//	bmiHeader.biCompression = BI_RGB;
+//	//bmiHeader.biSizeImage = bmiHeader.biWidth * bmiHeader.biHeight * 2;
+//
+//	//hwnd = m_staticView.m_hWnd;
+//
+////	hwnd = m_PicturView.m_hWnd;
+//	hwnd = m_pic.m_hWnd;
+//	::GetClientRect(hwnd, &rc);
+//	hdc = ::GetDC(hwnd);
+//	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, WIDTH, HEIGHT, buffer, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+//	//StretchDIBits(hdc, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, buffer, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+//	::ReleaseDC(hwnd, hdc);
+//
+//	free(buffer);
+//}
+
+
+void CAcqVoltageSamples_IntClkDlg::DisplayCheckErrorImage(const CCommPacket & packet)
+{
+
+	//m_WidthRcv = lWidth;
+	//m_HeightRcv = lHeight;
+	//gNoRoic
+	if ((m_WidthRcv > 4096) || (m_HeightRcv > 4096))
+	{
+		AddLogData(_T("Display Error fail..."));
+		return;
+	}
+#define WIDTH 3328
+#define HEIGHT 2816
+
+	int lRoicWidth;
+
+	lRoicWidth = 256;
+	if (m_WidthRcv > WIDTH)
+	{
+		lRoicWidth = WIDTH / gNoRoic;
+		if (lRoicWidth > 256)
+		{
+
+		}
+	}
+
+
+	BITMAPINFOHEADER bmiHeader;
+	char *buffer;
+	char *bufferDest;
+	FILE *fp;
+	unsigned int color;
+	int i;
+	unsigned int r, g, b, gray;
+	int len;
+
+	WORD *ptr;
+	char *Destptr;
+
+	HWND hwnd;
+	HDC hdc;
+	RECT rc;
+	//18, 743, 296
+
+
+//	buffer = (char *)malloc(WIDTH*HEIGHT * 2);
+	buffer = (char *)malloc(m_WidthRcv*m_HeightRcv * 2);
+	bufferDest = (char *)malloc(m_WidthRcv*m_HeightRcv * 3);
+
+	//fp = _tfopen(filename, _T("rb"));
+	//len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
+	//fclose(fp);
+	//fwrite(packet.m_pDataBuf + 8, packet.dwDataSize - 8, 1, fp);
+
+	unsigned int lWidth, lHeight;
+	memcpy(&lHeight, packet.m_pDataBuf, 4);
+	memcpy(&lWidth, &packet.m_pDataBuf[4], 4);
+
+
+	//	memcpy(buffer, (char *)(packet.m_pDataBuf + 8), packet.dwDataSize - 8);// WIDTH*HEIGHT * 2);
+	memcpy(buffer, (char *)(packet.m_pDataBuf + 8), m_WidthRcv*m_HeightRcv * 2);// WIDTH*HEIGHT * 2);
+	ptr = (WORD *)buffer;
+	Destptr = bufferDest;
+	g_TotalMin = 0xFFFF;
+	g_TotalMax = 0;
+	double lExpandRatio = 1;
+
+	GetMinMaxFromImgbuf(ptr, m_WidthRcv, m_HeightRcv);
+	lExpandRatio = (65536. - 0x0000) / (g_TotalMax - g_TotalMin);
+	unsigned int lWidthOffset;
+	unsigned int n_Gate;
+	for (i = 0; i < m_HeightRcv; i++)
+	{
+
+		n_Gate = i / 512;
+		for (int k = 0; k < gNoRoic; k++)
+		{
+			int RoicWidth = 256;
+
+			//if (k == 0 )
+			//{
+			//	RoicWidth = m_RoicWidthEnd;
+			//	lWidthOffset = 0;
+			//}
+			//else 
+
+			if (k == gNoRoic - 1)
+			{
+				RoicWidth = m_RoicWidthEnd;
+				lWidthOffset = (k) * 256;
+			}
+			else
+			{
+				RoicWidth = 256;
+				lWidthOffset = (k) * 256;
+			}
+
+
+			for (int m = 0; m < RoicWidth; m++)
+			{
+
+				//gray = (i / 50 + 70) % 256;// (unsigned int)(color *(lExpandRatio) / 256.);
+				//if (gray >= 255)
+				//	gray = 255;
+				if (m == 0)
+				{
+					b = 0;
+					g = 0;
+					r = 0;
+					//if (gray % 2)
+					//{
+					//	b = 0;
+					//	g = 0xFF;
+					//	r = 0;
+					//}
+					//else
+					//{
+					//	b = 0;
+					//	g = 0xFF;
+					//	r = 0xFF;
+					//}
+				}
+				else if ((m_GateAvgNG[n_Gate] == 1) && (k == 0) && (m <= 50))
+				{
+					//color = 0x003f;
+					//color <<= 5;
+					//color |= 0;
+					//color <<= 5;
+					//color |= 0;
+
+					b = 0;
+					g = 0;
+					r = 0xFF;
+
+
+				}
+				else if ((m_RoicAvgNG[k] == 1) && (i <= 100))
+				{
+					//color = 0x003f;
+					//color <<= 5;
+					//color |= 0;
+					//color <<= 5;
+					//color |= 0;
+
+					b = 0;
+					g = 0;
+					r = 0xFF;
+
+
+				}
+				else
+				{
+					color = *(ptr + i * m_WidthRcv + lWidthOffset + m);
+#if 1
+					if (color < g_TotalMin)
+						color = 0;
+					else
+						color -= g_TotalMin;
+
+
+
+					gray = (unsigned int)(color *(lExpandRatio) / 256.);
+					if (gray >= 255)
+						gray = 255;
+#else
+
+					gray = (unsigned int)(color / 256.);
+					if (gray >= 255)
+						gray = 255;
+
+					if (gray < 0)
+						gray = 0;
+#endif
+					//gray = color >> 8;
+					b = gray;
+					//color >>= 5;
+					g = gray;
+					//color >>= 5;
+					r = gray;
+
+					//gray = color ;
+
+					//color = gray>>8;
+					//color <<= 8;
+					//color |= gray>>8;
+					//color <<= 8;
+					//color |= gray>>8;
+
+
+					////b = color & 0x001f;
+					////color >>= 5;
+					////g = color & 0x001f;
+					////color >>= 5;
+					////r = color & 0x003f;
+
+					////gray = (r + g + b) / 3 + 4;
+					////1111 1111 0000 0000
+					//gray = color;
+					//color = gray >> 10;
+					//color <<= 5;
+					//color |= gray >> 11;
+					//color <<= 5;
+					//color |= gray >> 11;
+				}
+				*(Destptr + (i * m_WidthRcv + lWidthOffset + m) * 3) = (char)(b & 0xFF);
+				*(Destptr + (i * m_WidthRcv + lWidthOffset + m) * 3 + 1) = (char)(g & 0xFF);
+				*(Destptr + (i * m_WidthRcv + lWidthOffset + m) * 3 + 2) = (char)(r & 0xFF);
+
+			}
+		}
+	}
+	//for (i = 0; i < HEIGHT  ; i++)
+	//{
+	//	for (int k = 0; k < gNoRoic; k++)
+	//	{
+	//		for (int m = 0; m < lRoicWidth; m++)
+	//		{
+	//			if (m_RoicAvgNG[i] == 1)
+	//			{
+	//				color = 0x003f;
+	//				color <<= 5;
+	//				color |= 0;
+	//				color <<= 5;
+	//				color |= 0;
+	//			}
+	//			else
+	//			{
+	//				color = *(ptr + i * m_WidthRcv + k * 256 + m);
+
+	//				b = color & 0x001f;
+	//				color >>= 5;
+	//				g = color & 0x001f;
+	//				color >>= 5;
+	//				r = color & 0x003f;
+
+	//				gray = (r + g + b) / 3 + 4;
+
+	//				color = gray;
+	//				color <<= 5;
+	//				color |= gray;
+	//				color <<= 5;
+	//				color |= gray;
+	//			}
+	//			*Destptr++ = color;
+	//		}
+	//	}
+	//}
+
+	//// change color to grayscale
+	//for (i = 0; i < WIDTH * HEIGHT; i++) {
+	//	color = *ptr;
+	//	//color = (int)(*(buffer + i*2));
+
+	//	b = color & 0x001f;
+	//	color >>= 5;
+	//	g = color & 0x001f;
+	//	color >>= 5;
+	//	r = color & 0x003f;
+
+	//	gray = (r + g + b) / 3 + 4;
+	//	//gray = ((float)r*0.3 + (float)g*0.59 + (float)b*0.11);
+	//	//gray = ((float)r*0.299 + (float)g*0.587 + (float)b*0.114) + 4;
+
+	//	color = gray;
+	//	color <<= 5;
+	//	color |= gray;
+	//	color <<= 5;
+	//	color |= gray;
+	//	//*(buffer + i*2) = color;
+	//	*ptr++ = color;
+	//}
+
+
+
+	memset(&bmiHeader, 0, sizeof(bmiHeader));
+	bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bmiHeader.biWidth = m_WidthRcv;
+	bmiHeader.biHeight = -m_HeightRcv;
+	bmiHeader.biPlanes = 1;
+	bmiHeader.biBitCount = 24;//16;
+	bmiHeader.biCompression = BI_RGB;
+	//bmiHeader.biSizeImage = bmiHeader.biWidth * bmiHeader.biHeight * 2;
+
+	//hwnd = m_staticView.m_hWnd;
+
+//	hwnd = m_PicturView.m_hWnd;
+	hwnd = m_pic.m_hWnd;
+	::GetClientRect(hwnd, &rc);
+	hdc = ::GetDC(hwnd);
+	//	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, WIDTH, HEIGHT, buffer1, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, m_WidthRcv, m_HeightRcv, bufferDest, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	//StretchDIBits(hdc, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, buffer, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	::ReleaseDC(hwnd, hdc);
+
+	free(buffer);
+	free(bufferDest);
+}
+
+void CAcqVoltageSamples_IntClkDlg::DisplayCheckErrorImage(char *buffer)
+{
+
+	//m_WidthRcv = lWidth;
+	//m_HeightRcv = lHeight;
+	//gNoRoic
+	
+
+
+	BITMAPINFOHEADER bmiHeader;
+	//char *buffer;
+	char *bufferDest;
+	FILE *fp;
+	unsigned int color;
+	int i;
+	unsigned int r, g, b, gray;
+	int len;
+
+	WORD *ptr;
+	char *Destptr;
+
+	HWND hwnd;
+	HDC hdc;
+	RECT rc;
+	//18, 743, 296
+
+
+//	buffer = (char *)malloc(WIDTH*HEIGHT * 2);
+
+	//fp = _tfopen(filename, _T("rb"));
+	//len = fread(buffer, 1, WIDTH*HEIGHT * 2, fp);
+	//fclose(fp);
+	//fwrite(packet.m_pDataBuf + 8, packet.dwDataSize - 8, 1, fp);
+
+	//unsigned int lWidth, lHeight;
+	//memcpy(&lHeight, packet.m_pDataBuf, 4);
+	//memcpy(&lWidth, &packet.m_pDataBuf[4], 4);
+
+
+	//	memcpy(buffer, (char *)(packet.m_pDataBuf + 8), packet.dwDataSize - 8);// WIDTH*HEIGHT * 2);
+	//memcpy(buffer, (char *)(packet.m_pDataBuf + 8), m_WidthRcv*m_HeightRcv * 2);// WIDTH*HEIGHT * 2);
+	ptr = (WORD *)buffer;
+//	m_WidthRcv = *(ptr + 1);
+//	m_HeightRcv = *(ptr + 2);
+	//buffer = (char *)malloc(m_WidthRcv*m_HeightRcv * 2);
+	bufferDest = (char *)malloc(m_WidthRcv*m_HeightRcv * 3);
+
+	Destptr = bufferDest;
+	g_TotalMin = 0;
+	g_TotalMax = 16000;
+	double lExpandRatio = 1;
+
+	//GetMinMaxFromImgbuf(ptr, m_WidthRcv, m_HeightRcv);
+	lExpandRatio = (65536. - 0x0000) / (g_TotalMax - g_TotalMin);
+	unsigned int lWidthOffset;
+	unsigned int n_Gate;
+	unsigned int n_Roic;
+	for (i = 0; i < m_HeightRcv; i++)
+	{
+		//TRACE("Data # %d\n", i);
+		n_Gate = i / 512;
+		for (int k = 0; k < m_WidthRcv; k++)
+		{
+			//int RoicWidth = 256;
+			n_Roic = k / 256;
+			
+
+
+			
+			if (k == 0)
+			{
+				b = 0;
+				g = 0;
+				r = 0;
+			}
+			else if ((m_GateAvgNG[n_Gate] == 1) && (k  <= 50))
+			{
+
+				b = 0;
+				g = 0;
+				r = 0xFF;
+
+
+			}
+			else if ((m_RoicAvgNG[n_Roic] == 1) && (i <= 100))
+			{
+
+				b = 0;
+				g = 0;
+				r = 0xFF;
+
+
+			}
+			else
+			{
+				color = *(ptr + i * m_WidthRcv + k);
+#if 1
+				if (color < g_TotalMin)
+					color = 0;
+				else
+					color -= g_TotalMin;
+
+
+
+				gray = (unsigned int)(color *(lExpandRatio) / 256.);
+				if (gray >= 255)
+					gray = 255;
+#else
+
+				gray = (unsigned int)(color / 256.);
+				if (gray >= 255)
+					gray = 255;
+
+				if (gray < 0)
+					gray = 0;
+#endif
+				
+				b = gray;				
+				g = gray;				
+				r = gray;
+					
+			}
+			*(Destptr + (i * m_WidthRcv + k) * 3) = (char)(b & 0xFF);
+			*(Destptr + (i * m_WidthRcv + k) * 3 + 1) = (char)(g & 0xFF);
+			*(Destptr + (i * m_WidthRcv + k) * 3 + 2) = (char)(r & 0xFF);
+			//if (i == 3051)
+			//	TRACE("Data # (i%d * m_WidthRcv%d + k%d) * 3\n", i, m_WidthRcv, k);
+			//if ((i == 3051)&&(k == 2499))
+			//	TRACE("Data # (i%d * m_WidthRcv%d + k%d) * 3\n", i, m_WidthRcv, k);
+
+		}
+	}
+	
+
+
+
+	memset(&bmiHeader, 0, sizeof(bmiHeader));
+	bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bmiHeader.biWidth = m_WidthRcv;
+	bmiHeader.biHeight = -m_HeightRcv;
+	bmiHeader.biPlanes = 1;
+	bmiHeader.biBitCount = 24;//16;
+	bmiHeader.biCompression = BI_RGB;
+	//bmiHeader.biSizeImage = bmiHeader.biWidth * bmiHeader.biHeight * 2;
+
+	//hwnd = m_staticView.m_hWnd;
+
+//	hwnd = m_PicturView.m_hWnd;
+	hwnd = m_pic.m_hWnd;
+	::GetClientRect(hwnd, &rc);
+	hdc = ::GetDC(hwnd);
+	//	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, WIDTH, HEIGHT, buffer1, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	StretchDIBits(hdc, 0, 0, (rc.right - rc.left), (rc.bottom - rc.top), 0, 0, m_WidthRcv, m_HeightRcv, bufferDest, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	//StretchDIBits(hdc, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, buffer, (LPBITMAPINFO)&bmiHeader, DIB_RGB_COLORS, SRCCOPY);
+	::ReleaseDC(hwnd, hdc);
+
+	//free(buffer);
+	free(bufferDest);
 }
 
 
@@ -8877,6 +9680,9 @@ void CAcqVoltageSamples_IntClkDlg::ClearImage()
 void CAcqVoltageSamples_IntClkDlg::OnBnClickedBtnGetbright()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	 CCommPacket packet;
+//	SaveImage( packet, 1);//::CreateDirectory(g_theApp.m_strSavePath, NULL);
+
 	if (m_threadGetBright.IsAlive())
 		return;
 
@@ -8902,6 +9708,7 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 	if (!ConnectToDetector(tcpCli))
 	{
 		m_SetComError =1;
+		m_Deisplay_ErrorDetail = "if (!ConnectToDetector(tcpCli))";
 		return;
 	}
 
@@ -8912,6 +9719,7 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 	{
 		DisconnectToDetector(tcpCli);
 		m_SetComError =1;
+		m_Deisplay_ErrorDetail = "if (!SendPacket(tcpCli, pktSend))LDCMD_GET_BRIGHT_IMAGE";
 		return;
 	}
 
@@ -8920,6 +9728,7 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 	{
 		DisconnectToDetector(tcpCli);
 		m_SetComError =1;
+		m_Deisplay_ErrorDetail = "if (!RecvPacket(tcpCli, pktRecv))LDCMD_GET_BRIGHT_IMAGE";
 		return;
 	}
 
@@ -8927,6 +9736,7 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 	{
 		DisconnectToDetector(tcpCli);
 		m_SetComError =1;
+		m_Deisplay_ErrorDetail = "if (pktRecv.dwResponseCode != LDRET_SUCCESS)LDCMD_GET_BRIGHT_IMAGE";
 		return;
 	}
 
@@ -8934,6 +9744,8 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 	{
 		if(HandShake_Auto(tcpCli) == FALSE)
 		{
+			m_Deisplay_ErrorDetail = "if(HandShake_Auto(tcpCli) == FALSE)";
+
 			m_SetComError =1;
 		}
 	}
@@ -8942,6 +9754,7 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 		//HandShake_Manual(tcpCli);
 		if(HandShake_Manual(tcpCli) == FALSE)
 		{
+			m_Deisplay_ErrorDetail = "if(HandShake_Manual(tcpCli) == FALSE)";
 			m_SetComError =1;
 		}
 
@@ -8955,7 +9768,8 @@ void CAcqVoltageSamples_IntClkDlg::DoGetBrightThread()
 BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Auto(CWTCPClient & tcpCli)
 {
 	DWORD	dwCode;
-
+MessageInformDisplay(m_strButtonMessage1, 10000);
+	Sleep(500);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_READY))
 	{
 		m_SetComError =1;
@@ -8963,6 +9777,7 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Auto(CWTCPClient & tcpCli)
 	}
 	else
 		SendACK(tcpCli);
+	
 
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_WINDOW_OPEN))
 	{
@@ -8971,6 +9786,7 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Auto(CWTCPClient & tcpCli)
 	}
 	else
 		SendACK(tcpCli);
+	MessageInformClose();
 
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_WINDOW_CLOSED))
 		return FALSE;
@@ -8985,11 +9801,8 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Auto(CWTCPClient & tcpCli)
 	else
 		SendACK(tcpCli);
 
-<<<<<<< HEAD
 	MessageInformClose();
 
-=======
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	return HandShake_PostProcess(tcpCli);
 }
 
@@ -9008,12 +9821,8 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Manual(CWTCPClient & tcpCli)
 	else
 		SendACK(tcpCli);
 
-<<<<<<< HEAD
 //	MessageInformDisplay("Ready 버튼을 누르시오.", 10000);
 	MessageInformDisplay(m_strButtonMessage1, 10000);
-=======
-	MessageInformDisplay("Ready 버튼을 누르시오.", 10000);
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	Sleep(1000);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_PREPARE_SIGNAL))
 		return FALSE;
@@ -9021,12 +9830,8 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_Manual(CWTCPClient & tcpCli)
 		SendACK(tcpCli);
 
 	MessageInformClose();
-<<<<<<< HEAD
-//	MessageInformDisplay("Exposure 버튼을 누르시오.", 10000);
+
 	MessageInformDisplay(m_strButtonMessage2, 10000);
-=======
-	MessageInformDisplay("Exposure 버튼을 누르시오.", 10000);
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 	Sleep(1000);
 	if (!RecvHandShake(tcpCli, dwCode) || (dwCode != LDRET_STATUS_WINDOW_OPEN))
 		return FALSE;
@@ -9088,9 +9893,9 @@ BOOL CAcqVoltageSamples_IntClkDlg::HandShake_PostProcess(CWTCPClient & tcpCli)
 		SendACK(tcpCli);
 
 	SaveImage(pktRecv, FALSE);
-	if(CheckImage((char *)pktRecv.m_pDataBuf, 0, 255))
-	{
-	}//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+	m_dwDataSize = pktRecv.dwDataSize;
+	CheckImage((char *)pktRecv.m_pDataBuf, 0, 255);
+	DisplayCheckErrorImage(pktRecv);// BYTE *lImage);
 
 	return TRUE;
 }
@@ -9122,15 +9927,45 @@ void CAcqVoltageSamples_IntClkDlg::OnBnClickedBtnCancel2()
 	}
 
 	DisconnectToDetector(tcpCli);
-
 }
 
+/*
+void CDxdTestDlg::OnBnClickedBtnCancel()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CWTCPClient tcpCli;
+	CCommPacket pktRecv, pktSend;
+	m_btnGetBright.EnableWindow(TRUE);
+	m_btnGetCalMapBright.EnableWindow(TRUE);
+	if (!ConnectToDetector(tcpCli))
+	{
+		if (m_threadGetBright.IsAlive())
+		{
+			m_threadGetBright.CloseHandle();
+			m_btnGetBright.EnableWindow(TRUE);
+		}
+		return;
+	}
+	pktSend.SetHeaderData(LDCMD_CANCEL_JOB, 0, 0);
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return;
+	}
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return;
+	}
+	DisconnectToDetector(tcpCli);
+}
+*/
 
 void CAcqVoltageSamples_IntClkDlg::OnBnClickedBtnGetAedSensor()
 {
-
 	GetAedSensor();
-
 }
 
 
@@ -9495,7 +10330,6 @@ int CAcqVoltageSamples_IntClkDlg::SetManualExposureMode()
 	return TRUE;
 }
 
-<<<<<<< HEAD
 
 int CAcqVoltageSamples_IntClkDlg::SetAutoExposureMode()
 {
@@ -9594,10 +10428,6 @@ int CAcqVoltageSamples_IntClkDlg::SetAutoExposureMode()
 }
 
 
-=======
- 
-
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
  
 
 int CAcqVoltageSamples_IntClkDlg::FactoryReset()
@@ -9630,4 +10460,290 @@ int CAcqVoltageSamples_IntClkDlg::FactoryReset()
 
 	return TRUE;
 
+}
+
+int CAcqVoltageSamples_IntClkDlg::Set_ModelName()
+{
+	if(!GetDetParam())
+		return FALSE;	
+	if (g_AVR_Type_HK_HQ == MICOM_TYPE_HQ)
+	{
+		if (!Set_ModelName_HQ())
+			return FALSE;
+	}
+	else
+	{
+		if(!SetModelname_HK())
+			return FALSE;
+	}
+	return TRUE;
+}
+
+//===================================================
+// HQ 모델 (10HQ701G, 14HQ701G, 14HQ901G, 17HQ701G, 17HQ901G)
+//===================================================
+//#define DXD_MODEL_COUNT	7
+//char *modelName[DXD_MODEL_COUNT] = { "10HQ701G", "14HQ701G", "14HQ901G", "17HQ701G", "17HQ901G", "14HQ721G", "17HQ901G_D" };
+
+int  CAcqVoltageSamples_IntClkDlg::Set_ModelName_HQ()//void CAcqVoltageSamples_IntClkDlg::SetModelname_HK()
+{
+	// TODO: Add your control notification handler code here
+	//CDxdTestDlg* pParent = (CDxdTestDlg*)AfxGetMainWnd();
+	CWTCPClient	tcpCli;
+	CCommPacket	pktRecv, pktSend;
+
+	if (!ConnectToDetector(tcpCli))
+		return  FALSE;
+
+	pktSend.SetHeaderData(LDCMD_GET_SYSTEM_INFO, 0, 0);
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return  FALSE;
+	}
+
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return  FALSE;
+	}
+
+	memcpy(&m_sysInfo, pktRecv.m_pDataBuf, pktRecv.dwDataSize);
+
+	// get current model name
+	//int index = m_comboModelName.GetCurSel();
+	int lSeL = -1;
+	for (int i = 0; i < DXD_MODEL_COUNT; i++)
+	{
+		
+		if (gHQ_ModelNmae[i].Compare(g_SetModelName) == 0)
+		{
+			lSeL = i;
+		}		
+	}
+	if (lSeL == -1)
+	{
+		MessageBox("HQ Set Model Name Not Found", "Set Model Name ERROR");
+
+		return  FALSE;
+	}
+
+	memset(m_sysInfo.szModelName, 0, strlen(m_sysInfo.szModelName));
+	memcpy(m_sysInfo.szModelName, g_SetModelName.GetBuffer(), strlen(g_SetModelName.GetBuffer()));
+
+	// write model name
+	pktSend.SetHeaderData(LDCMD_SET_SYSTEM_INFO, 0, sizeof(SYSTEM_INFO_DATA));
+	pktSend.AllocDataBuffer();
+	memcpy(pktSend.m_pDataBuf, &m_sysInfo, pktSend.dwDataSize);
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	DisconnectToDetector(tcpCli);
+	return TRUE;
+}
+
+
+//===================================================
+// HK 모델 (17HK701G, 17HK700G, 14HK701G)
+//===================================================
+
+//#define DXD_HK_MODEL_NUM	3
+//char *HK_ModelName[DXD_HK_MODEL_NUM] = { "17HK700G", "14HK701G", "17HK701G" };
+
+int CAcqVoltageSamples_IntClkDlg::SetModelname_HK()
+{
+	// TODO: Add your control notification handler code here
+	CWTCPClient	tcpCli;
+	CCommPacket	pktRecv, pktSend;
+
+	if (!ConnectToDetector(tcpCli))
+		return FALSE;
+
+	pktSend.SetHeaderData(LDCMD_GET_SYSTEM_INFO, 0, 0);
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	memcpy(&m_sysInfo, pktRecv.m_pDataBuf, pktRecv.dwDataSize);
+
+	// get current model name
+//	int index = m_ComboHKModelName.GetCurSel();
+	int lSeL = -1;
+	for (int i = 0; i < DXD_HK_MODEL_NUM; i++)
+	{
+
+		if (gHK_ModelName[i].Compare(g_SetModelName) == 0)
+		{
+			lSeL = i;
+		}
+	}
+	if (lSeL == -1)
+	{
+		MessageBox("HK Set Model Name Not Found", "Set Model Name ERROR");
+		return  FALSE;
+	}
+
+	memset(m_sysInfo.szModelName, 0, strlen(m_sysInfo.szModelName));
+	//memcpy(m_sysInfo.szModelName, HK_ModelName[index], strlen(HK_ModelName[index]));
+	memcpy(m_sysInfo.szModelName, g_SetModelName.GetBuffer(), strlen(g_SetModelName.GetBuffer()));
+
+	// write model name
+	pktSend.SetHeaderData(LDCMD_SET_SYSTEM_INFO, 0, sizeof(SYSTEM_INFO_DATA));
+	pktSend.AllocDataBuffer();
+	memcpy(pktSend.m_pDataBuf, &m_sysInfo, pktSend.dwDataSize);
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	DisconnectToDetector(tcpCli);
+	return TRUE;
+}
+
+
+
+int CAcqVoltageSamples_IntClkDlg::GetModelname(CString &ReadModelName)
+{
+	// TODO: Add your control notification handler code here
+	CWTCPClient	tcpCli;
+	CCommPacket	pktRecv, pktSend;
+
+	if (!ConnectToDetector(tcpCli))
+		return FALSE;
+
+	pktSend.SetHeaderData(LDCMD_GET_SYSTEM_INFO, 0, 0);
+
+	//send
+	if (!SendPacket(tcpCli, pktSend))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	//recv header
+	if (!RecvPacket(tcpCli, pktRecv))
+	{
+		DisconnectToDetector(tcpCli);
+		return FALSE;
+	}
+
+	memcpy(&m_sysInfo, pktRecv.m_pDataBuf, pktRecv.dwDataSize);
+	ReadModelName = m_sysInfo.szModelName;
+	//memset(m_sysInfo.szModelName, 0, strlen(m_sysInfo.szModelName));
+	
+
+	DisconnectToDetector(tcpCli);
+	return TRUE;
+}
+
+
+void CAcqVoltageSamples_IntClkDlg::ClickLabelBarcodeMark()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+
+	
+	CFileDialog dlg(TRUE, "Image", NULL,
+		OFN_LONGNAMES | OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_NONETWORKBUTTON | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR | OFN_HIDEREADONLY,
+		"Image Raw File(*.raw)|*.raw|", NULL);
+
+	CString sTempNewFolder;
+	CString sTemp;
+	sTempNewFolder = PATH_BASE_DIR;
+	sTempNewFolder += "\\Image\\";
+
+	dlg.m_ofn.lpstrInitialDir = sTempNewFolder;
+
+	if (dlg.DoModal() != IDOK)
+	{
+		return;
+	}
+	sTempNewFolder = dlg.GetPathName();
+	sTemp = sTempNewFolder;
+	TCHAR	 szPath[512];
+	_stprintf(szPath, "%s", sTemp.GetBuffer());
+
+	//memcpy(szPath, sTemp.GetBuffer(), sTemp.GetLength);
+	//
+	//DisplayImage(szPath);
+	BITMAPINFOHEADER bmiHeader;
+	char headbuffer[16];
+	char *buffer;
+	char *bufferDest;
+	FILE *fp;
+	unsigned int color;
+	int i;
+	unsigned int r, g, b, gray;
+	int len;
+
+	WORD *ptr;
+	char *Destptr;
+
+
+
+	HWND hwnd;
+	HDC hdc;
+	RECT rc;
+	//unsigned int lWidth, lHeight;
+
+	fp = _tfopen(szPath, _T("rb"));
+
+	fseek(fp, 0, SEEK_SET);
+	len = fread(headbuffer, 1, 16, fp);
+	ptr = (WORD *)headbuffer;
+
+	m_WidthRcv = *(ptr + 1);
+	m_HeightRcv = *(ptr + 2);
+
+	buffer = (char *)malloc(m_WidthRcv*m_HeightRcv * 2);
+	bufferDest = (char *)malloc(m_WidthRcv*m_HeightRcv * 3);
+
+
+	fseek(fp, 0, SEEK_END);
+	int fileLength = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	len = fread(buffer, 1, fileLength, fp);
+	fclose(fp);
+
+	//if (CheckDarkImage(buffer, lMin, lMax));
+
+	CheckDarkImage(buffer, m_WidthRcv,m_HeightRcv , 5000, 13000);//int CAcqVoltageSamples_IntClkDlg::GetdarkCheck(unsigned int lMin, unsigned int lMax)
+	DisplayCheckErrorImage(buffer);
+
+	// DisplayImage(szPath);
 }

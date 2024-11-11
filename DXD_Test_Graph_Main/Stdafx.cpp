@@ -106,27 +106,6 @@ TestSeqDataT	gTestSeqData;
 
 
 SaveLogDataT gSaveInfo;
-//CString constPortName[18]= {
-//		_T("HDMI_R"),_T("HDMI_L"),
-//		_T("OPTICAL_R"),_T("OPTICAL_L"),
-//		_T("SPEAKER_1R"),_T("SPEAKER_1L"),
-//		_T("SPEAKER_2R"),_T("SPEAKER_2L"),
-//		_T("SPEAKER_3R"),_T("SPEAKER_3L"),
-//		_T("SPEAKER_4R"),_T("SPEAKER_4L"),
-//		_T("AUX_R"),_T("AUX_L"),
-//		_T("PORTABLE_R"),_T("PORTABLE_L"), 
-//		_T("COAX_R"),_T("COAX_L")};
-//CString constPortName[18]= {
-//		_T("HDMI_R"),_T("HDMI_L"),
-//		_T("OPTICAL_R"),_T("OPTICAL_L"),
-//		_T("Front R"),_T("Front L"),
-//		_T("Rear R"),_T("Rear L"),
-//		_T("Center"),_T("Woofer"),
-//		_T("SPEAKER_4R"),_T("SPEAKER_4L"),
-//		_T("AUX_R"),_T("AUX_L"),
-//		_T("PORTABLE_R"),_T("PORTABLE_L"), 
-//		_T("COAX_R"),_T("COAX_L")};
-
 
 //cv::VideoCapture vcap; 
 //cv::Mat gCuptureimage;
@@ -148,20 +127,58 @@ UINT g_nRemotePortNumber = 8090;
 UINT	g_FPGA_Ver_event = 1;
 UINT	g_FPGA_Ver_major = 1;
 UINT	g_FPGA_Ver_minor = 1;
-		
+
+DWORD g_dwFPGAVersion;  //!< \FPGA FW version
+
+
 UINT	g_DSERVER_Ver_event = 1;
 UINT	g_DSERVER_Ver_major = 1;
 UINT	g_DSERVER_Ver_minor = 1;
 UINT	g_DSERVER_Ver_release = 1;
+CString g_DSERVER_Ver_String;
+DWORD g_dwDSERVERVersion; //!< \Dserver version
 		
 UINT	g_Microchip_Ver_event = 1;
 UINT	g_Microchip_Ver_major = 1;
 UINT	g_Microchip_Ver_minor = 1;
+
+DWORD g_dwMicrochipVersion; //!< \ roic micom version
+
 		
 UINT	g_AVR_Ver_event = 1;
 UINT	g_AVR_Ver_major = 1;
 UINT	g_AVR_Ver_minor = 1;
 
+DWORD g_dwAVRVersion;  //!< \Aed Micom version
+DWORD g_dwDropMicomVersion;
+
+UINT	g_AVR_Type_HK_HQ = 0;
+CString g_SetModelName;
 
 BOOL g_MesEnable;
+
+int gNoRoic = 0;
+int gNoGate = 0;
+UINT   g_TotalMin, g_TotalMax;
+
+UINT   g_RoicMean[16];
+UINT   g_GateMean[16];
+UINT   g_MatrixMean[16][16];
+//5000~15000
+UINT   g_RefMin_buf[16] = 
+{
+	5000,5000,5000,5000,5000,5000,5000,5000,
+	5000,5000,5000,5000,5000,5000,5000,5000
+};
+UINT   g_RefMax_buf[16] =
+{
+	15000,15000,15000,15000,15000,15000,15000,15000,
+	15000,15000,15000,15000,15000,15000,15000,15000
+};
+//#define DXD_MODEL_COUNT	7
+ CString gHQ_ModelNmae[DXD_MODEL_COUNT] = { "10HQ701G", "14HQ701G", "14HQ901G", "17HQ701G", "17HQ901G", "14HQ721G", "17HQ901G_D" };
+
+//#define DXD_HK_MODEL_NUM	3
+ CString gHK_ModelName[DXD_HK_MODEL_NUM] = { "17HK700G", "14HK701G", "17HK701G" };
+
 

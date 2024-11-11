@@ -136,6 +136,7 @@ public:
 	afx_msg void OnBnClickedRadioDpTime30();
 	afx_msg void OnBnClickedChkUseCountJig();
 	afx_msg void OnBnClickedChkUseDpms();
+	int m_RadioDPMS_SampleRate;
 };
 
 //{{AFX_INSERT_LOCATION}}

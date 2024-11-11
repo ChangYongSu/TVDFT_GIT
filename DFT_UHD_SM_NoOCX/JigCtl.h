@@ -53,6 +53,7 @@ public :
 	BOOL Set_CylinderEarphone(BOOL bEarPhone);
 	BOOL Set_CylinderComp(BOOL bComp);
 	BOOL Set_Cylinder(BOOL bEarPhone, BOOL bComp);
+	BOOL Set_CylinderAll(BYTE Data);
 	BOOL Get_JigReady();
 	BOOL Set_Grabber_Power(BOOL bGrabPower);
 	BOOL Set_IF_Pack_Reset(BOOL bReset);
@@ -101,6 +102,7 @@ public :
 	CString			m_sDPMS_Receive;
 	int				m_nDPMS_PortID;
 	int				m_nDPMS_ReceiveCnt;
+	int				m_nDPMS_5CheckFlag;
 	double		m_fDPMS_WattData;
 
 
@@ -111,9 +113,9 @@ public :
 
 	//BOOL ID_Ctrl_SendByte(BYTE Data);
 	BOOL DPMS_SendCommString(BYTE* str, int nLength);
-	double DPMS_Read_Check();
+	double DPMS_Read_Check(int Manual = 0);
 	BOOL DPMS_ReceiveString(int nCount,  int nWaitLimit);
-
+	bool CJigCtrl::DPMS_Count_Check();
 
 private:
 	void Delay();

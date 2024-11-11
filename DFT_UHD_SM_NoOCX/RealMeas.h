@@ -16,6 +16,8 @@
 BOOL _UserMessage();
 BOOL _NotifyMessage();
 BOOL _Delay();
+BOOL _Check_Delay();
+BOOL _Check_Again_Delay();
 BOOL _Work();
 BOOL _Wait(int nMillisecond);
 BOOL _PatternGen_Out();
@@ -34,6 +36,7 @@ BOOL _Power_Off_Check();
 BOOL _Audio_Open();
 BOOL _Grab_N_Load_Image();		
 BOOL _Grab_Image_Check();
+BOOL _Grab_FullImage_Check();
 BOOL _SetLvdsResolution_2in1();
 //+add PSH 080412
 BOOL _Grab_Image_OSD_Check();
@@ -134,6 +137,7 @@ UINT Grab_Image_Check_OSD_MakeRef_2in1();
 //BOOL Grab_Image_Check_MakeRef_2in1();
 UINT Grab_Image_Check_2in1(CString sGrabTmp,CString sRefTmp,int nUseMaskImage,int nMaxDelay, CString sMsg);
 UINT Grab_Image_Check_Normal_2in1();
+UINT Grab_Image_Full_Check_Normal_2in1();
 UINT Grab_Image_Check_MakeRef_2in1();
 
 //+change kwmoon 080319 
@@ -190,6 +194,9 @@ BOOL _Set_DimmingTest();
 
 //add 101221
 BOOL _AudioMeasureReset();
+BOOL _AudioSelectReset();
+BOOL _AudioNewSearch();
+
 //add 110215
 BOOL _Set_MacAddress();
 BOOL _Set_USBHighSpeed();
@@ -209,6 +216,7 @@ BOOL _Read_PCBAID_READ();
 BOOL _Set_CylinderComp();
 BOOL _Set_CylinderEarphone();
 BOOL _Set_Cylinder();
+BOOL _Set_Cylinder3Bit();
 BOOL _IsFailePowerOn();
 BOOL _SetMovingPicTestMargin();
 

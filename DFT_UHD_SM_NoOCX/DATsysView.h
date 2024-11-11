@@ -227,6 +227,10 @@ public:
 	BOOL	m_IsBarcodeDataMappingCreated;
 	BarcodeStruct* m_pBarcodeData;
 
+	//HANDLE  m_hUSB_MICFileMapping;
+	//BOOL	m_IsUSB_MICMappingCreated;
+	//USB_MIC_Struct* m_pUSB_MIC_Struct;
+	//int nMicLive;
 //	HANDLE  m_hDaqDataFileMapping;
 //	BOOL	m_IsDaqDataMappingCreated;
 	//DaqStruct* m_pDaqData;
@@ -424,6 +428,8 @@ public :
 	int LocalDimmingTest();
 	//+add 090615
 	void AudioMeasureStart();
+	///BOOL AudioMeasureStartUSB(CString strSoundInDevice);
+	//BOOL AudioMeasureSearch();
 	void AudioMeasureStop();
 
 	//add 090702
@@ -531,6 +537,7 @@ public :
 	void CDATsysView::UpdateMainList(int lnStep);
 
 	void CDATsysView::CheckFWVer();
+	void CDATsysView::DisplayJigCount(int lJigID_UseCount);
 public:
 	int m_LockStatus[500];
 	void UpdateSeqCheck();

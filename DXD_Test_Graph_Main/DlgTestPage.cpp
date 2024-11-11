@@ -32,6 +32,7 @@ CDlgTestPage::CDlgTestPage(CWnd* pParent /*=NULL*/)
 	, m_EditDXD_ServerVer(_T(""))
 	, m_EditMicomVer(_T(""))
 	, m_EditAVR_Ver(_T(""))
+	//, m_Radio_HK_HQ(0)
 {
 
 }
@@ -83,7 +84,7 @@ void CDlgTestPage::DoDataExchange(CDataExchange* pDX)
 	//	DDX_Control(pDX, IDC_COMBO_RMT_OUT, m_cComboRmtSelect);
 
 	//DDX_Control(pDX, IDC_COMBO_PCB_TYPE, m_ComboPcbType);
-		
+
 	DDX_Control(pDX, IDC_COMBO_BAUD4, m_cComboScanBaud);
 	DDX_Control(pDX, IDC_COMBO_PARITY4, m_cComboScanParity);
 	DDX_Control(pDX, IDC_COMBO_COMPORT_SCAN, m_cComboScanPort);
@@ -95,6 +96,45 @@ void CDlgTestPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_DXD_SERVER_VER, m_EditDXD_ServerVer);
 	DDX_Text(pDX, IDC_EDIT_MICOM_VER, m_EditMicomVer);
 	DDX_Text(pDX, IDC_EDIT_AVR_VER, m_EditAVR_Ver);
+	//	DDX_Radio(pDX, IDC_RADIO_HK, m_Radio_HK_HQ);
+	//DDX_Radio(pDX, IDC_RADIO_HK, m_Radio_HK_HQ);
+	//DDX_Control(pDX, IDC_COMBO_MICOM_HKHQ_TYPE, m_cComboMicomHKHQ);
+
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN1, m_EditRoicMinValue[0]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN2, m_EditRoicMinValue[1]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN3, m_EditRoicMinValue[2]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN4, m_EditRoicMinValue[3]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN5, m_EditRoicMinValue[4]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN6, m_EditRoicMinValue[5]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN7, m_EditRoicMinValue[6]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN8, m_EditRoicMinValue[7]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN9, m_EditRoicMinValue[8]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN10, m_EditRoicMinValue[9]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN11, m_EditRoicMinValue[10]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN12, m_EditRoicMinValue[11]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN13, m_EditRoicMinValue[12]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN14, m_EditRoicMinValue[13]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN15, m_EditRoicMinValue[14]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MIN16, m_EditRoicMinValue[15]);
+	
+
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX1, m_EditRoicMaxValue[0]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX2, m_EditRoicMaxValue[1]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX3, m_EditRoicMaxValue[2]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX4, m_EditRoicMaxValue[3]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX5, m_EditRoicMaxValue[4]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX6, m_EditRoicMaxValue[5]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX7, m_EditRoicMaxValue[6]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX8, m_EditRoicMaxValue[7]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX9, m_EditRoicMaxValue[8]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX10, m_EditRoicMaxValue[9]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX11, m_EditRoicMaxValue[10]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX12, m_EditRoicMaxValue[11]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX13, m_EditRoicMaxValue[12]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX14, m_EditRoicMaxValue[13]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX15, m_EditRoicMaxValue[14]);
+	DDX_Text(pDX, IDC_EDIT_ROIC_MAX16, m_EditRoicMaxValue[15]);
+
 }
 
 
@@ -142,6 +182,8 @@ BEGIN_MESSAGE_MAP(CDlgTestPage, CDialogEx)
 
 	ON_CBN_SELCHANGE(IDC_COMBO_COMPORT_SCAN, &CDlgTestPage::OnCbnSelchangeComboComportScan)
 	ON_BN_CLICKED(IDC_BUTTON_SCANNER_PORT_CHECK, &CDlgTestPage::OnBnClickedButtonScannerPortCheck)
+	//ON_CBN_SELCHANGE(IDC_COMBO_MICOM_HKHQ_TYPE, &CDlgTestPage::OnCbnSelchangeComboMicomHkhqType)
+	ON_BN_CLICKED(IDCANCEL, &CDlgTestPage::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -223,11 +265,7 @@ BOOL CDlgTestPage::OnInitDialog()
 			g_FPGA_Ver_major ,
 			g_FPGA_Ver_minor);
 
-<<<<<<< HEAD
-	m_EditDXD_ServerVer.Format( _T("%d.%d.%d.%02d"), 
-=======
 	m_EditDXD_ServerVer.Format( _T("%d.%d%d.%02d"), 
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 		g_DSERVER_Ver_event, 
 		g_DSERVER_Ver_major ,
 		g_DSERVER_Ver_minor, 
@@ -242,6 +280,24 @@ BOOL CDlgTestPage::OnInitDialog()
 		g_AVR_Ver_event, 
 		g_AVR_Ver_major ,
 		g_AVR_Ver_minor);
+
+//	m_cComboMicomHKHQ.SetCurSel(g_AVR_Type_HK_HQ);// m_Radio_HK_HQ = g_AVR_Type_HK_HQ;
+
+	if (g_AVR_Type_HK_HQ == 0)
+	{
+		SetDlgItemText(IDC_STATIC_AED_DROP, "AED Micom ver.");//
+	}
+	else
+	{
+		SetDlgItemText(IDC_STATIC_AED_DROP, "Drop Micom ver.");//
+	}
+
+	for (int i = 0; i < 16; i++)
+	{
+		m_EditRoicMinValue[i].Format("%d", g_RefMin_buf[i]);
+		m_EditRoicMaxValue[i].Format("%d", g_RefMax_buf[i]);
+	}
+
 
 	UpdateData(FALSE);
 
@@ -346,10 +402,9 @@ void CDlgTestPage::OnBnClickedOk()
 
 	lPos = strTemp.Find(".");
 	strTemp2 = strTemp.Left(lPos);
-	strTemp = strTemp.Mid(lPos+1);
-<<<<<<< HEAD
-	lPos = strTemp.Find(".");
-	strTemp3 = strTemp.Left(lPos);
+	strTemp3 = strTemp2.Mid(1);
+	strTemp2 = strTemp2.Left(1);
+	
 	strTemp = strTemp.Mid(lPos+1);
 	strTemp4 = strTemp;
 
@@ -358,14 +413,6 @@ void CDlgTestPage::OnBnClickedOk()
 	g_DSERVER_Ver_major = _ttoi(strTemp2); 
 	g_DSERVER_Ver_minor = _ttoi(strTemp3);
 	g_DSERVER_Ver_release	= _ttoi(strTemp4); 
-=======
-	strTemp3 = strTemp;
-	g_DSERVER_Ver_event = _ttoi(strTemp1);  
-	lNumber = _ttoi(strTemp2); 
-	g_DSERVER_Ver_major = lNumber/10; 
-	g_DSERVER_Ver_minor = lNumber%10;  
-	g_DSERVER_Ver_release	= _ttoi(strTemp3); 
->>>>>>> 349ccb8b749484336f4564a18cb267dd5110eddb
 		
 
 	lPos = m_EditMicomVer.Find(".");
@@ -394,9 +441,15 @@ void CDlgTestPage::OnBnClickedOk()
 	g_AVR_Ver_major = _ttoi(strTemp2); 
 	g_AVR_Ver_minor = _ttoi(strTemp3); 
 
+	for (int i = 0; i < 16; i++)
+	{
+		g_RefMin_buf[i] = _ttoi(m_EditRoicMinValue[i]);
+		g_RefMax_buf[i] = _ttoi(m_EditRoicMaxValue[i]);
+		
+	}
 
 	
-		int l_port = 0;
+	int l_port = 0;
 	int lBaud = 0;
 	int lParity = 0;
 
@@ -422,6 +475,7 @@ void CDlgTestPage::OnBnClickedOk()
 
 	CFileControl ldlg;
 	ldlg.SaveConfigSeqData();
+	ldlg.SaveModel(gTestSeqData.strModelName);
 
 	CDialogEx::OnOK();
 }
@@ -431,6 +485,9 @@ void CDlgTestPage::OnBnClickedOk()
 void CDlgTestPage::OnBnClickedButtonGeswver()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//UpdateData(TRUE);
+//	g_AVR_Type_HK_HQ = m_cComboMicomHKHQ.GetCurSel();// g_AVR_Type_HK_HQ); m_Radio_HK_HQ;
+
 	if(m_P_Main->GetDetParam() )
 	{
 		
@@ -506,14 +563,21 @@ void CDlgTestPage::OnBnClickedButtonSave()
 
 	lPos = strTemp.Find(".");
 	strTemp2 = strTemp.Left(lPos);
-	strTemp = strTemp.Mid(lPos+1);
-	strTemp3 = strTemp;
-	g_DSERVER_Ver_event = _ttoi(strTemp1);  
-	lNumber = _ttoi(strTemp2); 
-	g_DSERVER_Ver_major = lNumber/10; 
-	g_DSERVER_Ver_minor = lNumber%10;  
-	g_DSERVER_Ver_release	= _ttoi(strTemp3); 
+	strTemp3 = strTemp2.Mid(1);
+	strTemp2 = strTemp2.Left(1);
+
+	strTemp = strTemp.Mid(lPos + 1);
+	strTemp4 = strTemp;
+	g_DSERVER_Ver_event = _ttoi(strTemp1);  	
+	g_DSERVER_Ver_major = _ttoi(strTemp2);
+	g_DSERVER_Ver_minor = _ttoi(strTemp3);
+	g_DSERVER_Ver_release	= _ttoi(strTemp4); 
 	
+	//m_EditDXD_ServerVer.Format(_T("%d.%d.%d.%02d"),
+	//	m_P_Main->m_DSERVER_Ver_event,
+	//	m_P_Main->m_DSERVER_Ver_major,
+	//	m_P_Main->m_DSERVER_Ver_minor,
+	//	m_P_Main->m_DSERVER_Ver_release);
 
 		
 
@@ -537,6 +601,7 @@ void CDlgTestPage::OnBnClickedButtonSave()
 	strTemp3 = strTemp;
 
 		
+	//g_AVR_Type_HK_HQ = m_cComboMicomHKHQ.GetCurSel(); //g_AVR_Type_HK_HQ = m_Radio_HK_HQ;
 	g_AVR_Ver_event = _ttoi(strTemp1); 
 	g_AVR_Ver_major = _ttoi(strTemp2); 
 	g_AVR_Ver_minor = _ttoi(strTemp3); 
@@ -564,9 +629,20 @@ void CDlgTestPage::OnBnClickedButtonSave()
 	{
 		g_nParity_Scanner = lParity;	
 	}
+	//extern UINT   g_RefMin_buf[16];
+	//extern UINT   g_RefMax_buf[16];
+	for (int i = 0; i < 16; i++)
+	{
+		g_RefMin_buf[i] = _ttoi(m_EditRoicMinValue[i]);
+		g_RefMax_buf[i] = _ttoi(m_EditRoicMaxValue[i]);		
+	}
+
+
+
 
 	CFileControl ldlg;
 	ldlg.SaveConfigSeqData();
+	ldlg.SaveModel(gTestSeqData.strModelName);
 }
 
 
@@ -788,4 +864,28 @@ void CDlgTestPage::OnCbnSelchangeComboComportScan()
 	//m_Edit_RX_Data = "";
 	//m_RecvCntSCAN = 0;	
 	UpdateData(FALSE);
+}
+
+//
+//void CDlgTestPage::OnCbnSelchangeComboMicomHkhqType()
+//{
+//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	OnBnClickedButtonSave();
+//	if (g_AVR_Type_HK_HQ == 0)
+//	{
+//		SetDlgItemText(IDC_STATIC_AED_DROP, "AED Micom ver.");//
+//	}
+//	else
+//	{
+//		SetDlgItemText(IDC_STATIC_AED_DROP, "Drop Micom ver.");//
+//	}
+//
+//
+//}
+
+
+void CDlgTestPage::OnBnClickedCancel()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDialogEx::OnCancel();
 }

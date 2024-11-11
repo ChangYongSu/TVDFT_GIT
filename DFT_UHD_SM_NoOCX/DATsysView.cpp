@@ -182,6 +182,7 @@ UINT			g_nGrabberType;
 UINT			g_nSysType;
 UINT			g_nSysRobotType;
 UINT			g_nUseNoScanType;
+UINT			g_nCommandOnlyType;
 //FHD
 HANDLE			hClientEvents[12]; 
 HANDLE			hServerEvents[9]; 
@@ -622,7 +623,8 @@ void CDATsysView::OnInitialUpdate()
 	CRect rect;
 	// 090910
 	CString sMsg		= _T("");
-	CString sTmp		= _T("");
+	CString sTmp = _T("");
+	CString sTmp1 = _T("");
 
 	CFormView::OnInitialUpdate();
 
@@ -665,12 +667,31 @@ void CDATsysView::OnInitialUpdate()
 			AfxMessageBox(sMsg);
 		}
 
-		sTmp.Format(_T("%s_VF.cfg"), CurrentSet->sModelIni.Left(CurrentSet->sModelIni.ReverseFind('.')));
-		CurrentSet->sVFTestIni = sTmp;
+
+		if (CurrentSet->sVFTestIni.IsEmpty())
+		{
+			sTmp.Format(_T("%s_VF.cfg"), CurrentSet->sModelIni.Left(CurrentSet->sModelIni.ReverseFind('.')));
+			CurrentSet->sVFTestIni = sTmp;
+		}
+
+		if (!CurrentSet->sModelVFConfigFolder.IsEmpty())
+		{
+			if ((CurrentSet->sVFTestIni.Find(CurrentSet->sModelVFConfigFolder) != 0)
+				&&(CurrentSet->sVFTestIni.Find(CurrentSet->sModelInfoFolder) == 0))
+			{
+				sTmp = CurrentSet->sModelVFConfigFolder;
+				sTmp1 = CurrentSet->sVFTestIni.Mid(CurrentSet->sModelInfoFolder.GetLength());
+				sTmp += sTmp1;// CurrentSet->sVFTestIni.Right(CurrentSet->sModelInfoFolder.GetLength());
+				CurrentSet->sVFTestIni = sTmp;
+			}
+		}
+//		sTmp.Format(_T("%s_VF.cfg"), gServer_Ctrl.m_szModelInfoFilePath.Left(CurrentSet->szModelInfoFilePath.ReverseFind('.')));
+//		CurrentSet->sVFTestIni = CurrentSet->sModelVFConfigFolder + sTmp;
 
 		if(!CurrentSet->sVFTestIni.IsEmpty())
 		{
-			//sTmp.Format(_T("%s\\VF_TestConfig.ini"),CurrentSet->sModelIni.Left(CurrentSet->sModelIni.ReverseFind('\\')));
+			//sTmp.Format(_T("%s_VF.cfg"), CurrentSet->sModelIni.Left(CurrentSet->sModelIni.ReverseFind('.')));
+			//CurrentSet->sVFTestIni = sTmp;
 			
 
 			if(FileExists(CurrentSet->sVFTestIni))
@@ -3089,7 +3110,12 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 	pCurrentSet->bAutoRun_DFT2			= pApp->GetProfileInt(_T("Config"), _T("Auto Run DFT2(3)"), 1);
 
 	pCurrentSet->bPJT_GrabDisable			= pApp->GetProfileInt(_T("Config"), _T("PJT Grab Disable"), 0);
-	//pCurrentSet->bPJT_GrabDisable = 0;
+	pCurrentSet->m_nDPMS_5CheckCnt = pApp->GetProfileInt(_T("Config"), _T("DPMS 5Check Count"), 0);
+	//pApp->WriteProfileInt(_T("Config"), _T("DPMS 5Check Count"), (UINT)CurrentSet->m_nDPMS_5CheckCnt);
+
+
+	pCurrentSet->sMainMIC_Name = pApp->GetProfileString(_T("Config"), _T("MIC_NAME"), "N/A");
+	
 }
 
 void CDATsysView::OnDestroy() 
@@ -3301,6 +3327,24 @@ void CDATsysView::OnDestroy()
 		CloseHandle(hMhlCtrl_Complete);
 		hMhlCtrl_Complete = NULL;
 	}
+
+	if (m_hBarcodeDataFileMapping != NULL)
+	{
+		if (m_pBarcodeData != NULL)
+		{
+			UnmapViewOfFile(m_pBarcodeData); m_pBarcodeData = NULL;
+		}
+		CloseHandle(m_hBarcodeDataFileMapping); m_hBarcodeDataFileMapping = NULL;
+	}
+
+	//if (m_hUSB_MICFileMapping != NULL)
+	//{
+	//	if (m_pUSB_MIC_Struct != NULL)
+	//	{
+	//		UnmapViewOfFile(m_pUSB_MIC_Struct); m_pUSB_MIC_Struct = NULL;
+	//	}
+	//	CloseHandle(m_hUSB_MICFileMapping); m_hUSB_MICFileMapping = NULL;
+	//}
 
 	if(g_nGrabberType == UHD_GRABBER)
 	{
@@ -3743,7 +3787,10 @@ void CDATsysView::SaveRegistrySetting()
 
 	pApp->WriteProfileInt(_T("Config"), _T("Auto Run DFT2(3)"),				(UINT)CurrentSet->bAutoRun_DFT2);
 	pApp->WriteProfileInt(_T("Config"), _T("PJT Grab Disable"),				(UINT)CurrentSet->bPJT_GrabDisable);
-	
+	pApp->WriteProfileInt(_T("Config"), _T("DPMS 5Check Count"), (UINT)CurrentSet->m_nDPMS_5CheckCnt); 
+
+
+	pApp->WriteProfileString(_T("Config"), _T("MIC_NAME"), CurrentSet->sMainMIC_Name);
 }
 
 void CDATsysView::OnRunAbort() 
@@ -5103,6 +5150,7 @@ LRESULT CDATsysView::RunTest(WPARAM wParam, LPARAM lParam)
 			
 		if (CurrentSet->bGMES_Connection && CurrentSet->bUploadMes &&(nType == 0))
 		{
+			gJigCtrl.m_nDPMS_5CheckFlag = 0;
 			/*	m_ctrlSummaryGrid.SetCol(0);
 			for(int nTmp = 0; nTmp <= StepList.GetCount(); nTmp++)
 			{
@@ -5505,23 +5553,30 @@ END_INIT :
 	// UHD Grabber Connection
 	//====================
 	//UHD
-
-	if (CurrentSet->bPJT_GrabDisable == 0)
+	if (g_nCommandOnlyType == TRUE)
 	{
-		if (g_nGrabberType == UHD_GRABBER)
+		sMsg = _T("[UHD Grabber] Connection Check = ");		
+		sMsg += "SKIP";		
+		m_pInitDlg->AddString2List(sMsg);
+	}
+	else
+	{
+		if (CurrentSet->bPJT_GrabDisable == 0)
 		{
-			sMsg = _T("[UHD Grabber] Connection Check = ");
+			if (g_nGrabberType == UHD_GRABBER)
+			{
+				sMsg = _T("[UHD Grabber] Connection Check = ");
 
-			if (GrabberOpen() == FALSE) {
-				sMsg += "FAIL";
+				if (GrabberOpen() == FALSE) {
+					sMsg += "FAIL";
+				}
+				else {
+					sMsg += "PASS";
+				}
+				m_pInitDlg->AddString2List(sMsg);
 			}
-			else {
-				sMsg += "PASS";
-			}
-			m_pInitDlg->AddString2List(sMsg);
 		}
 	}
-
 	m_pInitDlg->m_ctrlProgress.SetPos(70);
 
 	//=================
@@ -6022,6 +6077,9 @@ BOOL CDATsysView::InitAvSwitchController()
 UINT CDATsysView::StartTestThread(LPVOID pParam) 
 {
 	CDATsysView* pView =(CDATsysView* )pParam;
+
+	//g_SoundCard.m_nSoundUSBDeviceFind = 0;
+	//g_SoundCard.m_sUSBDeviceName = "N/A";
 	pView->m_CurrentStep = 0;
 	pView->CtrlBatVerEdit.SetReadOnly(1);
 	pView->m_BatVerReadOnly = 1;
@@ -6271,16 +6329,39 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 
 	gJigCtrl.m_strID_JigFullInfo = "";// 
 	gJigCtrl.m_nJigID_UseCount = 0;
-	if (CurrentSet->bUseCountIDJig)
+	if (g_nCommandOnlyType == TRUE)
+	{
+		//szMsg.Format("JIG COUNT : %03d", lJigID_UseCount);
+		g_pView->SetDlgItemText(IDC_STATIC_JIG_COUNT, "SKIP");
+	}
+	else if (CurrentSet->bUseCountIDJig)
 	{
 		gJigCtrl.m_nJigID_UseCount = 0;
 		if (!gJigCtrl.ID_Ctrl_IncCount())
 		{
+			g_pView->DisplayJigCount(gJigCtrl.m_nJigID_UseCount);
+			//SetDlgItemText(IDC_STATIC_JIG_COUNT, szMsg);//
+#ifdef _DEBUG
+			if (CurrentSet->wJig_ID_Count_MAX < gJigCtrl.m_nJigID_UseCount)
+			{
+				szMsg.Format("Jig Count Over:%d > [Max %d]", gJigCtrl.m_nJigID_UseCount, CurrentSet->wJig_ID_Count_MAX);
+				AddStringToStatus(szMsg);
+				AfxMessageBox("Jig Using Count Over");
+			}
+#endif
 			AfxMessageBox("Jig Using Check Fail");
 			//goto END_EXIT;
 		}
-		if(CurrentSet->wJig_ID_Count_MAX > gJigCtrl.m_nJigID_UseCount)
-			AfxMessageBox("Jig Using Count Over");
+		else
+		{
+			g_pView->DisplayJigCount(gJigCtrl.m_nJigID_UseCount);
+			if (CurrentSet->wJig_ID_Count_MAX < gJigCtrl.m_nJigID_UseCount)
+			{
+				szMsg.Format("Jig Count Over:%d > [Max. %d]", gJigCtrl.m_nJigID_UseCount, CurrentSet->wJig_ID_Count_MAX);
+				AddStringToStatus(szMsg);
+				AfxMessageBox("Jig Using Count Over");
+			}
+		}
 	}
 
 #if 1
@@ -7428,6 +7509,11 @@ END_EXIT:
 			if (CurrentSet->bGMES_Connection && CurrentSet->bUploadMes)// && CurrentSet->bUseScanner)
 			{
 				pView->SendMessage(UM_UPLOAD_MES_DATA,1,0);
+
+				if (gJigCtrl.m_nDPMS_5CheckFlag == 1)
+				{
+					CurrentSet->m_nDPMS_5CheckCnt++;					
+				}
 			}
 			if (g_nUseNoScanType == TRUE)//ScannerCtrl
 			{
@@ -7787,7 +7873,7 @@ int CDATsysView::StepRun()
 {
 	POSITION	PosFunc;
 	int nPosition = 0;
-	BOOL nResult  = FALSE;
+	BOOL nResult = FALSE;
 
 	gStrTmpLog.Format("Step Name: %Ts ", pCurStep->GetStepName());
 	SystemMonitorLog_Save(gStrTmpLog, _T(__FILE__), __LINE__);
@@ -7804,21 +7890,42 @@ int CDATsysView::StepRun()
 		lRect.left = lRectList.left + lRect.left;*/
 
 #ifdef _DFT_3IN1
-	//if (m_CurrentStep > 16)
-	//{
-	//	SetScroll(m_CurrentStep - 17);
-	//	//	m_CtrlListMainProcess.Invalidate();
-	//}
+		//if (m_CurrentStep > 16)
+		//{
+		//	SetScroll(m_CurrentStep - 17);
+		//	//	m_CtrlListMainProcess.Invalidate();
+		//}
 	SetScroll(m_CurrentStep);
 #else
-	//if (m_CurrentStep > 30)
-	//{
-	//	SetScroll(m_CurrentStep - 31);	
-	//}
-	//
-	SetScroll(m_CurrentStep);	
-	
+		//if (m_CurrentStep > 30)
+		//{
+		//	SetScroll(m_CurrentStep - 31);	
+		//}
+		//
+	SetScroll(m_CurrentStep);
+
 #endif
+
+	//if (strcmp(Predefined[nTmp].pszFunc, "check_audio") == NULL)
+	if (g_nCommandOnlyType == TRUE)
+	{
+		//	pCurStep->m_bResult = TRUE;
+		//	return 1.0;
+		if ((pCurStep->m_bRunAudioTest) || (pCurStep->m_bRunVideoTest))
+		{
+
+			pCurStep->m_bTest = FALSE;
+		}
+	}
+	else if (pCurStep->m_strFuncName.Compare("dpms_check") == NULL)
+	{
+		if (!gJigCtrl.DPMS_Count_Check())
+		{
+			pCurStep->m_bTest = FALSE;
+		}
+	}
+
+
 	if(pCurStep->m_bTest == FALSE) 
 	{
 		g_pView->InsertResultData2Grid(CurrentSet->nDisplayType,pCurStep->m_nStep);
@@ -7833,6 +7940,10 @@ int CDATsysView::StepRun()
 		UpdateMainList(m_CurrentStep - 1);
 		return TEST_PASS;
 	}
+
+
+	pCurStep->m_nCheckDelay = 0;
+	pCurStep->m_nCheckAgainDelay = 0;
 
 	//m_CurrentStep = pCurStep->m_nStep;
 	//m_CtrlListMainProcess.Invalidate();
@@ -7901,24 +8012,40 @@ int CDATsysView::StepRun()
 			}
 		}
 	}
-
-	if(pCurStep->m_bRunAudioTest){
-		g_pView->AudioMeasureStop();
-		//_Wait(150);
-		g_pView->AudioMeasureStart();
-	}
-	//UHD
-	if (g_nGrabberType == UHD_GRABBER)
+	if (g_nCommandOnlyType == TRUE)
 	{
-		//if (g_AutoVideoRetry != 1)
+	//	pCurStep->m_bResult = TRUE;
+	//	return 1.0;
+		if ((pCurStep->m_bRunAudioTest) || (pCurStep->m_bRunVideoTest))
 		{
-			if (CurrentSet->nGrabSource != g_GrabSource) {
-				g_pView->StopLVDSGrabThread();
-				Sleep(200);
-				g_pView->StartLVDSGrabThread();
-			}
+			
+			pCurStep->SetResult(TRUE);
 		}
-		g_AutoVideoRetry = 0;
+	}
+	else
+	{
+		//g_SoundCard.m_nSoundUSBDeviceFind = 0;
+		//g_SoundCard.m_nUSBDeviceID = -1;
+		//g_SoundCard.m_sUSBDeviceName = "N/A";
+		
+		if (pCurStep->m_bRunAudioTest) {
+			g_pView->AudioMeasureStop();
+			_Wait(150);
+			g_pView->AudioMeasureStart();
+		}
+		//UHD
+		if (g_nGrabberType == UHD_GRABBER)
+		{
+			//if (g_AutoVideoRetry != 1)
+			{
+				if (CurrentSet->nGrabSource != g_GrabSource) {
+					g_pView->StopLVDSGrabThread();
+					Sleep(200);
+					g_pView->StartLVDSGrabThread();
+				}
+			}
+			g_AutoVideoRetry = 0;
+		}
 	}
 	//
 	//g_pView->m_ctrlSummaryGrid.SetRow(pCurStep->m_nStep);
@@ -13367,20 +13494,20 @@ BOOL CDATsysView::PreTranslateMessage(MSG* pMsg)
     }
 //	if (pMsg->message == WM_KEYDOWN)//m_sModelSuffix
 //	{
-//	
+////	
 //		if (pMsg->wParam == VK_RETURN)
 //		{
-//#ifdef			DEBUG_MD5_CODE__
-//			if (m_SelectChassisModelDlg.m_bActivate == 1)
-//			{
-//				CurrentSet->sModelSuffixName = "A123.459";
-//				SendMessage(UM_UPDATE_SUFFIX_SCAN, 0, 0);
-//			}
-//#endif
-//			
-//			return TRUE;
+////#ifdef			DEBUG_MD5_CODE__
+////			if (m_SelectChassisModelDlg.m_bActivate == 1)
+////			{
+////				CurrentSet->sModelSuffixName = "A123.459";
+////				SendMessage(UM_UPDATE_SUFFIX_SCAN, 0, 0);
+////			}
+////#endif
+////			
+////			return TRUE;
 //		}
-//	
+////	
 //	}
 //
 	//if (pMsg->message == WM_KEYDOWN)//m_sModelSuffix
@@ -15040,18 +15167,7 @@ void CDATsysView::InitGrabImageEvent()
 		ExitProcess(0); 
 	}
 }
-/*
-void CDATsysView::InitEventAndFileMappingObject()
-{
-	if(g_nGrabberType == UHD_GRABBER)
-	{
-		InitEventAndFileMappingObject_UHD();
-	}
-	{
-		InitEventAndFileMappingObject_FHD();
-	}
-}
-*/
+
 void CDATsysView::InitEventAndFileMappingObject()
 {
 	// Init File Mapping Handle
@@ -15060,7 +15176,9 @@ void CDATsysView::InitEventAndFileMappingObject()
 
 	m_IsFileMhlCtrlMappingCreated = FALSE;
 	m_BufferMhlCtrl_Size = sizeof(MhlControlStruct);
-//AUTO	
+//AUTO		
+//	m_hBarcodeDataFileMapping  = NULL;
+//	m_IsBarcodeDataMappingCreated = FALSE;
 	if(g_nSysType == AUTO_SYS){
 		m_hBarcodeDataFileMapping  = NULL;
 		m_IsBarcodeDataMappingCreated = FALSE;
@@ -15186,7 +15304,100 @@ BOOL CDATsysView::CreateFileMappingObject()
 	//{
 	//	
 	//}
+
+#if 0
+	///////////////////////////////////////////////////////////////
+	//
+
+	strcpy_s(MapFileName, _countof(MapFileName), "DFT_MIC_SELECT_DATA");
+			
+	//Some arbitrary name.  use this name to access the file from other processes
+
+
+	m_hUSB_MICFileMapping = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, MapFileName);
+
+	nMicLive = 3;
+
+	if (m_hUSB_MICFileMapping != NULL)
+	{
+		SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
+		m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+		//g_SoundCard.SaveShareSoundData();
+		g_SoundCard.SoundInMainSet();
+		/*if (g_nRunningProcessNo == 1)
+		{
+			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+				CurrentSet->sMainMIC_Name.GetLength() < 20
+				? CurrentSet->sMainMIC_Name.GetLength()
+				: 20);
+		}
+		else if (g_nRunningProcessNo == 2)
+		{
+			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+				CurrentSet->sMainMIC_Name.GetLength() < 20
+				? CurrentSet->sMainMIC_Name.GetLength()
+				: 20);
+		}
+		else
+		{
+			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+				CurrentSet->sMainMIC_Name.GetLength() < 20
+				? CurrentSet->sMainMIC_Name.GetLength()
+				: 20);
+		}*/
+	}
+	else
+	{
+		m_hUSB_MICFileMapping = CreateFileMapping(
+			INVALID_HANDLE_VALUE,    // use paging file
+			NULL,                    // default security
+			PAGE_READWRITE,          // read/write access
+			0,                       // maximum object size (high-order DWORD)
+			sizeof(USB_MIC_Struct),                 // maximum object size (low-order DWORD)
+			MapFileName);                 // name of mapping object
+
+		if (m_hUSB_MICFileMapping != NULL)
+		{
+			SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
+			m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+			nMicLive = 3;
+			g_SoundCard.SaveShareSoundData();
+			/*if (g_nRunningProcessNo == 1)
+			{
+				strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+					CurrentSet->sMainMIC_Name.GetLength() < 20
+					? CurrentSet->sMainMIC_Name.GetLength()
+					: 20);
+			}
+			else if (g_nRunningProcessNo == 2)
+			{
+				strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+					CurrentSet->sMainMIC_Name.GetLength() < 20
+					? CurrentSet->sMainMIC_Name.GetLength()
+					: 20);
+			}
+			else
+			{
+				strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+					CurrentSet->sMainMIC_Name.GetLength() < 20
+					? CurrentSet->sMainMIC_Name.GetLength()
+					: 20);
+			}*/
+		}
+		else
+		{
+			AfxMessageBox("Failed to create MIC data mapping file!");
+			CloseHandle(m_hUSB_MICFileMapping);
+			return FALSE;
+		}
+	}
+		
+		
+	
+	
+#endif
 //AUTO	
+
 	if (g_nUseNoScanType == FALSE)//if (g_nSysRobotType != AUTO_SYS)//godtech 190531
 	{
 		if (g_nSysType == AUTO_SYS) {
@@ -16828,6 +17039,10 @@ void CDATsysView::GetApplicationVersion()
 #ifdef __DEBUG_SCAN_SN_NO_WRITE
 	m_szVersion += " ***** SCAN NO WRITE TEST VERSION ***** ";
 #endif
+	if (g_nCommandOnlyType == TRUE)
+	{
+		m_szVersion += "_COMMAND ONLY";
+	}
 
 	CMainFrame* pMainFrame =(CMainFrame*)AfxGetMainWnd();
 	pMainFrame->SetTitle(m_szVersion);
@@ -17030,6 +17245,11 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 						//	lRotateProcess = 1;
 					}
 					else if (CurrentSet->nUHD_Grab_Mode == 18) {
+
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
+
+					}
+					else if (CurrentSet->nUHD_Grab_Mode == 19) {
 
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
 
@@ -17447,6 +17667,8 @@ void CDATsysView::StartLVDSGrabThread()
 	int nImageOffset;
 	int nGrabDelay;
 	int	nLvdsType = 0;
+	if (g_nCommandOnlyType == TRUE)
+		return;
 
 	if (CurrentSet->bPJT_GrabDisable == 1)
 		return;
@@ -17650,6 +17872,10 @@ void CDATsysView::StartLVDSGrabThread()
 
 void CDATsysView::StopLVDSGrabThread()
 {
+
+	if (g_nCommandOnlyType == TRUE)
+		return;
+
 	DWORD dwThreadResult = 0;
 	DWORD dwExitCode = 0;
 
@@ -18671,12 +18897,37 @@ int CDATsysView::Set_Mhl(int nFunc, int nCmd)
 void CDATsysView::AudioMeasureStart()
 {
 	if(!g_SoundCard.wIn_Flag)
-	{
-		g_SoundCard.WaveRead_Start();
+	{		
+		g_SoundCard.WaveRead_Start();		
 		SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);
-
 	}
 }
+//BOOL CDATsysView::AudioMeasureStartUSB(CString strSoundInDevice)
+//{
+//
+//
+//	if(!g_SoundCard.wIn_Flag)
+//	{
+//		g_SoundCard.WaveRead_StartUSB(strSoundInDevice);
+//		SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);
+//
+//		return g_SoundCard.wIn_Flag;
+//
+//	}
+//}
+//
+//BOOL CDATsysView::AudioMeasureSearch()
+//{
+//
+//	g_SoundCard.WaveCheck_Search(0);
+//	//SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);
+//
+//	return 1;
+//
+//	
+//}
+
+
 void CDATsysView::AudioMeasureStop()
 {
 	if(g_SoundCard.wIn_Flag)
@@ -18731,10 +18982,33 @@ LRESULT CDATsysView::ProcessKeyPad(WPARAM wParam, LPARAM lParam)
 	static long sCount = 0;
 	static WPARAM swparam_old = 0;
 	static LPARAM slparam_old = 0;
-
+	MSG msg;
 	
-//	MSG msg;
 
+#if 1
+	if (swparam_old == wParam)
+	{
+		sCount++;
+	}
+	else
+	{
+		sCount = 0;
+	}
+	swparam_old = wParam;
+	if (sCount > 100)
+	{
+		if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			if (!AfxGetApp()->PreTranslateMessage(&msg))
+			{
+				::TranslateMessage(&msg);
+				::DispatchMessage(&msg);
+			}
+		}
+		sCount = 0;
+	}
+					//return 1;//godtech debug 
+#endif
 
 #if 0
 	//nIdle
@@ -18903,8 +19177,9 @@ LRESULT CDATsysView::ProcessKeyPad(WPARAM wParam, LPARAM lParam)
 				
 
 			
-			if(g_nRunningProcessNo == 1)
+			if (g_nRunningProcessNo == 1)
 			{
+				
 				if(wParam == VK_F5){
 					nStatus = START_BTN1;
 					//PostMessage(WM_COMMAND, ID_RUN_RUN);
@@ -19022,11 +19297,12 @@ LRESULT CDATsysView::ProcessKeyPad(WPARAM wParam, LPARAM lParam)
 					{
 						nIdle++;
 #if 0
+						Sleep(10);
 
 					sCount++;
 					if (sCount > 100000)
 						sCount = 0;
-					return 1;//godtech debug 
+					//return 1;//godtech debug 
 #endif 
 					}
 			}
@@ -19958,7 +20234,7 @@ int CDATsysView::ProcessAutokey(LONG nStatus)
 		}
 	}
 
-	return 0;
+	return 1;
 }
 
 
@@ -24967,7 +25243,10 @@ void CDATsysView::OnCheckMeson()
 BOOL CDATsysView::GrabberOpen()
 {
 	int			lRet;
-	
+
+	if (g_nCommandOnlyType == TRUE)
+		return FALSE;;
+
 	lRet	=	m_clsPCI.DeviceOpen(g_nRunningProcessNo - 1);
 
 	if (lRet) {
@@ -25003,6 +25282,9 @@ BOOL CDATsysView::GrabberClose()
 }
 BOOL CDATsysView::GrabberReset()
 {
+	if (g_nCommandOnlyType == TRUE)
+		return TRUE;
+
 	int		lRet=0;
 	CString sTemp;
 	CString		strRegRd1, strRegRd2; //, strDrvVer, strHWInfo, strPackID;
@@ -28163,3 +28445,272 @@ void CDATsysView::CheckFWVer()
 //	PatternGeneratorCtrl.CheckVer();
 
 }
+
+void CDATsysView::DisplayJigCount(int lJigID_UseCount)
+{
+	CString szMsg;
+	szMsg.Format("JIG COUNT : %03d", lJigID_UseCount);
+	SetDlgItemText(IDC_STATIC_JIG_COUNT, szMsg);
+	
+
+}
+//
+//if ((g_nSysType == AUTO_SYS) && (CurrentSet->bUsePLCRobot == TRUE))
+//{
+//
+//	if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
+//	{
+//		if (CurrentSet->bGrabBaseReset == 1)
+//		{			
+//			int lWhiteFlag = _White_Test();
+//			if (lWhiteFlag == 1)
+//			{
+//				g_pView->GrabBaseResetStartThread();
+//				if (Grab_Image_UHD("", 0))//g_pView->Grab_UHD())
+//				{
+//					localRetryResult = (*pCurFunc->m_pFunc)();
+//					if (localRetryResult == TEST_PASS)
+//					{
+//						continue;
+//					}
+//				}
+//			}
+//		}
+//
+//		g_pView->m_BlackPictureFlag = _Dark_Test();
+//		if (g_pView->m_BlackPictureFlag == 1)
+//		{
+//			AddStringToStatus("Black Screen Check!!");
+//		}
+//		else if (CurrentSet->bEpiPAckReset == 1)
+//		{
+//			for (int i = 0; i < 2; i++)
+//			{
+//				Sleep(100);
+//				g_pView->IF_Pack_Reset();
+//				Sleep(100);
+//				if (g_pView->Grab_UHD())
+//				{
+//					localRetryResult = (*pCurFunc->m_pFunc)();
+//					if (localRetryResult == TEST_PASS)
+//					{
+//						break;
+//					}
+//				}
+//			}
+//			if (localRetryResult == TEST_PASS)
+//			{
+//				continue;
+//			}
+//		}
+//		else if (g_pView->m_nCurrentResetExecution == 1)
+//		{
+//			if (CurrentSet->bCheckOledReset == 1)
+//			{
+//
+//
+//				for (int i = 0; i < 2; i++)
+//				{
+//					Sleep(500);
+//					ResetGrabStartThread();
+//					Sleep(500);
+//					if (g_pView->Grab_UHD())
+//					{
+//						localRetryResult = (*pCurFunc->m_pFunc)();
+//						if (localRetryResult == TEST_PASS)
+//						{
+//							break;
+//						}
+//						else
+//						{
+//							if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
+//							{
+//								AddStringToStatus("Video Test NG");
+//							}
+//							if ((pCurStep->m_bAudioTestResult == FALSE) && pCurStep->m_bRunAudioTest)
+//							{
+//								AddStringToStatus("Audio Test NG");
+//							}
+//
+//						}
+//					}
+//				}
+//				if (localRetryResult == TEST_PASS)
+//				{
+//					continue;
+//				}
+//
+//				for (int i = 0; i < 3; i++)
+//				{
+//					AddStringToStatus("Grabber Power OFF");
+//					gJigCtrl.Set_Grabber_Power(0);
+//					Sleep(500);
+//
+//					AddStringToStatus("Grabber Power ON");
+//					gJigCtrl.Set_Grabber_Power(1);
+//					Sleep(500);
+//					g_pView->ResetGrabStartThread();
+//					Sleep(500);
+//					if (g_pView->Grab_UHD())
+//					{
+//						localRetryResult = (*pCurFunc->m_pFunc)();
+//						AddStringToStatus("Video Check !!");
+//						if (localRetryResult == TEST_PASS)
+//						{
+//							break;
+//						}
+//						else
+//						{
+//							if ((pCurStep->m_bVideoTestResult == FALSE) && pCurStep->m_bRunVideoTest)
+//							{
+//								AddStringToStatus("Video Test NG");
+//							}
+//							if ((pCurStep->m_bAudioTestResult == FALSE) && pCurStep->m_bRunAudioTest)
+//							{
+//								AddStringToStatus("Audio Test NG");
+//							}
+//						}
+//					}
+//				}
+//				if (localRetryResult == TEST_PASS)
+//				{
+//					continue;
+//				}
+//
+//
+//
+//				if (CurrentSet->bCheckRotateReset == 1)
+//				{
+//					Sleep(1000);
+//					g_pView->OnImgRotate();
+//
+//					Sleep(1000);
+//					g_pView->OnImgRotate();
+//
+//
+//					Sleep(1000);
+//					localRetryResult = (*pCurFunc->m_pFunc)();
+//					if (localRetryResult == TEST_PASS)
+//					{
+//						//	gPLC_Ctrl.m_nUserRetry = 0;
+//						continue;
+//					}
+//				}
+//								
+//			}
+//			else
+//			{
+//
+//				for (int i = 0; i < 5; i++)
+//				{
+//					gJigCtrl.Set_Gender_Reset(0);
+//					AddStringToStatus("Gender_Reset!!");
+//					Sleep(1000);
+//					localRetryResult = (*pCurFunc->m_pFunc)();
+//					if (localRetryResult == TEST_PASS)
+//					{
+//						//gPLC_Ctrl.m_nUserRetry = 0;
+//						break;
+//					}
+//				}
+//				if (localRetryResult == TEST_PASS)
+//				{
+//					//gPLC_Ctrl.m_nUserRetry = 0;
+//					continue;
+//				}
+//				else
+//				{
+//					if (CurrentSet->nAuto_Grab_Reset == 1)
+//					{
+//						
+//
+//						Sleep(1000);
+//						g_pView->ResetGrabStartThread();
+//						
+//
+//						if (CurrentSet->bCheckRotateReset == 1)
+//						{
+//							Sleep(1000);
+//							g_pView->OnImgRotate();
+//
+//							Sleep(1000);
+//							g_pView->OnImgRotate();
+//						}
+//
+//						Sleep(1000);
+//						localRetryResult = (*pCurFunc->m_pFunc)();
+//						if (localRetryResult == TEST_PASS)
+//						{
+//							//	gPLC_Ctrl.m_nUserRetry = 0;
+//							continue;
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//
+//		if (localRetryResult == TEST_PASS)
+//		{
+//			//gPLC_Ctrl.m_nUserRetry = 0;
+//			continue;
+//		}
+//
+//	}
+//}
+//else
+//{
+//	if ((pCurStep->m_bVideoTestResult == FALSE) && (pCurStep->m_bRunVideoTest))// &&(CurrentSet->bEpiPAckReset == 1))
+//	{
+//		if (CurrentSet->bFHDUHD_OLED_Pack_Reset == 1)
+//		{
+//			gJigCtrl.Set_Grabber_Power(0);
+//			Sleep(500);
+//			gJigCtrl.Set_Grabber_Power(1);
+//			Sleep(500);
+//			g_pView->GrabBaseResetStartThread();
+//			localRetryResult = (*pCurFunc->m_pFunc)();
+//			if (localRetryResult == TEST_PASS)
+//			{
+//				continue;
+//			}
+//		}
+//		else if (CurrentSet->bEpiPAckReset == 1)
+//		{
+//
+//			//gJigCtrl.Set_Grabber_Power(0);
+//			//Sleep(500); 
+//			//gJigCtrl.Set_Grabber_Power(1);
+//			//Sleep(500);
+//			gJigCtrl.Set_IF_Pack_Reset(1);
+//			Sleep(500);
+//			gJigCtrl.Set_Gender_Reset(1);
+//			Sleep(500);
+//
+//			g_pView->GrabBaseResetStartThread();
+//			localRetryResult = (*pCurFunc->m_pFunc)();
+//			if (localRetryResult == TEST_PASS)
+//			{
+//				continue;
+//			}
+//
+//
+//		}
+//		else if (CurrentSet->bGrabBaseReset == 1)
+//		{
+//			int lWhiteFlag = _White_Test();
+//			if (lWhiteFlag == 1)
+//			{
+//				g_pView->GrabBaseResetStartThread();
+//				localRetryResult = (*pCurFunc->m_pFunc)();
+//				if (localRetryResult == TEST_PASS)
+//				{
+//					continue;
+//				}
+//			}
+//		}
+//
+//
+//
+//	}
+//}

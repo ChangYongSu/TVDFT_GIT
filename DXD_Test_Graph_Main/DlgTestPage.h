@@ -149,4 +149,13 @@ public:
 
 	afx_msg void OnBnClickedButtonScannerPortCheck();
 	afx_msg void OnCbnSelchangeComboComportScan();
+//	BOOL m_Radio_HK_HQ;
+	//int m_Radio_HK_HQ;
+	//CComboBox m_cComboMicomHKHQ;
+	//afx_msg void OnCbnSelchangeComboMicomHkhqType();
+	afx_msg void OnBnClickedCancel();
+
+	CString m_EditRoicMinValue[16];
+	CString m_EditRoicMaxValue[16];
+
 };

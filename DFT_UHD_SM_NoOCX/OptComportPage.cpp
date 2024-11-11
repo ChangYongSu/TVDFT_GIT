@@ -44,6 +44,7 @@ IMPLEMENT_DYNCREATE(COptComportPage, CPropertyPage)
 COptComportPage::COptComportPage() : CPropertyPage(COptComportPage::IDD)
 , m_bScanNotUse(FALSE)
 , m_nDP_TimeSel(FALSE)
+, m_RadioDPMS_SampleRate(0)
 {
 	//{{AFX_DATA_INIT(COptComportPage)
 	m_szAvSwitchBoxSettingValueTitle = _T("");
@@ -107,6 +108,7 @@ void COptComportPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHK_USE_START_BOX, m_ctrlUseStartBoxChk);
 	DDX_Radio(pDX, IDC_RADIO_DP_TIME60, m_nDP_TimeSel);
 	DDX_Control(pDX, IDC_CHK_USE_DPGEN, m_cCheckDP_PortEnable);
+	DDX_Radio(pDX, IDC_RADIO_DPMS_20P, m_RadioDPMS_SampleRate);
 }
 
 BEGIN_MESSAGE_MAP(COptComportPage, CPropertyPage)
@@ -141,32 +143,63 @@ void COptComportPage::InitComPort(CString sComPort, DWORD wBaudRate, int nCompor
 {
 	CComboBox* pComport = (CComboBox*)GetDlgItem(nComportCmbID);
 	CComboBox* pBaudRate = (CComboBox*)GetDlgItem(nBaudRateCmbID);
-
-	if(sComPort == "COM1") pComport->SetCurSel(0);
-	else if(sComPort == "COM2") pComport->SetCurSel(1);
-	else if(sComPort == "COM3") pComport->SetCurSel(2);
-	else if(sComPort == "COM4") pComport->SetCurSel(3);
-	else if(sComPort == "COM5") pComport->SetCurSel(4);
-	else if(sComPort == "COM6") pComport->SetCurSel(5);
-	else if(sComPort == "COM7") pComport->SetCurSel(6);
-	else if(sComPort == "COM8") pComport->SetCurSel(7);
-	else if(sComPort == "COM9") pComport->SetCurSel(8);
-	else if(sComPort == "\\\\.\\COM10") pComport->SetCurSel(9);
-	else if(sComPort == "\\\\.\\COM11") pComport->SetCurSel(10);
-	else if(sComPort == "\\\\.\\COM12") pComport->SetCurSel(11);
-	else if(sComPort == "\\\\.\\COM13") pComport->SetCurSel(12);
-	else if(sComPort == "\\\\.\\COM14") pComport->SetCurSel(13);
-	else if(sComPort == "\\\\.\\COM15") pComport->SetCurSel(14);
-	else if(sComPort == "\\\\.\\COM16") pComport->SetCurSel(15);
-	else if(sComPort == "\\\\.\\COM17") pComport->SetCurSel(16);
-	else if(sComPort == "\\\\.\\COM18") pComport->SetCurSel(17);
-	else if(sComPort == "\\\\.\\COM19") pComport->SetCurSel(18);
-	else if(sComPort == "\\\\.\\COM20") pComport->SetCurSel(19);
-	else if(sComPort == "\\\\.\\COM21") pComport->SetCurSel(20);
-	else if(sComPort == "\\\\.\\COM22") pComport->SetCurSel(21);
-	else if(sComPort == "\\\\.\\COM23") pComport->SetCurSel(22);
-	else if(sComPort == "\\\\.\\COM24") pComport->SetCurSel(23);
-	else pComport->SetCurSel(-1);
+	CString strTemp;
+	
+	pComport->ResetContent();
+	for (int i = 0; i < 40; i++)
+	{
+		if (i < 9)
+		{
+			strTemp.Format(" COM%d", i + 1);
+		}
+		else
+		{
+			strTemp.Format(" COM%d", i + 1);
+		}
+		pComport->AddString(strTemp);
+	}
+	
+	for (int i = 0; i < 40; i++)
+	{
+		if (i < 9)
+		{
+			strTemp.Format("COM%d", i + 1);
+		}
+		else
+		{
+			strTemp.Format("\\\\.\\COM%d", i + 1);
+		}
+		if (sComPort.Find(strTemp) == 0)
+		{
+			pComport->SetCurSel(i);
+			break;
+		}			
+	}
+	//if(sComPort == "COM1") pComport->SetCurSel(0);
+	//else if(sComPort == "COM2") pComport->SetCurSel(1);
+	//else if(sComPort == "COM3") pComport->SetCurSel(2);
+	//else if(sComPort == "COM4") pComport->SetCurSel(3);
+	//else if(sComPort == "COM5") pComport->SetCurSel(4);
+	//else if(sComPort == "COM6") pComport->SetCurSel(5);
+	//else if(sComPort == "COM7") pComport->SetCurSel(6);
+	//else if(sComPort == "COM8") pComport->SetCurSel(7);
+	//else if(sComPort == "COM9") pComport->SetCurSel(8);
+	//else if(sComPort == "\\\\.\\COM10") pComport->SetCurSel(9);
+	//else if(sComPort == "\\\\.\\COM11") pComport->SetCurSel(10);
+	//else if(sComPort == "\\\\.\\COM12") pComport->SetCurSel(11);
+	//else if(sComPort == "\\\\.\\COM13") pComport->SetCurSel(12);
+	//else if(sComPort == "\\\\.\\COM14") pComport->SetCurSel(13);
+	//else if(sComPort == "\\\\.\\COM15") pComport->SetCurSel(14);
+	//else if(sComPort == "\\\\.\\COM16") pComport->SetCurSel(15);
+	//else if(sComPort == "\\\\.\\COM17") pComport->SetCurSel(16);
+	//else if(sComPort == "\\\\.\\COM18") pComport->SetCurSel(17);
+	//else if(sComPort == "\\\\.\\COM19") pComport->SetCurSel(18);
+	//else if(sComPort == "\\\\.\\COM20") pComport->SetCurSel(19);
+	//else if(sComPort == "\\\\.\\COM21") pComport->SetCurSel(20);
+	//else if(sComPort == "\\\\.\\COM22") pComport->SetCurSel(21);
+	//else if(sComPort == "\\\\.\\COM23") pComport->SetCurSel(22);
+	//else if(sComPort == "\\\\.\\COM24") pComport->SetCurSel(23);
+	//else pComport->SetCurSel(-1);
 
 	if(wBaudRate == CBR_9600) pBaudRate->SetCurSel(0);
 	else if(wBaudRate == CBR_19200) pBaudRate->SetCurSel(1);
@@ -184,35 +217,44 @@ CString COptComportPage::GetComPortVal(int nComportCmbID)
 	CString sComPort;
 	CComboBox* pCombo = (CComboBox*)GetDlgItem(nComportCmbID);
 	int nCurSel = pCombo->GetCurSel();
-	
-	switch(nCurSel) 
+	sComPort.Format("COM1");
+	if ((nCurSel > 0) && (nCurSel < 9))
 	{
-		case 0 : sComPort.Format("COM1"); break;
-		case 1 : sComPort.Format("COM2"); break;
-		case 2 : sComPort.Format("COM3"); break;
-		case 3 : sComPort.Format("COM4"); break;
-		case 4 : sComPort.Format("COM5"); break;
-		case 5 : sComPort.Format("COM6"); break;
-		case 6 : sComPort.Format("COM7"); break;
-		case 7 : sComPort.Format("COM8"); break;
-		case 8 : sComPort.Format("COM9"); break;
-		case 9 : sComPort.Format("\\\\.\\COM10"); break;
-		case 10 : sComPort.Format("\\\\.\\COM11"); break;
-		case 11 : sComPort.Format("\\\\.\\COM12"); break;
-		case 12 : sComPort.Format("\\\\.\\COM13"); break;
-		case 13 : sComPort.Format("\\\\.\\COM14"); break;
-		case 14 : sComPort.Format("\\\\.\\COM15"); break;
-		case 15 : sComPort.Format("\\\\.\\COM16"); break;
-		case 16 : sComPort.Format("\\\\.\\COM17"); break;
-		case 17 : sComPort.Format("\\\\.\\COM18"); break;
-		case 18 : sComPort.Format("\\\\.\\COM19"); break;
-		case 19 : sComPort.Format("\\\\.\\COM20"); break;
-		case 20 : sComPort.Format("\\\\.\\COM21"); break;
-		case 21 : sComPort.Format("\\\\.\\COM22"); break;
-		case 22 : sComPort.Format("\\\\.\\COM23"); break;
-		case 23 : sComPort.Format("\\\\.\\COM24"); break;
-		default : sComPort.Format("COM1"); break;
+		sComPort.Format("COM%d", nCurSel+1);
 	}
+	else if ((nCurSel > 0) && (nCurSel < 40))
+	{
+		sComPort.Format("\\\\.\\COM%d", nCurSel + 1);
+	}
+
+	//switch(nCurSel) 
+	//{
+	//	case 0 : sComPort.Format("COM1"); break;
+	//	case 1 : sComPort.Format("COM2"); break;
+	//	case 2 : sComPort.Format("COM3"); break;
+	//	case 3 : sComPort.Format("COM4"); break;
+	//	case 4 : sComPort.Format("COM5"); break;
+	//	case 5 : sComPort.Format("COM6"); break;
+	//	case 6 : sComPort.Format("COM7"); break;
+	//	case 7 : sComPort.Format("COM8"); break;
+	//	case 8 : sComPort.Format("COM9"); break;
+	//	case 9 : sComPort.Format("\\\\.\\COM10"); break;
+	//	case 10 : sComPort.Format("\\\\.\\COM11"); break;
+	//	case 11 : sComPort.Format("\\\\.\\COM12"); break;
+	//	case 12 : sComPort.Format("\\\\.\\COM13"); break;
+	//	case 13 : sComPort.Format("\\\\.\\COM14"); break;
+	//	case 14 : sComPort.Format("\\\\.\\COM15"); break;
+	//	case 15 : sComPort.Format("\\\\.\\COM16"); break;
+	//	case 16 : sComPort.Format("\\\\.\\COM17"); break;
+	//	case 17 : sComPort.Format("\\\\.\\COM18"); break;
+	//	case 18 : sComPort.Format("\\\\.\\COM19"); break;
+	//	case 19 : sComPort.Format("\\\\.\\COM20"); break;
+	//	case 20 : sComPort.Format("\\\\.\\COM21"); break;
+	//	case 21 : sComPort.Format("\\\\.\\COM22"); break;
+	//	case 22 : sComPort.Format("\\\\.\\COM23"); break;
+	//	case 23 : sComPort.Format("\\\\.\\COM24"); break;
+	//	default : sComPort.Format("COM1"); break;
+	//}
 	return sComPort;
 }
 DWORD COptComportPage::GetBaudRateVal(int nBaudRateCmbID)
@@ -413,6 +455,9 @@ BOOL COptComportPage::OnInitDialog()
 	InitComPort(CurrentSet->sDPMSComPort, CurrentSet->wDPMSBaudRate, IDC_CMB_COMPORT_DPMS, IDC_CMB_BAUDRATE_DPMS);
 	SetDPMSGroup(CurrentSet->bUseDPMS);
 	m_ctrlUseDPMSChk.SetCheck(CurrentSet->bUseDPMS);
+	m_RadioDPMS_SampleRate = CurrentSet->nDPMS_SampleRate;
+	if (m_RadioDPMS_SampleRate != 1)
+		m_RadioDPMS_SampleRate = 0;
 
 	//if (gJigCtrl.m_bID_Ctrl_PortOpen)
 		//	gJigCtrl.ID_Ctrl_PortClose();
@@ -896,6 +941,7 @@ void COptComportPage::OnBtnComportOptApply()
 			AfxMessageBox(sMsg);
 		}
 	}
+	CurrentSet->nDPMS_SampleRate = m_RadioDPMS_SampleRate;
 
 
 

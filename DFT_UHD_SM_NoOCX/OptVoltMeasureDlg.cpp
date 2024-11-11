@@ -63,10 +63,10 @@ void COptVoltMeasureDlg::InitVoltSpecGrid()
 
 	char *sHeader1[] = {"V", "NO(CH)","JIG POINT(Volt.)", "TYPE", "TARGET1", "TARGET2", "TEST" , "MARGIN" };
 	char *sHeader3[] = {"F", "NO(CH)","JIG POINT(Freq.)", "TYPE", "TARGET1", "TARGET2", "TEST" , "MARGIN" };
-	char *sHeader2[] = {"POWER 24V,20V,19V", "POWER 13.2V,12V","POWER 3.5V", "POWER_ON", "EXT 5V",
+	char *sHeader2[] = {"POWER 24V,20V,19V", "POWER 13.2V,12V","POWER 3.5V", "POWER_ON", "EXT 5V / USB 5V",
 						"EXT 12V", "Spare1"/*"INV_ON"*/, "DPC ON", "OPT VCC", "GND",
 		                "LVDS B+/EPI LS_VGL", "LVDS B+/Inverter", "IR 3.5V_ST", "KEY1 3.3V", "KEY2 3.3V", 
-						"Spare2", "EPI VCC12", "EPI VCC18", "EPI HVDD", "GND",
+						"Spare2 / LED_R", "EPI VCC12", "EPI VCC18", "EPI HVDD", "GND",
 	                    "EPI VDD", "EPI VCOM1", "EPI VCOM2", "EPI P_VGL", "EPI VST", 
 						"EPI LS_VGL", "EPI VGH_EVEN", "EPIVGH_ODD", "EPI VGH","GND",
 
@@ -424,8 +424,8 @@ void COptVoltMeasureDlg::InitVoltSpecList()
 	int sWidth[7] = { 30, 140, 80, 70, 70, 50 , 70};
 	int sFormat[7] = { LVCFMT_CENTER, LVCFMT_LEFT, LVCFMT_CENTER, LVCFMT_CENTER, LVCFMT_CENTER, LVCFMT_CENTER , LVCFMT_CENTER};
 	char *sHeader3[6] = { "NO(CH)","  JIG POINT(Freq.)", "TYPE", "TARGET1", "TARGET2", "TEST"};
-	char *sHeader2[44] = {"POWER 24V,20V,19V", "POWER 13.2V,12V","POWER 3.5V", "POWER_ON", "EXT 5V", "EXT 12V", "Spare1"/*"INV_ON"*/, "DPC ON", "OPT VCC", "GND",
-		                "LVDS B+/EPI LS_VGL", "LVDS B+/Inverter", "IR 3.5V_ST", "KEY1 3.3V", "KEY2 3.3V", "Spare2", "EPI VCC12", "EPI VCC18", "EPI HVDD", "GND",
+	char *sHeader2[44] = {"POWER 24V,20V,19V", "POWER 13.2V,12V","POWER 3.5V", "POWER_ON", "EXT 5V / USB 5V", "EXT 12V", "Spare1"/*"INV_ON"*/, "DPC ON", "OPT VCC", "GND",
+		                "LVDS B+/EPI LS_VGL", "LVDS B+/Inverter", "IR 3.5V_ST", "KEY1 3.3V", "KEY2 3.3V", "Spare2 / LED_R", "EPI VCC12", "EPI VCC18", "EPI HVDD", "GND",
 	                    "EPI VDD", "EPI VCOM1", "EPI VCOM2", "EPI P_VGL", "EPI VST", "EPI LS_VGL", "EPI VGH_EVEN", "EPIVGH_ODD", "EPI VGH","GND",
 						"P-DIM1", "P-DIM2", "Spare3", "LNB1(BNC)", "LNB2(BNC)", "LNB3(BNC)", "Spare4", "Spare5", "Spare6", "Spare7", 
 						"INV_ON", "Battery", "GND", "GND"};
