@@ -12,6 +12,7 @@
 
 extern CDATsysView*  g_pView;
 
+
 CAvConvertor gAvConvertorCtrl;
 
 CAvConvertor::CAvConvertor()

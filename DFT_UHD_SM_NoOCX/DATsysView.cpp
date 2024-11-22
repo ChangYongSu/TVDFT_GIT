@@ -433,6 +433,7 @@ CDATsysView::CDATsysView()
 	m_bGrabConnection = FALSE;
 	m_sGrabberFW_Version = _T("NOT");
 	m_hVfThreadKillEvent	= NULL;
+	m_hBarcodeDataFileMapping = NULL;
 }
 
 CDATsysView::~CDATsysView()

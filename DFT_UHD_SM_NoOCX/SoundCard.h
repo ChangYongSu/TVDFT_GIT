@@ -114,8 +114,8 @@ public:
 	void SetLedValue_inR_Level(long value);
 	
 	// Thread
-	void RunAudioMeasure();
-	static UINT StartAudioMeasureThread(LPVOID pParam); 
+	//void RunAudioMeasure();
+	//static UINT StartAudioMeasureThread(LPVOID pParam); 
 	BOOL AudioMeasure();
 
 	BOOL AudioTestMeasure();

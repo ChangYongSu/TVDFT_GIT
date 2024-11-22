@@ -248,429 +248,432 @@ void CSoundCard::GetPeackDetectorPeak_L(double *pLevel)
 }
 
 //+changed kwmoon 080514
-UINT CSoundCard::StartAudioMeasureThread(LPVOID pParam)
-{
-	CSoundCard* pSoundCard =(CSoundCard* )pParam;
-
-	CString sTemp;
-
-	int aResult[4] = {0,0,0,0};
-	int nNoMeasureRepeat = 0;
-
-	float fLowerMargin	 = (float)(1-(pSoundCard->m_fFreqMargin*0.01));
-	float fUpperMargin	 = (float)(1+(pSoundCard->m_fFreqMargin*0.01));
-
-	//+add kwmoon 080716
-	float fLevelLowerMargin	 = (float)(1-(pSoundCard->m_fLevelMargin * 0.01));
-	//+add kwmoon 080819
-	float fLevelUpperMargin	 = (float)(1+(pSoundCard->m_fLevelMargin * 0.01));
-
-	pSoundCard->m_fMeasuredLeftFreq		= 0;
-	pSoundCard->m_fMeasuredRightFreq	= 0;
-	
-	pSoundCard->m_fMeasuredLeftLevel	= 0;
-	pSoundCard->m_fMeasuredRightLevel	= 0;
-
-	pSoundCard->m_bResult		= FALSE;
-	pSoundCard->m_bExitThread	= FALSE;
-
-	pSoundCard->m_fLeftFreqLowerLimit	= pSoundCard->m_fTargetLeftFreq * fLowerMargin;
-	pSoundCard->m_fLeftFreqUpperLimit	= pSoundCard->m_fTargetLeftFreq * fUpperMargin;
-
-	pSoundCard->m_fRightFreqLowerLimit	= pSoundCard->m_fTargetRightFreq * fLowerMargin;
-	pSoundCard->m_fRightFreqUpperLimit	= pSoundCard->m_fTargetRightFreq * fUpperMargin;
-
-/*	//+change kwmoon 080716
-//	pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLowerMargin;
-	pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLevelLowerMargin;
-	
-	//+del kwmoon 080716
-//	pSoundCard->m_fLeftLevelUpperLimit	= pSoundCard->m_fTargetLeftLevel * fUpperMargin;
-	
-	//+change kwmoon 080716
-//	pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLowerMargin;
-	pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLevelLowerMargin;
-
-	//+del kwmoon 080716
-//	pSoundCard->m_fRightLevelUpperLimit	= pSoundCard->m_fTargetRightLevel * fUpperMargin;
-*/
-	//+del kwmoon 080828
-	//+change PSH 080816
-//	if(pSoundCard->m_bMeasureAudio)
-	{
-		pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLevelLowerMargin;
-		pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLevelLowerMargin;
-
-	}
-	//+del kwmoon 080828
-/*	else
-	{
-		//+change kwmoon 080819
-	//	pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLowerMargin;
-	//	pSoundCard->m_fLeftLevelUpperLimit	= pSoundCard->m_fTargetLeftLevel * fUpperMargin;
-	
-	//	pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLowerMargin;
-	//	pSoundCard->m_fRightLevelUpperLimit	= pSoundCard->m_fTargetRightLevel * fUpperMargin;
-	
-		pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLevelLowerMargin;
-		pSoundCard->m_fLeftLevelUpperLimit	= pSoundCard->m_fTargetLeftLevel * fLevelUpperMargin;
-	
-		pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLevelLowerMargin;
-		pSoundCard->m_fRightLevelUpperLimit	= pSoundCard->m_fTargetRightLevel * fLevelUpperMargin;
-
-	}
-*/
-	::ResetEvent(pSoundCard->m_hAudioMeasureThreadKillEvent);
-
-	//090615
-	//if(!pSoundCard->wIn_Flag){ pSoundCard->WaveRead_Start(); _Wait(100); }
-	g_pView->AudioMeasureStart();
-	
-	double freq_L,freq_R;
-	double ampl_L,ampl_R;
-	double dbampl_L,dbampl_R;
-
-	double Avgfreq_L,Avgfreq_R;
-	double Avgampl_L,Avgampl_R;
-	double Avgdbampl_L,Avgdbampl_R;
-
-	int nNoMeasureAudioFreqRetry		= 0;//MAX_NO_MEASURE_AUDIO_RETRY;
-	int nNoMeasureAudioLevelRetry		= 0;//MAX_NO_MEASURE_AUDIO_RETRY;
-	int nNoMeasureAudioResetRetry		= 0;//MAX_NO_MEASURE_AUDIO_RETRY;
-
-	double nLevel_L,nLevel_R;
-	double nAvgLevel_L,nAvgLevel_R;
-	double nAmplitude_L,nAmplitude_R;
-	double nCorrectionValue = 0.97;
-	
-	CString szMsg;
-
-	int nNoRetry = 0;
-
-MEASURE_LEVEL_START : 
-
-	nLevel_L			= 0;
-	nLevel_R			= 0;
-	nAvgLevel_L			= 0;
-	nAvgLevel_R			= 0;
-	nAmplitude_L		= 0;
-	nAmplitude_R		= 0;
-	nCorrectionValue	= 0.97;
-
-//	if(nNoMeasureAudioLevelRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+//UINT CSoundCard::StartAudioMeasureThread(LPVOID pParam)
+//{
+//	CSoundCard* pSoundCard =(CSoundCard* )pParam;
+//
+//	CString sTemp;
+//
+//	int aResult[4] = {0,0,0,0};
+//	int nNoMeasureRepeat = 0;
+//
+//	float fLowerMargin	 = (float)(1-(pSoundCard->m_fFreqMargin*0.01));
+//	float fUpperMargin	 = (float)(1+(pSoundCard->m_fFreqMargin*0.01));
+//
+//	//+add kwmoon 080716
+//	float fLevelLowerMargin	 = (float)(1-(pSoundCard->m_fLevelMargin * 0.01));
+//	//+add kwmoon 080819
+//	float fLevelUpperMargin	 = (float)(1+(pSoundCard->m_fLevelMargin * 0.01));
+//
+//	pSoundCard->m_fMeasuredLeftFreq		= 0;
+//	pSoundCard->m_fMeasuredRightFreq	= 0;
+//	
+//	pSoundCard->m_fMeasuredLeftLevel	= 0;
+//	pSoundCard->m_fMeasuredRightLevel	= 0;
+//
+//	pSoundCard->m_bResult		= FALSE;
+//	pSoundCard->m_bExitThread	= FALSE;
+//
+//	pSoundCard->m_fLeftFreqLowerLimit	= pSoundCard->m_fTargetLeftFreq * fLowerMargin;
+//	pSoundCard->m_fLeftFreqUpperLimit	= pSoundCard->m_fTargetLeftFreq * fUpperMargin;
+//
+//	pSoundCard->m_fRightFreqLowerLimit	= pSoundCard->m_fTargetRightFreq * fLowerMargin;
+//	pSoundCard->m_fRightFreqUpperLimit	= pSoundCard->m_fTargetRightFreq * fUpperMargin;
+//
+///*	//+change kwmoon 080716
+////	pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLowerMargin;
+//	pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLevelLowerMargin;
+//	
+//	//+del kwmoon 080716
+////	pSoundCard->m_fLeftLevelUpperLimit	= pSoundCard->m_fTargetLeftLevel * fUpperMargin;
+//	
+//	//+change kwmoon 080716
+////	pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLowerMargin;
+//	pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLevelLowerMargin;
+//
+//	//+del kwmoon 080716
+////	pSoundCard->m_fRightLevelUpperLimit	= pSoundCard->m_fTargetRightLevel * fUpperMargin;
+//*/
+//	//+del kwmoon 080828
+//	//+change PSH 080816
+////	if(pSoundCard->m_bMeasureAudio)
 //	{
-//		szMsg.Format("Retry Check Audio Level (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioLevelRetry,MAX_NO_MEASURE_AUDIO_RETRY);
-//		ShowSubStepMessage(szMsg, "Retry Audio Level Check");
+//		pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLevelLowerMargin;
+//		pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLevelLowerMargin;
+//
 //	}
-	
-//	if(nNoMeasureAudioResetRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+//	//+del kwmoon 080828
+///*	else
 //	{
-//		szMsg.Format("Reset Audio Device (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioResetRetry,MAX_NO_MEASURE_AUDIO_RETRY);
-//		ShowSubStepMessage(szMsg, "Retry Audio Device Reset");
+//		//+change kwmoon 080819
+//	//	pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLowerMargin;
+//	//	pSoundCard->m_fLeftLevelUpperLimit	= pSoundCard->m_fTargetLeftLevel * fUpperMargin;
+//	
+//	//	pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLowerMargin;
+//	//	pSoundCard->m_fRightLevelUpperLimit	= pSoundCard->m_fTargetRightLevel * fUpperMargin;
+//	
+//		pSoundCard->m_fLeftLevelLowerLimit	= pSoundCard->m_fTargetLeftLevel * fLevelLowerMargin;
+//		pSoundCard->m_fLeftLevelUpperLimit	= pSoundCard->m_fTargetLeftLevel * fLevelUpperMargin;
+//	
+//		pSoundCard->m_fRightLevelLowerLimit	= pSoundCard->m_fTargetRightLevel * fLevelLowerMargin;
+//		pSoundCard->m_fRightLevelUpperLimit	= pSoundCard->m_fTargetRightLevel * fLevelUpperMargin;
+//
 //	}
-	
-	for(nNoMeasureRepeat=0; nNoMeasureRepeat<3;nNoMeasureRepeat++)
-	{
-		if(pSoundCard->m_bExitThread)
-		{
-			goto END_THREAD;
-		}
-		
-		_Wait(100);
-		pSoundCard->GetPeackDetectorPeak_L(&nLevel_L);
-		pSoundCard->GetPeackDetectorPeak_R(&nLevel_R);
-		_Wait(50);
-
-		nAvgLevel_L   += nLevel_L;
-		nAvgLevel_R   += nLevel_R;
-	}
-
-	nAvgLevel_L   = (double)(nAvgLevel_L   / nNoMeasureRepeat);
-	nAvgLevel_R   = (double)(nAvgLevel_R   / nNoMeasureRepeat);
-
-	if((nAvgLevel_L < (double)MIN_AUDIO_LEVEL)
-	|| (nAvgLevel_R < (double)MIN_AUDIO_LEVEL))
-	{
-		if(nNoMeasureAudioResetRetry > 0)
-		{
-			nNoMeasureAudioResetRetry--; 
-			pSoundCard->WaveRead_Stop(); // _Wait(1000); 
-			pSoundCard->WaveRead_Start(); //_Wait(1000);
-			goto MEASURE_LEVEL_START;
-		}
-	}
-	
-	nAmplitude_L = nAvgLevel_L/(2*1.4142)*0.1*nCorrectionValue;
-	nAmplitude_R = nAvgLevel_R/(2*1.4142)*0.1*nCorrectionValue;
-
-	pSoundCard->SetLedValue_inL_Level((long)nAmplitude_L);
-	pSoundCard->SetLedValue_inR_Level((long)nAmplitude_R);
-
-	pSoundCard->m_fMeasuredLeftLevel  = (float)nAmplitude_L;
-	pSoundCard->m_fMeasuredRightLevel = (float)nAmplitude_R;
-
-	sTemp.Format(_T("Level:%d, %d"), (int)nAmplitude_L, (int)nAmplitude_R);
-
-	ctrlStepMeasur_A.SetWindowText(sTemp);
-	ctrlStepMeasur_A.Invalidate();
-	ctrlStepMeasur_A.UpdateWindow();
-
-	/*
-	//+change kwmoon 080716
-//	if((pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
-//	&& (pSoundCard->m_fMeasuredLeftLevel <= (pSoundCard->m_fLeftLevelUpperLimit)))
-	if(pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
-	{
-		aResult[2] = TEST_PASS;
-	}
-	else
-	{
-		aResult[2] = TEST_FAIL;
-//		nNoRetry = nNoMeasureAudioLevelRetry--;
-		
-//		if(nNoRetry > 0){ _Wait(500); goto MEASURE_LEVEL_START; }
-	}
-
-	//+change kwmoon 080716
-//	if((pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
-//	&& (pSoundCard->m_fMeasuredRightLevel <= (pSoundCard->m_fRightLevelUpperLimit)))
-	if(pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
-	{
-		aResult[3] = TEST_PASS;
-	}
-	else
-	{
-		aResult[3] = TEST_FAIL;
-//		nNoRetry = nNoMeasureAudioLevelRetry--;
-
-//		if(nNoRetry > 0){ _Wait(500); goto MEASURE_LEVEL_START; }
-	}
-*/
-	//+del kwmoon 080828
-	//+change PSH 080816
-//	if(pSoundCard->m_bMeasureAudio)
-	{
-		if(pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
-		{
-			aResult[2] = TEST_PASS;
-		}
-		else
-		{
-			aResult[2] = TEST_FAIL;
-		}
-		if(pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
-		{
-			aResult[3] = TEST_PASS;
-		}
-		else
-		{
-			aResult[3] = TEST_FAIL;
-		}
-	}
-	//+del kwmoon 080828
-/*	else
-	{
-		if((pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
-		&& (pSoundCard->m_fMeasuredLeftLevel <= (pSoundCard->m_fLeftLevelUpperLimit)))
-		{
-			aResult[2] = TEST_PASS;
-		}
-		else
-		{
-			aResult[2] = TEST_FAIL;
-		}
-
-		if((pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
-		&& (pSoundCard->m_fMeasuredRightLevel <= (pSoundCard->m_fRightLevelUpperLimit)))
-		{
-			aResult[3] = TEST_PASS;
-		}
-		else
-		{
-			aResult[3] = TEST_FAIL;
-		}
-
-	}
-*/
-	if((aResult[2] == TEST_FAIL) || (aResult[3] == TEST_FAIL))
-	{
-		if(nNoMeasureAudioLevelRetry++ < MAX_NO_MEASURE_AUDIO_RETRY)
-		{
-			szMsg.Format("Retry Check Level (%d/%d)",nNoMeasureAudioLevelRetry,MAX_NO_MEASURE_AUDIO_RETRY);
-			ShowSubStepMessage(szMsg, "Retry Audio Level Check");	
-			
-			//+change kwmoon 080618
-		//	_Wait(500); 
-			_Wait(200);
-
-			goto MEASURE_LEVEL_START;
-		}
-	}
-
-MEASURE_FREQ_START : 
-
-	freq_L	= 0.0;
-	freq_R	= 0.0;
-	ampl_L	= 0.0;
-	ampl_R	= 0.0;
-	dbampl_L = 0.0;
-	dbampl_R = 0.0;
-
-	Avgfreq_L	= 0.0;
-	Avgfreq_R	= 0.0;
-	Avgampl_L	= 0.0;
-	Avgampl_R	= 0.0;
-	Avgdbampl_L	= 0.0;
-	Avgdbampl_R	= 0.0;
-
-//	if(nNoMeasureAudioFreqRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+//*/
+//	::ResetEvent(pSoundCard->m_hAudioMeasureThreadKillEvent);
+//
+//	//090615
+//	//if(!pSoundCard->wIn_Flag){ pSoundCard->WaveRead_Start(); _Wait(100); }
+//	g_pView->AudioMeasureStart();
+//	
+//	double freq_L,freq_R;
+//	double ampl_L,ampl_R;
+//	double dbampl_L,dbampl_R;
+//
+//	double Avgfreq_L,Avgfreq_R;
+//	double Avgampl_L,Avgampl_R;
+//	double Avgdbampl_L,Avgdbampl_R;
+//
+//	int nNoMeasureAudioFreqRetry		= 0;//MAX_NO_MEASURE_AUDIO_RETRY;
+//	int nNoMeasureAudioLevelRetry		= 0;//MAX_NO_MEASURE_AUDIO_RETRY;
+//	int nNoMeasureAudioResetRetry		= 0;//MAX_NO_MEASURE_AUDIO_RETRY;
+//
+//	double nLevel_L,nLevel_R;
+//	double nAvgLevel_L,nAvgLevel_R;
+//	double nAmplitude_L,nAmplitude_R;
+//	double nCorrectionValue = 0.97;
+//	
+//	CString szMsg;
+//
+//	int nNoRetry = 0;
+//
+//MEASURE_LEVEL_START : 
+//
+//	nLevel_L			= 0;
+//	nLevel_R			= 0;
+//	nAvgLevel_L			= 0;
+//	nAvgLevel_R			= 0;
+//	nAmplitude_L		= 0;
+//	nAmplitude_R		= 0;
+//	nCorrectionValue	= 0.97;
+//
+////	if(nNoMeasureAudioLevelRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+////	{
+////		szMsg.Format("Retry Check Audio Level (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioLevelRetry,MAX_NO_MEASURE_AUDIO_RETRY);
+////		ShowSubStepMessage(szMsg, "Retry Audio Level Check");
+////	}
+//	
+////	if(nNoMeasureAudioResetRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+////	{
+////		szMsg.Format("Reset Audio Device (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioResetRetry,MAX_NO_MEASURE_AUDIO_RETRY);
+////		ShowSubStepMessage(szMsg, "Retry Audio Device Reset");
+////	}
+//	
+//	for(nNoMeasureRepeat=0; nNoMeasureRepeat<3;nNoMeasureRepeat++)
 //	{
-//		szMsg.Format("Retry Check Audio Freq (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioFreqRetry,MAX_NO_MEASURE_AUDIO_RETRY);
-//		ShowSubStepMessage(szMsg, "Retry Audio Freq Check");
+//		if(pSoundCard->m_bExitThread)
+//		{
+//			goto END_THREAD;
+//		}
+//		
+//		_Wait(100);
+//		pSoundCard->GetPeackDetectorPeak_L(&nLevel_L);
+//		pSoundCard->GetPeackDetectorPeak_R(&nLevel_R);
+//		_Wait(50);
+//
+//		nAvgLevel_L   += nLevel_L;
+//		nAvgLevel_R   += nLevel_R;
 //	}
-
-//	if(nNoMeasureAudioResetRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+//
+//	nAvgLevel_L   = (double)(nAvgLevel_L   / nNoMeasureRepeat);
+//	nAvgLevel_R   = (double)(nAvgLevel_R   / nNoMeasureRepeat);
+//
+//	if((nAvgLevel_L < (double)MIN_AUDIO_LEVEL)
+//	|| (nAvgLevel_R < (double)MIN_AUDIO_LEVEL))
 //	{
-//		szMsg.Format("Reset Audio Device (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioResetRetry,MAX_NO_MEASURE_AUDIO_RETRY);
-//		ShowSubStepMessage(szMsg, "Retry Audio Device Reset");
+//		if(nNoMeasureAudioResetRetry > 0)
+//		{
+//			nNoMeasureAudioResetRetry--; 
+//			pSoundCard->WaveRead_Stop(); // _Wait(1000); 
+//			pSoundCard->WaveRead_Start(); //_Wait(1000);
+//			goto MEASURE_LEVEL_START;
+//		}
 //	}
+//	
+//	nAmplitude_L = nAvgLevel_L/(2*1.4142)*0.1*nCorrectionValue;
+//	nAmplitude_R = nAvgLevel_R/(2*1.4142)*0.1*nCorrectionValue;
+//
+//	pSoundCard->SetLedValue_inL_Level((long)nAmplitude_L);
+//	pSoundCard->SetLedValue_inR_Level((long)nAmplitude_R);
+//
+//	pSoundCard->m_fMeasuredLeftLevel  = (float)nAmplitude_L;
+//	pSoundCard->m_fMeasuredRightLevel = (float)nAmplitude_R;
+//
+//	sTemp.Format(_T("Level:%d, %d"), (int)nAmplitude_L, (int)nAmplitude_R);
+//
+//	ctrlStepMeasur_A.SetWindowText(sTemp);
+//	ctrlStepMeasur_A.Invalidate();
+//	ctrlStepMeasur_A.UpdateWindow();
+//
+//	/*
+//	//+change kwmoon 080716
+////	if((pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
+////	&& (pSoundCard->m_fMeasuredLeftLevel <= (pSoundCard->m_fLeftLevelUpperLimit)))
+//	if(pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
+//	{
+//		aResult[2] = TEST_PASS;
+//	}
+//	else
+//	{
+//		aResult[2] = TEST_FAIL;
+////		nNoRetry = nNoMeasureAudioLevelRetry--;
+//		
+////		if(nNoRetry > 0){ _Wait(500); goto MEASURE_LEVEL_START; }
+//	}
+//
+//	//+change kwmoon 080716
+////	if((pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
+////	&& (pSoundCard->m_fMeasuredRightLevel <= (pSoundCard->m_fRightLevelUpperLimit)))
+//	if(pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
+//	{
+//		aResult[3] = TEST_PASS;
+//	}
+//	else
+//	{
+//		aResult[3] = TEST_FAIL;
+////		nNoRetry = nNoMeasureAudioLevelRetry--;
+//
+////		if(nNoRetry > 0){ _Wait(500); goto MEASURE_LEVEL_START; }
+//	}
+//*/
+//	//+del kwmoon 080828
+//	//+change PSH 080816
+////	if(pSoundCard->m_bMeasureAudio)
+//	{
+//		if(pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
+//		{
+//			aResult[2] = TEST_PASS;
+//		}
+//		else
+//		{
+//			aResult[2] = TEST_FAIL;
+//		}
+//		if(pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
+//		{
+//			aResult[3] = TEST_PASS;
+//		}
+//		else
+//		{
+//			aResult[3] = TEST_FAIL;
+//		}
+//	}
+//	//+del kwmoon 080828
+///*	else
+//	{
+//		if((pSoundCard->m_fMeasuredLeftLevel >= (pSoundCard->m_fLeftLevelLowerLimit))
+//		&& (pSoundCard->m_fMeasuredLeftLevel <= (pSoundCard->m_fLeftLevelUpperLimit)))
+//		{
+//			aResult[2] = TEST_PASS;
+//		}
+//		else
+//		{
+//			aResult[2] = TEST_FAIL;
+//		}
+//
+//		if((pSoundCard->m_fMeasuredRightLevel >= (pSoundCard->m_fRightLevelLowerLimit))
+//		&& (pSoundCard->m_fMeasuredRightLevel <= (pSoundCard->m_fRightLevelUpperLimit)))
+//		{
+//			aResult[3] = TEST_PASS;
+//		}
+//		else
+//		{
+//			aResult[3] = TEST_FAIL;
+//		}
+//
+//	}
+//*/
+//	if((aResult[2] == TEST_FAIL) || (aResult[3] == TEST_FAIL))
+//	{
+//		if(nNoMeasureAudioLevelRetry++ < MAX_NO_MEASURE_AUDIO_RETRY)
+//		{
+//			szMsg.Format("Retry Check Level (%d/%d)",nNoMeasureAudioLevelRetry,MAX_NO_MEASURE_AUDIO_RETRY);
+//			ShowSubStepMessage(szMsg, "Retry Audio Level Check");	
+//			
+//			//+change kwmoon 080618
+//		//	_Wait(500); 
+//			_Wait(200);
+//
+//			goto MEASURE_LEVEL_START;
+//		}
+//	}
+//
+//MEASURE_FREQ_START : 
+//
+//	freq_L	= 0.0;
+//	freq_R	= 0.0;
+//	ampl_L	= 0.0;
+//	ampl_R	= 0.0;
+//	dbampl_L = 0.0;
+//	dbampl_R = 0.0;
+//
+//	Avgfreq_L	= 0.0;
+//	Avgfreq_R	= 0.0;
+//	Avgampl_L	= 0.0;
+//	Avgampl_R	= 0.0;
+//	Avgdbampl_L	= 0.0;
+//	Avgdbampl_R	= 0.0;
+//
+////	if(nNoMeasureAudioFreqRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+////	{
+////		szMsg.Format("Retry Check Audio Freq (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioFreqRetry,MAX_NO_MEASURE_AUDIO_RETRY);
+////		ShowSubStepMessage(szMsg, "Retry Audio Freq Check");
+////	}
+//
+////	if(nNoMeasureAudioResetRetry != MAX_NO_MEASURE_AUDIO_RETRY)
+////	{
+////		szMsg.Format("Reset Audio Device (%d/%d)",MAX_NO_MEASURE_AUDIO_RETRY-nNoMeasureAudioResetRetry,MAX_NO_MEASURE_AUDIO_RETRY);
+////		ShowSubStepMessage(szMsg, "Retry Audio Device Reset");
+////	}
+//
+//	for(nNoMeasureRepeat=0; nNoMeasureRepeat<3;nNoMeasureRepeat++)
+//	{
+//		if(pSoundCard->m_bExitThread)
+//		{
+//			goto END_THREAD;
+//		}
+//
+//		_Wait(50);
+//		
+//		pSoundCard->ctrlSpectrum_L.Invalidate();
+//		pSoundCard->GetWavePeak_L(&freq_L, &ampl_L, &dbampl_L);
+//
+//		pSoundCard->ctrlSpectrum_R.Invalidate();
+//		pSoundCard->GetWavePeak_R(&freq_R, &ampl_R, &dbampl_R);
+//		
+//		_Wait(50);
+//
+//		Avgfreq_L   += freq_L;
+//		Avgampl_L   += ampl_L;
+//		Avgdbampl_L += dbampl_L;
+//
+//		Avgfreq_R   += freq_R;
+//		Avgampl_R   += ampl_R;
+//		Avgdbampl_R += dbampl_R;
+//	}
+//
+//	Avgfreq_L   = (double)(Avgfreq_L   / nNoMeasureRepeat);
+//	Avgampl_L   = (double)(Avgampl_L   / nNoMeasureRepeat);
+//	Avgdbampl_L = (double)(Avgdbampl_L / nNoMeasureRepeat);
+//
+//	Avgfreq_R   = (double)(Avgfreq_R   / nNoMeasureRepeat);
+//	Avgampl_R   = (double)(Avgampl_R   / nNoMeasureRepeat);
+//	Avgdbampl_R = (double)(Avgdbampl_R / nNoMeasureRepeat);
+//
+//	if((Avgfreq_L < (double)MIN_AUDIO_FREQ)
+//	|| (Avgfreq_R < (double)MIN_AUDIO_FREQ)) 
+//	{
+//		if(nNoMeasureAudioResetRetry > 0)
+//		{
+//			nNoMeasureAudioResetRetry--; 
+//			pSoundCard->WaveRead_Stop();  //_Wait(1000); 
+//			pSoundCard->WaveRead_Start(); //_Wait(1000); 
+//			goto MEASURE_FREQ_START;
+//		}
+//	}
+//
+//	pSoundCard->SetLedValue_inL((long)Avgfreq_L);
+//	pSoundCard->ctrlLED_inL.Invalidate();
+//
+//	pSoundCard->SetLedValue_inR((long)Avgfreq_R);
+//	pSoundCard->ctrlLED_inR.Invalidate();
+//
+//	pSoundCard->m_fMeasuredLeftFreq  = (float)freq_L;
+//	pSoundCard->m_fMeasuredRightFreq = (float)freq_R;
+//
+//	sTemp.Format(_T("F:%d, %d/L:%d, %d"), (int)freq_L, (int)freq_R, (int)nAmplitude_L, (int)nAmplitude_R);
+//
+//	ctrlStepMeasur_A.SetWindowText(sTemp);
+//	ctrlStepMeasur_A.Invalidate();
+//	ctrlStepMeasur_A.UpdateWindow();
+//		
+//	if((pSoundCard->m_fMeasuredLeftFreq >= (pSoundCard->m_fLeftFreqLowerLimit))
+//	&& (pSoundCard->m_fMeasuredLeftFreq <= (pSoundCard->m_fLeftFreqUpperLimit)))
+//	{
+//		aResult[0] = TEST_PASS;
+//	}
+//	else
+//	{
+//		aResult[0] = TEST_FAIL;
+//	}
+//
+//	if((pSoundCard->m_fMeasuredRightFreq >= (pSoundCard->m_fRightFreqLowerLimit))
+//	&& (pSoundCard->m_fMeasuredRightFreq <= (pSoundCard->m_fRightFreqUpperLimit)))
+//	{
+//		aResult[1] = TEST_PASS;
+//	}
+//	else
+//	{
+//		aResult[1] = TEST_FAIL;
+//	}
+//
+//	if((aResult[0] == TEST_FAIL) || (aResult[1] == TEST_FAIL))
+//	{
+//		if(nNoMeasureAudioFreqRetry++ < MAX_NO_MEASURE_AUDIO_RETRY)
+//		{
+//			szMsg.Format("Retry Check Freq (%d/%d)",nNoMeasureAudioFreqRetry,MAX_NO_MEASURE_AUDIO_RETRY);
+//			ShowSubStepMessage(szMsg, "Retry Audio Freq Check");	
+//			//+change kwmoon 080618
+//		//	_Wait(500); 
+//			_Wait(200);
+//			goto MEASURE_FREQ_START;
+//		}
+//	}
+//
+//END_THREAD :
+//
+//	if(CurrentSet->nRunType == STEP)
+//	{
+//		if(pSoundCard->wIn_Flag){ pSoundCard->WaveRead_Stop(); _Wait(100); }
+//	}
+//
+//	// If all of the 4 audio test are passed, set the result TRUE;
+//	if((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS)
+//	&& (aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
+//
+//	{
+//		pSoundCard->m_bResult = TRUE;
+//	}
+//	
+//	pSoundCard->m_bThreadRunnuing = FALSE;
+//
+//	::SetEvent(pSoundCard->m_hAudioMeasureThreadKillEvent);
+//
+//	return 0;
+//}
+//
 
-	for(nNoMeasureRepeat=0; nNoMeasureRepeat<3;nNoMeasureRepeat++)
-	{
-		if(pSoundCard->m_bExitThread)
-		{
-			goto END_THREAD;
-		}
 
-		_Wait(50);
-		
-		pSoundCard->ctrlSpectrum_L.Invalidate();
-		pSoundCard->GetWavePeak_L(&freq_L, &ampl_L, &dbampl_L);
-
-		pSoundCard->ctrlSpectrum_R.Invalidate();
-		pSoundCard->GetWavePeak_R(&freq_R, &ampl_R, &dbampl_R);
-		
-		_Wait(50);
-
-		Avgfreq_L   += freq_L;
-		Avgampl_L   += ampl_L;
-		Avgdbampl_L += dbampl_L;
-
-		Avgfreq_R   += freq_R;
-		Avgampl_R   += ampl_R;
-		Avgdbampl_R += dbampl_R;
-	}
-
-	Avgfreq_L   = (double)(Avgfreq_L   / nNoMeasureRepeat);
-	Avgampl_L   = (double)(Avgampl_L   / nNoMeasureRepeat);
-	Avgdbampl_L = (double)(Avgdbampl_L / nNoMeasureRepeat);
-
-	Avgfreq_R   = (double)(Avgfreq_R   / nNoMeasureRepeat);
-	Avgampl_R   = (double)(Avgampl_R   / nNoMeasureRepeat);
-	Avgdbampl_R = (double)(Avgdbampl_R / nNoMeasureRepeat);
-
-	if((Avgfreq_L < (double)MIN_AUDIO_FREQ)
-	|| (Avgfreq_R < (double)MIN_AUDIO_FREQ)) 
-	{
-		if(nNoMeasureAudioResetRetry > 0)
-		{
-			nNoMeasureAudioResetRetry--; 
-			pSoundCard->WaveRead_Stop();  //_Wait(1000); 
-			pSoundCard->WaveRead_Start(); //_Wait(1000); 
-			goto MEASURE_FREQ_START;
-		}
-	}
-
-	pSoundCard->SetLedValue_inL((long)Avgfreq_L);
-	pSoundCard->ctrlLED_inL.Invalidate();
-
-	pSoundCard->SetLedValue_inR((long)Avgfreq_R);
-	pSoundCard->ctrlLED_inR.Invalidate();
-
-	pSoundCard->m_fMeasuredLeftFreq  = (float)freq_L;
-	pSoundCard->m_fMeasuredRightFreq = (float)freq_R;
-
-	sTemp.Format(_T("F:%d, %d/L:%d, %d"), (int)freq_L, (int)freq_R, (int)nAmplitude_L, (int)nAmplitude_R);
-
-	ctrlStepMeasur_A.SetWindowText(sTemp);
-	ctrlStepMeasur_A.Invalidate();
-	ctrlStepMeasur_A.UpdateWindow();
-		
-	if((pSoundCard->m_fMeasuredLeftFreq >= (pSoundCard->m_fLeftFreqLowerLimit))
-	&& (pSoundCard->m_fMeasuredLeftFreq <= (pSoundCard->m_fLeftFreqUpperLimit)))
-	{
-		aResult[0] = TEST_PASS;
-	}
-	else
-	{
-		aResult[0] = TEST_FAIL;
-	}
-
-	if((pSoundCard->m_fMeasuredRightFreq >= (pSoundCard->m_fRightFreqLowerLimit))
-	&& (pSoundCard->m_fMeasuredRightFreq <= (pSoundCard->m_fRightFreqUpperLimit)))
-	{
-		aResult[1] = TEST_PASS;
-	}
-	else
-	{
-		aResult[1] = TEST_FAIL;
-	}
-
-	if((aResult[0] == TEST_FAIL) || (aResult[1] == TEST_FAIL))
-	{
-		if(nNoMeasureAudioFreqRetry++ < MAX_NO_MEASURE_AUDIO_RETRY)
-		{
-			szMsg.Format("Retry Check Freq (%d/%d)",nNoMeasureAudioFreqRetry,MAX_NO_MEASURE_AUDIO_RETRY);
-			ShowSubStepMessage(szMsg, "Retry Audio Freq Check");	
-			//+change kwmoon 080618
-		//	_Wait(500); 
-			_Wait(200);
-			goto MEASURE_FREQ_START;
-		}
-	}
-
-END_THREAD :
-
-	if(CurrentSet->nRunType == STEP)
-	{
-		if(pSoundCard->wIn_Flag){ pSoundCard->WaveRead_Stop(); _Wait(100); }
-	}
-
-	// If all of the 4 audio test are passed, set the result TRUE;
-	if((aResult[0] == TEST_PASS) && (aResult[1] == TEST_PASS)
-	&& (aResult[2] == TEST_PASS) && (aResult[3] == TEST_PASS))
-
-	{
-		pSoundCard->m_bResult = TRUE;
-	}
-	
-	pSoundCard->m_bThreadRunnuing = FALSE;
-
-	::SetEvent(pSoundCard->m_hAudioMeasureThreadKillEvent);
-
-	return 0;
-}
-
-void CSoundCard::RunAudioMeasure()
-{
-	if(!m_bThreadRunnuing)
-	{
-		//+change 090213(Modification No1)
-	//	m_hThread = AfxBeginThread(StartAudioMeasureThread,this);
-		m_pAudioMeasureThread = AfxBeginThread(StartAudioMeasureThread,this);
-
-		//+add 090213(Modification No1)
-#ifdef _THREAD_DEBUG
-		CString szString;
-		szString.Format("StartAudioMeasureThread %x\n",m_pAudioMeasureThread->m_nThreadID);
-//		if(g_LogFileOpen) g_LogFile.WriteString(szString);
-#endif
-
-	//	StartAudioMeasureThread(this);
-		m_bThreadRunnuing = TRUE;
-	}
-}
-
+//
+//void CSoundCard::RunAudioMeasure()
+//{
+//	if(!m_bThreadRunnuing)
+//	{
+//		//+change 090213(Modification No1)
+//	//	m_hThread = AfxBeginThread(StartAudioMeasureThread,this);
+//		m_pAudioMeasureThread = AfxBeginThread(StartAudioMeasureThread,this);
+//
+//		//+add 090213(Modification No1)
+//#ifdef _THREAD_DEBUG
+//		CString szString;
+//		szString.Format("StartAudioMeasureThread %x\n",m_pAudioMeasureThread->m_nThreadID);
+////		if(g_LogFileOpen) g_LogFile.WriteString(szString);
+//#endif
+//
+//	//	StartAudioMeasureThread(this);
+//		m_bThreadRunnuing = TRUE;
+//	}
+//}
+//
 
 void CSoundCard::WaveInOutClose()
 {
