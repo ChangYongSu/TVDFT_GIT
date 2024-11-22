@@ -553,6 +553,7 @@ BOOL CGrabPage::OnInitDialog()
 	m_ctrlUhdType.AddString("13. UHD Low Speed");
 	m_ctrlUhdType.AddString("14. QHD Full Speed");
 	m_ctrlUhdType.AddString("15. FHD(120Hz) Low Speed");
+	m_ctrlUhdType.AddString("16. PACK_TYPE_STANDBYME");
 
 	m_ctrlUhdType.SetCurSel(CurrentSet->nUHD_Type);
 
@@ -967,6 +968,10 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
 					}
+					else if (CurrentSet->nUHD_Grab_Mode == 2)// 
+					{
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
+					}
 					else {
 
 #ifdef SM_MODIFY_CODE__	
@@ -1344,8 +1349,9 @@ void CGrabPage::GrabStart(int nGrabMode)
 			if ((nModel == PACK_TYPE_5_Rev_2019)
 				|| (nModel == PACK_TYPE_5_Rev_2020)
 				||(nModel == PACK_TYPE_UHDFULL_LOWSPEED)
-				||(nModel == PACK_TYPE_120HZ_LOW_SPEED)
-				||(nModel == PACK_TYPE_120HZ_LOW_SPEED))
+				|| (nModel == PACK_TYPE_QHD_FULL_SPEED)
+				|| (nModel == PACK_TYPE_120HZ_LOW_SPEED)
+				|| (nModel == PACK_TYPE_STANDBYME))
 			{
 				lRet = g_pView->DFT3_UHDGrabStartLocal(nModel, nShiftVal, nWidth, nHeight, nImageOffset, 50, nLvdsType);
 			}

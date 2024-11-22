@@ -254,7 +254,7 @@ public:
 
 public:
 
-	int	DFT3_UHDPuzzleLocal(int nMode, unsigned char *bufIn, unsigned char *bufOut, int nWidth, int nHeight, int nRotate);
+	int	DFT3_UHDPuzzleLocal(int nMode, unsigned char *bufIn, unsigned char *bufOut, int nWidth, int nHeight, int nRotate, int nModel = 0);
 
 	void SW_MODE_Mapping(unsigned char *pImgBufIn, unsigned char *pImgBufOut, int nWidth, int nHeight, int nSW_Mode);
 	void P60_CEDS20Y_Mapping(unsigned char *pImgBufOut, unsigned char *pImgBufIn, int nWidth, int nHeight);

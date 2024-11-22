@@ -635,6 +635,7 @@ BOOL COptGrabberPage::OnInitDialog()
 		m_ctrlUhdType.AddString("13. UHD Low Speed");
 		m_ctrlUhdType.AddString("14. QHD Full Speed");
 		m_ctrlUhdType.AddString("15. FHD(120Hz) Low Speed");
+		m_ctrlUhdType.AddString("16. PACK_TYPE_STANDBYME");
 		m_ctrlUhdType.SetCurSel(CurrentSet->nUHD_Type);
 
 		m_ctrlBitShift.SetCurSel(CurrentSet->nUHD_Grab_BitShift);

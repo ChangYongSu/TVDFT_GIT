@@ -17254,6 +17254,10 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
 
 					}
+					else if (CurrentSet->nUHD_Grab_Mode == 2)// 
+					{
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
+					}
 					else {
 #ifdef SM_MODIFY_CODE__	
 						pView->m_clsPCI.DFT3_UHDPuzzle(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);
@@ -17482,6 +17486,7 @@ int CDATsysView::DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, i
 		(nModel == PACK_TYPE_UHDFULL_LOWSPEED) ? 4 :		//	230315 Low Speed Mode 추가
 		(nModel == PACK_TYPE_QHD_FULL_SPEED) ? 4 :
 		(nModel == PACK_TYPE_120HZ_LOW_SPEED) ? 2 :
+		(nModel == PACK_TYPE_STANDBYME) ? 1 : //241121
 		2;
 		//(nModel == PACK_TYPE_5) ? 1 : 2;
 
@@ -17496,7 +17501,8 @@ int CDATsysView::DFT3_UHDGrabStartLocal(int nModel, int nShiftVal, int nWidth, i
 		|| (nModel == PACK_TYPE_CMVIEW) 
 		|| (nModel == PACK_TYPE_UHDFULL_LOWSPEED)
 		|| (nModel == PACK_TYPE_QHD_FULL_SPEED)
-		) ? 0x72 : 0x1b;	// lvds speed gbps
+		) ? 0x72 : (nModel == PACK_TYPE_STANDBYME) ? 0x50 : 0x1b;	// lvds speed gbps
+	//	) ? 0x72 : 0x1b;	// lvds speed gbps
 //	n64BitSpeed		=	((nModel == PACK_TYPE_UHDFULL) | (nModel == PACK_TYPE_UHDNORMAL)) ? 0x1120	:	0x450	;	// lvds speed gbps
 	n64BitSpeed = ((nModel == PACK_TYPE_UHDFULL) || (nModel == PACK_TYPE_UHDNORMAL)) ? 0x1120 :
 		((nModel == PACK_TYPE_UHDEPI) || (nModel == PACK_TYPE_UHDFULL_LOWSPEED) || (nModel == PACK_TYPE_QHD_FULL_SPEED)) ? 0x525 :
@@ -17800,7 +17806,8 @@ void CDATsysView::StartLVDSGrabThread()
 				|| (nModel == PACK_TYPE_5_Rev_2020)
 				|| (nModel == PACK_TYPE_UHDFULL_LOWSPEED) 
 				|| (nModel == PACK_TYPE_QHD_FULL_SPEED)
-				|| (nModel == PACK_TYPE_120HZ_LOW_SPEED))
+				|| (nModel == PACK_TYPE_120HZ_LOW_SPEED)
+				|| (nModel == PACK_TYPE_STANDBYME))
 			{
 				lRet = DFT3_UHDGrabStartLocal(nModel, nShiftVal, nWidth, nHeight, nImageOffset, nGrabDelay, nLvdsType);
 			}
