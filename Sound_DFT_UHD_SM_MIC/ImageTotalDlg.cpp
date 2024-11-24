@@ -1001,22 +1001,22 @@ void CImageTotalDlg::InitAudioMeasurement()
 	wglMakeCurrent(m_hDC2, m_hGLRC2);
 	///////////////////////////////////////////
 	m_cLeftFreqDisplay.SubclassDlgItem(IDC_LEFT_IMAGE_FREQ_DISPLAY, this);
-	m_cLeftFreqDisplay.SetWindowText(_T("0000Hz"));//IDC_ROBOT_STATUS
+	m_cLeftFreqDisplay.SetWindowText(_T("   0Hz"));//IDC_ROBOT_STATUS
 	m_cLeftFreqDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cLeftFreqDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cLeftLevelDisplay.SubclassDlgItem(IDC_LEFT_IMAGE_LEVEL_DISPLAY, this);
-	m_cLeftLevelDisplay.SetWindowText(_T("0000mV"));//IDC_ROBOT_STATUS
+	m_cLeftLevelDisplay.SetWindowText(_T("   0mV"));//IDC_ROBOT_STATUS
 	m_cLeftLevelDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cLeftLevelDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cRightFreqDisplay.SubclassDlgItem(IDC_RIGHT_IMAGE_FREQ_DISPLAY, this);
-	m_cRightFreqDisplay.SetWindowText(_T("0000Hz"));//IDC_ROBOT_STATUS
+	m_cRightFreqDisplay.SetWindowText(_T("   0Hz"));//IDC_ROBOT_STATUS
 	m_cRightFreqDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cRightFreqDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cRightLevelDisplay.SubclassDlgItem(IDC_RIGHT_IMAGE_LEVEL_DISPLAY, this);
-	m_cRightLevelDisplay.SetWindowText(_T("0000mV"));//IDC_ROBOT_STATUS
+	m_cRightLevelDisplay.SetWindowText(_T("   0mV"));//IDC_ROBOT_STATUS
 	m_cRightLevelDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cRightLevelDisplay.SetTextColor(RGB(0, 255, 0));
 

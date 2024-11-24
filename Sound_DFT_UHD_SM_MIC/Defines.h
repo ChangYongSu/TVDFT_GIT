@@ -169,7 +169,9 @@ struct USB_MIC_Struct
 {
 	int nMicCount;
 
-	int nNewMicRequest;
+	UINT nNewMicRequest1;
+	UINT nNewMicRequest2;
+	UINT nNewMicRequest3;
 	char sSystem1_MIC[25];
 	char sSystem2_MIC[25];
 	char sSystem3_MIC[25];

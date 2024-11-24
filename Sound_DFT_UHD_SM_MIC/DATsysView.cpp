@@ -842,22 +842,22 @@ void CDATsysView::InitSubClassItem()
 	m_cStepResultNew.SetTextColor(RGB(0, 0, 0));
 
 	m_cLeftFreqDisplay.SubclassDlgItem(IDC_LEFT_FREQ_DISPLAY, this);
-	m_cLeftFreqDisplay.SetWindowText(_T("0000Hz"));//IDC_ROBOT_STATUS
+	m_cLeftFreqDisplay.SetWindowText(_T("   0Hz"));//IDC_ROBOT_STATUS
 	m_cLeftFreqDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cLeftFreqDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cLeftLevelDisplay.SubclassDlgItem(IDC_LEFT_LEVEL_DISPLAY, this);
-	m_cLeftLevelDisplay.SetWindowText(_T("0000mV"));//IDC_ROBOT_STATUS
+	m_cLeftLevelDisplay.SetWindowText(_T("   0mV"));//IDC_ROBOT_STATUS
 	m_cLeftLevelDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cLeftLevelDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cRightFreqDisplay.SubclassDlgItem(IDC_RIGHT_FREQ_DISPLAY, this);
-	m_cRightFreqDisplay.SetWindowText(_T("0000Hz"));//IDC_ROBOT_STATUS
+	m_cRightFreqDisplay.SetWindowText(_T("   0Hz"));//IDC_ROBOT_STATUS
 	m_cRightFreqDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cRightFreqDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cRightLevelDisplay.SubclassDlgItem(IDC_RIGHT_LEVEL_DISPLAY, this);
-	m_cRightLevelDisplay.SetWindowText(_T("0000mV"));//IDC_ROBOT_STATUS
+	m_cRightLevelDisplay.SetWindowText(_T("   0mV"));//IDC_ROBOT_STATUS
 	m_cRightLevelDisplay.SetBkColor(RGB(0, 0, 0));
 	m_cRightLevelDisplay.SetTextColor(RGB(0, 255, 0));
 
@@ -1483,6 +1483,30 @@ void CDATsysView::SetFont()
 	m_Step_New_Font.CreateFontIndirect(&logFont4);
 
 	m_cStepResultNew.SetFont(&m_Step_New_Font);
+
+	logFont4.lfHeight = 21;
+	logFont4.lfWidth = 7;
+	logFont4.lfEscapement = 0;
+	logFont4.lfOrientation = 0;
+	logFont4.lfWeight = FW_BOLD;
+	logFont4.lfItalic = 0;
+	logFont4.lfUnderline = 0;
+	logFont4.lfStrikeOut = 0;
+	logFont4.lfOutPrecision = 1;
+	logFont4.lfClipPrecision = 2;
+	logFont4.lfQuality = 1;
+	logFont4.lfPitchAndFamily = 17;
+	logFont4.lfCharSet = ANSI_CHARSET;
+	strcpy_s(logFont4.lfFaceName, _countof(logFont4.lfFaceName), (LPCTSTR)"Arial");
+	//strcpy_s(logFont4.lfFaceName, _countof(logFont4.lfFaceName), (LPCTSTR)"Courier New");
+	m_AudioDisplay_Font.CreateFontIndirect(&logFont4);
+
+	m_cLeftFreqDisplay.SetFont(&m_AudioDisplay_Font);
+	m_cLeftLevelDisplay.SetFont(&m_AudioDisplay_Font);
+	m_cRightFreqDisplay.SetFont(&m_AudioDisplay_Font);
+	m_cRightLevelDisplay.SetFont(&m_AudioDisplay_Font);
+
+
 #else
 
 	LOGFONT logFont4;
@@ -1507,7 +1531,7 @@ void CDATsysView::SetFont()
 
 
 //	logFont4;
-	logFont4.lfHeight = 33;
+	logFont4.lfHeight = 28;// 33;
 	logFont4.lfWidth = 12;
 	logFont4.lfEscapement = 0;
 	logFont4.lfOrientation = 0;
@@ -6486,6 +6510,12 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 {
 	CDATsysView* pView =(CDATsysView* )pParam;
 
+	g_SoundCard.MicSearchRelease();
+	//g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 
+	//	((g_pView->m_pUSB_MIC_Struct->nNewMicRequest == g_nRunningProcessNo)||(g_pView->m_pUSB_MIC_Struct->nNewMicRequest > 3))
+	//	? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
+	
+
 	g_SoundCard.m_nSoundUSBDeviceFind = 0;
 	g_SoundCard.m_sUSBDeviceName = "N/A";
 	pView->m_CurrentStep = 0;
@@ -8431,7 +8461,8 @@ int CDATsysView::StepRun()
 		}
 	}
 	else
-	{
+	{		
+		g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = (g_pView->m_pUSB_MIC_Struct->nNewMicRequest == g_nRunningProcessNo) ? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
 		g_SoundCard.m_nSoundUSBDeviceFind = 0;
 		g_SoundCard.m_nUSBDeviceID = -1;
 		g_SoundCard.m_sUSBDeviceName = "N/A";
@@ -15731,6 +15762,9 @@ BOOL CDATsysView::CreateFileMappingObject()
 	{
 		SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
 		m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+		m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+		m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+		m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
 		g_SoundCard.SaveShareSoundData();
 		//g_SoundCard.SoundInMainSet();
 		nMicLive = 3;
@@ -15771,6 +15805,10 @@ BOOL CDATsysView::CreateFileMappingObject()
 			SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
 			m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
 			nMicLive = 3;
+
+			m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+			m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+			m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
 			g_SoundCard.SaveShareSoundData();
 			/*if (g_nRunningProcessNo == 1)
 			{
@@ -19328,8 +19366,18 @@ BOOL CDATsysView::AudioMeasureStartUSB(CString strSoundInDevice)
 
 BOOL CDATsysView::AudioMeasureSearch()
 {
-
+	int WaitCnt = 0;
+	while (!g_SoundCard.IsMicSearchFree())
+	{
+		Sleep(100);
+		WaitCnt++;
+		if (WaitCnt > 100)//10 SEC
+		{
+			g_SoundCard.MicSearchRelease(1);
+		}
+	}
 	g_SoundCard.WaveCheck_Search(0);
+	g_SoundCard.MicSearchBlock(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = g_nRunningProcessNo;
 	//SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);
 
 	return 1;
@@ -19346,10 +19394,10 @@ void CDATsysView::AudioMeasureStop()
 	g_SoundCard.WaveRead_Stop();
 	memset(m_oglWindow.m_PlotDataL, 0, sizeof(m_oglWindow.m_PlotDataL));
 	memset(m_oglWindow.m_PlotDataR, 0, sizeof(m_oglWindow.m_PlotDataR));
-	m_cLeftFreqDisplay.SetWindowText(" 0000 Hz ");
-	m_cLeftLevelDisplay.SetWindowText(" 0000 mV ");
-	m_cRightFreqDisplay.SetWindowText(" 0000 Hz ");
-	m_cRightLevelDisplay.SetWindowText(" 0000 mV ");
+	m_cLeftFreqDisplay.SetWindowText("    0 Hz ");
+	m_cLeftLevelDisplay.SetWindowText("    0 mV ");
+	m_cRightFreqDisplay.SetWindowText("    0 Hz ");
+	m_cRightLevelDisplay.SetWindowText("    0 mV ");
 
 }
 

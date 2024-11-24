@@ -113,6 +113,7 @@ public:
 	int    m_nDeviceID;
 	//int    m_nSoundDeviceSelectFlag;
 	int    m_nSoundUSBDeviceFind;
+	//int    m_nSoundUSBDeviceTest;
 	int    m_nUSBDeviceID;
 	CString m_sUSBDeviceName;
 	int    m_nSoundStatus;
@@ -139,6 +140,10 @@ public:
 	BOOL WaveCheck_Search(int Search = 0);
 	void WaveRead_Stop();
 	void WaveInOutClose();
+
+	int CSoundCard::IsMicSearchFree();
+	void CSoundCard::MicSearchBlock();
+	void CSoundCard::MicSearchRelease(int all_ch = 0);
 
 	// Get Frequency
 	void GetWavePeak_L(double *freq, double *ampl, double *dbampl);

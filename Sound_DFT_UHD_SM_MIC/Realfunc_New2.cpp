@@ -8382,6 +8382,9 @@ BOOL _AudioMeasureReset()
 	g_SoundCard.m_nSoundUSBDeviceFind = 0;
 	g_SoundCard.m_nUSBDeviceID = -1;
 	g_SoundCard.m_sUSBDeviceName = "N/A";
+
+	
+	g_SoundCard.MicSearchRelease();//g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
 	g_pView->AudioMeasureStop();
 	_Wait(150);
 	g_pView->AudioMeasureStart();

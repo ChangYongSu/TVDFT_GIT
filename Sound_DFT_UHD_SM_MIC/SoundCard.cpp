@@ -375,7 +375,7 @@ void CSoundCard::WaveRead_Start()
 		WaveRead_StartUSB("USB");
 		return;
 	}
-
+	g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
 	lFindFlag = SoundInMainSet();
 	wIn_Flag = FALSE;
 	if (lFindFlag == 1)
@@ -474,6 +474,7 @@ BOOL CSoundCard::WaveRead_StartUSB(CString strSoundIn, int Fixname)
 		}
 		m_nSoundUSBDeviceFind = 1;
 
+		MicSearchRelease();// g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
 		StrNewSelectName = m_sUSBDeviceName;
 		SaveShareSoundData();
 	}
@@ -626,6 +627,62 @@ void CSoundCard::WaveRead_Stop()
 
 }
 
+int  CSoundCard::IsMicSearchFree()
+{
+	if (g_nRunningProcessNo == 1)
+	{
+		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest3)
+		{
+			return 0;
+		}
+	}
+	else if (g_nRunningProcessNo == 2)
+	{
+		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest3)
+		{
+			return 0;
+		}
+	}
+	else if (g_nRunningProcessNo == 3)
+	{
+		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest2)
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
+void CSoundCard::MicSearchBlock()
+{
+	if (g_nRunningProcessNo == 1)
+		g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 1;
+	else if (g_nRunningProcessNo == 2)
+		g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 1;
+	else if (g_nRunningProcessNo == 3)
+		g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 1;
+}
+
+void CSoundCard::MicSearchRelease(int all_ch)
+{
+	if (all_ch)
+	{
+		g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+		g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+		g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
+	}
+	else
+	{
+		if (g_nRunningProcessNo == 1)
+			g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+		else if (g_nRunningProcessNo == 2)
+			g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+		else if (g_nRunningProcessNo == 3)
+			g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
+	}
+
+}
 BOOL CSoundCard::Creat(CWnd* pWnd)
 {
 	long nDev;
