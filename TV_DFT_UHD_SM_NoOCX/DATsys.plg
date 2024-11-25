@@ -1,0 +1,999 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: DATsys - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release/DATsys.res" /d "NDEBUG" "D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsys.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPD7F7.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "./EditLog" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM1" /FR"Release/" /Fp"Release/DATsys.pch" /YX"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AddModelDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AvConvertorCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\CommThread.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\CurrentSetting.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Dmm.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Dmmdlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\field.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FileTreeCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FlexUtil.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\font1.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FullSeqDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\GetToolOptionDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Gmes.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\HdcpTestDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\HdmiGenerator.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\I2cAdcManualCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\InitDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Jpegfile.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\KeyDownloadCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ButtonST\LedButton.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\LnbDetectorCtl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ManualTestResultInputDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Markup.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmbevelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmconnectorx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmdspcomponentx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmledlabelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmledpanelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmoscopex.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmpeakdetectx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmspectrumx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmwaveinx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ModelInfoCreate.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ModelInfoCreate_GraberOption.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\MyEchoSocket.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\NoDifferentPointDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptFolderPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptHdcpPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\picture.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ProgDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\RemoteDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ResultDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Rs232cAdcManualCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ScannerCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SelectChassisModelDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqRemoteDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SetAudioSpecDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SetDateDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SignalTestResultDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SoundCard.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Splash.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StaticFilespec.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StopProcessingDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StopStepDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Support.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TextOutCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TrueColorToolBarCtrl_src\TrueColorToolBar.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\UserMsgDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexdatasource.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexgrid.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexnode.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsys.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysDoc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysView.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\MainFrm.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\BaseImage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ImageProc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\IniAccess.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ProgressCtrlX.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ColorStaticST.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\GrabPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ImageTotalDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ParmAdjPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ReviewPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\PatternGeneratorCtl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\JumpStep.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Parser.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Realfunc_New2.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StepMeasFunc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StringTokenizer.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TVCommCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqEditorDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqRoiDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AvSwitchBoxCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Register.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\I2cAdcCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptComportPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptEtcPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptGrabberPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptionDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptMesPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptSpecPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptUserInfoPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\EditLog\EditLog.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\EditLog\SubclassWnd.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPD7F7.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPD807.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "./EditLog" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM1" /FR"Release/" /Fp"Release/DATsys.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPD807.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPD818.tmp" with contents
+[
+dft3_dll.lib psapi.lib version.lib winmm.lib dinput.lib ws2_32.lib Keydll1.lib Keydll2.lib Keydll3.lib jpeglib.lib /nologo /stack:0x200000 /subsystem:windows /incremental:no /pdb:"Release/UHD_DFT1_3in1.pdb" /machine:I386 /out:"Release/UHD_DFT1_3in1.exe" /pdbtype:sept /libpath:"PsApi" 
+".\Release\AddModelDlg.obj"
+".\Release\AvConvertorCtrl.obj"
+".\Release\CommThread.obj"
+".\Release\CurrentSetting.obj"
+".\Release\Dmm.obj"
+".\Release\Dmmdlg.obj"
+".\Release\field.obj"
+".\Release\FileTreeCtrl.obj"
+".\Release\FlexUtil.obj"
+".\Release\font1.obj"
+".\Release\FullSeqDlg.obj"
+".\Release\GetToolOptionDlg.obj"
+".\Release\Gmes.obj"
+".\Release\HdcpTestDlg.obj"
+".\Release\HdmiGenerator.obj"
+".\Release\I2cAdcManualCheckDlg.obj"
+".\Release\InitDlg.obj"
+".\Release\Jpegfile.obj"
+".\Release\KeyDownloadCheckDlg.obj"
+".\Release\LedButton.obj"
+".\Release\LnbDetectorCtl.obj"
+".\Release\ManualTestResultInputDlg.obj"
+".\Release\Markup.obj"
+".\Release\mmbevelx.obj"
+".\Release\mmconnectorx.obj"
+".\Release\mmdspcomponentx.obj"
+".\Release\mmledlabelx.obj"
+".\Release\mmledpanelx.obj"
+".\Release\mmoscopex.obj"
+".\Release\mmpeakdetectx.obj"
+".\Release\mmspectrumx.obj"
+".\Release\mmwaveinx.obj"
+".\Release\ModelInfoCreate.obj"
+".\Release\ModelInfoCreate_GraberOption.obj"
+".\Release\MyEchoSocket.obj"
+".\Release\NoDifferentPointDlg.obj"
+".\Release\OptFolderPage.obj"
+".\Release\OptHdcpPage.obj"
+".\Release\picture.obj"
+".\Release\ProgDlg.obj"
+".\Release\RemoteDlg.obj"
+".\Release\ResultDlg.obj"
+".\Release\Rs232cAdcManualCheckDlg.obj"
+".\Release\ScannerCtrl.obj"
+".\Release\SelectChassisModelDlg.obj"
+".\Release\SeqRemoteDlg.obj"
+".\Release\SetAudioSpecDlg.obj"
+".\Release\SetDateDlg.obj"
+".\Release\SignalTestResultDlg.obj"
+".\Release\SoundCard.obj"
+".\Release\Splash.obj"
+".\Release\StaticFilespec.obj"
+".\Release\StdAfx.obj"
+".\Release\StopProcessingDlg.obj"
+".\Release\StopStepDlg.obj"
+".\Release\Support.obj"
+".\Release\TextOutCtrl.obj"
+".\Release\TrueColorToolBar.obj"
+".\Release\UserMsgDlg.obj"
+".\Release\vsflexdatasource.obj"
+".\Release\vsflexgrid.obj"
+".\Release\vsflexnode.obj"
+".\Release\DATsys.obj"
+".\Release\DATsysDoc.obj"
+".\Release\DATsysView.obj"
+".\Release\MainFrm.obj"
+".\Release\BaseImage.obj"
+".\Release\ImageProc.obj"
+".\Release\IniAccess.obj"
+".\Release\ProgressCtrlX.obj"
+".\Release\ColorStaticST.obj"
+".\Release\GrabPage.obj"
+".\Release\ImageTotalDlg.obj"
+".\Release\ParmAdjPage.obj"
+".\Release\ReviewPage.obj"
+".\Release\PatternGeneratorCtl.obj"
+".\Release\JumpStep.obj"
+".\Release\Parser.obj"
+".\Release\Realfunc_New2.obj"
+".\Release\StepMeasFunc.obj"
+".\Release\StringTokenizer.obj"
+".\Release\TVCommCtrl.obj"
+".\Release\SeqEditorDlg.obj"
+".\Release\SeqRoiDlg.obj"
+".\Release\AvSwitchBoxCtrl.obj"
+".\Release\Register.obj"
+".\Release\I2cAdcCtrl.obj"
+".\Release\OptComportPage.obj"
+".\Release\OptEtcPage.obj"
+".\Release\OptGrabberPage.obj"
+".\Release\OptionDlg.obj"
+".\Release\OptMesPage.obj"
+".\Release\OptSpecPage.obj"
+".\Release\OptUserInfoPage.obj"
+".\Release\EditLog.obj"
+".\Release\SubclassWnd.obj"
+".\Release\DATsys.res"
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPD818.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AddModelDlg.cpp
+AvConvertorCtrl.cpp
+CommThread.cpp
+CurrentSetting.cpp
+Dmm.cpp
+Dmmdlg.cpp
+field.cpp
+FileTreeCtrl.cpp
+FlexUtil.cpp
+font1.cpp
+FullSeqDlg.cpp
+GetToolOptionDlg.cpp
+Gmes.cpp
+HdcpTestDlg.cpp
+HdmiGenerator.cpp
+I2cAdcManualCheckDlg.cpp
+InitDlg.cpp
+Jpegfile.cpp
+KeyDownloadCheckDlg.cpp
+LedButton.cpp
+LnbDetectorCtl.cpp
+ManualTestResultInputDlg.cpp
+Markup.cpp
+Note: MBCS build (not UTF-8)
+mmbevelx.cpp
+mmconnectorx.cpp
+mmdspcomponentx.cpp
+mmledlabelx.cpp
+mmledpanelx.cpp
+mmoscopex.cpp
+mmpeakdetectx.cpp
+mmspectrumx.cpp
+mmwaveinx.cpp
+ModelInfoCreate.cpp
+ModelInfoCreate_GraberOption.cpp
+MyEchoSocket.cpp
+NoDifferentPointDlg.cpp
+OptFolderPage.cpp
+OptHdcpPage.cpp
+picture.cpp
+ProgDlg.cpp
+RemoteDlg.cpp
+ResultDlg.cpp
+Rs232cAdcManualCheckDlg.cpp
+ScannerCtrl.cpp
+SelectChassisModelDlg.cpp
+SeqRemoteDlg.cpp
+SetAudioSpecDlg.cpp
+SetDateDlg.cpp
+SignalTestResultDlg.cpp
+SoundCard.cpp
+Splash.cpp
+StaticFilespec.cpp
+StopProcessingDlg.cpp
+StopStepDlg.cpp
+Support.cpp
+TextOutCtrl.cpp
+TrueColorToolBar.cpp
+UserMsgDlg.cpp
+vsflexdatasource.cpp
+vsflexgrid.cpp
+vsflexnode.cpp
+DATsys.cpp
+DATsysDoc.cpp
+DATsysView.cpp
+D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysView.cpp(7572) : warning C4101: 'i' : unreferenced local variable
+MainFrm.cpp
+BaseImage.cpp
+ImageProc.cpp
+IniAccess.cpp
+ProgressCtrlX.cpp
+ColorStaticST.cpp
+GrabPage.cpp
+ImageTotalDlg.cpp
+ParmAdjPage.cpp
+ReviewPage.cpp
+PatternGeneratorCtl.cpp
+JumpStep.cpp
+Parser.cpp
+Realfunc_New2.cpp
+StepMeasFunc.cpp
+StringTokenizer.cpp
+TVCommCtrl.cpp
+D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TVCommCtrl.cpp(3617) : warning C4101: 'nI' : unreferenced local variable
+SeqEditorDlg.cpp
+SeqRoiDlg.cpp
+AvSwitchBoxCtrl.cpp
+Register.cpp
+I2cAdcCtrl.cpp
+OptComportPage.cpp
+OptEtcPage.cpp
+OptGrabberPage.cpp
+OptionDlg.cpp
+OptMesPage.cpp
+OptSpecPage.cpp
+OptUserInfoPage.cpp
+EditLog.cpp
+SubclassWnd.cpp
+Linking...
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP3A83.bat" with contents
+[
+@echo off
+copy Release\UHD_DFT1_3in1.exe D:\DFT\3in1
+copy Release\UHD_DFT1_3in1.exe D:\DFT
+]
+Creating command line "C:\Users\ADMINI~1\AppData\Local\Temp\RSP3A83.bat"
+
+        1개 파일이 복사되었습니다.
+        1개 파일이 복사되었습니다.
+
+
+
+<h3>Results</h3>
+UHD_DFT1_3in1.exe - 0 error(s), 2 warning(s)
+<h3>
+--------------------Configuration: DATsys - Win32 Release_DFT2--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release_DFT2/DATsys.res" /d "NDEBUG" "D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsys.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5DBD.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "./EditLog" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM2" /FR"Release_DFT2/" /Fp"Release_DFT2/DATsys.pch" /YX"stdafx.h" /Fo"Release_DFT2/" /Fd"Release_DFT2/" /FD /c 
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AddModelDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AvConvertorCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\CommThread.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\CurrentSetting.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Dmm.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Dmmdlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\field.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FileTreeCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FlexUtil.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\font1.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FullSeqDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\GetToolOptionDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Gmes.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\HdcpTestDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\HdmiGenerator.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\I2cAdcManualCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\InitDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Jpegfile.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\KeyDownloadCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ButtonST\LedButton.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\LnbDetectorCtl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ManualTestResultInputDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Markup.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmbevelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmconnectorx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmdspcomponentx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmledlabelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmledpanelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmoscopex.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmpeakdetectx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmspectrumx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmwaveinx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ModelInfoCreate.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ModelInfoCreate_GraberOption.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\MyEchoSocket.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\NoDifferentPointDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptFolderPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptHdcpPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\picture.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ProgDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\RemoteDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ResultDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Rs232cAdcManualCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ScannerCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SelectChassisModelDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqRemoteDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SetAudioSpecDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SetDateDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SignalTestResultDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SoundCard.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Splash.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StaticFilespec.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StopProcessingDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StopStepDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Support.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TextOutCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TrueColorToolBarCtrl_src\TrueColorToolBar.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\UserMsgDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexdatasource.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexgrid.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexnode.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsys.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysDoc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysView.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\MainFrm.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\BaseImage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ImageProc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\IniAccess.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ProgressCtrlX.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ColorStaticST.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\GrabPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ImageTotalDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ParmAdjPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ReviewPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\PatternGeneratorCtl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\JumpStep.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Parser.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Realfunc_New2.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StepMeasFunc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StringTokenizer.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TVCommCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqEditorDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqRoiDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AvSwitchBoxCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Register.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\I2cAdcCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptComportPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptEtcPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptGrabberPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptionDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptMesPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptSpecPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptUserInfoPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\EditLog\EditLog.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\EditLog\SubclassWnd.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5DBD.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5DCD.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "./EditLog" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM2" /FR"Release_DFT2/" /Fp"Release_DFT2/DATsys.pch" /Yc"stdafx.h" /Fo"Release_DFT2/" /Fd"Release_DFT2/" /FD /c 
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5DCD.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5DEE.tmp" with contents
+[
+dft3_dll.lib psapi.lib version.lib winmm.lib dinput.lib ws2_32.lib Keydll1.lib Keydll2.lib Keydll3.lib jpeglib.lib /nologo /stack:0x200000 /subsystem:windows /incremental:no /pdb:"Release_DFT2/UHD_DFT2_3in1.pdb" /machine:I386 /out:"Release_DFT2/UHD_DFT2_3in1.exe" /pdbtype:sept /libpath:"PsApi" 
+".\Release_DFT2\AddModelDlg.obj"
+".\Release_DFT2\AvConvertorCtrl.obj"
+".\Release_DFT2\CommThread.obj"
+".\Release_DFT2\CurrentSetting.obj"
+".\Release_DFT2\Dmm.obj"
+".\Release_DFT2\Dmmdlg.obj"
+".\Release_DFT2\field.obj"
+".\Release_DFT2\FileTreeCtrl.obj"
+".\Release_DFT2\FlexUtil.obj"
+".\Release_DFT2\font1.obj"
+".\Release_DFT2\FullSeqDlg.obj"
+".\Release_DFT2\GetToolOptionDlg.obj"
+".\Release_DFT2\Gmes.obj"
+".\Release_DFT2\HdcpTestDlg.obj"
+".\Release_DFT2\HdmiGenerator.obj"
+".\Release_DFT2\I2cAdcManualCheckDlg.obj"
+".\Release_DFT2\InitDlg.obj"
+".\Release_DFT2\Jpegfile.obj"
+".\Release_DFT2\KeyDownloadCheckDlg.obj"
+".\Release_DFT2\LedButton.obj"
+".\Release_DFT2\LnbDetectorCtl.obj"
+".\Release_DFT2\ManualTestResultInputDlg.obj"
+".\Release_DFT2\Markup.obj"
+".\Release_DFT2\mmbevelx.obj"
+".\Release_DFT2\mmconnectorx.obj"
+".\Release_DFT2\mmdspcomponentx.obj"
+".\Release_DFT2\mmledlabelx.obj"
+".\Release_DFT2\mmledpanelx.obj"
+".\Release_DFT2\mmoscopex.obj"
+".\Release_DFT2\mmpeakdetectx.obj"
+".\Release_DFT2\mmspectrumx.obj"
+".\Release_DFT2\mmwaveinx.obj"
+".\Release_DFT2\ModelInfoCreate.obj"
+".\Release_DFT2\ModelInfoCreate_GraberOption.obj"
+".\Release_DFT2\MyEchoSocket.obj"
+".\Release_DFT2\NoDifferentPointDlg.obj"
+".\Release_DFT2\OptFolderPage.obj"
+".\Release_DFT2\OptHdcpPage.obj"
+".\Release_DFT2\picture.obj"
+".\Release_DFT2\ProgDlg.obj"
+".\Release_DFT2\RemoteDlg.obj"
+".\Release_DFT2\ResultDlg.obj"
+".\Release_DFT2\Rs232cAdcManualCheckDlg.obj"
+".\Release_DFT2\ScannerCtrl.obj"
+".\Release_DFT2\SelectChassisModelDlg.obj"
+".\Release_DFT2\SeqRemoteDlg.obj"
+".\Release_DFT2\SetAudioSpecDlg.obj"
+".\Release_DFT2\SetDateDlg.obj"
+".\Release_DFT2\SignalTestResultDlg.obj"
+".\Release_DFT2\SoundCard.obj"
+".\Release_DFT2\Splash.obj"
+".\Release_DFT2\StaticFilespec.obj"
+".\Release_DFT2\StdAfx.obj"
+".\Release_DFT2\StopProcessingDlg.obj"
+".\Release_DFT2\StopStepDlg.obj"
+".\Release_DFT2\Support.obj"
+".\Release_DFT2\TextOutCtrl.obj"
+".\Release_DFT2\TrueColorToolBar.obj"
+".\Release_DFT2\UserMsgDlg.obj"
+".\Release_DFT2\vsflexdatasource.obj"
+".\Release_DFT2\vsflexgrid.obj"
+".\Release_DFT2\vsflexnode.obj"
+".\Release_DFT2\DATsys.obj"
+".\Release_DFT2\DATsysDoc.obj"
+".\Release_DFT2\DATsysView.obj"
+".\Release_DFT2\MainFrm.obj"
+".\Release_DFT2\BaseImage.obj"
+".\Release_DFT2\ImageProc.obj"
+".\Release_DFT2\IniAccess.obj"
+".\Release_DFT2\ProgressCtrlX.obj"
+".\Release_DFT2\ColorStaticST.obj"
+".\Release_DFT2\GrabPage.obj"
+".\Release_DFT2\ImageTotalDlg.obj"
+".\Release_DFT2\ParmAdjPage.obj"
+".\Release_DFT2\ReviewPage.obj"
+".\Release_DFT2\PatternGeneratorCtl.obj"
+".\Release_DFT2\JumpStep.obj"
+".\Release_DFT2\Parser.obj"
+".\Release_DFT2\Realfunc_New2.obj"
+".\Release_DFT2\StepMeasFunc.obj"
+".\Release_DFT2\StringTokenizer.obj"
+".\Release_DFT2\TVCommCtrl.obj"
+".\Release_DFT2\SeqEditorDlg.obj"
+".\Release_DFT2\SeqRoiDlg.obj"
+".\Release_DFT2\AvSwitchBoxCtrl.obj"
+".\Release_DFT2\Register.obj"
+".\Release_DFT2\I2cAdcCtrl.obj"
+".\Release_DFT2\OptComportPage.obj"
+".\Release_DFT2\OptEtcPage.obj"
+".\Release_DFT2\OptGrabberPage.obj"
+".\Release_DFT2\OptionDlg.obj"
+".\Release_DFT2\OptMesPage.obj"
+".\Release_DFT2\OptSpecPage.obj"
+".\Release_DFT2\OptUserInfoPage.obj"
+".\Release_DFT2\EditLog.obj"
+".\Release_DFT2\SubclassWnd.obj"
+".\Release_DFT2\DATsys.res"
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP5DEE.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AddModelDlg.cpp
+AvConvertorCtrl.cpp
+CommThread.cpp
+CurrentSetting.cpp
+Dmm.cpp
+Dmmdlg.cpp
+field.cpp
+FileTreeCtrl.cpp
+FlexUtil.cpp
+font1.cpp
+FullSeqDlg.cpp
+GetToolOptionDlg.cpp
+Gmes.cpp
+HdcpTestDlg.cpp
+HdmiGenerator.cpp
+I2cAdcManualCheckDlg.cpp
+InitDlg.cpp
+Jpegfile.cpp
+KeyDownloadCheckDlg.cpp
+LedButton.cpp
+LnbDetectorCtl.cpp
+ManualTestResultInputDlg.cpp
+Markup.cpp
+Note: MBCS build (not UTF-8)
+mmbevelx.cpp
+mmconnectorx.cpp
+mmdspcomponentx.cpp
+mmledlabelx.cpp
+mmledpanelx.cpp
+mmoscopex.cpp
+mmpeakdetectx.cpp
+mmspectrumx.cpp
+mmwaveinx.cpp
+ModelInfoCreate.cpp
+ModelInfoCreate_GraberOption.cpp
+MyEchoSocket.cpp
+NoDifferentPointDlg.cpp
+OptFolderPage.cpp
+OptHdcpPage.cpp
+picture.cpp
+ProgDlg.cpp
+RemoteDlg.cpp
+ResultDlg.cpp
+Rs232cAdcManualCheckDlg.cpp
+ScannerCtrl.cpp
+SelectChassisModelDlg.cpp
+SeqRemoteDlg.cpp
+SetAudioSpecDlg.cpp
+SetDateDlg.cpp
+SignalTestResultDlg.cpp
+SoundCard.cpp
+Splash.cpp
+StaticFilespec.cpp
+StopProcessingDlg.cpp
+StopStepDlg.cpp
+Support.cpp
+TextOutCtrl.cpp
+TrueColorToolBar.cpp
+UserMsgDlg.cpp
+vsflexdatasource.cpp
+vsflexgrid.cpp
+vsflexnode.cpp
+DATsys.cpp
+DATsysDoc.cpp
+DATsysView.cpp
+D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysView.cpp(7572) : warning C4101: 'i' : unreferenced local variable
+MainFrm.cpp
+BaseImage.cpp
+ImageProc.cpp
+IniAccess.cpp
+ProgressCtrlX.cpp
+ColorStaticST.cpp
+GrabPage.cpp
+ImageTotalDlg.cpp
+ParmAdjPage.cpp
+ReviewPage.cpp
+PatternGeneratorCtl.cpp
+JumpStep.cpp
+Parser.cpp
+Realfunc_New2.cpp
+StepMeasFunc.cpp
+StringTokenizer.cpp
+TVCommCtrl.cpp
+D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TVCommCtrl.cpp(3617) : warning C4101: 'nI' : unreferenced local variable
+SeqEditorDlg.cpp
+SeqRoiDlg.cpp
+AvSwitchBoxCtrl.cpp
+Register.cpp
+I2cAdcCtrl.cpp
+OptComportPage.cpp
+OptEtcPage.cpp
+OptGrabberPage.cpp
+OptionDlg.cpp
+OptMesPage.cpp
+OptSpecPage.cpp
+OptUserInfoPage.cpp
+EditLog.cpp
+SubclassWnd.cpp
+Linking...
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP4975.bat" with contents
+[
+@echo off
+copy Release_DFT2\UHD_DFT2_3in1.exe D:\DFT\3in1
+]
+Creating command line "C:\Users\ADMINI~1\AppData\Local\Temp\RSP4975.bat"
+
+        1개 파일이 복사되었습니다.
+
+
+
+<h3>Results</h3>
+UHD_DFT2_3in1.exe - 0 error(s), 2 warning(s)
+<h3>
+--------------------Configuration: DATsys - Win32 Release_DFT3--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Release_DFT3/DATsys.res" /d "NDEBUG" "D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsys.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP6DB8.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "./EditLog" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM3" /FR"Release_DFT3/" /Fp"Release_DFT3/DATsys.pch" /YX"stdafx.h" /Fo"Release_DFT3/" /Fd"Release_DFT3/" /FD /c 
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AddModelDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AvConvertorCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\CommThread.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\CurrentSetting.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Dmm.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Dmmdlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\field.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FileTreeCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FlexUtil.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\font1.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\FullSeqDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\GetToolOptionDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Gmes.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\HdcpTestDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\HdmiGenerator.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\I2cAdcManualCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\InitDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Jpegfile.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\KeyDownloadCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ButtonST\LedButton.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\LnbDetectorCtl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ManualTestResultInputDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Markup.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmbevelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmconnectorx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmdspcomponentx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmledlabelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmledpanelx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmoscopex.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmpeakdetectx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmspectrumx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\mmwaveinx.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ModelInfoCreate.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ModelInfoCreate_GraberOption.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\MyEchoSocket.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\NoDifferentPointDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptFolderPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptHdcpPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\picture.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ProgDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\RemoteDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ResultDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Rs232cAdcManualCheckDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ScannerCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SelectChassisModelDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqRemoteDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SetAudioSpecDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SetDateDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SignalTestResultDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SoundCard.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Splash.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StaticFilespec.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StopProcessingDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StopStepDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Support.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TextOutCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TrueColorToolBarCtrl_src\TrueColorToolBar.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\UserMsgDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexdatasource.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexgrid.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\vsflexnode.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsys.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysDoc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysView.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\MainFrm.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\BaseImage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ImageProc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\IniAccess.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ProgressCtrlX.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ColorStaticST.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\GrabPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ImageTotalDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ParmAdjPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\ReviewPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\PatternGeneratorCtl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\JumpStep.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Parser.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Realfunc_New2.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StepMeasFunc.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StringTokenizer.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TVCommCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqEditorDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\SeqRoiDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\AvSwitchBoxCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\Register.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\I2cAdcCtrl.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptComportPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptEtcPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptGrabberPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptionDlg.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptMesPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptSpecPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\OptUserInfoPage.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\EditLog\EditLog.cpp"
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\EditLog\SubclassWnd.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP6DB8.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP6DD8.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "./EditLog" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_DFT_SYSTEM3" /FR"Release_DFT3/" /Fp"Release_DFT3/DATsys.pch" /Yc"stdafx.h" /Fo"Release_DFT3/" /Fd"Release_DFT3/" /FD /c 
+"D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP6DD8.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP6DE9.tmp" with contents
+[
+dft3_dll.lib psapi.lib version.lib winmm.lib dinput.lib ws2_32.lib Keydll1.lib Keydll2.lib Keydll3.lib jpeglib.lib /nologo /stack:0x200000 /subsystem:windows /incremental:no /pdb:"Release_DFT3/UHD_DFT3_3in1.pdb" /machine:I386 /out:"Release_DFT3/UHD_DFT3_3in1.exe" /pdbtype:sept /libpath:"PsApi" 
+".\Release_DFT3\AddModelDlg.obj"
+".\Release_DFT3\AvConvertorCtrl.obj"
+".\Release_DFT3\CommThread.obj"
+".\Release_DFT3\CurrentSetting.obj"
+".\Release_DFT3\Dmm.obj"
+".\Release_DFT3\Dmmdlg.obj"
+".\Release_DFT3\field.obj"
+".\Release_DFT3\FileTreeCtrl.obj"
+".\Release_DFT3\FlexUtil.obj"
+".\Release_DFT3\font1.obj"
+".\Release_DFT3\FullSeqDlg.obj"
+".\Release_DFT3\GetToolOptionDlg.obj"
+".\Release_DFT3\Gmes.obj"
+".\Release_DFT3\HdcpTestDlg.obj"
+".\Release_DFT3\HdmiGenerator.obj"
+".\Release_DFT3\I2cAdcManualCheckDlg.obj"
+".\Release_DFT3\InitDlg.obj"
+".\Release_DFT3\Jpegfile.obj"
+".\Release_DFT3\KeyDownloadCheckDlg.obj"
+".\Release_DFT3\LedButton.obj"
+".\Release_DFT3\LnbDetectorCtl.obj"
+".\Release_DFT3\ManualTestResultInputDlg.obj"
+".\Release_DFT3\Markup.obj"
+".\Release_DFT3\mmbevelx.obj"
+".\Release_DFT3\mmconnectorx.obj"
+".\Release_DFT3\mmdspcomponentx.obj"
+".\Release_DFT3\mmledlabelx.obj"
+".\Release_DFT3\mmledpanelx.obj"
+".\Release_DFT3\mmoscopex.obj"
+".\Release_DFT3\mmpeakdetectx.obj"
+".\Release_DFT3\mmspectrumx.obj"
+".\Release_DFT3\mmwaveinx.obj"
+".\Release_DFT3\ModelInfoCreate.obj"
+".\Release_DFT3\ModelInfoCreate_GraberOption.obj"
+".\Release_DFT3\MyEchoSocket.obj"
+".\Release_DFT3\NoDifferentPointDlg.obj"
+".\Release_DFT3\OptFolderPage.obj"
+".\Release_DFT3\OptHdcpPage.obj"
+".\Release_DFT3\picture.obj"
+".\Release_DFT3\ProgDlg.obj"
+".\Release_DFT3\RemoteDlg.obj"
+".\Release_DFT3\ResultDlg.obj"
+".\Release_DFT3\Rs232cAdcManualCheckDlg.obj"
+".\Release_DFT3\ScannerCtrl.obj"
+".\Release_DFT3\SelectChassisModelDlg.obj"
+".\Release_DFT3\SeqRemoteDlg.obj"
+".\Release_DFT3\SetAudioSpecDlg.obj"
+".\Release_DFT3\SetDateDlg.obj"
+".\Release_DFT3\SignalTestResultDlg.obj"
+".\Release_DFT3\SoundCard.obj"
+".\Release_DFT3\Splash.obj"
+".\Release_DFT3\StaticFilespec.obj"
+".\Release_DFT3\StdAfx.obj"
+".\Release_DFT3\StopProcessingDlg.obj"
+".\Release_DFT3\StopStepDlg.obj"
+".\Release_DFT3\Support.obj"
+".\Release_DFT3\TextOutCtrl.obj"
+".\Release_DFT3\TrueColorToolBar.obj"
+".\Release_DFT3\UserMsgDlg.obj"
+".\Release_DFT3\vsflexdatasource.obj"
+".\Release_DFT3\vsflexgrid.obj"
+".\Release_DFT3\vsflexnode.obj"
+".\Release_DFT3\DATsys.obj"
+".\Release_DFT3\DATsysDoc.obj"
+".\Release_DFT3\DATsysView.obj"
+".\Release_DFT3\MainFrm.obj"
+".\Release_DFT3\BaseImage.obj"
+".\Release_DFT3\ImageProc.obj"
+".\Release_DFT3\IniAccess.obj"
+".\Release_DFT3\ProgressCtrlX.obj"
+".\Release_DFT3\ColorStaticST.obj"
+".\Release_DFT3\GrabPage.obj"
+".\Release_DFT3\ImageTotalDlg.obj"
+".\Release_DFT3\ParmAdjPage.obj"
+".\Release_DFT3\ReviewPage.obj"
+".\Release_DFT3\PatternGeneratorCtl.obj"
+".\Release_DFT3\JumpStep.obj"
+".\Release_DFT3\Parser.obj"
+".\Release_DFT3\Realfunc_New2.obj"
+".\Release_DFT3\StepMeasFunc.obj"
+".\Release_DFT3\StringTokenizer.obj"
+".\Release_DFT3\TVCommCtrl.obj"
+".\Release_DFT3\SeqEditorDlg.obj"
+".\Release_DFT3\SeqRoiDlg.obj"
+".\Release_DFT3\AvSwitchBoxCtrl.obj"
+".\Release_DFT3\Register.obj"
+".\Release_DFT3\I2cAdcCtrl.obj"
+".\Release_DFT3\OptComportPage.obj"
+".\Release_DFT3\OptEtcPage.obj"
+".\Release_DFT3\OptGrabberPage.obj"
+".\Release_DFT3\OptionDlg.obj"
+".\Release_DFT3\OptMesPage.obj"
+".\Release_DFT3\OptSpecPage.obj"
+".\Release_DFT3\OptUserInfoPage.obj"
+".\Release_DFT3\EditLog.obj"
+".\Release_DFT3\SubclassWnd.obj"
+".\Release_DFT3\DATsys.res"
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP6DE9.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AddModelDlg.cpp
+AvConvertorCtrl.cpp
+CommThread.cpp
+CurrentSetting.cpp
+Dmm.cpp
+Dmmdlg.cpp
+field.cpp
+FileTreeCtrl.cpp
+FlexUtil.cpp
+font1.cpp
+FullSeqDlg.cpp
+GetToolOptionDlg.cpp
+Gmes.cpp
+HdcpTestDlg.cpp
+HdmiGenerator.cpp
+I2cAdcManualCheckDlg.cpp
+InitDlg.cpp
+Jpegfile.cpp
+KeyDownloadCheckDlg.cpp
+LedButton.cpp
+LnbDetectorCtl.cpp
+ManualTestResultInputDlg.cpp
+Markup.cpp
+Note: MBCS build (not UTF-8)
+mmbevelx.cpp
+mmconnectorx.cpp
+mmdspcomponentx.cpp
+mmledlabelx.cpp
+mmledpanelx.cpp
+mmoscopex.cpp
+mmpeakdetectx.cpp
+mmspectrumx.cpp
+mmwaveinx.cpp
+ModelInfoCreate.cpp
+ModelInfoCreate_GraberOption.cpp
+MyEchoSocket.cpp
+NoDifferentPointDlg.cpp
+OptFolderPage.cpp
+OptHdcpPage.cpp
+picture.cpp
+ProgDlg.cpp
+RemoteDlg.cpp
+ResultDlg.cpp
+Rs232cAdcManualCheckDlg.cpp
+ScannerCtrl.cpp
+SelectChassisModelDlg.cpp
+SeqRemoteDlg.cpp
+SetAudioSpecDlg.cpp
+SetDateDlg.cpp
+SignalTestResultDlg.cpp
+SoundCard.cpp
+Splash.cpp
+StaticFilespec.cpp
+StopProcessingDlg.cpp
+StopStepDlg.cpp
+Support.cpp
+TextOutCtrl.cpp
+TrueColorToolBar.cpp
+UserMsgDlg.cpp
+vsflexdatasource.cpp
+vsflexgrid.cpp
+vsflexnode.cpp
+DATsys.cpp
+DATsysDoc.cpp
+DATsysView.cpp
+D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\DATsysView.cpp(7572) : warning C4101: 'i' : unreferenced local variable
+MainFrm.cpp
+BaseImage.cpp
+ImageProc.cpp
+IniAccess.cpp
+ProgressCtrlX.cpp
+ColorStaticST.cpp
+GrabPage.cpp
+ImageTotalDlg.cpp
+ParmAdjPage.cpp
+ReviewPage.cpp
+PatternGeneratorCtl.cpp
+JumpStep.cpp
+Parser.cpp
+Realfunc_New2.cpp
+StepMeasFunc.cpp
+StringTokenizer.cpp
+TVCommCtrl.cpp
+D:\Work\DFT Pjt\3in1\UHD\JPEG\[2016.02.16.01] DFT_UHD\TVCommCtrl.cpp(3617) : warning C4101: 'nI' : unreferenced local variable
+SeqEditorDlg.cpp
+SeqRoiDlg.cpp
+AvSwitchBoxCtrl.cpp
+Register.cpp
+I2cAdcCtrl.cpp
+OptComportPage.cpp
+OptEtcPage.cpp
+OptGrabberPage.cpp
+OptionDlg.cpp
+OptMesPage.cpp
+OptSpecPage.cpp
+OptUserInfoPage.cpp
+EditLog.cpp
+SubclassWnd.cpp
+Linking...
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5D57.bat" with contents
+[
+@echo off
+copy Release_DFT3\UHD_DFT3_3in1.exe D:\DFT\3in1
+]
+Creating command line "C:\Users\ADMINI~1\AppData\Local\Temp\RSP5D57.bat"
+
+        1개 파일이 복사되었습니다.
+
+
+
+<h3>Results</h3>
+UHD_DFT3_3in1.exe - 0 error(s), 2 warning(s)
+</pre>
+</body>
+</html>
