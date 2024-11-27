@@ -968,7 +968,7 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation);
 					}
-					else if (CurrentSet->nUHD_Grab_Mode == 2)// 
+					else if ((CurrentSet->nUHD_Grab_Mode == 2) && (CurrentSet->nUHD_Type == PACK_TYPE_STANDBYME))//(CurrentSet->nUHD_Grab_Mode == 2)// 
 					{
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
 					}
