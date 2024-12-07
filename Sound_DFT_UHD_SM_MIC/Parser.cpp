@@ -683,9 +683,14 @@ _InternalFunction Predefined[] =
 		//audio_list_read()
 		//: USB MIC 인식하기 전에 마이크 리스트를 저장합니다.
 		//: 이전 Step에서 미리 수행해도 됩니다.
-			   
+
+		//new mic 
+			
+		//audio_new_mic_save()
+		//: 새로 인식된 마이크를 선택하여 오디오 설정을 합니다.
+
 		//audio_sel_reset(USB)
-		//: USB MIC 인식한 후 새로 인식된 마이크를 선택하여 오디오 설정을 합니다.
+		//: USB 마이크를 선택하여 오디오 설정을 합니다.
 
 		//audiomeasurereset()
 		//: 원래 메인마이크로 돌아갑니다.
@@ -697,12 +702,18 @@ _InternalFunction Predefined[] =
 	{_T("")},
 	{NULL_TYPE},
 
-	_T("audio_list_read"), _AudioNewSearch,
-	{LP, RP, TNULL},
-	{_T("")},
-	{NULL_TYPE},
+	//	
+	//_T("audio_list_read"), _AudioNewSearch,
+	//{ LP, RP, TNULL },
+	//{ _T("") },
+	//{ NULL_TYPE },
 
-	_T("audio_sel_reset"), _AudioSelectReset,
+	//_T("audio_new_mic_save"), _AudioNewMicCheck,
+	//{ LP, RP, TNULL },
+	//{ _T("") },
+	//{ NULL_TYPE },
+
+		_T("audio_sel_reset"), _AudioSelectReset,
 	{ LP, STRING, RP, TNULL },
 	{ _T("")},
 	{ NORMAL_EDIT_TYPE,NULL_TYPE },

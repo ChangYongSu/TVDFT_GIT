@@ -725,6 +725,8 @@ public:
 	UINT m_nDPMS_5CheckCnt;
 	UINT nDPMS_SampleRate;
 	CString		sMainMIC_Name;
+	CString		sUSBMIC_HW_ID;
+	CString		sUSBMIC_HW_Name;
 
 
 

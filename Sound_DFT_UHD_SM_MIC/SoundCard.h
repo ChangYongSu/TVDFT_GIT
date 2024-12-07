@@ -107,6 +107,8 @@ public:
 	//+add PSH 090305
 	int    m_bMeasureAudioType;
 	CStringArray  strDeviceNameArry;
+	CStringArray  strHWDeviceIDArry;
+	CStringArray  strHWDeviceNameArry;
 	CStringArray strSavedDeviceNameArry;
 	int m_nDeviceCount;
 	CString m_sCurrentDeviceName;
@@ -132,7 +134,7 @@ public:
 	int CSoundCard::RefreshDeviceArray();
 	int CSoundCard::SetDeviceID(int lDevice);
 	//void CSoundCard::SetDeviceID(int lDevice);
-	void SaveShareSoundData();
+	//void SaveShareSoundData();
 	BOOL SoundInMainSet();
 	int CSoundCard::Wave_Start();
 	void WaveRead_Start();
@@ -141,9 +143,9 @@ public:
 	void WaveRead_Stop();
 	void WaveInOutClose();
 
-	int CSoundCard::IsMicSearchFree();
-	void CSoundCard::MicSearchBlock();
-	void CSoundCard::MicSearchRelease(int all_ch = 0);
+	//int CSoundCard::IsMicSearchFree();
+	//void CSoundCard::MicSearchBlock();
+	//void CSoundCard::MicSearchRelease(int all_ch = 0);
 
 	// Get Frequency
 	void GetWavePeak_L(double *freq, double *ampl, double *dbampl);

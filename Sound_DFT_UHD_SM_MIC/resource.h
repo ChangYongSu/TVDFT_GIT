@@ -402,6 +402,7 @@
 #define IDC_BTN_OPEN_TEST_PARAM         1458
 #define IDC_BTN_OPEN_VIEWER             1459
 #define IDC_BTN_OPEN_VIEWER2            1460
+#define IDC_BTN_SOUND_CARD_REFRESH      1460
 #define IDC_BTN_OPT_APPLY               1461
 #define IDC_BTN_PARM_BINARY             1462
 #define IDC_BTN_PARM_BRIGHT_TEST        1463
@@ -2584,6 +2585,7 @@
 #define IDC_RADIO_DP_TIME30             3459
 #define IDC_COMBO_AUDIO_CARD            3459
 #define IDC_RADIO_DPMS_20P              3460
+#define IDC_COMBO_USB_AUDIO_CARD        3460
 #define IDC_RADIO_DPMS_100P             3461
 #define IDC_STATIC_OGL_DISPLAY          3462
 #define IDC_STATIC_OGL_DISPLAY1         3462
@@ -2593,7 +2595,9 @@
 #define IDC_LEFT_IMAGE_FREQ_DISPLAY     3464
 #define IDC_LEFT_IMAGE_LEVEL_DISPLAY    3465
 #define IDC_RIGHT_IMAGE_FREQ_DISPLAY    3466
+#define IDC_STATIC_USB_HW_ID            3466
 #define IDC_RIGHT_IMAGE_LEVEL_DISPLAY   3467
+#define IDC_STATIC_USB_HW_NAME          3467
 #define IDC_STATIC_DISPALY              11460
 #define ID_AC_ONOFF                     12768
 #define ID_ACPOWER_                     12769
@@ -2723,7 +2727,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        1253
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3466
+#define _APS_NEXT_CONTROL_VALUE         3467
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

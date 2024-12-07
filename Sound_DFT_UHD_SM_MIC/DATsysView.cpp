@@ -3505,6 +3505,8 @@ void CDATsysView::LoadRegistrySetting(CEnvironmentData* pCurrentSet)
 
 
 	pCurrentSet->sMainMIC_Name = pApp->GetProfileString(_T("Config"), _T("MIC_NAME"), "N/A");
+	pCurrentSet->sUSBMIC_HW_Name = pApp->GetProfileString(_T("Config"), _T("USB_MIC_NAME"), "N/A");
+	pCurrentSet->sUSBMIC_HW_ID = pApp->GetProfileString(_T("Config"), _T("USB_MIC_ID"), "N/A");
 	
 }
 
@@ -3760,14 +3762,14 @@ void CDATsysView::OnDestroy()
 		}
 		CloseHandle(m_hBarcodeDataFileMapping); m_hBarcodeDataFileMapping = NULL;
 	}
-	if (m_hUSB_MICFileMapping != NULL)
-	{
-		if (m_pUSB_MIC_Struct != NULL)
-		{
-			UnmapViewOfFile(m_pUSB_MIC_Struct); m_pUSB_MIC_Struct = NULL;
-		}
-		CloseHandle(m_hUSB_MICFileMapping); m_hUSB_MICFileMapping = NULL;
-	}
+	//if (m_hUSB_MICFileMapping != NULL)
+	//{
+	//	if (m_pUSB_MIC_Struct != NULL)
+	//	{
+	//		UnmapViewOfFile(m_pUSB_MIC_Struct); m_pUSB_MIC_Struct = NULL;
+	//	}
+	//	CloseHandle(m_hUSB_MICFileMapping); m_hUSB_MICFileMapping = NULL;
+	//}
 
 	//if (m_hUSB_MICFileMapping != NULL)
 	//{
@@ -4221,8 +4223,10 @@ void CDATsysView::SaveRegistrySetting()
 	pApp->WriteProfileInt(_T("Config"), _T("PJT Grab Disable"),				(UINT)CurrentSet->bPJT_GrabDisable);
 	pApp->WriteProfileInt(_T("Config"), _T("DPMS 5Check Count"), (UINT)CurrentSet->m_nDPMS_5CheckCnt); 
 
-
 	pApp->WriteProfileString(_T("Config"), _T("MIC_NAME"), CurrentSet->sMainMIC_Name);
+
+	pApp->WriteProfileString(_T("Config"), _T("USB_MIC_ID"), CurrentSet->sUSBMIC_HW_ID);	
+	pApp->WriteProfileString(_T("Config"), _T("USB_MIC_NAME"), CurrentSet->sUSBMIC_HW_Name);
 }
 
 void CDATsysView::OnRunAbort() 
@@ -6510,14 +6514,14 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 {
 	CDATsysView* pView =(CDATsysView* )pParam;
 
-	g_SoundCard.MicSearchRelease();
+//	g_SoundCard.MicSearchRelease();
 	//g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 
 	//	((g_pView->m_pUSB_MIC_Struct->nNewMicRequest == g_nRunningProcessNo)||(g_pView->m_pUSB_MIC_Struct->nNewMicRequest > 3))
 	//	? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
 	
 
 	g_SoundCard.m_nSoundUSBDeviceFind = 0;
-	g_SoundCard.m_sUSBDeviceName = "N/A";
+	//g_SoundCard.m_sUSBDeviceName = "N/A";
 	pView->m_CurrentStep = 0;
 	pView->CtrlBatVerEdit.SetReadOnly(1);
 	pView->m_BatVerReadOnly = 1;
@@ -8462,10 +8466,10 @@ int CDATsysView::StepRun()
 	}
 	else
 	{		
-		g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = (g_pView->m_pUSB_MIC_Struct->nNewMicRequest == g_nRunningProcessNo) ? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
+		//g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = (g_pView->m_pUSB_MIC_Struct->nNewMicRequest == g_nRunningProcessNo) ? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
 		g_SoundCard.m_nSoundUSBDeviceFind = 0;
-		g_SoundCard.m_nUSBDeviceID = -1;
-		g_SoundCard.m_sUSBDeviceName = "N/A";
+		//g_SoundCard.m_nUSBDeviceID = -1;
+		//g_SoundCard.m_sUSBDeviceName = "N/A";
 		
 		if (pCurStep->m_bRunAudioTest) {
 			g_pView->AudioMeasureStop();
@@ -15754,93 +15758,93 @@ BOOL CDATsysView::CreateFileMappingObject()
 	//Some arbitrary name.  use this name to access the file from other processes
 
 
-	m_hUSB_MICFileMapping = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, MapFileName);
+	//m_hUSB_MICFileMapping = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, MapFileName);
 
-	
+	//
 
-	if (m_hUSB_MICFileMapping != NULL)
-	{
-		SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
-		m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
-		m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
-		m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
-		m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
-		g_SoundCard.SaveShareSoundData();
-		//g_SoundCard.SoundInMainSet();
-		nMicLive = 3;
-		/*if (g_nRunningProcessNo == 1)
-		{
-			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-				CurrentSet->sMainMIC_Name.GetLength() < 20
-				? CurrentSet->sMainMIC_Name.GetLength()
-				: 20);
-		}
-		else if (g_nRunningProcessNo == 2)
-		{
-			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-				CurrentSet->sMainMIC_Name.GetLength() < 20
-				? CurrentSet->sMainMIC_Name.GetLength()
-				: 20);
-		}
-		else
-		{
-			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-				CurrentSet->sMainMIC_Name.GetLength() < 20
-				? CurrentSet->sMainMIC_Name.GetLength()
-				: 20);
-		}*/
-	}
-	else
-	{
-		m_hUSB_MICFileMapping = CreateFileMapping(
-			INVALID_HANDLE_VALUE,    // use paging file
-			NULL,                    // default security
-			PAGE_READWRITE,          // read/write access
-			0,                       // maximum object size (high-order DWORD)
-			sizeof(USB_MIC_Struct),                 // maximum object size (low-order DWORD)
-			MapFileName);                 // name of mapping object
+	//if (m_hUSB_MICFileMapping != NULL)
+	//{
+	//	SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
+	//	m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+	//	m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+	//	m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+	//	m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
+	//	g_SoundCard.SaveShareSoundData();
+	//	//g_SoundCard.SoundInMainSet();
+	//	nMicLive = 3;
+	//	/*if (g_nRunningProcessNo == 1)
+	//	{
+	//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+	//			CurrentSet->sMainMIC_Name.GetLength() < 20
+	//			? CurrentSet->sMainMIC_Name.GetLength()
+	//			: 20);
+	//	}
+	//	else if (g_nRunningProcessNo == 2)
+	//	{
+	//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+	//			CurrentSet->sMainMIC_Name.GetLength() < 20
+	//			? CurrentSet->sMainMIC_Name.GetLength()
+	//			: 20);
+	//	}
+	//	else
+	//	{
+	//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+	//			CurrentSet->sMainMIC_Name.GetLength() < 20
+	//			? CurrentSet->sMainMIC_Name.GetLength()
+	//			: 20);
+	//	}*/
+	//}
+	//else
+	//{
+	//	m_hUSB_MICFileMapping = CreateFileMapping(
+	//		INVALID_HANDLE_VALUE,    // use paging file
+	//		NULL,                    // default security
+	//		PAGE_READWRITE,          // read/write access
+	//		0,                       // maximum object size (high-order DWORD)
+	//		sizeof(USB_MIC_Struct),                 // maximum object size (low-order DWORD)
+	//		MapFileName);                 // name of mapping object
 
-		if (m_hUSB_MICFileMapping != NULL)
-		{
-			SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
-			m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
-			nMicLive = 3;
+	//	if (m_hUSB_MICFileMapping != NULL)
+	//	{
+	//		SetNamedSecurityInfo(MapFileName, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION, 0, 0, (PACL)NULL, NULL);
+	//		m_pUSB_MIC_Struct = (USB_MIC_Struct *)MapViewOfFile(m_hUSB_MICFileMapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+	//		nMicLive = 3;
 
-			m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
-			m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
-			m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
-			g_SoundCard.SaveShareSoundData();
-			/*if (g_nRunningProcessNo == 1)
-			{
-				strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-					CurrentSet->sMainMIC_Name.GetLength() < 20
-					? CurrentSet->sMainMIC_Name.GetLength()
-					: 20);
-			}
-			else if (g_nRunningProcessNo == 2)
-			{
-				strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-					CurrentSet->sMainMIC_Name.GetLength() < 20
-					? CurrentSet->sMainMIC_Name.GetLength()
-					: 20);
-			}
-			else
-			{
-				strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-					CurrentSet->sMainMIC_Name.GetLength() < 20
-					? CurrentSet->sMainMIC_Name.GetLength()
-					: 20);
-			}*/
-		}
-		else
-		{
-			AfxMessageBox("Failed to create MIC data mapping file!");
-			CloseHandle(m_hUSB_MICFileMapping);
-			return FALSE;
-		}
-	}
-		
-		
+	//		m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+	//		m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+	//		m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
+	//		g_SoundCard.SaveShareSoundData();
+	//		/*if (g_nRunningProcessNo == 1)
+	//		{
+	//			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+	//				CurrentSet->sMainMIC_Name.GetLength() < 20
+	//				? CurrentSet->sMainMIC_Name.GetLength()
+	//				: 20);
+	//		}
+	//		else if (g_nRunningProcessNo == 2)
+	//		{
+	//			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+	//				CurrentSet->sMainMIC_Name.GetLength() < 20
+	//				? CurrentSet->sMainMIC_Name.GetLength()
+	//				: 20);
+	//		}
+	//		else
+	//		{
+	//			strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+	//				CurrentSet->sMainMIC_Name.GetLength() < 20
+	//				? CurrentSet->sMainMIC_Name.GetLength()
+	//				: 20);
+	//		}*/
+	//	}
+	//	else
+	//	{
+	//		AfxMessageBox("Failed to create MIC data mapping file!");
+	//		CloseHandle(m_hUSB_MICFileMapping);
+	//		return FALSE;
+	//	}
+	//}
+	//	
+	//	
 	
 	
 #endif
@@ -19357,7 +19361,11 @@ BOOL CDATsysView::AudioMeasureStartUSB(CString strSoundInDevice)
 {
 	if(!g_SoundCard.wIn_Flag)
 	{
-		g_SoundCard.WaveRead_StartUSB(strSoundInDevice);
+
+		if (strSoundInDevice.Find("USB") == 0)
+			strSoundInDevice = g_SoundCard.m_sUSBDeviceName;
+		
+		g_SoundCard.WaveRead_StartUSB(strSoundInDevice, 1);
 		SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);
 
 		return g_SoundCard.wIn_Flag;
@@ -19367,22 +19375,23 @@ BOOL CDATsysView::AudioMeasureStartUSB(CString strSoundInDevice)
 BOOL CDATsysView::AudioMeasureSearch()
 {
 	int WaitCnt = 0;
-	while (!g_SoundCard.IsMicSearchFree())
-	{
-		Sleep(100);
-		WaitCnt++;
-		if (WaitCnt > 100)//10 SEC
-		{
-			g_SoundCard.MicSearchRelease(1);
-		}
-	}
-	g_SoundCard.WaveCheck_Search(0);
-	g_SoundCard.MicSearchBlock(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = g_nRunningProcessNo;
-	//SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);
-
-	return 1;
-
-	
+	int lret = 0;
+	//while (!g_SoundCard.IsMicSearchFree())
+	//{
+	//	Sleep(100);
+	//	WaitCnt++;
+	//	if (WaitCnt > 100)//10 SEC
+	//	{
+	//		g_SoundCard.MicSearchRelease(1);
+	//	}
+	//}
+	//lret = g_SoundCard.WaveCheck_Search(0);
+	//if (lret == 1)
+	//{
+	//	g_SoundCard.MicSearchBlock(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = g_nRunningProcessNo;
+	//	//SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);	
+	//}
+	return lret;
 }
 
 

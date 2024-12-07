@@ -134,6 +134,9 @@ public:
 	BOOL m_bCheckGrabberOnOffCheck;
 	BOOL m_bFHDUHD_OLED_Pack_Reset;
 	CComboBox m_cComboAudioCard;
+	CComboBox m_cComboUSBAudioCard;
+	afx_msg void OnCbnSelchangeComboUsbAudioCard();
+	afx_msg void OnBnClickedBtnSoundCardRefresh();
 };
 
 //{{AFX_INSERT_LOCATION}}

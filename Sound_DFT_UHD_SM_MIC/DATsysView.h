@@ -228,9 +228,9 @@ public:
 	BOOL	m_IsBarcodeDataMappingCreated;
 	BarcodeStruct* m_pBarcodeData;
 
-	HANDLE  m_hUSB_MICFileMapping;
-	BOOL	m_IsUSB_MICMappingCreated;
-	USB_MIC_Struct* m_pUSB_MIC_Struct;
+	//HANDLE  m_hUSB_MICFileMapping;
+	//BOOL	m_IsUSB_MICMappingCreated;
+	//USB_MIC_Struct* m_pUSB_MIC_Struct;
 	int nMicLive;
 
 

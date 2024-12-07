@@ -196,6 +196,7 @@ BOOL _Set_DimmingTest();
 BOOL _AudioMeasureReset();
 BOOL _AudioSelectReset();
 BOOL _AudioNewSearch();
+BOOL _AudioNewMicCheck();
 
 //add 110215
 BOOL _Set_MacAddress();

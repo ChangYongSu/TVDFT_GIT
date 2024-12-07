@@ -8381,10 +8381,10 @@ BOOL _AudioMeasureReset()
 {
 	g_SoundCard.m_nSoundUSBDeviceFind = 0;
 	g_SoundCard.m_nUSBDeviceID = -1;
-	g_SoundCard.m_sUSBDeviceName = "N/A";
+//	g_SoundCard.m_sUSBDeviceName = "N/A";
 
 	
-	g_SoundCard.MicSearchRelease();//g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
+//	g_SoundCard.MicSearchRelease();//g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
 	g_pView->AudioMeasureStop();
 	_Wait(150);
 	g_pView->AudioMeasureStart();
@@ -8392,15 +8392,28 @@ BOOL _AudioMeasureReset()
 	return TRUE;
 }
 //-
-BOOL _AudioNewSearch()
-{
-	CString  sSoundCard;
-	g_pView->AudioMeasureSearch();
-	//_Wait(150);
-		
+//BOOL _AudioNewSearch()
+//{
+//	////CString  sSoundCard;
+//	//
+//	//return g_pView->AudioMeasureSearch();
+//	////_Wait(150);
+//		
+//
+//	return TRUE;
+//}
+//
+////-
+//BOOL _AudioNewMicCheck()
+//{
+//	//CString  sSoundCard;
+//	//g_pView->AudioMeasureSearch();
+//	//_Wait(150);	
+//	
+//	
+//	return g_SoundCard.WaveCheck_Search(1);//TRUE;
+//}
 
-	return TRUE;
-}
 //-
 BOOL _AudioSelectReset()
 {

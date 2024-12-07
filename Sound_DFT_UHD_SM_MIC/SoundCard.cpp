@@ -183,6 +183,14 @@ CString CSoundCard::GetDeviceName(UINT lDeviceID)
 	return StrDeviceName;
 }
 
+
+#include <iostream>
+#include <mmdeviceapi.h>
+#include <Audioclient.h>
+#include <Functiondiscoverykeys_devpkey.h>
+
+#pragma comment(lib, "ole32.lib")
+
 int CSoundCard::RefreshDeviceArray()
 {
 	int lNumber = waveInGetNumDevs();
@@ -197,16 +205,115 @@ int CSoundCard::RefreshDeviceArray()
 			StrDeviceName = wic.szPname;
 			StrDeviceName.MakeUpper();
 			strDeviceNameArry.Add(StrDeviceName);
+			TRACE("WAVEIN Name: %d,  %s\n",i, StrDeviceName.GetBuffer());
 		}
 		else
 		{
 			CString sTemp;
 			sTemp.Format("Error retrieving device capabilities for device :%d", i);
-			AfxMessageBox(sTemp);
+			TRACE(sTemp);
 		}
 	}
-	
+#if 1
+	CoInitialize(nullptr);
 
+	IMMDeviceEnumerator* pEnumerator = nullptr;
+	HRESULT hr = CoCreateInstance(
+		__uuidof(MMDeviceEnumerator), nullptr,
+		CLSCTX_ALL,
+		__uuidof(IMMDeviceEnumerator),
+		(void**)&pEnumerator
+	);
+
+	if (FAILED(hr)) {
+		TRACE( "Failed to create IMMDeviceEnumerator instance.\n");
+		return -1;
+	}
+
+	IMMDeviceCollection* pCollection = nullptr;
+	pEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &pCollection);
+
+	UINT count;
+	pCollection->GetCount(&count);
+	TRACE("Number of audio capture devices: %d \n",count);
+	strHWDeviceNameArry.RemoveAll();
+	strHWDeviceIDArry.RemoveAll();
+	for (UINT i = 0; i < count; i++) 
+	{
+		IMMDevice* pDevice = nullptr;
+		pCollection->Item(i, &pDevice);
+
+		LPWSTR pwszID = nullptr;
+		pDevice->GetId(&pwszID);
+		TRACE(  L"Device ID:  %d: %s\n" ,i, pwszID );
+		CString str = pwszID;
+		str.MakeUpper();
+		strHWDeviceIDArry.Add(str);
+
+		IPropertyStore* pStore = nullptr;
+		pDevice->OpenPropertyStore(STGM_READ, &pStore);
+
+		PROPVARIANT varName;
+		PropVariantInit(&varName);
+		pStore->GetValue(PKEY_Device_FriendlyName, &varName);
+
+		//std::wcout << L"Device Name: " << varName.pwszVal << std::endl;
+		TRACE(L"Device Name:   %s\n", varName.pwszVal);
+		str = varName.pwszVal;
+		str.MakeUpper();
+		strHWDeviceNameArry.Add(str);
+
+		PropVariantClear(&varName);
+		pStore->Release();
+		pDevice->Release();
+		CoTaskMemFree(pwszID);
+	}
+
+	pCollection->Release();
+	pEnumerator->Release();
+	CoUninitialize();
+
+	//m_sUSBDeviceName
+	for (int i = 0; i < g_SoundCard.strHWDeviceIDArry.GetCount(); i++)
+	{
+		CString str_SoundName = g_SoundCard.strHWDeviceIDArry.GetAt(i);
+
+		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
+		{
+			CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);	
+			m_sUSBDeviceName = CurrentSet->sUSBMIC_HW_Name;
+		
+		}
+	}
+
+
+#else
+	CoInitialize(nullptr);
+	IMMDeviceEnumerator* pEnumerator = nullptr;
+	CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**)&pEnumerator);
+
+	IMMDeviceCollection* pCollection = nullptr;
+	pEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &pCollection);
+
+	UINT count;
+	pCollection->GetCount(&count);
+	for (UINT i = 0; i < count; i++) {
+		IMMDevice* pDevice = nullptr;
+		pCollection->Item(i, &pDevice);
+
+		LPWSTR pwszID = nullptr;
+		pDevice->GetId(&pwszID); // 이 ID가 장치를 고유하게 식별할 수 있는 값
+		
+		TRACE(L"Device %d: %s\n", i, pwszID);
+		//3b5a1d00 - f9f0 - 4fe1 - b149 - f6c8bb9be7bd
+		pDevice->Release();
+		CoTaskMemFree(pwszID);
+	}
+
+	pCollection->Release();
+	pEnumerator->Release();
+	CoUninitialize();
+#endif
 	return lNumber;
 }
 
@@ -236,13 +343,6 @@ BOOL CSoundCard::SoundInMainSet()
 	//CString strSoundIn = "DFT MIC";
 	CString StrDeviceName;
 
-	StrMainMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_MIC;
-	StrMainMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem2_MIC;
-	StrMainMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem3_MIC;
-
-	StrUSBMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-	StrUSBMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-	StrUSBMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
 	
 	lNumber = RefreshDeviceArray();	
 
@@ -319,20 +419,7 @@ BOOL CSoundCard::SoundInMainSet()
 		}
 	}
 
-	SaveShareSoundData();
 
-	for (int i = 0; i < 3; i++)
-	{
-		if (((CurrentSet->sMainMIC_Name.Find(StrMainMicName3System[i]) >= 0) && (StrMainMicName3System[i].GetLength() > 5)
-			&& (g_nRunningProcessNo) != i + 1))
-		{
-			Stemp.Format("Same Sound Device Selected DFT%d!! \r\n[", i + 1);
-			Stemp += CurrentSet->sMainMIC_Name;
-			Stemp += "]";
-			AddStringToStatus(Stemp);
-			AfxMessageBox(Stemp);
-		}
-	}
 	if ((m_nDeviceID == -1)||(m_nSoundStatus == 0))
 	{
 		return  0;
@@ -372,10 +459,10 @@ void CSoundCard::WaveRead_Start()
 
 	if (m_nSoundUSBDeviceFind == 1)
 	{
-		WaveRead_StartUSB("USB");
+		WaveRead_StartUSB(m_sUSBDeviceName, 1);
 		return;
 	}
-	g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
+//	g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
 	lFindFlag = SoundInMainSet();
 	wIn_Flag = FALSE;
 	if (lFindFlag == 1)
@@ -407,44 +494,44 @@ void CSoundCard::WaveRead_Start()
 		}
 	}
 }
-
-void CSoundCard::SaveShareSoundData()
-{
-	if (g_nRunningProcessNo == 1)
-	{
-		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC, m_sUSBDeviceName.GetBuffer(),
-			m_sUSBDeviceName.GetLength() < 20
-			? m_sUSBDeviceName.GetLength()
-			: 20);
-		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-			CurrentSet->sMainMIC_Name.GetLength() < 20
-			? CurrentSet->sMainMIC_Name.GetLength()
-			: 20);
-	}
-	else if (g_nRunningProcessNo == 2)
-	{
-		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_USBMIC, m_sUSBDeviceName.GetBuffer(),
-			m_sUSBDeviceName.GetLength() < 20
-			? m_sUSBDeviceName.GetLength()
-			: 20);
-		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-			CurrentSet->sMainMIC_Name.GetLength() < 20
-			? CurrentSet->sMainMIC_Name.GetLength()
-			: 20);
-	}
-	else
-	{
-		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_USBMIC, m_sUSBDeviceName.GetBuffer(),
-			m_sUSBDeviceName.GetLength() < 20
-			? m_sUSBDeviceName.GetLength()
-			: 20);
-		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
-			CurrentSet->sMainMIC_Name.GetLength() < 20
-			? CurrentSet->sMainMIC_Name.GetLength()
-			: 20);
-	}
-
-}
+//
+//void CSoundCard::SaveShareSoundData()
+//{
+//	if (g_nRunningProcessNo == 1)
+//	{
+//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC, m_sUSBDeviceName.GetBuffer(),
+//			m_sUSBDeviceName.GetLength() < 20
+//			? m_sUSBDeviceName.GetLength()
+//			: 20);
+//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem1_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+//			CurrentSet->sMainMIC_Name.GetLength() < 20
+//			? CurrentSet->sMainMIC_Name.GetLength()
+//			: 20);
+//	}
+//	else if (g_nRunningProcessNo == 2)
+//	{
+//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_USBMIC, m_sUSBDeviceName.GetBuffer(),
+//			m_sUSBDeviceName.GetLength() < 20
+//			? m_sUSBDeviceName.GetLength()
+//			: 20);
+//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem2_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+//			CurrentSet->sMainMIC_Name.GetLength() < 20
+//			? CurrentSet->sMainMIC_Name.GetLength()
+//			: 20);
+//	}
+//	else
+//	{
+//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_USBMIC, m_sUSBDeviceName.GetBuffer(),
+//			m_sUSBDeviceName.GetLength() < 20
+//			? m_sUSBDeviceName.GetLength()
+//			: 20);
+//		strncpy(g_pView->m_pUSB_MIC_Struct->sSystem3_MIC, CurrentSet->sMainMIC_Name.GetBuffer(),
+//			CurrentSet->sMainMIC_Name.GetLength() < 20
+//			? CurrentSet->sMainMIC_Name.GetLength()
+//			: 20);
+//	}
+//
+//}
 
 BOOL CSoundCard::WaveRead_StartUSB(CString strSoundIn, int Fixname)
 {
@@ -453,31 +540,10 @@ BOOL CSoundCard::WaveRead_StartUSB(CString strSoundIn, int Fixname)
 	int lNumber = 0;
 	CString StrDeviceName;
 	CString StrNewSelectName;
-	int lFindFlag = 0;
-
-
+	int lFindFlag = 0;	
 	
-	if (Fixname == 1)
-	{
-		StrNewSelectName = strSoundIn;
-		m_nSoundUSBDeviceFind = 0;
-
-	}
-	else
-	{
-		if (!WaveCheck_Search(1))
-		{
-			m_nSoundUSBDeviceFind = 0;
-			m_nUSBDeviceID = -1;
-			m_sUSBDeviceName = "N/A";
-			return 0;
-		}
-		m_nSoundUSBDeviceFind = 1;
-
-		MicSearchRelease();// g_pView->m_pUSB_MIC_Struct->nNewMicRequest = 0;
-		StrNewSelectName = m_sUSBDeviceName;
-		SaveShareSoundData();
-	}
+	StrNewSelectName = strSoundIn;
+		//m_nSoundUSBDeviceFind = 0;	
 
 	lNumber = RefreshDeviceArray();
 	if (StrNewSelectName.GetLength() > 5)
@@ -488,7 +554,7 @@ BOOL CSoundCard::WaveRead_StartUSB(CString strSoundIn, int Fixname)
 			StrDeviceName.MakeUpper();
 			StrNewSelectName.MakeUpper();
 
-			if ((StrDeviceName.Find(StrNewSelectName) >= 0) && (StrNewSelectName.GetLength() > 10))
+			if ((StrNewSelectName.Find(StrDeviceName) >= 0) && (StrNewSelectName.GetLength() > 10))
 			{
 				m_nDeviceID = i;				
 				lFindFlag = 1;
@@ -505,23 +571,22 @@ BOOL CSoundCard::WaveRead_StartUSB(CString strSoundIn, int Fixname)
 	if (lFindFlag == 1)
 	{
 		SetDeviceID(m_nDeviceID);
-	}
 
-	if ((m_nDeviceID >= 0) && (m_nDeviceID < lNumber))// && (m_nSoundUSBDeviceFind == 1))
-	{
-		CString Stemp;
-		Stemp.Format("MIC Sound Set :[%d]", m_nDeviceID);
-		Stemp += m_sUSBDeviceName;
-		AddStringToStatus(Stemp);
+		if ((m_nDeviceID >= 0) && (m_nDeviceID < lNumber))// && (m_nSoundUSBDeviceFind == 1))
+		{
+			CString Stemp;
+			Stemp.Format("MIC Sound Set :[%d]", m_nDeviceID);
+			Stemp += StrNewSelectName;// m_sUSBDeviceName;
+			AddStringToStatus(Stemp);
 
-		Wave_Start();
-		wIn_Flag = TRUE;
+			Wave_Start();
+			wIn_Flag = TRUE;
+		}
 	}
 	else
 	{
 		AfxMessageBox("Start Error, No USB WaveIn device installed!", MB_ICONERROR + MB_OK, 0);
 		wIn_Flag = FALSE;
-
 	}
 
 	return wIn_Flag;
@@ -530,89 +595,94 @@ BOOL CSoundCard::WaveRead_StartUSB(CString strSoundIn, int Fixname)
 BOOL CSoundCard::WaveCheck_Search(int Search)
 {
 	//	long aStatus;
-		//int lFlagCheck = 0;
-	int lNumber = 0;
-	CString StrDeviceName;
-	CString StrOldDeviceName;
-	CString StrMainMicName3System[3];
-	CString StrUSBMicName3System[3];
+	int lFlagCheck = 0;
+	//int lNumber = 0;
+	//CString StrDeviceName;
+	//CString StrOldDeviceName;
+	//CString StrMainMicName3System[3];
+	//CString StrUSBMicName3System[3];
 
-	
-	lNumber = waveInGetNumDevs(); //
+	//
+	//lNumber = waveInGetNumDevs(); //
 
-	if (Search == 0)
-	{
-		m_nSoundUSBDeviceFind = 0;
-		m_sUSBDeviceName = "N/A";
-		m_nUSBDeviceID = -1;
-		RefreshDeviceArray();		
-		strSavedDeviceNameArry.RemoveAll();
-		for (int i = 0; i < lNumber; i++)
-		{
-			StrDeviceName = strDeviceNameArry.GetAt(i);
-			//strDeviceNameArry.Add(StrDeviceName);
-			strSavedDeviceNameArry.Add(StrDeviceName);
-		}
-		
-		m_nDeviceCount = lNumber;
+	//if (Search == 0)
+	//{
+	//	m_nSoundUSBDeviceFind = 0;
+	//	m_sUSBDeviceName = "N/A";
+	//	m_nUSBDeviceID = -1;
+	//	RefreshDeviceArray();		
+	//	strSavedDeviceNameArry.RemoveAll();
+	//	for (int i = 0; i < lNumber; i++)
+	//	{
+	//		StrDeviceName = strDeviceNameArry.GetAt(i);
+	//		//strDeviceNameArry.Add(StrDeviceName);
+	//		strSavedDeviceNameArry.Add(StrDeviceName);
+	//	}
+	//	
+	//	m_nDeviceCount = lNumber;
 
-		CString Stemp;
-		Stemp.Format("Ready to Check New Sound Input!!");
-		AddStringToStatus(Stemp);
-	}
-	else
-	{
-		StrMainMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_MIC;
-		StrMainMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem2_MIC;
-		StrMainMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem3_MIC;
+	//	CString Stemp;
+	//	Stemp.Format("Ready to Check New Sound Input!!");
+	//	AddStringToStatus(Stemp);
+	//	lFlagCheck = 1;
+	//}
+	//else
+	//{
 
-		StrUSBMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-		StrUSBMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-		StrUSBMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
+	//	lFlagCheck = 0;// m_nSoundUSBDeviceFind = 0;
 
-		int lCheck = 0;
-		for (int i = 0; i < lNumber; i++)
-		{
+	//	StrMainMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_MIC;
+	//	StrMainMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem2_MIC;
+	//	StrMainMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem3_MIC;
 
-			lCheck = 0;
-			StrDeviceName = GetDeviceName(i);			
-			for (int j = 0; j < strSavedDeviceNameArry.GetSize(); j++)
-			{
-				StrOldDeviceName = strSavedDeviceNameArry.GetAt(j);
-				if (StrDeviceName.Find(StrOldDeviceName) >= 0)
-				{
-					lCheck = 1;
-					break;
-				}
-			}
-			if (lCheck == 1)
-				continue;
+	//	StrUSBMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
+	//	StrUSBMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
+	//	StrUSBMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
 
-			for (int j = 0; j < 3; j++)
-			{
-				if (g_nRunningProcessNo == j + 1)
-				{
-					continue;
-				}
+	//	int lCheck = 0;
+	//	for (int i = 0; i < lNumber; i++)
+	//	{
+	//		lCheck = 0;
+	//		StrDeviceName = GetDeviceName(i);			
+	//		for (int j = 0; j < strSavedDeviceNameArry.GetSize(); j++)
+	//		{
+	//			StrOldDeviceName = strSavedDeviceNameArry.GetAt(j);
+	//			if (StrDeviceName.Find(StrOldDeviceName) >= 0)
+	//			{
+	//				lCheck = 1;
+	//				break;
+	//			}
+	//		}
+	//		if (lCheck == 1)
+	//			continue;
 
-				if (((StrDeviceName.Find(StrMainMicName3System[j]) >= 0) && (StrMainMicName3System[j].GetLength() >= 5))
-					|| ((StrDeviceName.Find(StrUSBMicName3System[j]) >= 0)) && (StrUSBMicName3System[j].GetLength() >= 5))
-				{
-					lCheck = 1;
-					break;
-				}
-			}
-			if (lCheck == 1)
-				continue;
+	//		for (int j = 0; j < 3; j++)
+	//		{
+	//			if (g_nRunningProcessNo == j + 1)
+	//			{
+	//				continue;
+	//			}
 
-			m_nSoundUSBDeviceFind = 1;
-			m_sUSBDeviceName = StrDeviceName;
-			m_nUSBDeviceID = i;
-			break;
-		}
-	}
+	//			if (((StrDeviceName.Find(StrMainMicName3System[j]) >= 0) && (StrMainMicName3System[j].GetLength() >= 5))
+	//				|| ((StrDeviceName.Find(StrUSBMicName3System[j]) >= 0)) && (StrUSBMicName3System[j].GetLength() >= 5))
+	//			{
+	//				lCheck = 1;
+	//				break;
+	//			}
+	//		}
+	//		if (lCheck == 1)
+	//			continue;
 
-	return  m_nSoundUSBDeviceFind;
+	//		lFlagCheck = 1; //m_nSoundUSBDeviceFind = 1;
+	//		m_sUSBDeviceName = StrDeviceName;
+	//		m_nUSBDeviceID = i;
+
+	//		MicSearchRelease(0);
+	//		break;
+	//	}
+	//}
+
+	return  lFlagCheck;
 }
 
 void CSoundCard::WaveRead_Stop()
@@ -626,63 +696,65 @@ void CSoundCard::WaveRead_Stop()
 	g_pView->m_Sound_Display_Enable = 0;
 
 }
+//
+//int  CSoundCard::IsMicSearchFree()
+//{
+//	if (g_nRunningProcessNo == 1)
+//	{
+//		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest3)
+//		{
+//			return 0;
+//		}
+//	}
+//	else if (g_nRunningProcessNo == 2)
+//	{
+//		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest3)
+//		{
+//			return 0;
+//		}
+//	}
+//	else if (g_nRunningProcessNo == 3)
+//	{
+//		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest2)
+//		{
+//			return 0;
+//		}
+//	}
+//
+//	return 1;
+//}
 
-int  CSoundCard::IsMicSearchFree()
-{
-	if (g_nRunningProcessNo == 1)
-	{
-		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest3)
-		{
-			return 0;
-		}
-	}
-	else if (g_nRunningProcessNo == 2)
-	{
-		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest3)
-		{
-			return 0;
-		}
-	}
-	else if (g_nRunningProcessNo == 3)
-	{
-		if (g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 || g_pView->m_pUSB_MIC_Struct->nNewMicRequest2)
-		{
-			return 0;
-		}
-	}
+//void CSoundCard::MicSearchBlock()
+//{
+//	if (g_nRunningProcessNo == 1)
+//		g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 1;
+//	else if (g_nRunningProcessNo == 2)
+//		g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 1;
+//	else if (g_nRunningProcessNo == 3)
+//		g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 1;
+//}
+//
+//void CSoundCard::MicSearchRelease(int all_ch)
+//{
+//	if (all_ch)
+//	{
+//		g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+//		g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+//		g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
+//	}
+//	else
+//	{
+//		if (g_nRunningProcessNo == 1)
+//			g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
+//		else if (g_nRunningProcessNo == 2)
+//			g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
+//		else if (g_nRunningProcessNo == 3)
+//			g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
+//	}
+//
+//}
+//
 
-	return 1;
-}
-
-void CSoundCard::MicSearchBlock()
-{
-	if (g_nRunningProcessNo == 1)
-		g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 1;
-	else if (g_nRunningProcessNo == 2)
-		g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 1;
-	else if (g_nRunningProcessNo == 3)
-		g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 1;
-}
-
-void CSoundCard::MicSearchRelease(int all_ch)
-{
-	if (all_ch)
-	{
-		g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
-		g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
-		g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
-	}
-	else
-	{
-		if (g_nRunningProcessNo == 1)
-			g_pView->m_pUSB_MIC_Struct->nNewMicRequest1 = 0;
-		else if (g_nRunningProcessNo == 2)
-			g_pView->m_pUSB_MIC_Struct->nNewMicRequest2 = 0;
-		else if (g_nRunningProcessNo == 3)
-			g_pView->m_pUSB_MIC_Struct->nNewMicRequest3 = 0;
-	}
-
-}
 BOOL CSoundCard::Creat(CWnd* pWnd)
 {
 	long nDev;
