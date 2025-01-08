@@ -107,7 +107,8 @@ public:
 	//+add PSH 090305
 	int    m_bMeasureAudioType;
 	CStringArray  strDeviceNameArry;
-	CStringArray  strHWDeviceIDArry;
+	//CStringArray  strHWDeviceIDArry;
+	CStringArray  strHWDeviceLocationArry;
 	CStringArray  strHWDeviceNameArry;
 	CStringArray strSavedDeviceNameArry;
 	int m_nDeviceCount;
@@ -132,6 +133,7 @@ public:
 public:
 	CString CSoundCard::GetDeviceName(UINT lDeviceID);
 	int CSoundCard::RefreshDeviceArray();
+	void CSoundCard::CheckNamesAndLocations();
 	int CSoundCard::SetDeviceID(int lDevice);
 	//void CSoundCard::SetDeviceID(int lDevice);
 	//void SaveShareSoundData();

@@ -17259,6 +17259,10 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 					{
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
 					}
+					else if (CurrentSet->nUHD_Grab_Mode == 20)
+					{
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
+					}
 					else {
 #ifdef SM_MODIFY_CODE__	
 						pView->m_clsPCI.DFT3_UHDPuzzle(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, 0);

@@ -7474,167 +7474,195 @@ int	CImageProc::DFT3_UHDPuzzleLocal(int nMode, unsigned char *bufIn, unsigned ch
 
 
 		break;
-	//case 20://PACK_TYPE_STANDBYME
-	//	if (nRotate == 0) {
+	case 20://
+		if (nRotate == 0) {
 
-	//		if (nModel == PACK_TYPE_STANDBYME) {
-	//			for (i = 0; i < nHeight; i = i + 1) {
+			if (nModel == PACK_TYPE_STANDBYME) {
+				for (i = 0; i < nHeight; i = i + 1) {
 
-	//				for (j = 0; j < nWidth / 8; j = j + 1) {
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+					for (j = 0; j < nWidth / 8; j = j + 1) {
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
-	//				}
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+					}
 
-	//				for (j = 0; j < nWidth / 8; j = j + 1) {
+					for (j = 0; j < nWidth / 8; j = j + 1) {
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 2];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 2];
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 2];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2 + 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 2];
 
-	//				}
-	//				for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+					}
+					for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
-	//				}
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2 - 640 * 3] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+					}
 
-	//				for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 2];
+					for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 2 * 3 + 2];
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 2];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 0];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 1];
+						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 3 * 3 + 2];
 
-	//				}
-	//			}
-	//		}
-	//		else {
-	//			for (i = 0; i < nHeight; i = i + 1) {
-	//				for (j = 0; j < nWidth / 8; j = j + 1) {
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+					}
+				}
+			}
+			else {
+				for (i = 0; i < nHeight; i = i + 1) {
+					if (i % 2 == 0) {
+						for (j = 0; j < nWidth / 8; j = j + 1) {
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+						}
+						for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[i / 2 * nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+						}
+					}
+					else {
+						for (j = 0; j < nWidth / 8; j = j + 1) {
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+						}
+						for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[(1080 + (i / 2 + 1))*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+						}
+					}
+				}
+			}
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
+			/// Start
+						/*
+					for (i = 0; i < nHeight; i = i + 1) {
+						for (j = 0; j < nWidth / 8; j = j + 1) {
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
 
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
 
-	//				}
-	//				for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
-	//					bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
 
+						}
+						for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
 
-	//				}
-	//			}
-	//		}
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
 
-	//		/// Start
-	//					/*
-	//				for (i = 0; i < nHeight; i = i + 1) {
-	//					for (j = 0; j < nWidth / 8; j = j + 1) {
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
 
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
-
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
-
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
-
-	//					}
-	//					for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 0 * 3 + 2];
-
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + 1 * 3 + 2];
-
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 0] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (0 + 2) * 3 + 2];
-
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
-	//						bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 1] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 0];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 0 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 1];
+							bufOut[(nHeight - 1 - i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + 1 * 3 + 2] = bufIn[i*nWidth * 3 + j * 3 * 4 + (1 + 2) * 3 + 2];
 
 
-	//					}
-	//				}*/
-	//				//End
+						}
+					}*/
+					//End
 
-	//	}
-	//	else {		//	4division rotated
-	//		for (i = 0; i < nHeight; i = i + 1) {
-	//			for (j = 0; j < nWidth / 8; j = j + 1) {
-	//				for (k = 0; k < 2; k = k + 1) {
-	//					bufOut[(i)*nWidth * 3 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 0];
-	//					bufOut[(i)*nWidth * 3 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 1];
-	//					bufOut[(i)*nWidth * 3 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 2];
-	//				}
-	//				for (k = 0; k < 2; k = k + 1) {
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 0];
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 1];
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 2];
-	//				}
-	//			}
-	//			for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
-	//				for (k = 0; k < 2; k = k + 1) {
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 0];
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 1];
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 2];
-	//				}
-	//				for (k = 0; k < 2; k = k + 1) {
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 0];
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 1];
-	//					bufOut[(i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 2];
-	//				}
-	//			}
-	//		}
-	//	}
-	//	break;
+		}
+		else {		//	4division rotated
+			for (i = 0; i < nHeight; i = i + 1) {
+				for (j = 0; j < nWidth / 8; j = j + 1) {
+					for (k = 0; k < 2; k = k + 1) {
+						bufOut[(i)*nWidth * 3 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 0];
+						bufOut[(i)*nWidth * 3 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 1];
+						bufOut[(i)*nWidth * 3 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 2];
+					}
+					for (k = 0; k < 2; k = k + 1) {
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 0];
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 1];
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 2];
+					}
+				}
+				for (j = nWidth / 8; j < nWidth / 4; j = j + 1) {
+					for (k = 0; k < 2; k = k + 1) {
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 0];
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 1];
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 4 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - k * 3 + 2];
+					}
+					for (k = 0; k < 2; k = k + 1) {
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 0] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 0];
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 1] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 1];
+						bufOut[(i)*nWidth * 3 + nWidth * 3 / 2 + 6 * j + k * 3 + 2] = bufIn[(i + 1)*nWidth * 3 - 3 - j * 3 * 4 - (k + 2) * 3 + 2];
+					}
+				}
+			}
+		}
+
+
+		break;
 	default:
 		if (nRotate == 0) {
 			for (i = 0; i < nHeight; i = i + 1) {

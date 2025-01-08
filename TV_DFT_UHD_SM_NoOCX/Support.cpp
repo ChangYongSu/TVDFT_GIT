@@ -846,7 +846,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->nUHD_Type = m_Ini.GetProfileInt(GRAB_S, "UHD Type");
 		CurrentSet->nUHD_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "UHD Grab BitShift");
 		CurrentSet->nUHD_Grab_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Mode");
-		if(CurrentSet->nUHD_Grab_Mode > 19){CurrentSet->nUHD_Grab_Mode = 13;}
+		if(CurrentSet->nUHD_Grab_Mode > 20){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
 		if (CurrentSet->nUHD_Y20_SW_Mode > 16) { CurrentSet->nUHD_Y20_SW_Mode = 1; }

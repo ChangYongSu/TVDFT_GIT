@@ -362,9 +362,9 @@ BOOL COptEtcPage::OnInitDialog()
 
 	g_SoundCard.RefreshDeviceArray();
 
-	for (int i = 0; i < g_SoundCard.strHWDeviceIDArry.GetCount(); i++)
+	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
 	{
-		CString str_SoundName = g_SoundCard.strHWDeviceIDArry.GetAt(i);
+		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
 		
 		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
 		{
@@ -387,7 +387,7 @@ BOOL COptEtcPage::OnInitDialog()
 		if (CurrentSet->sUSBMIC_HW_Name.Find(str_SoundName) >= 0)
 		{
 			m_cComboUSBAudioCard.SetCurSel(i);
-			//SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceIDArry.GetAt(i));
+			
 		}
 	}
 	m_cComboUSBAudioCard.AddString("Not Found");
@@ -687,8 +687,8 @@ void COptEtcPage::OnCbnSelchangeComboUsbAudioCard()
 		CString str = g_SoundCard.strHWDeviceNameArry.GetAt(i);
 		if (str.Find(str_SoundName) >= 0)
 		{
-			CString str = g_SoundCard.strHWDeviceIDArry.GetAt(i);
-			SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceIDArry.GetAt(i));
+			CString str = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
+			SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceLocationArry.GetAt(i));
 			SetDlgItemText(IDC_STATIC_USB_HW_NAME, str_SoundName);
 			break;
 		}
@@ -702,9 +702,9 @@ void COptEtcPage::OnBnClickedBtnSoundCardRefresh()
 
 	g_SoundCard.RefreshDeviceArray();
 
-	for (int i = 0; i < g_SoundCard.strHWDeviceIDArry.GetCount(); i++)
+	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
 	{
-		CString str_SoundName = g_SoundCard.strHWDeviceIDArry.GetAt(i);
+		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
 
 		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
 		{
@@ -732,7 +732,7 @@ void COptEtcPage::OnBnClickedBtnSoundCardRefresh()
 		if (CurrentSet->sUSBMIC_HW_Name.Find(str_SoundName) >= 0)
 		{
 			m_cComboUSBAudioCard.SetCurSel(i);
-			SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceIDArry.GetAt(i));
+			SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceLocationArry.GetAt(i));
 		}
 	}
 	m_cComboUSBAudioCard.AddString("Not Found");

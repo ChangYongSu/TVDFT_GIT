@@ -2755,7 +2755,7 @@ BEGIN
     RTEXT           "Bit Shift",IDC_STATIC,20,117,28,10
     COMBOBOX        IDC_COMBO_BITSHIFT,50,116,152,52,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     RTEXT           "Grab Mode",IDC_STATIC,12,133,36,8
-    COMBOBOX        IDC_COMBO_GRABMODE,50,132,152,158,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_GRABMODE,50,132,152,194,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     RTEXT           "UHD Type",IDC_STATIC,14,100,34,10
     COMBOBOX        IDC_COMBO_UHDTYPE,50,99,152,76,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "HDMI Grab Option",IDC_STATIC,7,188,144,53,BS_FLAT
@@ -6320,8 +6320,8 @@ IDI_LEDOFF              ICON                    "res\\LedOff.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 24,11,27,293
- PRODUCTVERSION 24,11,27,0
+ FILEVERSION 25,1,8,293
+ PRODUCTVERSION 25,1,8,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -6338,13 +6338,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "LG-PRI"
             VALUE "FileDescription", "DFT Application Program"
-            VALUE "FileVersion", "V241127"
+            VALUE "FileVersion", "V250108"
             VALUE "InternalName", "DATsys"
             VALUE "LegalCopyright", "Copyright (C) 2024"
             VALUE "OriginalFilename", "DFT.EXE"
             VALUE "ProductName", "DFT Application Program"
-            VALUE "ProductVersion", "V24.11.27.293"
-            VALUE "SpecialBuild", "2024.11.27.293"
+            VALUE "ProductVersion", "V25.01.08.293"
+            VALUE "SpecialBuild", "2025.01.08.293"
         END
     END
     BLOCK "VarFileInfo"

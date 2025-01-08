@@ -188,11 +188,18 @@ CString CSoundCard::GetDeviceName(UINT lDeviceID)
 #include <mmdeviceapi.h>
 #include <Audioclient.h>
 #include <Functiondiscoverykeys_devpkey.h>
+#include <windows.h>
+#include <mmdeviceapi.h>
+#include <propkey.h> // For PKEY_Device_FriendlyName and PKEY_Device_LocationInfo
+//#include <functiondiscoverykeys_devpkey.h> // For extended PKEY definitions
+#include <atlbase.h> // For CComPtr
 
 #pragma comment(lib, "ole32.lib")
 
 int CSoundCard::RefreshDeviceArray()
 {
+	CheckNamesAndLocations();
+
 	int lNumber = waveInGetNumDevs();
 	CString StrDeviceName;
 
@@ -215,7 +222,9 @@ int CSoundCard::RefreshDeviceArray()
 		}
 	}
 #if 1
-	CoInitialize(nullptr);
+	
+	
+	/*CoInitialize(nullptr);
 
 	IMMDeviceEnumerator* pEnumerator = nullptr;
 	HRESULT hr = CoCreateInstance(
@@ -237,7 +246,7 @@ int CSoundCard::RefreshDeviceArray()
 	pCollection->GetCount(&count);
 	TRACE("Number of audio capture devices: %d \n",count);
 	strHWDeviceNameArry.RemoveAll();
-	strHWDeviceIDArry.RemoveAll();
+	strHWDeviceLocationArry.RemoveAll();
 	for (UINT i = 0; i < count; i++) 
 	{
 		IMMDevice* pDevice = nullptr;
@@ -248,7 +257,7 @@ int CSoundCard::RefreshDeviceArray()
 		TRACE(  L"Device ID:  %d: %s\n" ,i, pwszID );
 		CString str = pwszID;
 		str.MakeUpper();
-		strHWDeviceIDArry.Add(str);
+		strHWDeviceLocationArry.Add(str);
 
 		IPropertyStore* pStore = nullptr;
 		pDevice->OpenPropertyStore(STGM_READ, &pStore);
@@ -265,18 +274,62 @@ int CSoundCard::RefreshDeviceArray()
 
 		PropVariantClear(&varName);
 		pStore->Release();
-		pDevice->Release();
+		//pDevice->Release();
 		CoTaskMemFree(pwszID);
+
+		//PROPVARIANT varLocation;
+		//PropVariantInit(&varLocation);
+		//0000.0014.0000.013.003.004.002.000.000
+		//0000.0014.0000.014.003.004.002.000.000
+		//CComPtr<IPropertyStore> spPropertyStore;
+		IPropertyStore* spPropertyStore = nullptr;;
+		hr = pDevice->OpenPropertyStore(STGM_READ, &spPropertyStore);
+
+		if (SUCCEEDED(hr) && spPropertyStore)
+		{
+			// Retrieve the PKEY_Device_Location property
+			PROPVARIANT varLocation;
+			PropVariantInit(&varLocation);
+			hr = spPropertyStore->GetValue(PKEY_Device_LocationInfo, &varLocation);
+
+			if (SUCCEEDED(hr))
+			{
+				if (varLocation.vt == VT_LPWSTR && varLocation.pwszVal)
+				{
+					//msg.Format(_T("Device %u location: %ls"), i, varLocation.pwszVal);
+					strHWDeviceLocationArry.Add(varLocation.pwszVal);
+				}
+				else
+				{
+					strHWDeviceLocationArry.Add("NA");
+					//msg.Format(_T("Device %u location: (Unavailable)"), i);
+				}
+				//AfxMessageBox(msg);
+				PropVariantClear(&varLocation);
+			}
+			else {
+				//msg.Format(_T("Failed to get location for device %u"), i);
+				//AfxMessageBox(msg);
+				strHWDeviceLocationArry.Add("NA");
+			}
+
+		}
+		spPropertyStore->Release();
+		pDevice->Release();
+		//CoTaskMemFree(pwszID);
 	}
 
 	pCollection->Release();
 	pEnumerator->Release();
 	CoUninitialize();
-
+	*/
 	//m_sUSBDeviceName
-	for (int i = 0; i < g_SoundCard.strHWDeviceIDArry.GetCount(); i++)
+
+	//CheckNamesAndLocations();
+
+	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
 	{
-		CString str_SoundName = g_SoundCard.strHWDeviceIDArry.GetAt(i);
+		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
 
 		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
 		{
@@ -315,6 +368,101 @@ int CSoundCard::RefreshDeviceArray()
 	CoUninitialize();
 #endif
 	return lNumber;
+}
+
+
+void CSoundCard::CheckNamesAndLocations()
+{
+	CoInitialize(nullptr); // Initialize the COM library
+
+	CComPtr<IMMDeviceEnumerator> spEnumerator;
+	CComPtr<IMMDeviceCollection> spCollection;
+
+	// Create an instance of IMMDeviceEnumerator
+	HRESULT hr = CoCreateInstance(
+		__uuidof(MMDeviceEnumerator),
+		nullptr,
+		CLSCTX_ALL,
+		__uuidof(IMMDeviceEnumerator),
+		(void**)&spEnumerator
+	);
+
+	if (FAILED(hr)) {
+		TRACE(_T("Failed to create IMMDeviceEnumerator."));
+		return;
+	}
+
+	// Enumerate audio endpoint devices
+	hr = spEnumerator->EnumAudioEndpoints(
+		eRender,             // Data flow direction: Render
+		DEVICE_STATE_ACTIVE, // Only active devices
+		&spCollection
+	);
+
+	if (FAILED(hr)) {
+		TRACE(_T("Failed to enumerate audio devices."));
+		return;
+	}
+
+	UINT count = 0;
+	spCollection->GetCount(&count); // Get the number of devices
+
+	CString msg;
+	msg.Format(_T("Number of active audio devices: %u"), count);
+	TRACE(msg);
+	strHWDeviceNameArry.RemoveAll();
+	strHWDeviceLocationArry.RemoveAll();
+
+	for (UINT i = 0; i < count; ++i) {
+		CComPtr<IMMDevice> spDevice;
+		hr = spCollection->Item(i, &spDevice);
+
+		if (SUCCEEDED(hr) && spDevice) {
+			// Get the property store for the device
+			CComPtr<IPropertyStore> spPropertyStore;
+			hr = spDevice->OpenPropertyStore(STGM_READ, &spPropertyStore);
+
+			if (SUCCEEDED(hr) && spPropertyStore) {
+				// Retrieve the friendly name of the device PKEY_Device_HardwareIds
+#if 1
+				PROPVARIANT varName;
+				PropVariantInit(&varName);
+
+//				hr = spPropertyStore->GetValue(PKEY_Device_HardwareIds, &varName);
+				hr = spPropertyStore->GetValue(PKEY_Device_FriendlyName, &varName);
+
+				CString friendlyName = _T("NA");
+				if (SUCCEEDED(hr) && varName.vt == VT_LPWSTR) {
+					friendlyName = varName.pwszVal;
+				}
+				strHWDeviceLocationArry.Add(friendlyName);
+				PropVariantClear(&varName); // Clear PROPVARIANT
+#endif
+				// Retrieve the location info of the device
+				PROPVARIANT varLocation;
+				PropVariantInit(&varLocation);
+				//PKEY_Device_EnumeratorName
+				//PKEY_Device_Address
+				//hr = spPropertyStore->GetValue(PKEY_Device_HardwareIds, &varLocation);
+				//hr = spPropertyStore->GetValue(PKEY_Device_EnumeratorName, &varLocation);
+				//hr = spPropertyStore->GetValue(PKEY_Device_Address, &varLocation);
+				hr = spPropertyStore->GetValue(PKEY_Device_LocationInfo, &varLocation);
+
+				CString locationInfo = _T("NA");
+				if (SUCCEEDED(hr) && varLocation.vt == VT_LPWSTR) {
+					locationInfo = varLocation.pwszVal;
+				}
+				strHWDeviceLocationArry.Add(locationInfo);
+				PropVariantClear(&varLocation); // Clear PROPVARIANT
+
+				// Display the friendly name and location info
+				//msg.Format(_T("Device %u:\nFriendly Name: %s\nLocation Info: %s"), i + 1, friendlyName, locationInfo);
+				//TRACE(msg);
+			}
+		}
+	}
+
+	CoUninitialize(); // Uninitialize the COM library
 }
 
 int CSoundCard::SetDeviceID(int lDevice)
