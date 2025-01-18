@@ -24,6 +24,8 @@ IMPLEMENT_DYNCREATE(COptSpecPage, CPropertyPage)
 
 COptSpecPage::COptSpecPage() : CPropertyPage(COptSpecPage::IDD)
 , m_bToolOptionWriteFlag(FALSE)
+, m_szBoardOption(_T(""))
+, m_szCommercialBoardOption(_T(""))
 {
 	//{{AFX_DATA_INIT(COptSpecPage)
 	m_szToolOption1 = _T("");
@@ -79,6 +81,8 @@ void COptSpecPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_SPEC_GRID, m_CtrlListSpecGrid);
 	DDX_Control(pDX, IDC_EDIT_OP_EPI_CFG_SW, m_CEdit_OP_EPI_CFG_SW);
 	DDX_Check(pDX, IDC_CHECK_OPTION_WRITE, m_bToolOptionWriteFlag);
+	DDX_Text(pDX, IDC_EDIT_BOARD_OPTION, m_szBoardOption);
+	DDX_Text(pDX, IDC_EDIT_COMMERCIAL_BOARD_OPTION, m_szCommercialBoardOption);
 }
 
 
@@ -116,6 +120,8 @@ BOOL COptSpecPage::OnInitDialog()
 	m_szToolOption7 = CurrentSet->sToolOption7;
 	m_szCommercialOption1 = CurrentSet->sCommercialOption1;
 	m_szToolOption8 = CurrentSet->sToolOption8;
+	m_szBoardOption = CurrentSet->sBoardOption ;
+	m_szCommercialBoardOption = CurrentSet->sCommercialBoardOption ;
 	m_szToolCRC = CurrentSet->sToolCRC;
 	m_bToolOptionWriteFlag = CurrentSet->bToolOptionWriteFlag;
 
@@ -159,6 +165,9 @@ void COptSpecPage::OnBtnOptApply()
 	CurrentSet->sToolOption7 = m_szToolOption7;
 	CurrentSet->sCommercialOption1 = m_szCommercialOption1;
 	CurrentSet->sToolOption8 = m_szToolOption8;
+	CurrentSet->sBoardOption = m_szBoardOption;
+	CurrentSet->sCommercialBoardOption=  m_szCommercialBoardOption;
+
 	CurrentSet->sToolCRC = m_szToolCRC;
 	CurrentSet->bToolOptionWriteFlag = m_bToolOptionWriteFlag;
 

@@ -6520,7 +6520,7 @@ UINT CDATsysView::StartTestThread(LPVOID pParam)
 	//	? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
 	
 
-	g_SoundCard.m_nSoundUSBDeviceFind = 0;
+	g_SoundCard.m_nSoundUSB_Flag = 0;
 	//g_SoundCard.m_sUSBDeviceName = "N/A";
 	pView->m_CurrentStep = 0;
 	pView->CtrlBatVerEdit.SetReadOnly(1);
@@ -8467,7 +8467,7 @@ int CDATsysView::StepRun()
 	else
 	{		
 		//g_SoundCard.MicSearchRelease(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = (g_pView->m_pUSB_MIC_Struct->nNewMicRequest == g_nRunningProcessNo) ? 0 : g_pView->m_pUSB_MIC_Struct->nNewMicRequest;
-		g_SoundCard.m_nSoundUSBDeviceFind = 0;
+		g_SoundCard.m_nSoundUSB_Flag = 0;
 		//g_SoundCard.m_nUSBDeviceID = -1;
 		//g_SoundCard.m_sUSBDeviceName = "N/A";
 		
@@ -19376,21 +19376,9 @@ BOOL CDATsysView::AudioMeasureSearch()
 {
 	int WaitCnt = 0;
 	int lret = 0;
-	//while (!g_SoundCard.IsMicSearchFree())
-	//{
-	//	Sleep(100);
-	//	WaitCnt++;
-	//	if (WaitCnt > 100)//10 SEC
-	//	{
-	//		g_SoundCard.MicSearchRelease(1);
-	//	}
-	//}
-	//lret = g_SoundCard.WaveCheck_Search(0);
-	//if (lret == 1)
-	//{
-	//	g_SoundCard.MicSearchBlock(); //g_pView->m_pUSB_MIC_Struct->nNewMicRequest = g_nRunningProcessNo;
-	//	//SetTimer(TIMER_MEASURE_AUDIO_OUTPUT, 200, NULL);	
-	//}
+	
+	lret = g_SoundCard.WaveCheck_Search(0);
+	
 	return lret;
 }
 
@@ -19407,7 +19395,6 @@ void CDATsysView::AudioMeasureStop()
 	m_cLeftLevelDisplay.SetWindowText("    0 mV ");
 	m_cRightFreqDisplay.SetWindowText("    0 Hz ");
 	m_cRightLevelDisplay.SetWindowText("    0 mV ");
-
 }
 
 void CDATsysView::ComLogClear() 

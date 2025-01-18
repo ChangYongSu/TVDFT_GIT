@@ -195,7 +195,7 @@ BOOL _Set_DimmingTest();
 //add 101221
 BOOL _AudioMeasureReset();
 BOOL _AudioSelectReset();
-BOOL _AudioNewSearch();
+BOOL _AudioListSearch();
 BOOL _AudioNewMicCheck();
 
 //add 110215

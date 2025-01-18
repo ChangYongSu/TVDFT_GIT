@@ -1145,8 +1145,8 @@ void CDATsysView::SetFont()
 #else
 
 	LOGFONT logFont4;
-	logFont4.lfHeight = 42;
-	logFont4.lfWidth = 14;
+	logFont4.lfHeight = 35;// 42;
+	logFont4.lfWidth = 12;// 14;
 	logFont4.lfEscapement = 0;
 	logFont4.lfOrientation = 0;
 	logFont4.lfWeight = FW_BOLD;
@@ -1615,9 +1615,15 @@ void CDATsysView::UpdateInfo(int nIndex, CString s)
 		case TOOL_OPTION8 :
 			m_ctrlListOption.SetItemText(8, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
 			break;
+		case BOARD_OPTION:
+			m_ctrlListOption.SetItemText(9, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
+			break;
+		case COMMERCIAL_BOARD_OPTION:
+			m_ctrlListOption.SetItemText(10, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
+			break;
 
 		case TOOL_CRC :
-			m_ctrlListOption.SetItemText(9, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(10, 1, _T(s));
+			m_ctrlListOption.SetItemText(11, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(10, 1, _T(s));
 			break;
 
 
@@ -1661,142 +1667,6 @@ void CDATsysView::UpdateInfo(int nIndex, CString s)
 
  }
 #else
-void CDATsysView::UpdateInfo(int nIndex, CString s)
-{
-	CString sTmp, sModelName, sModelFolder;
-
-	switch (nIndex)
-	{
-	case SEQ:
-		m_stcModelFolder.SetWindowText(_T(s));
-		break;
-	case MODEL:
-		m_stcSeqName.SetWindowText(_T(s));
-		break;
-	case CHASSIS:
-		m_stcChassisName.SetWindowText(_T(s));
-		break;
-	case REF:
-		m_stcRefFolder.SetWindowText(_T(s));
-		break;
-	case TESTED:
-		m_ctrLEDTested.SetWindowText(_T(s));
-		break;
-	case FAILED:
-		m_ctrLEDFailed.SetWindowText(_T(s));
-		break;
-	case RATE:
-		m_ctrLEDRate.SetWindowText(_T(s));
-		break;
-	case STATUS:
-		m_stcStatus.SetWindowText(_T(s));
-		break;
-	case MODE:
-		m_stcMode.SetWindowText(_T(s));
-		break;
-	case TIME:
-		m_stcTime.SetWindowText(_T(s));
-		break;
-	case PROG_NO:
-		//			m_stcProgramNo.SetWindowText(_T(s)); 
-		break;
-	case AUDIO_L_FREQ:
-		//			m_stcLFreq.SetWindowText(_T(s));
-		break;
-	case AUDIO_R_FREQ:
-		//			m_stcRFreq.SetWindowText(_T(s));
-		break;
-	case AUDIO_L_LEVEL:
-		//			m_stcLLevel.SetWindowText(_T(s));
-		break;
-	case AUDIO_R_LEVEL:
-		//			m_stcRLevel.SetWindowText(_T(s));
-		break;
-
-	case TOOL_OPTION1:
-		//m_ctrlOptionGrid.SetTextMatrix(1, 1, _T(s));
-		m_ctrlOptionGrid.SetTextMatrix(1, 1, _T(s));
-
-		break;
-	case TOOL_OPTION2:
-		//m_ctrlOptionGrid.SetTextMatrix(2, 1, _T(s));
-		m_ctrlOptionGrid.SetTextMatrix(2, 1, _T(s));
-		break;
-
-	case TOOL_OPTION3:
-		//m_ctrlOptionGrid.SetTextMatrix(3, 1, _T(s));
-		m_ctrlOptionGrid.SetTextMatrix(3, 1, _T(s));
-		break;
-
-	case TOOL_OPTION4:
-		//m_ctrlOptionGrid.SetTextMatrix(4, 1, _T(s));
-		m_ctrlOptionGrid.SetTextMatrix(4, 1, _T(s));
-		break;
-
-	case TOOL_OPTION5:
-		m_ctrlOptionGrid.SetTextMatrix(5, 1, _T(s));
-		break;
-
-	case TOOL_OPTION6:
-		m_ctrlOptionGrid.SetTextMatrix(6, 1, _T(s));
-		break;
-		//+add 110928
-	case TOOL_OPTION7:
-		m_ctrlOptionGrid.SetTextMatrix(7, 1, _T(s));
-		break;
-
-	case COMMERCIAL_OPTION1:
-		m_ctrlOptionGrid.SetTextMatrix(8, 1, _T(s));
-		break;
-
-	case TOOL_OPTION8:
-		m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
-		break;
-
-	case TOOL_CRC:
-		m_ctrlOptionGrid.SetTextMatrix(10, 1, _T(s));
-		break;
-
-
-	case AREA_OPTION1:
-		m_ctrlCountryGrid.SetTextMatrix(0, 1, _T(s));
-		break;
-
-	case COUNTRY_GROUP:
-		m_ctrlCountryGrid.SetTextMatrix(1, 1, _T(s));
-		break;
-
-	case COUNTRY:
-		m_ctrlCountryGrid.SetTextMatrix(2, 1, _T(s));
-		break;
-
-	case CPU_VERSION:
-		m_ctrlVersionGrid.SetTextMatrix(0, 1, _T(s));
-		break;
-
-	case MICOM_VERSION:
-		m_ctrlVersionGrid.SetTextMatrix(1, 1, _T(s));
-		break;
-
-	case USB_VERSION:
-		/*	if(s.Compare("NULL") != NULL)
-				ctrlUSBVersion.SetWindowText(_T(s));
-			else
-				ctrlUSBVersion.SetWindowText(_T("")); */
-		break;
-	case MNT_VERSION:
-		m_ctrlVersionGrid.SetTextMatrix(2, 1, _T(s));
-		break;
-
-	case LED_STATE:
-		m_LedsMesOn.EnableWindow(CurrentSet->bGMES_Connection);
-		m_LedsMesOn.SetLedState(CurrentSet->bUploadMes);
-		//	m_LedsMesOn.SetLedState(1);
-		break;
-	}
-
-
-}
 #endif
 
 void CDATsysView::OnEditCompile() 
@@ -18210,60 +18080,7 @@ void CDATsysView::OnInputLock()
 		else{
 			GetDlgItem(IDC_BTN_GET_OPTION)->EnableWindow(FALSE);
 		}
-     /*
-		for(i =1; i < 11; i++)
-		{
-			m_ctrlOptionGrid.SetCol(1);
-			m_ctrlOptionGrid.SetRow(i);
-			m_ctrlOptionGrid.SetEditable(flexEDNone);
-		}
-		for(i =0; i < 3; i++)
-		{
-			m_ctrlCountryGrid.SetCol(1);
-			m_ctrlCountryGrid.SetRow(i);
-			m_ctrlCountryGrid.SetEditable(flexEDNone);
-		}
-		for(i =0; i < 3; i++)
-		{
-			m_ctrlVersionGrid.SetCol(1);
-			m_ctrlVersionGrid.SetRow(i);
-			m_ctrlVersionGrid.SetEditable(flexEDNone);
-		}
-		if(CheckToolCrc()){
-			CurrentSet->sToolOption1 = m_ctrlOptionGrid.GetTextMatrix(1, 1);
-			CurrentSet->sToolOption2 = m_ctrlOptionGrid.GetTextMatrix(2, 1);
-			CurrentSet->sToolOption3 = m_ctrlOptionGrid.GetTextMatrix(3, 1);
-			CurrentSet->sToolOption4 = m_ctrlOptionGrid.GetTextMatrix(4, 1);
-			CurrentSet->sToolOption5 = m_ctrlOptionGrid.GetTextMatrix(5, 1);
-			CurrentSet->sToolOption6 = m_ctrlOptionGrid.GetTextMatrix(6, 1);
-			CurrentSet->sToolOption7 = m_ctrlOptionGrid.GetTextMatrix(7, 1);
-			CurrentSet->sCommercialOption1 = m_ctrlOptionGrid.GetTextMatrix(8, 1);
-			CurrentSet->sToolOption8 = m_ctrlOptionGrid.GetTextMatrix(9, 1);
-			CurrentSet->sToolCRC = m_ctrlOptionGrid.GetTextMatrix(10, 1);
 
-			CurrentSet->sAreaOption1 = m_ctrlCountryGrid.GetTextMatrix(0, 1);
-
-			CurrentSet->sCountryGroup = m_ctrlCountryGrid.GetTextMatrix(1, 1);
-			CurrentSet->sCountry = m_ctrlCountryGrid.GetTextMatrix(2, 1);
-
-			CurrentSet->sCPUVersion = m_ctrlVersionGrid.GetTextMatrix(0, 1);
-			CurrentSet->sMicomVersion = m_ctrlVersionGrid.GetTextMatrix(1, 1);
-			CurrentSet->sMNTVersion = m_ctrlVersionGrid.GetTextMatrix(2, 1);
-
-
-			if((CurrentSet->nAuthority == AUTHORITY_DEV) || (CurrentSet->nAuthority == AUTHORITY_ADMIN))
-			{
-				if(FileExists(CurrentSet->sModelIni))
-				{
-					SaveModelIniFile(CurrentSet->sModelIni);
-				}
-				else
-				{
-					sMsg.Format("Failed to save file.\n[%s]",CurrentSet->sModelIni);
-					AfxMessageBox(sMsg);
-				}
-			}
-		} */
 	}
 	else{
 		GetDlgItem(IDC_RDO_TOOL_OPTION1)->EnableWindow(TRUE);
@@ -24122,6 +23939,8 @@ void CDATsysView::UpdateToolOptionInfo(BOOL bSaveFlag)
 	UpdateInfo(TOOL_OPTION7,CurrentSet->sToolOption7);
 	UpdateInfo(TOOL_OPTION8,CurrentSet->sToolOption8);
 	UpdateInfo(COMMERCIAL_OPTION1,CurrentSet->sCommercialOption1);
+	UpdateInfo(BOARD_OPTION,CurrentSet->sBoardOption);
+	UpdateInfo(COMMERCIAL_BOARD_OPTION,CurrentSet->sCommercialBoardOption);
 
 	UpdateInfo(TOOL_CRC,CurrentSet->sToolCRC);
 
@@ -24720,7 +24539,7 @@ void CDATsysView::InitOptionGrid()
 {
 	CString sTmp;
 
-	char *sHeader[] = {"1", "2","3", "4", "5", "6", "7", "8(C)", "9", "CRC"};
+	char *sHeader[] = {"1", "2","3", "4", "5", "6", "7", "8(C)", "9", "B Opt", "CB Opt", "CRC"};
 
 	///m_ctrlOptionGrid.SetRedraw(FALSE);
 	//m_ctrlOptionGrid.Clear(COleVariant(long(flexClearEverywhere)), COleVariant(long(flexClearEverything))); //flex , flexClearEverything
@@ -24784,7 +24603,7 @@ void CDATsysView::InitOptionGrid()
 //	m_ctrlOptionGrid.SetRowHeight(2, 400);
 	// Set Column Alignment & Column Title
 //	for(int nCol = 0; nCol < 9 ; nCol++)
-	for(int nRow = 0; nRow < 10 ; nRow++)
+	for(int nRow = 0; nRow < 12 ; nRow++)
 	{
 		//m_ctrlOptionGrid.SetCol(0);
 

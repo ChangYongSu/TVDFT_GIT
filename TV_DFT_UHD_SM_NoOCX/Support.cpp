@@ -437,8 +437,12 @@ BOOL CreateModelIniFile(CString sModelIni)
 	m_Ini.SetProfileString(TOOL_AREA_S, "Country Code",CurrentSet->sCountry);
 
 	m_Ini.SetProfileString(TOOL_AREA_S, "Commercial Option1",CurrentSet->sCommercialOption1);
+	m_Ini.SetProfileString(TOOL_AREA_S, "BOARD Option", CurrentSet->sBoardOption);
+	m_Ini.SetProfileString(TOOL_AREA_S, "Commercial Board Option", CurrentSet->sCommercialBoardOption);
 
 	m_Ini.SetProfileInt(TOOL_AREA_S, "Tool Option Chek Delay", CurrentSet->nToolOptionCheck_Delay);
+
+
 
 	m_Ini.SetProfileString(VERSION_CHECK_S, "CPU Version",CurrentSet->sCPUVersion);
 	m_Ini.SetProfileString(VERSION_CHECK_S, "Micom Version",CurrentSet->sMicomVersion);
@@ -642,6 +646,9 @@ BOOL SaveModelIniFile(CString sIniPath)
 	m_Ini.SetProfileString(TOOL_AREA_S, "Country Code",CurrentSet->sCountry);
 
 	m_Ini.SetProfileString(TOOL_AREA_S, "Commercial Option1",CurrentSet->sCommercialOption1);
+	m_Ini.SetProfileString(TOOL_AREA_S, "BOARD Option", CurrentSet->sBoardOption);
+	m_Ini.SetProfileString(TOOL_AREA_S, "Commercial Board Option", CurrentSet->sCommercialBoardOption);
+
 
 	m_Ini.SetProfileInt(TOOL_AREA_S, "Tool Option Chek Delay" ,CurrentSet->nToolOptionCheck_Delay);
 
@@ -882,6 +889,8 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 	CurrentSet->sToolOption6	= m_Ini.GetProfileString(TOOL_AREA_S, "Tool Option6");
 	CurrentSet->sToolOption7	= m_Ini.GetProfileString(TOOL_AREA_S, "Tool Option7");
 	CurrentSet->sToolOption8	= m_Ini.GetProfileString(TOOL_AREA_S, "Tool Option8");
+	CurrentSet->sBoardOption = m_Ini.GetProfileString(TOOL_AREA_S, "BOARD Option");
+	CurrentSet->sCommercialBoardOption = m_Ini.GetProfileString(TOOL_AREA_S, "Commercial Board Option");
 	CurrentSet->sToolCRC		= m_Ini.GetProfileString(TOOL_AREA_S, "Tool CRC");
 	CurrentSet->bToolOptionWriteFlag = m_Ini.GetProfileInt(TOOL_AREA_S, "ToolOption Write");
 
@@ -946,7 +955,9 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 	if(CurrentSet->sToolOption6 == "NULL") CurrentSet->sToolOption6 = "";
 	if(CurrentSet->sToolOption7 == "NULL") CurrentSet->sToolOption7 = "";
 	if(CurrentSet->sCommercialOption1 == "NULL") CurrentSet->sCommercialOption1 = "";
-	if(CurrentSet->sToolOption8 == "NULL") CurrentSet->sToolOption8 = "";
+	if (CurrentSet->sToolOption8 == "NULL") CurrentSet->sToolOption8 = "";
+	if (CurrentSet->sBoardOption == "NULL") CurrentSet->sBoardOption = "";
+	if (CurrentSet->sCommercialBoardOption == "NULL") CurrentSet->sCommercialBoardOption = "";
 	if(CurrentSet->sToolCRC == "NULL") CurrentSet->sToolCRC = "";
 
 	if(CurrentSet->sAreaOption1 == "NULL") CurrentSet->sAreaOption1 = "";
@@ -7707,6 +7718,8 @@ BOOL Get_ToolOption(CString sOption)
 	CurrentSet->sToolOption7 = "";
 	CurrentSet->sToolOption8 = "";
 	CurrentSet->sCommercialOption1 = "";
+	CurrentSet->sBoardOption = "";
+	CurrentSet->sCommercialBoardOption = "";
 	CurrentSet->sToolCRC = "";
 	CurrentSet->sAreaOption1 = "";
 	CurrentSet->sCountryGroup = "";

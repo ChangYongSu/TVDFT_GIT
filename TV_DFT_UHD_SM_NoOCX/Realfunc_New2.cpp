@@ -6940,6 +6940,8 @@ BOOL _ToolOption_Write()
 	BOOL bResult7 = TRUE;
 	BOOL bResult8 = TRUE;
 	BOOL bResult9 = TRUE;
+	BOOL bResult10 = TRUE;
+	BOOL bResult11 = TRUE;
 
 	int  nI2cResult;
 	int  i;
@@ -7157,9 +7159,41 @@ BOOL _ToolOption_Write()
 		}
 	}
 
+	if (CurrentSet->sBoardOption != "") {
+		nToolOption = atoi(CurrentSet->sBoardOption);
+		if (CurrentSet->nTVControlType) {
+			bResult10 = FALSE;
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOption);
+				if (bResult10) break;
+				_Wait(200);
+			}
+		}
+	}
+	if (CurrentSet->sCommercialBoardOption != "") {
+		nToolOption = atoi(CurrentSet->sCommercialBoardOption);
+		if (CurrentSet->nTVControlType) {
+			bResult11 = FALSE;
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOption);
+				if (bResult11) break;
+				_Wait(200);
+			}
+		}
+	}
 
 
-	if (bResult1 && bResult2 && bResult3  && bResult4  && bResult5  && bResult6  && bResult7 && bResult8 && bResult9)
+	if (bResult1 && bResult2 && bResult3  && bResult4  
+		&& bResult5  && bResult6  && bResult7 && bResult8
+		&& bResult9 && bResult10 && bResult11)
 	{
 		return TRUE;
 
@@ -7198,6 +7232,8 @@ BOOL ToolOption_WriteCheck()
 	BOOL bResult7 = TRUE;
 	BOOL bResult8 = TRUE;
 	BOOL bResult9 = TRUE;
+	BOOL bResult10 = TRUE;
+	BOOL bResult11 = TRUE;
 
 	int  nI2cResult;
 	int  i;
@@ -7415,9 +7451,44 @@ BOOL ToolOption_WriteCheck()
 		}
 	}
 
+	if (CurrentSet->sBoardOption != "") {
+		nToolOption = atoi(CurrentSet->sBoardOption);
+		if (CurrentSet->nTVControlType) {
+			
+			bResult10 = FALSE;
+						
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOption);
+				if (bResult10) break;
+				_Wait(200);
+			}
+		}
+	}
+
+	if (CurrentSet->sCommercialBoardOption != "") {
+		nToolOption = atoi(CurrentSet->sCommercialBoardOption);
+		if (CurrentSet->nTVControlType) {
+			bResult11 = FALSE;
+		}
+		else {
+			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+			for (i = 0; i < 3; i++)
+			{
+				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOption);
+				if (bResult11) break;
+				_Wait(200);
+			}
+		}
+	}
 
 
-	if (bResult1 && bResult2 && bResult3  && bResult4  && bResult5  && bResult6  && bResult7 && bResult8 && bResult9)
+	if (bResult1 && bResult2 && bResult3  && bResult4
+		&& bResult5  && bResult6  && bResult7 && bResult8
+		&& bResult9 && bResult10 && bResult11)
 	{
 		return TRUE;
 
@@ -7430,228 +7501,7 @@ BOOL ToolOption_WriteCheck()
 
 
 #else
-BOOL _ToolOption_Write()
-{
-	BOOL bResult1 = TRUE;
-	BOOL bResult2 = TRUE;
-	BOOL bResult3 = TRUE;
-	BOOL bResult4 = TRUE;
-	BOOL bResult5 = TRUE;
-	BOOL bResult6 = TRUE;
-	BOOL bResult7 = TRUE;
-	BOOL bResult8 = TRUE;
 
-	int  nI2cResult;
-	int  i;
-	int nToolOption;
-
-	if (CurrentSet->sToolOption1 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption1);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 1, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult1 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult1 = TVCommCtrl.Write_Option(TOOL_OPTION1, nToolOption);
-				if (bResult1) break;
-				_Wait(200);
-			}
-		}
-	}
-
-	if (CurrentSet->sToolOption2 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption2);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 2, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult2 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult2 = TVCommCtrl.Write_Option(TOOL_OPTION2, nToolOption);
-				if (bResult2) break;
-				_Wait(200);
-			}
-		}
-	}
-
-	if (CurrentSet->sToolOption3 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption3);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 3, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult3 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult3 = TVCommCtrl.Write_Option(TOOL_OPTION3, nToolOption);
-				if (bResult3) break;
-				_Wait(200);
-			}
-		}
-	}
-
-	if (CurrentSet->sToolOption4 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption4);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 4, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult4 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult4 = TVCommCtrl.Write_Option(TOOL_OPTION4, nToolOption);
-				if (bResult4) break;
-				_Wait(200);
-			}
-		}
-	}
-	//091016
-	if (CurrentSet->sToolOption5 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption5);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 5, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult5 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult5 = TVCommCtrl.Write_Option(TOOL_OPTION5, nToolOption);
-				if (bResult5) break;
-				_Wait(200);
-			}
-		}
-	}
-	//101011
-	if (CurrentSet->sToolOption6 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption6);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 6, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult6 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult6 = TVCommCtrl.Write_Option(TOOL_OPTION6, nToolOption);
-				if (bResult6) break;
-				_Wait(200);
-			}
-		}
-	}
-
-	if (CurrentSet->sToolOption7 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption7);
-		if (CurrentSet->nTVControlType) {
-			_Wait(500);
-			for (i = 0; i < 5; i++)
-			{
-				nI2cResult = I2cAdcCtrl.WriteOption(TOOL_OPTION, 7, nToolOption);
-				if (nI2cResult == TEST_PASS) break;
-				_Wait(200);
-			}
-			if (nI2cResult != TEST_PASS)
-			{
-				bResult7 = FALSE;
-			}
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult7 = TVCommCtrl.Write_Option(TOOL_OPTION7, nToolOption);
-				if (bResult7) break;
-				_Wait(200);
-			}
-		}
-	}
-	if (CurrentSet->sToolOption8 != "") {
-		nToolOption = atoi(CurrentSet->sToolOption8);
-		if (CurrentSet->nTVControlType) {
-			bResult8 = FALSE;
-		}
-		else {
-			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
-			for (i = 0; i < 3; i++)
-			{
-				bResult8 = TVCommCtrl.Write_Option(TOOL_OPTION8, nToolOption);
-				if (bResult8) break;
-				_Wait(200);
-			}
-		}
-	}
-
-	if (bResult1 && bResult2 && bResult3 && bResult4 && bResult5 && bResult6 && bResult7 && bResult8)
-	{
-		return TRUE;
-
-	}
-	else {
-		return FALSE;
-	}
-
-}
 #endif
 
 
@@ -8398,6 +8248,17 @@ BOOL _AudioNewSearch()
 
 	return TRUE;
 }
+
+
+BOOL _AudioNewMicCheck()
+{
+	//CString  sSoundCard;
+	//g_pView->AudioMeasureSearch();
+	//_Wait(150);		
+//	return g_SoundCard.WaveCheck_Search(1);//TRUE;
+	return TRUE;
+}
+
 //-
 BOOL _AudioSelectReset()
 {

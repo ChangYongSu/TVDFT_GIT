@@ -360,17 +360,17 @@ BOOL COptEtcPage::OnInitDialog()
 
 
 
-	g_SoundCard.RefreshDeviceArray();
+	//g_SoundCard.RefreshDeviceArray();
 
-	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
-	{
-		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
-		
-		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
-		{
-			CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);
-		}
-	}
+	//for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
+	//{
+	//	CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
+	//	
+	//	if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
+	//	{
+	//		CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);
+	//	}
+	//}
 
 
 	SetDlgItemText(IDC_STATIC_USB_HW_ID, CurrentSet->sUSBMIC_HW_ID);
@@ -384,11 +384,11 @@ BOOL COptEtcPage::OnInitDialog()
 		{
 			m_cComboAudioCard.SetCurSel(i);
 		}
-		if (CurrentSet->sUSBMIC_HW_Name.Find(str_SoundName) >= 0)
-		{
-			m_cComboUSBAudioCard.SetCurSel(i);
-			
-		}
+		//if (CurrentSet->sUSBMIC_HW_Name.Find(str_SoundName) >= 0)
+		//{
+		//	m_cComboUSBAudioCard.SetCurSel(i);
+		//	
+		//}
 	}
 	m_cComboUSBAudioCard.AddString("Not Found");
 
@@ -673,26 +673,26 @@ void COptEtcPage::OnBnClickedChkGrabBaseReset2()
 
 void COptEtcPage::OnCbnSelchangeComboUsbAudioCard()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	int sel_id = m_cComboUSBAudioCard.GetCurSel();
-	if (g_SoundCard.strDeviceNameArry.GetCount() <= sel_id)
-	{
-		return;
-	}
+	//// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//int sel_id = m_cComboUSBAudioCard.GetCurSel();
+	//if (g_SoundCard.strDeviceNameArry.GetCount() <= sel_id)
+	//{
+	//	return;
+	//}
 
-	CString str_SoundName = g_SoundCard.strDeviceNameArry.GetAt(sel_id);
+	//CString str_SoundName = g_SoundCard.strDeviceNameArry.GetAt(sel_id);
 
-	for (int i = 0; i < g_SoundCard.strHWDeviceNameArry.GetCount(); i++)
-	{
-		CString str = g_SoundCard.strHWDeviceNameArry.GetAt(i);
-		if (str.Find(str_SoundName) >= 0)
-		{
-			CString str = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
-			SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceLocationArry.GetAt(i));
-			SetDlgItemText(IDC_STATIC_USB_HW_NAME, str_SoundName);
-			break;
-		}
-	}
+	//for (int i = 0; i < g_SoundCard.strHWDeviceNameArry.GetCount(); i++)
+	//{
+	//	CString str = g_SoundCard.strHWDeviceNameArry.GetAt(i);
+	//	if (str.Find(str_SoundName) >= 0)
+	//	{
+	//		CString str = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
+	//		SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceLocationArry.GetAt(i));
+	//		SetDlgItemText(IDC_STATIC_USB_HW_NAME, str_SoundName);
+	//		break;
+	//	}
+	//}
 }
 
 
@@ -700,40 +700,40 @@ void COptEtcPage::OnBnClickedBtnSoundCardRefresh()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	g_SoundCard.RefreshDeviceArray();
+	//g_SoundCard.RefreshDeviceArray();
 
-	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
-	{
-		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
+	//for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
+	//{
+	//	CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
 
-		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
-		{
-			CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);
-		}
-	}
-
-
-	SetDlgItemText(IDC_STATIC_USB_HW_ID, CurrentSet->sUSBMIC_HW_ID);
-	SetDlgItemText(IDC_STATIC_USB_HW_NAME, CurrentSet->sUSBMIC_HW_Name);
-
-	m_cComboAudioCard.ResetContent();
-	m_cComboUSBAudioCard.ResetContent();
+	//	if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
+	//	{
+	//		CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);
+	//	}
+	//}
 
 
-	for (int i = 0; i < g_SoundCard.strDeviceNameArry.GetCount(); i++)
-	{
-		CString str_SoundName = g_SoundCard.strDeviceNameArry.GetAt(i);
-		m_cComboAudioCard.AddString(str_SoundName);
-		m_cComboUSBAudioCard.AddString(str_SoundName);
-		if (CurrentSet->sMainMIC_Name.Find(str_SoundName) >= 0)
-		{
-			m_cComboAudioCard.SetCurSel(i);
-		}
-		if (CurrentSet->sUSBMIC_HW_Name.Find(str_SoundName) >= 0)
-		{
-			m_cComboUSBAudioCard.SetCurSel(i);
-			SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceLocationArry.GetAt(i));
-		}
-	}
-	m_cComboUSBAudioCard.AddString("Not Found");
+	//SetDlgItemText(IDC_STATIC_USB_HW_ID, CurrentSet->sUSBMIC_HW_ID);
+	//SetDlgItemText(IDC_STATIC_USB_HW_NAME, CurrentSet->sUSBMIC_HW_Name);
+
+	//m_cComboAudioCard.ResetContent();
+	//m_cComboUSBAudioCard.ResetContent();
+
+
+	//for (int i = 0; i < g_SoundCard.strDeviceNameArry.GetCount(); i++)
+	//{
+	//	CString str_SoundName = g_SoundCard.strDeviceNameArry.GetAt(i);
+	//	m_cComboAudioCard.AddString(str_SoundName);
+	//	m_cComboUSBAudioCard.AddString(str_SoundName);
+	//	if (CurrentSet->sMainMIC_Name.Find(str_SoundName) >= 0)
+	//	{
+	//		m_cComboAudioCard.SetCurSel(i);
+	//	}
+	//	if (CurrentSet->sUSBMIC_HW_Name.Find(str_SoundName) >= 0)
+	//	{
+	//		m_cComboUSBAudioCard.SetCurSel(i);
+	//		SetDlgItemText(IDC_STATIC_USB_HW_ID, g_SoundCard.strHWDeviceLocationArry.GetAt(i));
+	//	}
+	//}
+	//m_cComboUSBAudioCard.AddString("Not Found");
 }

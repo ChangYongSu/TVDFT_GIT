@@ -24,8 +24,8 @@ public:
 	enum { IDD = IDD_GET_TOOL_OPTION_DLG };
 	CString	m_sModelSuffix;
 	CString	m_sTempModelSuffix;
-	CVSFlexGrid	m_ctrlSpecGrid1;
-	CVSFlexGrid	m_ctrlOptionGrid;
+	//CVSFlexGrid	m_ctrlSpecGrid1;
+	//CVSFlexGrid	m_ctrlOptionGrid;
 	//}}AFX_DATA
 
 
@@ -66,6 +66,10 @@ public:
 	afx_msg void OnNMClickListIndexOption(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdrawListIndexOption(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedOk();
+	CListCtrl m_ctrlOptionList;
+	CListCtrl m_ctrlSpecList;
+	afx_msg void OnNMCustomdrawListToolOption(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawListSpecOption(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 //{{AFX_INSERT_LOCATION}}

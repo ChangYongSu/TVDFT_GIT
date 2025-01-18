@@ -8379,8 +8379,8 @@ BOOL _TV_3DMode_Off()
 //-
 BOOL _AudioMeasureReset()
 {
-	g_SoundCard.m_nSoundUSBDeviceFind = 0;
-	g_SoundCard.m_nUSBDeviceID = -1;
+	g_SoundCard.m_nSoundUSB_Flag = 0;
+	//g_SoundCard.m_nUSBDeviceID = -1;
 //	g_SoundCard.m_sUSBDeviceName = "N/A";
 
 	
@@ -8391,28 +8391,22 @@ BOOL _AudioMeasureReset()
 
 	return TRUE;
 }
-//-
-//BOOL _AudioNewSearch()
-//{
-//	////CString  sSoundCard;
-//	//
-//	//return g_pView->AudioMeasureSearch();
-//	////_Wait(150);
-//		
-//
-//	return TRUE;
-//}
-//
-////-
-//BOOL _AudioNewMicCheck()
-//{
-//	//CString  sSoundCard;
-//	//g_pView->AudioMeasureSearch();
-//	//_Wait(150);	
-//	
-//	
-//	return g_SoundCard.WaveCheck_Search(1);//TRUE;
-//}
+
+
+BOOL _AudioListSearch()
+{	
+	return g_pView->AudioMeasureSearch();
+	//return TRUE;
+}
+
+
+BOOL _AudioNewMicCheck()
+{
+	//CString  sSoundCard;
+	//g_pView->AudioMeasureSearch();
+	//_Wait(150);		
+	return g_SoundCard.WaveCheck_Search(1);//TRUE;
+}
 
 //-
 BOOL _AudioSelectReset()
@@ -8434,7 +8428,7 @@ BOOL _AudioSelectReset()
 	else
 		return FALSE;
 	
-
+	g_SoundCard.m_nSoundUSB_Flag = 1;
 	return TRUE;
 }
 

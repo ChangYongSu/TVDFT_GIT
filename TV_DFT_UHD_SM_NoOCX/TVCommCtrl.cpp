@@ -2178,7 +2178,13 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 		case COMMERCIAL_OPTION1:
 			sCmd = "ca";
 			break;
-
+		//	
+		case BOARD_OPTION:
+			sCmd = "ba";
+			break;
+		case COMMERCIAL_BOARD_OPTION:
+			sCmd = "bb";
+			break;
 		case COUNTRY_GROUP:
 			sCmd = "ak";
 			break;
@@ -2195,8 +2201,13 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 	if(nIndex == COUNTRY_GROUP){
 		sData.Format("%02x", nOptionValue);
 	}
-	else if(nIndex == COUNTRY){
-		
+	else if (nIndex == COUNTRY) {
+
+		sData.Format("%08x", nOptionValue);
+	}
+	else if ((nIndex == BOARD_OPTION)||(nIndex == COMMERCIAL_BOARD_OPTION) )
+	{
+
 		sData.Format("%08x", nOptionValue);
 	}
 	else{
@@ -2264,6 +2275,12 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 	else if(nIndex == COUNTRY){
 		if(sReadData.GetLength() < 15){return FALSE;}
 		sTemp1 = sReadData.Mid(7,8);
+	}
+	else if ((nIndex == BOARD_OPTION) || (nIndex == COMMERCIAL_BOARD_OPTION))
+	{
+
+		if (sReadData.GetLength() < 15) { return FALSE; }
+		sTemp1 = sReadData.Mid(7, 8);
 	}
 	else{
 		if(bCheckCrc){

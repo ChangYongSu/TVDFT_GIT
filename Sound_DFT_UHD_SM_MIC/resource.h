@@ -2598,6 +2598,7 @@
 #define IDC_STATIC_USB_HW_ID            3466
 #define IDC_RIGHT_IMAGE_LEVEL_DISPLAY   3467
 #define IDC_STATIC_USB_HW_NAME          3467
+#define IDC_BUTTON_REFRESH_AUDIO        3468
 #define IDC_STATIC_DISPALY              11460
 #define ID_AC_ONOFF                     12768
 #define ID_ACPOWER_                     12769
@@ -2727,7 +2728,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        1253
 #define _APS_NEXT_COMMAND_VALUE         32882
-#define _APS_NEXT_CONTROL_VALUE         3467
+#define _APS_NEXT_CONTROL_VALUE         3469
 #define _APS_NEXT_SYMED_VALUE           3526
 #endif
 #endif

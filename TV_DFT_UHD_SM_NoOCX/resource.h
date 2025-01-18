@@ -1512,7 +1512,9 @@
 #define IDC_EDIT_TOOL_OPTION7           2460
 #define IDC_EDIT_TOOL_OPTION8           2461
 #define IDC_EDIT_TOOL_OPTION_TITLE      2462
+#define IDC_EDIT_BOARD_OPTION           2462
 #define IDC_EDIT_UPDATA                 2463
+#define IDC_EDIT_COMMERCIAL_BOARD_OPTION 2463
 #define IDC_EDIT_UPLOAD                 2464
 #define IDC_EDIT_UPPER_LIMIT            2465
 #define IDC_EDIT_USB_VERSION_TITLE      2466
@@ -1650,8 +1652,10 @@
 #define IDC_LIST_VOLT_SPEC2             2592
 #define IDC_LIST_MODEL                  2592
 #define IDC_LIST_VERSION_PROCESS        2592
+#define IDC_LIST_TOOL_OPTION            2592
 #define IDC_LIST_CMD_STATUS             2593
 #define IDC_LIST_VOLT_SPEC3             2593
+#define IDC_LIST_SPEC_OPTION            2593
 #define IDC_LIST_FILE                   2594
 #define IDC_LIST_OPTIN_PROCESS          2594
 #define IDC_LIST_MESSAGE                2595

@@ -811,7 +811,9 @@ BOOL CGmes::Paser_S6F5(CString sReceiveData, CString& sSetId)
 			else if(sName == "TOOL_OPTION6"){CurrentSet->sToolOption6 = sValue;}
 			else if(sName == "TOOL_OPTION7"){CurrentSet->sToolOption7 = sValue;}
 			else if(sName == "TOOL_OPTION8"){CurrentSet->sCommercialOption1 = sValue;}
-			else if(sName == "TOOL_OPTION9"){CurrentSet->sToolOption8 = sValue;}
+			else if (sName == "TOOL_OPTION9") { CurrentSet->sToolOption8 = sValue; }
+			else if (sName == "BOARD_OPTION") { CurrentSet->sBoardOption = sValue; }
+			else if (sName == "COMMERCIAL_BOARD_OPTION") { CurrentSet->sCommercialBoardOption = sValue; }
 			else if(sName == "TOOLCRC"){CurrentSet->sToolCRC = sValue;}
 			else if(sName == "AREA_CODE"){	CurrentSet->sAreaOption1 = sValue;}
 			else if(sName == "COUNTRY_CODE"){CurrentSet->sCountryGroup = sValue;}

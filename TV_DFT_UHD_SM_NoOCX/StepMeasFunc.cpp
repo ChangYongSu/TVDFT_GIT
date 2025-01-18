@@ -3042,6 +3042,8 @@ double	_Option_Check()
 	BOOL bResult7 = TRUE;
 	BOOL bResult8 = TRUE;
 	BOOL bResult9 = TRUE;
+	BOOL bResult10 = TRUE;
+	BOOL bResult11 = TRUE;
 	int nToolOption;
 	if(g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable == TRUE)
 		ToolOption_WriteCheck();
@@ -3085,12 +3087,22 @@ double	_Option_Check()
 		nToolOption = atoi(CurrentSet->sToolOption8);
 		bResult8 = Check_ToolOption(TOOL_OPTION8, nToolOption);
 	}
-	if(CurrentSet->sCommercialOption1 != ""){
+	if (CurrentSet->sCommercialOption1 != "") {
 		nToolOption = atoi(CurrentSet->sCommercialOption1);
 		bResult9 = Check_ToolOption(COMMERCIAL_OPTION1, nToolOption);
 	}
+	if (CurrentSet->sBoardOption != "") {
+		nToolOption = atoi(CurrentSet->sBoardOption);
+		bResult10 = Check_ToolOption(BOARD_OPTION, nToolOption);
+	}
+	if (CurrentSet->sCommercialBoardOption != "") {
+		nToolOption = atoi(CurrentSet->sCommercialBoardOption);
+		bResult11 = Check_ToolOption(COMMERCIAL_BOARD_OPTION, nToolOption);
+	}
 
-	if(bResult1 && bResult2 && bResult3  && bResult4  && bResult5  && bResult6  && bResult7 && bResult8 && bResult9)
+	if(bResult1 && bResult2 && bResult3  && bResult4  
+		&& bResult5  && bResult6  && bResult7 && bResult8 
+		&& bResult9 && bResult10 && bResult11)
 	{
 		
 		return 1.0;	
@@ -3145,10 +3157,14 @@ double	_Option_CheckAll()
 	}
 
 	if(CurrentSet->nTVControlType){
-		bResult1 = I2cAdcCtrl.Check_OptionAll(nToolOption1, nToolOption2, nToolOption3, nToolOption4, nToolOption5, nToolOption6);
+		bResult1 = I2cAdcCtrl.Check_OptionAll(
+			nToolOption1, nToolOption2, nToolOption3, nToolOption4, 
+			nToolOption5, nToolOption6);
 	}
 	else{
-		bResult1 = TVCommCtrl.Check_OptionAll(nToolOption1, nToolOption2, nToolOption3, nToolOption4, nToolOption5, nToolOption6, nToolOption7);
+		bResult1 = TVCommCtrl.Check_OptionAll(
+			nToolOption1, nToolOption2, nToolOption3, nToolOption4, 
+			nToolOption5, nToolOption6, nToolOption7);
 	}
 
 

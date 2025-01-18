@@ -2781,7 +2781,7 @@ void CGrabPage::OnTimer(UINT nIDEvent)
 		else
 		{
 			sDPMS_Count++;
-			if (sDPMS_Count > 50)
+			if (sDPMS_Count > 100)
 			{
 				sDPMS_Count = 0;
 				SetDlgItemText(IDC_STATIC_DPMS_VALUE, "Time Out!");

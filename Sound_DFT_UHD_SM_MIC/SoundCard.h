@@ -108,16 +108,16 @@ public:
 	int    m_bMeasureAudioType;
 	CStringArray  strDeviceNameArry;
 	//CStringArray  strHWDeviceIDArry;
-	CStringArray  strHWDeviceLocationArry;
-	CStringArray  strHWDeviceNameArry;
+	//CStringArray  strHWDeviceLocationArry;
+	//CStringArray  strHWDeviceNameArry;
 	CStringArray strSavedDeviceNameArry;
 	int m_nDeviceCount;
 	CString m_sCurrentDeviceName;
 	int    m_nDeviceID;
 	//int    m_nSoundDeviceSelectFlag;
-	int    m_nSoundUSBDeviceFind;
+	int    m_nSoundUSB_Flag;
 	//int    m_nSoundUSBDeviceTest;
-	int    m_nUSBDeviceID;
+	//int    m_nUSBDeviceID;
 	CString m_sUSBDeviceName;
 	int    m_nSoundStatus;
 	int    m_nWinFlag;
@@ -133,7 +133,7 @@ public:
 public:
 	CString CSoundCard::GetDeviceName(UINT lDeviceID);
 	int CSoundCard::RefreshDeviceArray();
-	void CSoundCard::CheckNamesAndLocations();
+	//void CSoundCard::CheckNamesAndLocations();
 	int CSoundCard::SetDeviceID(int lDevice);
 	//void CSoundCard::SetDeviceID(int lDevice);
 	//void SaveShareSoundData();

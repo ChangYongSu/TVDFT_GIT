@@ -198,7 +198,7 @@ CString CSoundCard::GetDeviceName(UINT lDeviceID)
 
 int CSoundCard::RefreshDeviceArray()
 {
-	CheckNamesAndLocations();
+//	CheckNamesAndLocations();
 
 	int lNumber = waveInGetNumDevs();
 	CString StrDeviceName;
@@ -221,249 +221,252 @@ int CSoundCard::RefreshDeviceArray()
 			TRACE(sTemp);
 		}
 	}
-#if 1
+
 	
-	
-	/*CoInitialize(nullptr);
+//#if 1
+//	
+//	
+//	/*CoInitialize(nullptr);
+//
+//	IMMDeviceEnumerator* pEnumerator = nullptr;
+//	HRESULT hr = CoCreateInstance(
+//		__uuidof(MMDeviceEnumerator), nullptr,
+//		CLSCTX_ALL,
+//		__uuidof(IMMDeviceEnumerator),
+//		(void**)&pEnumerator
+//	);
+//
+//	if (FAILED(hr)) {
+//		TRACE( "Failed to create IMMDeviceEnumerator instance.\n");
+//		return -1;
+//	}
+//
+//	IMMDeviceCollection* pCollection = nullptr;
+//	pEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &pCollection);
+//
+//	UINT count;
+//	pCollection->GetCount(&count);
+//	TRACE("Number of audio capture devices: %d \n",count);
+//	strHWDeviceNameArry.RemoveAll();
+//	strHWDeviceLocationArry.RemoveAll();
+//	for (UINT i = 0; i < count; i++) 
+//	{
+//		IMMDevice* pDevice = nullptr;
+//		pCollection->Item(i, &pDevice);
+//
+//		LPWSTR pwszID = nullptr;
+//		pDevice->GetId(&pwszID);
+//		TRACE(  L"Device ID:  %d: %s\n" ,i, pwszID );
+//		CString str = pwszID;
+//		str.MakeUpper();
+//		strHWDeviceLocationArry.Add(str);
+//
+//		IPropertyStore* pStore = nullptr;
+//		pDevice->OpenPropertyStore(STGM_READ, &pStore);
+//
+//		PROPVARIANT varName;
+//		PropVariantInit(&varName);
+//		pStore->GetValue(PKEY_Device_FriendlyName, &varName);
+//
+//		//std::wcout << L"Device Name: " << varName.pwszVal << std::endl;
+//		TRACE(L"Device Name:   %s\n", varName.pwszVal);
+//		str = varName.pwszVal;
+//		str.MakeUpper();
+//		strHWDeviceNameArry.Add(str);
+//
+//		PropVariantClear(&varName);
+//		pStore->Release();
+//		//pDevice->Release();
+//		CoTaskMemFree(pwszID);
+//
+//		//PROPVARIANT varLocation;
+//		//PropVariantInit(&varLocation);
+//		//0000.0014.0000.013.003.004.002.000.000
+//		//0000.0014.0000.014.003.004.002.000.000
+//		//CComPtr<IPropertyStore> spPropertyStore;
+//		IPropertyStore* spPropertyStore = nullptr;;
+//		hr = pDevice->OpenPropertyStore(STGM_READ, &spPropertyStore);
+//
+//		if (SUCCEEDED(hr) && spPropertyStore)
+//		{
+//			// Retrieve the PKEY_Device_Location property
+//			PROPVARIANT varLocation;
+//			PropVariantInit(&varLocation);
+//			hr = spPropertyStore->GetValue(PKEY_Device_LocationInfo, &varLocation);
+//
+//			if (SUCCEEDED(hr))
+//			{
+//				if (varLocation.vt == VT_LPWSTR && varLocation.pwszVal)
+//				{
+//					//msg.Format(_T("Device %u location: %ls"), i, varLocation.pwszVal);
+//					strHWDeviceLocationArry.Add(varLocation.pwszVal);
+//				}
+//				else
+//				{
+//					strHWDeviceLocationArry.Add("NA");
+//					//msg.Format(_T("Device %u location: (Unavailable)"), i);
+//				}
+//				//AfxMessageBox(msg);
+//				PropVariantClear(&varLocation);
+//			}
+//			else {
+//				//msg.Format(_T("Failed to get location for device %u"), i);
+//				//AfxMessageBox(msg);
+//				strHWDeviceLocationArry.Add("NA");
+//			}
+//
+//		}
+//		spPropertyStore->Release();
+//		pDevice->Release();
+//		//CoTaskMemFree(pwszID);
+//	}
+//
+//	pCollection->Release();
+//	pEnumerator->Release();
+//	CoUninitialize();
+//	*/
+//	//m_sUSBDeviceName
+//
+//	//CheckNamesAndLocations();
+//
+//	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
+//	{
+//		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
+//
+//		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
+//		{
+//			CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);	
+//			m_sUSBDeviceName = CurrentSet->sUSBMIC_HW_Name;
+//		
+//		}
+//	}
+//
+//
+//#else
+//	CoInitialize(nullptr);
+//	IMMDeviceEnumerator* pEnumerator = nullptr;
+//	CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**)&pEnumerator);
+//
+//	IMMDeviceCollection* pCollection = nullptr;
+//	pEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &pCollection);
+//
+//	UINT count;
+//	pCollection->GetCount(&count);
+//	for (UINT i = 0; i < count; i++) {
+//		IMMDevice* pDevice = nullptr;
+//		pCollection->Item(i, &pDevice);
+//
+//		LPWSTR pwszID = nullptr;
+//		pDevice->GetId(&pwszID); // 이 ID가 장치를 고유하게 식별할 수 있는 값
+//		
+//		TRACE(L"Device %d: %s\n", i, pwszID);
+//		//3b5a1d00 - f9f0 - 4fe1 - b149 - f6c8bb9be7bd
+//		pDevice->Release();
+//		CoTaskMemFree(pwszID);
+//	}
+//
+//	pCollection->Release();
+//	pEnumerator->Release();
+//	CoUninitialize();
+//#endif
 
-	IMMDeviceEnumerator* pEnumerator = nullptr;
-	HRESULT hr = CoCreateInstance(
-		__uuidof(MMDeviceEnumerator), nullptr,
-		CLSCTX_ALL,
-		__uuidof(IMMDeviceEnumerator),
-		(void**)&pEnumerator
-	);
-
-	if (FAILED(hr)) {
-		TRACE( "Failed to create IMMDeviceEnumerator instance.\n");
-		return -1;
-	}
-
-	IMMDeviceCollection* pCollection = nullptr;
-	pEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &pCollection);
-
-	UINT count;
-	pCollection->GetCount(&count);
-	TRACE("Number of audio capture devices: %d \n",count);
-	strHWDeviceNameArry.RemoveAll();
-	strHWDeviceLocationArry.RemoveAll();
-	for (UINT i = 0; i < count; i++) 
-	{
-		IMMDevice* pDevice = nullptr;
-		pCollection->Item(i, &pDevice);
-
-		LPWSTR pwszID = nullptr;
-		pDevice->GetId(&pwszID);
-		TRACE(  L"Device ID:  %d: %s\n" ,i, pwszID );
-		CString str = pwszID;
-		str.MakeUpper();
-		strHWDeviceLocationArry.Add(str);
-
-		IPropertyStore* pStore = nullptr;
-		pDevice->OpenPropertyStore(STGM_READ, &pStore);
-
-		PROPVARIANT varName;
-		PropVariantInit(&varName);
-		pStore->GetValue(PKEY_Device_FriendlyName, &varName);
-
-		//std::wcout << L"Device Name: " << varName.pwszVal << std::endl;
-		TRACE(L"Device Name:   %s\n", varName.pwszVal);
-		str = varName.pwszVal;
-		str.MakeUpper();
-		strHWDeviceNameArry.Add(str);
-
-		PropVariantClear(&varName);
-		pStore->Release();
-		//pDevice->Release();
-		CoTaskMemFree(pwszID);
-
-		//PROPVARIANT varLocation;
-		//PropVariantInit(&varLocation);
-		//0000.0014.0000.013.003.004.002.000.000
-		//0000.0014.0000.014.003.004.002.000.000
-		//CComPtr<IPropertyStore> spPropertyStore;
-		IPropertyStore* spPropertyStore = nullptr;;
-		hr = pDevice->OpenPropertyStore(STGM_READ, &spPropertyStore);
-
-		if (SUCCEEDED(hr) && spPropertyStore)
-		{
-			// Retrieve the PKEY_Device_Location property
-			PROPVARIANT varLocation;
-			PropVariantInit(&varLocation);
-			hr = spPropertyStore->GetValue(PKEY_Device_LocationInfo, &varLocation);
-
-			if (SUCCEEDED(hr))
-			{
-				if (varLocation.vt == VT_LPWSTR && varLocation.pwszVal)
-				{
-					//msg.Format(_T("Device %u location: %ls"), i, varLocation.pwszVal);
-					strHWDeviceLocationArry.Add(varLocation.pwszVal);
-				}
-				else
-				{
-					strHWDeviceLocationArry.Add("NA");
-					//msg.Format(_T("Device %u location: (Unavailable)"), i);
-				}
-				//AfxMessageBox(msg);
-				PropVariantClear(&varLocation);
-			}
-			else {
-				//msg.Format(_T("Failed to get location for device %u"), i);
-				//AfxMessageBox(msg);
-				strHWDeviceLocationArry.Add("NA");
-			}
-
-		}
-		spPropertyStore->Release();
-		pDevice->Release();
-		//CoTaskMemFree(pwszID);
-	}
-
-	pCollection->Release();
-	pEnumerator->Release();
-	CoUninitialize();
-	*/
-	//m_sUSBDeviceName
-
-	//CheckNamesAndLocations();
-
-	for (int i = 0; i < g_SoundCard.strHWDeviceLocationArry.GetCount(); i++)
-	{
-		CString str_SoundName = g_SoundCard.strHWDeviceLocationArry.GetAt(i);
-
-		if (CurrentSet->sUSBMIC_HW_ID.Find(str_SoundName) >= 0)
-		{
-			CurrentSet->sUSBMIC_HW_Name = g_SoundCard.strHWDeviceNameArry.GetAt(i);	
-			m_sUSBDeviceName = CurrentSet->sUSBMIC_HW_Name;
-		
-		}
-	}
-
-
-#else
-	CoInitialize(nullptr);
-	IMMDeviceEnumerator* pEnumerator = nullptr;
-	CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**)&pEnumerator);
-
-	IMMDeviceCollection* pCollection = nullptr;
-	pEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &pCollection);
-
-	UINT count;
-	pCollection->GetCount(&count);
-	for (UINT i = 0; i < count; i++) {
-		IMMDevice* pDevice = nullptr;
-		pCollection->Item(i, &pDevice);
-
-		LPWSTR pwszID = nullptr;
-		pDevice->GetId(&pwszID); // 이 ID가 장치를 고유하게 식별할 수 있는 값
-		
-		TRACE(L"Device %d: %s\n", i, pwszID);
-		//3b5a1d00 - f9f0 - 4fe1 - b149 - f6c8bb9be7bd
-		pDevice->Release();
-		CoTaskMemFree(pwszID);
-	}
-
-	pCollection->Release();
-	pEnumerator->Release();
-	CoUninitialize();
-#endif
 	return lNumber;
 }
 
 
-void CSoundCard::CheckNamesAndLocations()
-{
-	CoInitialize(nullptr); // Initialize the COM library
-
-	CComPtr<IMMDeviceEnumerator> spEnumerator;
-	CComPtr<IMMDeviceCollection> spCollection;
-
-	// Create an instance of IMMDeviceEnumerator
-	HRESULT hr = CoCreateInstance(
-		__uuidof(MMDeviceEnumerator),
-		nullptr,
-		CLSCTX_ALL,
-		__uuidof(IMMDeviceEnumerator),
-		(void**)&spEnumerator
-	);
-
-	if (FAILED(hr)) {
-		TRACE(_T("Failed to create IMMDeviceEnumerator."));
-		return;
-	}
-
-	// Enumerate audio endpoint devices
-	hr = spEnumerator->EnumAudioEndpoints(
-		eRender,             // Data flow direction: Render
-		DEVICE_STATE_ACTIVE, // Only active devices
-		&spCollection
-	);
-
-	if (FAILED(hr)) {
-		TRACE(_T("Failed to enumerate audio devices."));
-		return;
-	}
-
-	UINT count = 0;
-	spCollection->GetCount(&count); // Get the number of devices
-
-	CString msg;
-	msg.Format(_T("Number of active audio devices: %u"), count);
-	TRACE(msg);
-	strHWDeviceNameArry.RemoveAll();
-	strHWDeviceLocationArry.RemoveAll();
-
-	for (UINT i = 0; i < count; ++i) {
-		CComPtr<IMMDevice> spDevice;
-		hr = spCollection->Item(i, &spDevice);
-
-		if (SUCCEEDED(hr) && spDevice) {
-			// Get the property store for the device
-			CComPtr<IPropertyStore> spPropertyStore;
-			hr = spDevice->OpenPropertyStore(STGM_READ, &spPropertyStore);
-
-			if (SUCCEEDED(hr) && spPropertyStore) {
-				// Retrieve the friendly name of the device PKEY_Device_HardwareIds
-#if 1
-				PROPVARIANT varName;
-				PropVariantInit(&varName);
-
-//				hr = spPropertyStore->GetValue(PKEY_Device_HardwareIds, &varName);
-				hr = spPropertyStore->GetValue(PKEY_Device_FriendlyName, &varName);
-
-				CString friendlyName = _T("NA");
-				if (SUCCEEDED(hr) && varName.vt == VT_LPWSTR) {
-					friendlyName = varName.pwszVal;
-				}
-				strHWDeviceLocationArry.Add(friendlyName);
-				PropVariantClear(&varName); // Clear PROPVARIANT
-#endif
-				// Retrieve the location info of the device
-				PROPVARIANT varLocation;
-				PropVariantInit(&varLocation);
-				//PKEY_Device_EnumeratorName
-				//PKEY_Device_Address
-				//hr = spPropertyStore->GetValue(PKEY_Device_HardwareIds, &varLocation);
-				//hr = spPropertyStore->GetValue(PKEY_Device_EnumeratorName, &varLocation);
-				//hr = spPropertyStore->GetValue(PKEY_Device_Address, &varLocation);
-				hr = spPropertyStore->GetValue(PKEY_Device_LocationInfo, &varLocation);
-
-				CString locationInfo = _T("NA");
-				if (SUCCEEDED(hr) && varLocation.vt == VT_LPWSTR) {
-					locationInfo = varLocation.pwszVal;
-				}
-				strHWDeviceLocationArry.Add(locationInfo);
-				PropVariantClear(&varLocation); // Clear PROPVARIANT
-
-				// Display the friendly name and location info
-				//msg.Format(_T("Device %u:\nFriendly Name: %s\nLocation Info: %s"), i + 1, friendlyName, locationInfo);
-				//TRACE(msg);
-			}
-		}
-	}
-
-	CoUninitialize(); // Uninitialize the COM library
-}
+//void CSoundCard::CheckNamesAndLocations()
+//{
+//	CoInitialize(nullptr); // Initialize the COM library
+//
+//	CComPtr<IMMDeviceEnumerator> spEnumerator;
+//	CComPtr<IMMDeviceCollection> spCollection;
+//
+//	// Create an instance of IMMDeviceEnumerator
+//	HRESULT hr = CoCreateInstance(
+//		__uuidof(MMDeviceEnumerator),
+//		nullptr,
+//		CLSCTX_ALL,
+//		__uuidof(IMMDeviceEnumerator),
+//		(void**)&spEnumerator
+//	);
+//
+//	if (FAILED(hr)) {
+//		TRACE(_T("Failed to create IMMDeviceEnumerator."));
+//		return;
+//	}
+//
+//	// Enumerate audio endpoint devices
+//	hr = spEnumerator->EnumAudioEndpoints(
+//		eRender,             // Data flow direction: Render
+//		DEVICE_STATE_ACTIVE, // Only active devices
+//		&spCollection
+//	);
+//
+//	if (FAILED(hr)) {
+//		TRACE(_T("Failed to enumerate audio devices."));
+//		return;
+//	}
+//
+//	UINT count = 0;
+//	spCollection->GetCount(&count); // Get the number of devices
+//
+//	CString msg;
+//	msg.Format(_T("Number of active audio devices: %u"), count);
+//	TRACE(msg);
+//	strHWDeviceNameArry.RemoveAll();
+//	strHWDeviceLocationArry.RemoveAll();
+//
+//	for (UINT i = 0; i < count; ++i) {
+//		CComPtr<IMMDevice> spDevice;
+//		hr = spCollection->Item(i, &spDevice);
+//
+//		if (SUCCEEDED(hr) && spDevice) {
+//			// Get the property store for the device
+//			CComPtr<IPropertyStore> spPropertyStore;
+//			hr = spDevice->OpenPropertyStore(STGM_READ, &spPropertyStore);
+//
+//			if (SUCCEEDED(hr) && spPropertyStore) {
+//				// Retrieve the friendly name of the device PKEY_Device_HardwareIds
+//#if 1
+//				PROPVARIANT varName;
+//				PropVariantInit(&varName);
+//
+////				hr = spPropertyStore->GetValue(PKEY_Device_HardwareIds, &varName);
+//				hr = spPropertyStore->GetValue(PKEY_Device_FriendlyName, &varName);
+//
+//				CString friendlyName = _T("NA");
+//				if (SUCCEEDED(hr) && varName.vt == VT_LPWSTR) {
+//					friendlyName = varName.pwszVal;
+//				}
+//				strHWDeviceLocationArry.Add(friendlyName);
+//				PropVariantClear(&varName); // Clear PROPVARIANT
+//#endif
+//				// Retrieve the location info of the device
+//				PROPVARIANT varLocation;
+//				PropVariantInit(&varLocation);
+//				//PKEY_Device_EnumeratorName
+//				//PKEY_Device_Address
+//				//hr = spPropertyStore->GetValue(PKEY_Device_HardwareIds, &varLocation);
+//				//hr = spPropertyStore->GetValue(PKEY_Device_EnumeratorName, &varLocation);
+//				//hr = spPropertyStore->GetValue(PKEY_Device_Address, &varLocation);
+//				hr = spPropertyStore->GetValue(PKEY_Device_LocationInfo, &varLocation);
+//
+//				CString locationInfo = _T("NA");
+//				if (SUCCEEDED(hr) && varLocation.vt == VT_LPWSTR) {
+//					locationInfo = varLocation.pwszVal;
+//				}
+//				strHWDeviceLocationArry.Add(locationInfo);
+//				PropVariantClear(&varLocation); // Clear PROPVARIANT
+//
+//				// Display the friendly name and location info
+//				//msg.Format(_T("Device %u:\nFriendly Name: %s\nLocation Info: %s"), i + 1, friendlyName, locationInfo);
+//				//TRACE(msg);
+//			}
+//		}
+//	}
+//
+//	CoUninitialize(); // Uninitialize the COM library
+//}
 
 int CSoundCard::SetDeviceID(int lDevice)
 {
@@ -544,7 +547,7 @@ BOOL CSoundCard::SoundInMainSet()
 			if (lNumber >= 2) {
 				SetDeviceID(1);
 				m_nDeviceID = 1;
-				CurrentSet->sMainMIC_Name = strDeviceNameArry.GetAt(0);
+				CurrentSet->sMainMIC_Name = strDeviceNameArry.GetAt(1);
 			}
 			else {
 				//SetDeviceID(-1);
@@ -556,7 +559,7 @@ BOOL CSoundCard::SoundInMainSet()
 			if (lNumber >= 3) {
 				//SetDeviceID(2);
 				m_nDeviceID = 2;
-				CurrentSet->sMainMIC_Name = strDeviceNameArry.GetAt(0);
+				CurrentSet->sMainMIC_Name = strDeviceNameArry.GetAt(2);
 			}
 			else {
 				//SetDeviceID(-1);
@@ -605,7 +608,7 @@ void CSoundCard::WaveRead_Start()
 	int lAudioDeviceID[3] = { -1,-1,-1 };
 	int lAudioCount = 0;
 
-	if (m_nSoundUSBDeviceFind == 1)
+	if (m_nSoundUSB_Flag == 1)
 	{
 		WaveRead_StartUSB(m_sUSBDeviceName, 1);
 		return;
@@ -744,91 +747,61 @@ BOOL CSoundCard::WaveCheck_Search(int Search)
 {
 	//	long aStatus;
 	int lFlagCheck = 0;
-	//int lNumber = 0;
-	//CString StrDeviceName;
-	//CString StrOldDeviceName;
+	int lNumber = 0;
+	CString StrDeviceName;
+	CString StrOldDeviceName;
 	//CString StrMainMicName3System[3];
 	//CString StrUSBMicName3System[3];
+	
+	lNumber = waveInGetNumDevs(); //
 
-	//
-	//lNumber = waveInGetNumDevs(); //
-
-	//if (Search == 0)
-	//{
-	//	m_nSoundUSBDeviceFind = 0;
-	//	m_sUSBDeviceName = "N/A";
+	if (Search == 0)
+	{
+		m_nSoundUSB_Flag = 0;
+		m_sUSBDeviceName = "N/A";
 	//	m_nUSBDeviceID = -1;
-	//	RefreshDeviceArray();		
-	//	strSavedDeviceNameArry.RemoveAll();
-	//	for (int i = 0; i < lNumber; i++)
-	//	{
-	//		StrDeviceName = strDeviceNameArry.GetAt(i);
-	//		//strDeviceNameArry.Add(StrDeviceName);
-	//		strSavedDeviceNameArry.Add(StrDeviceName);
-	//	}
-	//	
-	//	m_nDeviceCount = lNumber;
+		RefreshDeviceArray();		
+		strSavedDeviceNameArry.RemoveAll();
+		for (int i = 0; i < lNumber; i++)
+		{
+			StrDeviceName = strDeviceNameArry.GetAt(i);
+			//strDeviceNameArry.Add(StrDeviceName);
+			strSavedDeviceNameArry.Add(StrDeviceName);
+		}
+		
+		m_nDeviceCount = lNumber;
 
-	//	CString Stemp;
-	//	Stemp.Format("Ready to Check New Sound Input!!");
-	//	AddStringToStatus(Stemp);
-	//	lFlagCheck = 1;
-	//}
-	//else
-	//{
+		CString Stemp;
+		Stemp.Format("Ready to Check New Sound Input!!");
+		AddStringToStatus(Stemp);
+		lFlagCheck = 1;
+	}
+	else
+	{
 
-	//	lFlagCheck = 0;// m_nSoundUSBDeviceFind = 0;
+		lFlagCheck = 0;// m_nSoundUSBDeviceFind = 0;
+		int lCheck = 0;
+		for (int i = 0; i < lNumber; i++)
+		{
+			lCheck = 0;
+			StrDeviceName = GetDeviceName(i);			
+			for (int j = 0; j < strSavedDeviceNameArry.GetSize(); j++)
+			{
+				StrOldDeviceName = strSavedDeviceNameArry.GetAt(j);
+				if (StrDeviceName.Find(StrOldDeviceName) >= 0)
+				{
+					lCheck = 1;
+					break;
+				}
+			}
+			if (lCheck == 1)
+				continue;
 
-	//	StrMainMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_MIC;
-	//	StrMainMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem2_MIC;
-	//	StrMainMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem3_MIC;
-
-	//	StrUSBMicName3System[0] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-	//	StrUSBMicName3System[1] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-	//	StrUSBMicName3System[2] = g_pView->m_pUSB_MIC_Struct->sSystem1_USBMIC;
-
-	//	int lCheck = 0;
-	//	for (int i = 0; i < lNumber; i++)
-	//	{
-	//		lCheck = 0;
-	//		StrDeviceName = GetDeviceName(i);			
-	//		for (int j = 0; j < strSavedDeviceNameArry.GetSize(); j++)
-	//		{
-	//			StrOldDeviceName = strSavedDeviceNameArry.GetAt(j);
-	//			if (StrDeviceName.Find(StrOldDeviceName) >= 0)
-	//			{
-	//				lCheck = 1;
-	//				break;
-	//			}
-	//		}
-	//		if (lCheck == 1)
-	//			continue;
-
-	//		for (int j = 0; j < 3; j++)
-	//		{
-	//			if (g_nRunningProcessNo == j + 1)
-	//			{
-	//				continue;
-	//			}
-
-	//			if (((StrDeviceName.Find(StrMainMicName3System[j]) >= 0) && (StrMainMicName3System[j].GetLength() >= 5))
-	//				|| ((StrDeviceName.Find(StrUSBMicName3System[j]) >= 0)) && (StrUSBMicName3System[j].GetLength() >= 5))
-	//			{
-	//				lCheck = 1;
-	//				break;
-	//			}
-	//		}
-	//		if (lCheck == 1)
-	//			continue;
-
-	//		lFlagCheck = 1; //m_nSoundUSBDeviceFind = 1;
-	//		m_sUSBDeviceName = StrDeviceName;
-	//		m_nUSBDeviceID = i;
-
-	//		MicSearchRelease(0);
-	//		break;
-	//	}
-	//}
+			lFlagCheck = 1; //m_nSoundUSBDeviceFind = 1;
+			m_sUSBDeviceName = StrDeviceName;			
+			break;
+		}
+	}
 
 	return  lFlagCheck;
 }

@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CImageTotalDlg, CDialog)
 	//ON_BN_CLICKED(IDOK, &CImageTotalDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBO_MIC_TYPE, &CImageTotalDlg::OnCbnSelchangeComboMicType)
 	ON_MESSAGE(WM_GRAPH_UPDATE, OnUpdateSound)
+	ON_BN_CLICKED(IDC_BUTTON_REFRESH_AUDIO, &CImageTotalDlg::OnBnClickedButtonRefreshAudio)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1021,6 +1022,7 @@ void CImageTotalDlg::InitAudioMeasurement()
 	m_cRightLevelDisplay.SetTextColor(RGB(0, 255, 0));
 
 	m_cComboMIC_Type.ResetContent();
+	g_SoundCard.RefreshDeviceArray();
 	int numDevice = g_SoundCard.strDeviceNameArry.GetSize();
 	CString strDeviceName;
 	int l_DeviceNumSel = 0;
@@ -2576,4 +2578,30 @@ void CImageTotalDlg::OnCbnSelchangeComboMicType()
 
 	//if (!m_ctrlSoundCard.wIn_Flag)
 	//	m_ctrlSoundCard.WaveRead_StartUSB(strDevName,1);
+}
+
+
+void CImageTotalDlg::OnBnClickedButtonRefreshAudio()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	m_cComboMIC_Type.ResetContent();
+	g_SoundCard.RefreshDeviceArray();
+	int numDevice = g_SoundCard.strDeviceNameArry.GetSize();
+	CString strDeviceName;
+	int l_DeviceNumSel = 0;
+	for (int i = 0; i < numDevice; i++)
+	{
+		strDeviceName = g_SoundCard.strDeviceNameArry.GetAt(i);
+		m_cComboMIC_Type.AddString(strDeviceName);
+		strDeviceName.MakeUpper();
+
+		if ((strDeviceName.Find(CurrentSet->sMainMIC_Name) >= 0) && (CurrentSet->sMainMIC_Name.GetLength() > 10))
+		{
+			l_DeviceNumSel = i;
+		}
+	}
+
+	m_cComboMIC_Type.SetCurSel(l_DeviceNumSel);// g_SoundCard.m_nDeviceID);
+	OnCbnSelchangeComboMicType();
 }

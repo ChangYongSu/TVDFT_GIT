@@ -702,16 +702,16 @@ _InternalFunction Predefined[] =
 	{_T("")},
 	{NULL_TYPE},
 
-	//	
-	//_T("audio_list_read"), _AudioNewSearch,
-	//{ LP, RP, TNULL },
-	//{ _T("") },
-	//{ NULL_TYPE },
+		
+	_T("audio_list_read"), _AudioListSearch,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
 
-	//_T("audio_new_mic_save"), _AudioNewMicCheck,
-	//{ LP, RP, TNULL },
-	//{ _T("") },
-	//{ NULL_TYPE },
+	_T("audio_new_mic_save"), _AudioNewMicCheck,
+	{ LP, RP, TNULL },
+	{ _T("") },
+	{ NULL_TYPE },
 
 		_T("audio_sel_reset"), _AudioSelectReset,
 	{ LP, STRING, RP, TNULL },

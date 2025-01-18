@@ -90,6 +90,8 @@ public:
 	afx_msg void OnLvnItemchangedListSpecGrid(NMHDR *pNMHDR, LRESULT *pResult);
 	
 	BOOL m_bToolOptionWriteFlag;
+	CString m_szBoardOption;
+	CString m_szCommercialBoardOption;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -334,6 +334,8 @@ void CModelInfoCreate_GraberOption::OnOK()
 	CurrentSet->sToolOption7 = "";
 	CurrentSet->sToolOption8 = "";
 	CurrentSet->sCommercialOption1 = "";
+	CurrentSet->sBoardOption = "";
+	CurrentSet->sCommercialBoardOption = "";
 	CurrentSet->sToolCRC	= "";
 	
 	CurrentSet->sAreaOption1 = "";

@@ -210,6 +210,7 @@ public:
 	
 //	afx_msg void OnBnClickedOk();
 	afx_msg void OnCbnSelchangeComboMicType();
+	afx_msg void OnBnClickedButtonRefreshAudio();
 };
 
 //{{AFX_INSERT_LOCATION}}
