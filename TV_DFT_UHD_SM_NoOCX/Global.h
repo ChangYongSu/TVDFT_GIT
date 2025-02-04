@@ -1499,6 +1499,8 @@ BOOL FindPatternInfo(int nPatternNo, int* pFilterSize, int* pNoFiltering, int* p
 UINT hex2dec(const  char ccHex);
 UINT hexCstr2decNum(const  CString csHex);
 UINT hexStr2DecNum(char* cpcHex);
+unsigned long long hex64Cstr2decNum(const  CString csHex);
+unsigned long long hex64Str2DecNum(char* cpcHex);
 //+ 2007.10.19 Add BY USY
 BOOL InitPatternGen(CString sComPort, DWORD wBaudRate);
 //+ 2007.12.4 Del BY USY

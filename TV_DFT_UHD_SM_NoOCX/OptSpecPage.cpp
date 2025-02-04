@@ -344,7 +344,7 @@ void COptSpecPage::OnBtnSave()
 
 BOOL COptSpecPage::CheckToolCrc()
 {
-	vector<unsigned int> tool(11,0);
+	vector<unsigned int> tool(15,0);
 	const unsigned int ID_32 = 0x8005;   //CRC Sum의 key값, 미리 define되는 부분이며 많이 사용되고 있는 0x8005로 사용
 	const unsigned short ID_16 = 0x8005;   //CRC Sum의 key값, 미리 define되는 부분이며 많이 사용되고 있는 0x8005로 사용
 
@@ -360,65 +360,241 @@ BOOL COptSpecPage::CheckToolCrc()
 	CString sBuf;
 
 	UpdateData(TRUE);
+#if 1
+
+
+	if (m_szToolOption1 != "") {
+		tool[1] = atoi(m_szToolOption1);
+	}
+	else {
+		tool[1] = 0;
+	}
+
+	if (m_szToolOption2 != "") {
+		tool[2] = atoi(m_szToolOption2);
+	}
+	else {
+		tool[2] = 0;
+	}
+
+	if (m_szToolOption3 != "") {
+		tool[3] = atoi(m_szToolOption3);
+	}
+	else {
+		tool[3] = 0;
+	}
+
+	if (m_szToolOption4 != "") {
+		tool[4] = atoi(m_szToolOption4);
+	}
+	else {
+		tool[4] = 0;
+	}
+
+	if (m_szToolOption5 != "") {
+		tool[5] = atoi(m_szToolOption5);
+	}
+	else {
+		tool[5] = 0;
+	}
+
+
+	if (m_szToolOption6 != "") {
+		tool[6] = atoi(m_szToolOption6);
+	}
+	else {
+		tool[6] = 0;
+	}
+
+	if (m_szToolOption7 != "") {
+		tool[7] = atoi(m_szToolOption7);
+	}
+	else {
+		tool[7] = 0;
+	}
+
+	if (m_szCommercialOption1 != "") {
+		tool[8] = atoi(m_szCommercialOption1);
+	}
+	else {
+		tool[8] = 0;
+	}
+
+	if (m_szToolOption8 != "") {
+		tool[9] = atoi(m_szToolOption8);
+	}
+	else {
+		tool[9] = 0;
+	}
+
+	//m_szBoardOption = CurrentSet->sBoardOption;
+	////m_szCommercialBoardOption = CurrentSet->sCommercialBoardOption;
+
+	unsigned long long Hex64bit;
+	if (m_szBoardOption != "") {
+		Hex64bit = hex64Str2DecNum(m_szBoardOption.GetBuffer());// atoi(m_szBoardOption);
+		tool[10] = (Hex64bit& 0xFFFFFFFF00000000) >> 32 ;
+		tool[11] = Hex64bit & 0xFFFFFFFF;
+	}
+	else {
+		tool[10] = 0;
+		tool[11] = 0;
+	}
+
+
+	//if (m_szCommercialBoardOption != "") {
+	//	Hex64bit = hexStr2DecNum(m_szCommercialBoardOption.GetBuffer());
+	//	tool[10] = (Hex64bit >> 32) & 0xFFFFFFFF;
+	//	tool[11] = Hex64bit & 0xFFFFFFFF;
+
+	//}
+	//else {
+	//	tool[10] = 0;
+	//	tool[11] = 0;
+	//}
+
+	for (int i = 1; i < 14; i++)
+	{
+		if (tool[i] > 0xFFFF) { bCrcCheck32 = TRUE; }
+	}
+	if (!bCrcCheck32) {
+		if (m_szToolCRC != "") {
+			bCrcCheck16 = TRUE;
+		}
+		else {
+			return TRUE;
+		}
+	}
+
+	if (m_szToolCRC != "") {
+		if (bCrcCheck32) {
+			nCurCRC_32 = atoi(m_szToolCRC);
+		}
+		else {
+			nCurCRC_16 = atoi(m_szToolCRC);
+		}
+	}
+
+
+	if (bCrcCheck32) {
+		for (int t = 1; t <= 13; t++) {      // ToolOption 1~9번까지 모든 data들을 확인한다.
+			val32 = tool[t];          //해당 ToolOption값을 우선적으로 val값에 저장
+			vector<int> bitarray = makeBitArray(val32);         //해당 val를 bitarray로 바꿔주는 부분 vector<int> 는 int형 vector (array로 생각해도 무방)
+			for (int i = 0; i < 32; i++) {				 //32bit에 해당되는 모든 bit를 한 bit씩 순회 가장 큰 bit부터 확인
+				if ((bitarray[i]) ^ (CRC_32 >> 15)) {		 //현재 bit에 해당되는 부분과 CRC의 가장 큰 숫자 즉 (CRC>>15를 할시 2진법상 가장큰수)의 xor이 1일시 실행
+					CRC_32 = ((CRC_32 << 1) & 0xffff) ^ ID_32;	// (CRC<<1은 CRC*2와 동일) CRC 오른쪽으로 1bit shift값과 ID값으 xor값을 CRC에 저장 //((CRC << 1) & 0xffff)이유는 CRC가 unsigned int이기 때문에 16bit를 초과할 가능성이 있어 해당부분 반영
+				}
+				else {
+					CRC_32 = (CRC_32 << 1) & 0xffff;  //xor값이 0일시 CRC만 오른쪽으로 1bit shift
+				}
+			}
+		}
+
+		if (nCurCRC_32 == CRC_32) {
+			return TRUE;
+		}
+		else {
+
+			sBuf.Format("%03d", CRC_32);
+
+			sBuf.SetAt(0, '*');
+			sBuf.SetAt(1, '*');
+
+			if (nCurCRC_32 == 0) {
+				sTemp.Format("TOOL-CRC32 NG\nCalculation Value: %s, Setting Value: %d\nKey-In CRC Value", sBuf, nCurCRC_32);
+			}
+			else {
+				sTemp.Format("TOOL-CRC32 NG\n Calculation Value: %s, Setting Value: %d\nKey-In  right CRC Value", sBuf, nCurCRC_32);
+			}
+			AfxMessageBox(sTemp);
+			return FALSE;
+		}
+
+	}
 	
 
 
-	if(m_szToolOption1 != ""){
-		tool[1] = atoi(m_szToolOption1);
+#else
+	if (m_szBoardOption != "") {
+		tool[1] = hexStr2DecNum(m_szBoardOption.GetBuffer());// atoi(m_szBoardOption);
 	}
-	else{
+	else {
 		tool[1] = 0;
 	}
-	if(m_szToolOption2 != ""){
-		tool[2] = atoi(m_szToolOption2);
+
+	
+	if(m_szToolOption1 != ""){
+		tool[2] = atoi(m_szToolOption1);
 	}
 	else{
 		tool[2] = 0;
 	}
-	if(m_szToolOption3 != ""){
-		tool[3] = atoi(m_szToolOption3);
+	if(m_szToolOption2 != ""){
+		tool[3] = atoi(m_szToolOption2);
 	}
 	else{
 		tool[3] = 0;
 	}
-	if(m_szToolOption4 != ""){
-		tool[4] = atoi(m_szToolOption4);
+	if(m_szToolOption3 != ""){
+		tool[4] = atoi(m_szToolOption3);
 	}
 	else{
 		tool[4] = 0;
 	}
-	if(m_szToolOption5 != ""){
-		tool[5] = atoi(m_szToolOption5);
+	if(m_szToolOption4 != ""){
+		tool[5] = atoi(m_szToolOption4);
 	}
 	else{
 		tool[5] = 0;
 	}
-	if(m_szToolOption6 != ""){
-		tool[6] = atoi(m_szToolOption6);
+	if(m_szToolOption5 != ""){
+		tool[6] = atoi(m_szToolOption5);
 	}
 	else{
 		tool[6] = 0;
 	}
-	if(m_szToolOption7 != ""){
-		tool[7] = atoi(m_szToolOption7);
+	if(m_szToolOption6 != ""){
+		tool[7] = atoi(m_szToolOption6);
 	}
 	else{
 		tool[7] = 0;
 	}
-	if(m_szCommercialOption1 != ""){
-		tool[8] = atoi(m_szCommercialOption1);
+	if(m_szToolOption7 != ""){
+		tool[8] = atoi(m_szToolOption7);
 	}
 	else{
 		tool[8] = 0;
 	}
-	if(m_szToolOption8 != ""){
-		tool[9] = atoi(m_szToolOption8);
+	if(m_szCommercialOption1 != ""){
+		tool[9] = atoi(m_szCommercialOption1);
 	}
 	else{
 		tool[9] = 0;
 	}
+	if(m_szToolOption8 != ""){
+		tool[10] = atoi(m_szToolOption8);
+	}
+	else{
+		tool[10] = 0;
+	}
+	if (m_szCommercialBoardOption != "") {
+		tool[11] = hexStr2DecNum(m_szCommercialBoardOption.GetBuffer());
+	}
+	else {
+		tool[11] = 0;
+	}
 
-	for(int i = 1; i < 10; i++)
+	//m_szBoardOption = CurrentSet->sBoardOption;
+	//m_szCommercialBoardOption = CurrentSet->sCommercialBoardOption;
+
+	//if(m_szCommercialBoardOption != ""){
+	//	tool[11] = atoi(m_szCommercialBoardOption);
+	//}
+	//else{
+	//	tool[11] = 0;
+	//}
+
+	for(int i = 1; i < 12; i++)
 	{
 		if(tool[i] > 0xFFFF){bCrcCheck32 = TRUE;}
 	}
@@ -442,7 +618,7 @@ BOOL COptSpecPage::CheckToolCrc()
 
 
 	if(bCrcCheck32){
-		for(int t=1;t<=9;t++){      // ToolOption 1~9번까지 모든 data들을 확인한다.
+		for(int t=1;t<=10;t++){      // ToolOption 1~9번까지 모든 data들을 확인한다.
 			val32 = tool[t];          //해당 ToolOption값을 우선적으로 val값에 저장
 			vector<int> bitarray = makeBitArray(val32);         //해당 val를 bitarray로 바꿔주는 부분 vector<int> 는 int형 vector (array로 생각해도 무방)
 			for(int i=0;i<32;i++){				 //32bit에 해당되는 모든 bit를 한 bit씩 순회 가장 큰 bit부터 확인
@@ -476,8 +652,9 @@ BOOL COptSpecPage::CheckToolCrc()
 		}
 
 	}
+#endif	
 	if(bCrcCheck16){
-		for(int t=1;t<=9;t++){      // ToolOption 1~9번까지 모든 data들을 확인한다.
+		for(int t=1;t<=11;t++){      // ToolOption 1~9번까지 모든 data들을 확인한다.
 			val16 = tool[t];          //해당 ToolOption값을 우선적으로 val값에 저장
 			if(val16 == 0){ continue;}
 			vector<int> bitarray = makeBitArray(val16);         //해당 val를 bitarray로 바꿔주는 부분 vector<int> 는 int형 vector (array로 생각해도 무방)
@@ -498,7 +675,7 @@ BOOL COptSpecPage::CheckToolCrc()
 			}
 		}
 
-		
+
 		if(nCurCRC_16 == CRC_16){
 			return TRUE;
 		}

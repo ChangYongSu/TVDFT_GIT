@@ -7160,7 +7160,7 @@ BOOL _ToolOption_Write()
 	}
 
 	if (CurrentSet->sBoardOption != "") {
-		nToolOption = atoi(CurrentSet->sBoardOption);
+		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			bResult10 = FALSE;
 		}
@@ -7175,7 +7175,7 @@ BOOL _ToolOption_Write()
 		}
 	}
 	if (CurrentSet->sCommercialBoardOption != "") {
-		nToolOption = atoi(CurrentSet->sCommercialBoardOption);
+		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			bResult11 = FALSE;
 		}
@@ -7452,7 +7452,7 @@ BOOL ToolOption_WriteCheck()
 	}
 
 	if (CurrentSet->sBoardOption != "") {
-		nToolOption = atoi(CurrentSet->sBoardOption);
+		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			
 			bResult10 = FALSE;
@@ -7470,7 +7470,7 @@ BOOL ToolOption_WriteCheck()
 	}
 
 	if (CurrentSet->sCommercialBoardOption != "") {
-		nToolOption = atoi(CurrentSet->sCommercialBoardOption);
+		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			bResult11 = FALSE;
 		}

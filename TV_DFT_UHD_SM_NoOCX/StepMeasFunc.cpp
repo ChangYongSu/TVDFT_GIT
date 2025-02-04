@@ -3092,11 +3092,11 @@ double	_Option_Check()
 		bResult9 = Check_ToolOption(COMMERCIAL_OPTION1, nToolOption);
 	}
 	if (CurrentSet->sBoardOption != "") {
-		nToolOption = atoi(CurrentSet->sBoardOption);
+		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
 		bResult10 = Check_ToolOption(BOARD_OPTION, nToolOption);
 	}
 	if (CurrentSet->sCommercialBoardOption != "") {
-		nToolOption = atoi(CurrentSet->sCommercialBoardOption);
+		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
 		bResult11 = Check_ToolOption(COMMERCIAL_BOARD_OPTION, nToolOption);
 	}
 

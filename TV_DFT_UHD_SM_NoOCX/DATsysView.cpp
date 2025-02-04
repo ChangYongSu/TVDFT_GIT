@@ -1575,50 +1575,53 @@ void CDATsysView::UpdateInfo(int nIndex, CString s)
 //			m_stcRLevel.SetWindowText(_T(s));
 			break;
 	
+		case BOARD_OPTION:
+			m_ctrlListOption.SetItemText(0, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
+			break;
+		case COMMERCIAL_BOARD_OPTION:
+			m_ctrlListOption.SetItemText(1, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
+			break;
+
+
+
 		case TOOL_OPTION1 :
 			//m_ctrlOptionGrid.SetTextMatrix(1, 1, _T(s));
-			m_ctrlListOption.SetItemText(0, 1, _T(s)); //m_CtrlListMainProcess.SetItem(nStepNo, 2, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); 
+			m_ctrlListOption.SetItemText(2, 1, _T(s)); //m_CtrlListMainProcess.SetItem(nStepNo, 2, LVIF_TEXT, sTmp, NULL, NULL, NULL, NULL); 
 			//m_ctrlOptionGrid.SetTextMatrix(1, 1, _T(s));
 
 			break;
 		case TOOL_OPTION2 :
 			//m_ctrlOptionGrid.SetTextMatrix(2, 1, _T(s));
-			m_ctrlListOption.SetItemText(1, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(2, 1, _T(s));
+			m_ctrlListOption.SetItemText(3, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(2, 1, _T(s));
 			break;
 
 		case TOOL_OPTION3 :
 			//m_ctrlOptionGrid.SetTextMatrix(3, 1, _T(s));
-			m_ctrlListOption.SetItemText(2, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(3, 1, _T(s));
+			m_ctrlListOption.SetItemText(4, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(3, 1, _T(s));
 			break;
 
 		case TOOL_OPTION4 :
 			//m_ctrlOptionGrid.SetTextMatrix(4, 1, _T(s));
-			m_ctrlListOption.SetItemText(3, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(4, 1, _T(s));
+			m_ctrlListOption.SetItemText(5, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(4, 1, _T(s));
 			break;
 
 		case TOOL_OPTION5 :
-			m_ctrlListOption.SetItemText(4, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(5, 1, _T(s));
+			m_ctrlListOption.SetItemText(6, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(5, 1, _T(s));
 			break;
 
 		case TOOL_OPTION6 :
-			m_ctrlListOption.SetItemText(5, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(6, 1, _T(s));
+			m_ctrlListOption.SetItemText(7, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(6, 1, _T(s));
 			break;
 			//+add 110928
 		case TOOL_OPTION7 :
-			m_ctrlListOption.SetItemText(6, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(7, 1, _T(s));
+			m_ctrlListOption.SetItemText(8, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(7, 1, _T(s));
 			break;
 
 		case COMMERCIAL_OPTION1 :
-			m_ctrlListOption.SetItemText(7, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(8, 1, _T(s));
+			m_ctrlListOption.SetItemText(9, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(8, 1, _T(s));
 			break;
 
 		case TOOL_OPTION8 :
-			m_ctrlListOption.SetItemText(8, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
-			break;
-		case BOARD_OPTION:
-			m_ctrlListOption.SetItemText(9, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
-			break;
-		case COMMERCIAL_BOARD_OPTION:
 			m_ctrlListOption.SetItemText(10, 1, _T(s)); //m_ctrlOptionGrid.SetTextMatrix(9, 1, _T(s));
 			break;
 
@@ -24539,7 +24542,7 @@ void CDATsysView::InitOptionGrid()
 {
 	CString sTmp;
 
-	char *sHeader[] = {"1", "2","3", "4", "5", "6", "7", "8(C)", "9", "B Opt", "CB Opt", "CRC"};
+	char *sHeader[] = {"B Opt", "CB Opt", "1", "2","3", "4", "5", "6", "7", "8(C)", "9",  "CRC"};
 
 	///m_ctrlOptionGrid.SetRedraw(FALSE);
 	//m_ctrlOptionGrid.Clear(COleVariant(long(flexClearEverywhere)), COleVariant(long(flexClearEverything))); //flex , flexClearEverything
@@ -25812,7 +25815,7 @@ double  CDATsysView::GetDaqData(int nFunc, int nCh_S, int nCh_E, CString& sData)
 
 BOOL CDATsysView::CheckToolCrc()
 {
-	vector<unsigned int> tool(11,0);
+	vector<unsigned int> tool(13,0);
 	unsigned int ID = 0x8005;   //CRC SumÀÇ key°
 
 	unsigned int CRC = 0;       //CRC Sum
@@ -25820,7 +25823,7 @@ BOOL CDATsysView::CheckToolCrc()
 	BOOL bCrcCheck = FALSE;
 	CString sVal;	
 
-	for(int i = 1; i < 10; i++)
+	for(int i = 1; i < 12; i++)
 	{
 		sVal = m_ctrlListOption.GetItemText(i,1);//sVal = m_ctrlListOption.GetTextMatrix(i, 1);
 		if(sVal != ""){
@@ -25837,7 +25840,7 @@ BOOL CDATsysView::CheckToolCrc()
 
 
 
-	for(int t=1;t<=9;t++){      // ToolOption 1~9¹ø±îÁö ¸ðµç dataµéÀ» È®ÀÎÇÑ´Ù.
+	for(int t=1;t<=11;t++){      // ToolOption 1~9¹ø±îÁö ¸ðµç dataµéÀ» È®ÀÎÇÑ´Ù.
 		unsigned int val = tool[t];          //ÇØ´ç ToolOption°ªÀ» ¿ì¼±ÀûÀ¸·Î val°ª¿¡ ÀúÀå
 		vector<int> bitarray = makeBitArray(val);         //ÇØ´ç val¸¦ bitarray·Î ¹Ù²ãÁÖ´Â ºÎºÐ vector<int> ´Â intÇü vector (array·Î »ý°¢ÇØµµ ¹«¹æ)
 		for(int i=0;i<32;i++){				 //32bit¿¡ ÇØ´çµÇ´Â ¸ðµç bit¸¦ ÇÑ bit¾¿ ¼øÈ¸ °¡Àå Å« bitºÎÅÍ È®ÀÎ
