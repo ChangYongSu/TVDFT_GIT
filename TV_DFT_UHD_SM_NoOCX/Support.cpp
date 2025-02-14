@@ -853,7 +853,7 @@ BOOL OpenModelIniFile(CString sIniPath, CString sDftPath)
 		CurrentSet->nUHD_Type = m_Ini.GetProfileInt(GRAB_S, "UHD Type");
 		CurrentSet->nUHD_Grab_BitShift = m_Ini.GetProfileInt(GRAB_S, "UHD Grab BitShift");
 		CurrentSet->nUHD_Grab_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Mode");
-		if(CurrentSet->nUHD_Grab_Mode > 20){CurrentSet->nUHD_Grab_Mode = 13;}
+		if(CurrentSet->nUHD_Grab_Mode > 21){CurrentSet->nUHD_Grab_Mode = 13;}
 		CurrentSet->nUHD_Grab_Delay = m_Ini.GetProfileInt(GRAB_S, "UHD Grab Delay");
 		CurrentSet->nUHD_Y20_SW_Mode = m_Ini.GetProfileInt(GRAB_S, "UHD Y20 SW Mode");
 		if (CurrentSet->nUHD_Y20_SW_Mode > 16) { CurrentSet->nUHD_Y20_SW_Mode = 1; }
@@ -8153,119 +8153,119 @@ vector<int> makeBitArray(unsigned int val)
 	reverse(res.begin(),res.end());    //logic상 작은 숫자에서 큰숫자로 bit가 나오기 때문에 맨 마지막에 reverse를 해서 res[0]에 가장 큰 숫자가 오도록 배치
 	return res;
 }
-
-BOOL CheckToolCrc()
-{
-	vector<unsigned int> tool(13,0);
-	unsigned int ID = 0x8005;   //CRC Sum의 key값, 미리 define되는 부분이며 많이 사용되고 있는 0x8005로 사용
-
-	unsigned int CRC = 0;       //CRC Sum의 초기값은 0으로 둔다
-	unsigned int nCurCRC = 0;       
-	
-	if (CurrentSet->sBoardOption != "") {
-		tool[1] = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
-	}
-	else {
-		tool[1] = 0;
-	}
-	if (CurrentSet->sCommercialBoardOption != "") {
-		tool[2] = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
-	}
-	else {
-		tool[2] = 0;
-	}
-
-	if(CurrentSet->sToolOption1 != ""){
-		tool[3] = atoi(CurrentSet->sToolOption1);
-	}
-	else{
-		tool[3] = 0;
-	}
-	if(CurrentSet->sToolOption2 != ""){
-		tool[4] = atoi(CurrentSet->sToolOption2);
-	}
-	else{
-		tool[4] = 0;
-	}
-	if(CurrentSet->sToolOption3 != ""){
-		tool[5] = atoi(CurrentSet->sToolOption3);
-	}
-	else{
-		tool[5] = 0;
-	}
-	if(CurrentSet->sToolOption4 != ""){
-		tool[6] = atoi(CurrentSet->sToolOption4);
-	}
-	else{
-		tool[6] = 0;
-	}
-	if(CurrentSet->sToolOption5 != ""){
-		tool[7] = atoi(CurrentSet->sToolOption5);
-	}
-	else{
-		tool[7] = 0;
-	}
-	if(CurrentSet->sToolOption6 != ""){
-		tool[8] = atoi(CurrentSet->sToolOption6);
-	}
-	else{
-		tool[8] = 0;
-	}
-	if(CurrentSet->sToolOption7 != ""){
-		tool[9] = atoi(CurrentSet->sToolOption7);
-	}
-	else{
-		tool[9] = 0;
-	}
-	if(CurrentSet->sCommercialOption1 != ""){
-		tool[10] = atoi(CurrentSet->sCommercialOption1);
-	}
-	else{
-		tool[10] = 0;
-	}
-	if(CurrentSet->sToolOption8 != ""){
-		tool[11] = atoi(CurrentSet->sToolOption8);
-	}
-	else{
-		tool[11] = 0;
-	}
-
-	if(CurrentSet->sToolCRC != ""){
-		nCurCRC = atoi(CurrentSet->sToolCRC);
-	}
-	else{
-		nCurCRC = 0;
-	}
-
-
-	for(int t=1;t<=11;t++){      // ToolOption 1~9번까지 모든 data들을 확인한다.
-		unsigned int val = tool[t];          //해당 ToolOption값을 우선적으로 val값에 저장
-		vector<int> bitarray = makeBitArray(val);         //해당 val를 bitarray로 바꿔주는 부분 vector<int> 는 int형 vector (array로 생각해도 무방)
-		for(int i=0;i<32;i++){				 //32bit에 해당되는 모든 bit를 한 bit씩 순회 가장 큰 bit부터 확인
-			if((bitarray[i]) ^ (CRC>>15)){		 //현재 bit에 해당되는 부분과 CRC의 가장 큰 숫자 즉 (CRC>>15를 할시 2진법상 가장큰수)의 xor이 1일시 실행
-				CRC = ((CRC << 1) & 0xffff) ^ ID;	// (CRC<<1은 CRC*2와 동일) CRC 오른쪽으로 1bit shift값과 ID값으 xor값을 CRC에 저장 //((CRC << 1) & 0xffff)이유는 CRC가 unsigned int이기 때문에 16bit를 초과할 가능성이 있어 해당부분 반영
-			}	
-			else{
-				CRC = (CRC << 1) & 0xffff;  //xor값이 0일시 CRC만 오른쪽으로 1bit shift
-			}
-		}
-	}
-	
-	if(nCurCRC == CRC){
-		return TRUE;
-	}
-	else{
-		CString sTemp;
-		if(nCurCRC == 0){
-			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In CRC Value", nCurCRC, CRC);
-		}
-		else{
-			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In  right CRC Value", nCurCRC, CRC);
-		}
-
-		return FALSE;
-	}
-}
+//
+//BOOL CheckToolCrc()
+//{
+//	vector<unsigned int> tool(13,0);
+//	unsigned int ID = 0x8005;   //CRC Sum의 key값, 미리 define되는 부분이며 많이 사용되고 있는 0x8005로 사용
+//
+//	unsigned int CRC = 0;       //CRC Sum의 초기값은 0으로 둔다
+//	unsigned int nCurCRC = 0;       
+//	
+//	if (CurrentSet->sBoardOption != "") {
+//		tool[1] = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
+//	}
+//	else {
+//		tool[1] = 0;
+//	}
+//	if (CurrentSet->sCommercialBoardOption != "") {
+//		tool[2] = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
+//	}
+//	else {
+//		tool[2] = 0;
+//	}
+//
+//	if(CurrentSet->sToolOption1 != ""){
+//		tool[3] = atoi(CurrentSet->sToolOption1);
+//	}
+//	else{
+//		tool[3] = 0;
+//	}
+//	if(CurrentSet->sToolOption2 != ""){
+//		tool[4] = atoi(CurrentSet->sToolOption2);
+//	}
+//	else{
+//		tool[4] = 0;
+//	}
+//	if(CurrentSet->sToolOption3 != ""){
+//		tool[5] = atoi(CurrentSet->sToolOption3);
+//	}
+//	else{
+//		tool[5] = 0;
+//	}
+//	if(CurrentSet->sToolOption4 != ""){
+//		tool[6] = atoi(CurrentSet->sToolOption4);
+//	}
+//	else{
+//		tool[6] = 0;
+//	}
+//	if(CurrentSet->sToolOption5 != ""){
+//		tool[7] = atoi(CurrentSet->sToolOption5);
+//	}
+//	else{
+//		tool[7] = 0;
+//	}
+//	if(CurrentSet->sToolOption6 != ""){
+//		tool[8] = atoi(CurrentSet->sToolOption6);
+//	}
+//	else{
+//		tool[8] = 0;
+//	}
+//	if(CurrentSet->sToolOption7 != ""){
+//		tool[9] = atoi(CurrentSet->sToolOption7);
+//	}
+//	else{
+//		tool[9] = 0;
+//	}
+//	if(CurrentSet->sCommercialOption1 != ""){
+//		tool[10] = atoi(CurrentSet->sCommercialOption1);
+//	}
+//	else{
+//		tool[10] = 0;
+//	}
+//	if(CurrentSet->sToolOption8 != ""){
+//		tool[11] = atoi(CurrentSet->sToolOption8);
+//	}
+//	else{
+//		tool[11] = 0;
+//	}
+//
+//	if(CurrentSet->sToolCRC != ""){
+//		nCurCRC = atoi(CurrentSet->sToolCRC);
+//	}
+//	else{
+//		nCurCRC = 0;
+//	}
+//
+//
+//	for(int t=1;t<=11;t++){      // ToolOption 1~9번까지 모든 data들을 확인한다.
+//		unsigned int val = tool[t];          //해당 ToolOption값을 우선적으로 val값에 저장
+//		vector<int> bitarray = makeBitArray(val);         //해당 val를 bitarray로 바꿔주는 부분 vector<int> 는 int형 vector (array로 생각해도 무방)
+//		for(int i=0;i<32;i++){				 //32bit에 해당되는 모든 bit를 한 bit씩 순회 가장 큰 bit부터 확인
+//			if((bitarray[i]) ^ (CRC>>15)){		 //현재 bit에 해당되는 부분과 CRC의 가장 큰 숫자 즉 (CRC>>15를 할시 2진법상 가장큰수)의 xor이 1일시 실행
+//				CRC = ((CRC << 1) & 0xffff) ^ ID;	// (CRC<<1은 CRC*2와 동일) CRC 오른쪽으로 1bit shift값과 ID값으 xor값을 CRC에 저장 //((CRC << 1) & 0xffff)이유는 CRC가 unsigned int이기 때문에 16bit를 초과할 가능성이 있어 해당부분 반영
+//			}	
+//			else{
+//				CRC = (CRC << 1) & 0xffff;  //xor값이 0일시 CRC만 오른쪽으로 1bit shift
+//			}
+//		}
+//	}
+//	
+//	if(nCurCRC == CRC){
+//		return TRUE;
+//	}
+//	else{
+//		CString sTemp;
+//		if(nCurCRC == 0){
+//			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In CRC Value", nCurCRC, CRC);
+//		}
+//		else{
+//			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In  right CRC Value", nCurCRC, CRC);
+//		}
+//
+//		return FALSE;
+//	}
+//}
 BOOL ChekDrmKey()
 {
 	BOOL bDrmKey = FALSE;

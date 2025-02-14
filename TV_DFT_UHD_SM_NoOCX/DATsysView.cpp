@@ -11806,7 +11806,12 @@ BOOL CDATsysView::AutoControlProcess()
 								//{
 								//	AddStringToStatus("Grabber Power OFF");
 								//	gJigCtrl.Set_Grabber_Power(0);
-								//	Sleep(1000);
+								//	Sleep(1000);VOLT_READ	0x02	17	V	RD_VOLT_nn(10byte)	0x03	CheckSum(ASCII)
+							/*	RD_VOLT_nn(10byte)	0x03	CheckSum(ASCII)	RD_VOLT_nnddddd	14 + 7 = 21
+									RD_D_INPUT(10byte)	0x03	CheckSum(ASCII)	RD_D_INPUT[16bit:ASCII 4byte]	14 + 7 = 21
+									WR_DOUTnn[1:on / 0 : off](10byte)	0x03	CheckSum(ASCII)	WR_ALL[ASCII HEX : xxxx]	10 + 7 = 17
+									WR_ALL[ASCII HEX : xxxx](10byte)	0x03	CheckSum(ASCII)	WR_ALL[ASCII HEX : xxxx]	10 + 7 = 17*/
+
 
 								//	AddStringToStatus("Grabber Power ON");
 								//	gJigCtrl.Set_Grabber_Power(1);
@@ -17133,6 +17138,10 @@ UINT CDATsysView::GrabImageThread(LPVOID pParam)
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
 					}
 					else if (CurrentSet->nUHD_Grab_Mode == 20)
+					{
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
+					}
+					else if (CurrentSet->nUHD_Grab_Mode == 21)
 					{
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, g_GrabDisplayImage.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
 					}
@@ -25813,61 +25822,61 @@ double  CDATsysView::GetDaqData(int nFunc, int nCh_S, int nCh_E, CString& sData)
 }
 #if 1
 
-BOOL CDATsysView::CheckToolCrc()
-{
-	vector<unsigned int> tool(13,0);
-	unsigned int ID = 0x8005;   //CRC SumÀÇ key°
-
-	unsigned int CRC = 0;       //CRC Sum
-	unsigned int nCurCRC = 0;       
-	BOOL bCrcCheck = FALSE;
-	CString sVal;	
-
-	for(int i = 1; i < 12; i++)
-	{
-		sVal = m_ctrlListOption.GetItemText(i,1);//sVal = m_ctrlListOption.GetTextMatrix(i, 1);
-		if(sVal != ""){
-			tool[i] = atoi(sVal);
-			if(tool[i] > 0xFFFF){bCrcCheck = TRUE;}
-		}
-	}
-	if(!bCrcCheck) { return TRUE;}
-
-	sVal = m_ctrlListOption.GetItemText(10, 1); //sVal = m_ctrlOptionGrid.GetTextMatrix(10, 1);
-	if(sVal != ""){
-		nCurCRC = atoi(sVal);
-	}
-
-
-
-	for(int t=1;t<=11;t++){      // ToolOption 1~9¹ø±îÁö ¸ðµç dataµéÀ» È®ÀÎÇÑ´Ù.
-		unsigned int val = tool[t];          //ÇØ´ç ToolOption°ªÀ» ¿ì¼±ÀûÀ¸·Î val°ª¿¡ ÀúÀå
-		vector<int> bitarray = makeBitArray(val);         //ÇØ´ç val¸¦ bitarray·Î ¹Ù²ãÁÖ´Â ºÎºÐ vector<int> ´Â intÇü vector (array·Î »ý°¢ÇØµµ ¹«¹æ)
-		for(int i=0;i<32;i++){				 //32bit¿¡ ÇØ´çµÇ´Â ¸ðµç bit¸¦ ÇÑ bit¾¿ ¼øÈ¸ °¡Àå Å« bitºÎÅÍ È®ÀÎ
-			if((bitarray[i]) ^ (CRC>>15)){		 //ÇöÀç bit¿¡ ÇØ´çµÇ´Â ºÎºÐ°ú CRCÀÇ °¡Àå Å« ¼ýÀÚ Áï (CRC>>15¸¦ ÇÒ½Ã 2Áø¹ý»ó °¡ÀåÅ«¼ö)ÀÇ xorÀÌ 1ÀÏ½Ã ½ÇÇà
-				CRC = ((CRC << 1) & 0xffff) ^ ID;	// (CRC<<1Àº CRC*2¿Í µ¿ÀÏ) CRC ¿À¸¥ÂÊÀ¸·Î 1bit shift°ª°ú ID°ªÀ¸ xor°ªÀ» CRC¿¡ ÀúÀå //((CRC << 1) & 0xffff)ÀÌÀ¯´Â CRC°¡ unsigned intÀÌ±â ¶§¹®¿¡ 16bit¸¦ ÃÊ°úÇÒ °¡´É¼ºÀÌ ÀÖ¾î ÇØ´çºÎºÐ ¹Ý¿µ
-			}	
-			else{
-				CRC = (CRC << 1) & 0xffff;  //xor°ªÀÌ 0ÀÏ½Ã CRC¸¸ ¿À¸¥ÂÊÀ¸·Î 1bit shift
-			}
-		}
-	}
-	
-	if(nCurCRC == CRC){
-		return TRUE;
-	}
-	else{
-		CString sTemp;
-		if(nCurCRC == 0){
-			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In CRC Value", nCurCRC, CRC);
-		}
-		else{
-			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In  right CRC Value", nCurCRC, CRC);
-		}
-
-		return FALSE;
-	}
-}
+//BOOL CDATsysView::CheckToolCrc()
+//{
+//	vector<unsigned int> tool(13,0);
+//	unsigned int ID = 0x8005;   //CRC SumÀÇ key°
+//
+//	unsigned int CRC = 0;       //CRC Sum
+//	unsigned int nCurCRC = 0;       
+//	BOOL bCrcCheck = FALSE;
+//	CString sVal;	
+//
+//	for(int i = 1; i < 12; i++)
+//	{
+//		sVal = m_ctrlListOption.GetItemText(i,1);//sVal = m_ctrlListOption.GetTextMatrix(i, 1);
+//		if(sVal != ""){
+//			tool[i] = atoi(sVal);
+//			if(tool[i] > 0xFFFF){bCrcCheck = TRUE;}
+//		}
+//	}
+//	if(!bCrcCheck) { return TRUE;}
+//
+//	sVal = m_ctrlListOption.GetItemText(10, 1); //sVal = m_ctrlOptionGrid.GetTextMatrix(10, 1);
+//	if(sVal != ""){
+//		nCurCRC = atoi(sVal);
+//	}
+//
+//
+//
+//	for(int t=1;t<=11;t++){      // ToolOption 1~9¹ø±îÁö ¸ðµç dataµéÀ» È®ÀÎÇÑ´Ù.
+//		unsigned int val = tool[t];          //ÇØ´ç ToolOption°ªÀ» ¿ì¼±ÀûÀ¸·Î val°ª¿¡ ÀúÀå
+//		vector<int> bitarray = makeBitArray(val);         //ÇØ´ç val¸¦ bitarray·Î ¹Ù²ãÁÖ´Â ºÎºÐ vector<int> ´Â intÇü vector (array·Î »ý°¢ÇØµµ ¹«¹æ)
+//		for(int i=0;i<32;i++){				 //32bit¿¡ ÇØ´çµÇ´Â ¸ðµç bit¸¦ ÇÑ bit¾¿ ¼øÈ¸ °¡Àå Å« bitºÎÅÍ È®ÀÎ
+//			if((bitarray[i]) ^ (CRC>>15)){		 //ÇöÀç bit¿¡ ÇØ´çµÇ´Â ºÎºÐ°ú CRCÀÇ °¡Àå Å« ¼ýÀÚ Áï (CRC>>15¸¦ ÇÒ½Ã 2Áø¹ý»ó °¡ÀåÅ«¼ö)ÀÇ xorÀÌ 1ÀÏ½Ã ½ÇÇà
+//				CRC = ((CRC << 1) & 0xffff) ^ ID;	// (CRC<<1Àº CRC*2¿Í µ¿ÀÏ) CRC ¿À¸¥ÂÊÀ¸·Î 1bit shift°ª°ú ID°ªÀ¸ xor°ªÀ» CRC¿¡ ÀúÀå //((CRC << 1) & 0xffff)ÀÌÀ¯´Â CRC°¡ unsigned intÀÌ±â ¶§¹®¿¡ 16bit¸¦ ÃÊ°úÇÒ °¡´É¼ºÀÌ ÀÖ¾î ÇØ´çºÎºÐ ¹Ý¿µ
+//			}	
+//			else{
+//				CRC = (CRC << 1) & 0xffff;  //xor°ªÀÌ 0ÀÏ½Ã CRC¸¸ ¿À¸¥ÂÊÀ¸·Î 1bit shift
+//			}
+//		}
+//	}
+//	
+//	if(nCurCRC == CRC){
+//		return TRUE;
+//	}
+//	else{
+//		CString sTemp;
+//		if(nCurCRC == 0){
+//			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In CRC Value", nCurCRC, CRC);
+//		}
+//		else{
+//			sTemp.Format("TOOL-CRC NG : Calculation Value-%d, Set Value-%d\nKey-In  right CRC Value", nCurCRC, CRC);
+//		}
+//
+//		return FALSE;
+//	}
+//}
 #else
 BOOL CDATsysView::CheckToolCrc()
 {

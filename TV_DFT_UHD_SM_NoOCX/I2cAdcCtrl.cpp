@@ -2179,7 +2179,7 @@ int CI2cAdcCtrl::ReadOptionAll()
 }
 
 
-int CI2cAdcCtrl::WriteOption(int nType, int nOptionNo,int nOptionValue)
+int CI2cAdcCtrl::WriteOption(int nType, int nOptionNo, unsigned long long nOptionValue)
 {
 	//+add 090219(Modification No2)
 	CString szLog = "B:WriteOption\n";
@@ -3967,9 +3967,112 @@ int CI2cAdcCtrl::SetExtAnalogGrabberMode(int nAnalogGrabberMode)
 	
 	return nResult;
 }
+//
+////+add 090604(Modification No1)
+//BOOL CI2cAdcCtrl::Check_Option(int nIndex, int nOptionValue)
+//{
+//	CString sData;
+////	int nTemp;
+//	CString szMsg1 = _T("");
+//	CString szPrevMsg = _T("");
+//	int nType;
+//	int nOptionNo;
+//	int nReadToolOption;
+//	int  nI2cResult;
+//	int i;
+//
+//	switch(nIndex)
+//	{
+//		case TOOL_OPTION1:
+//			nType = TOOL_OPTION;
+//			nOptionNo = 1;
+//			break;
+//
+//		case TOOL_OPTION2:
+//			nType = TOOL_OPTION;
+//			nOptionNo = 2;
+//			break;
+//		case TOOL_OPTION3:
+//			nType = TOOL_OPTION;
+//			nOptionNo = 3;
+//			break;
+//		case TOOL_OPTION4:
+//			nType = TOOL_OPTION;
+//			nOptionNo = 4;
+//			break;
+//		case TOOL_OPTION5:
+//			nType = TOOL_OPTION;
+//			nOptionNo = 5;
+//			break;
+//		case TOOL_OPTION6:
+//			nType = TOOL_OPTION;
+//			nOptionNo = 6;
+//			break;
+//		case AREA_OPTION1:
+//			nType = AREA_OPTION;
+//			nOptionNo = 1;
+//			break;
+//
+//		default :
+//			return FALSE;
+//			break;
+//	}
+//	for(i= 0; i<5; i++)
+//	{
+//		nI2cResult = ReadOption(nType,nOptionNo);
+//		if(nI2cResult == TEST_PASS) break;
+//		_Wait(200);
+//	}
+//
+//	if(nI2cResult != TEST_PASS)
+//	{
+//		return FALSE;
+//	}
+//	else
+//	{
+//		nReadToolOption = hexCstr2decNum(m_szI2cAdcReadString.Mid(CMD_LENGTH,4));
+//	}
+//
+//	if(nType == TOOL_OPTION){
+//		sData.Format("Tool Option%d(Read):%d", nOptionNo, nReadToolOption);
+//		szMsg1.Format("TO%d:%d", nOptionNo, nReadToolOption);
+//	}
+//	else{
+//		sData.Format("Area Option%d(Read):%d", nOptionNo, nReadToolOption);
+//		szMsg1.Format("AO%d(Read):%d", nOptionNo, nReadToolOption);
+//	}
+//	if(CurrentSet->bCommDisplay)
+//	{
+//		AddStringToStatus(sData);
+//	}
+//
+//	if(CurrentSet->bIsRunning)
+//	{
+//		g_pView->GetResultFromDetailedGrid(pCurStep->m_nStep, szPrevMsg); 
+//		
+//		if(szPrevMsg != _T(""))
+//		{
+//			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szPrevMsg + "; " + szMsg1);
+//			pCurStep->m_strMsg = szPrevMsg + "; " + szMsg1;
+//		}
+//		else
+//		{
+//			g_pView->InsertMsg2DetailedGrid(pCurStep->m_nStep, szMsg1);
+//			pCurStep->m_strMsg = szMsg1;
+//		}		
+//	}
+//
+//	if(nOptionValue == nReadToolOption){
+//		return TRUE;
+//	}
+//	else{
+//		return FALSE;
+//	}
+//
+//}
 
 //+add 090604(Modification No1)
-BOOL CI2cAdcCtrl::Check_Option(int nIndex, int nOptionValue)
+BOOL CI2cAdcCtrl::Check_Option(int nIndex, unsigned long long  nOptionValue)
 {
 	CString sData;
 //	int nTemp;

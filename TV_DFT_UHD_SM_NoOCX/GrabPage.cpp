@@ -580,7 +580,8 @@ BOOL CGrabPage::OnInitDialog()
 	m_ctrlGrabMode.AddString(" 17. Type18 : LM21A HKC 220307");
 	m_ctrlGrabMode.AddString(" 18. Type19 : QHD_FULL_SPEED");
 	m_ctrlGrabMode.AddString(" 19. Type20 : Shuffle 4");
-	m_ctrlGrabMode.AddString(" 20. Type21 : 32ch Vx MNT Pack");
+	m_ctrlGrabMode.AddString(" 20. Type21 : 32ch Vx1 MNT Pack");
+	m_ctrlGrabMode.AddString(" 21. Type22 : 32ch Vx1 MNT Pack2");
 	//m_ctrlGrabMode.AddString(" 17. Type18 : Y20_SW_Mode_03");
 	m_ctrlGrabMode.SetCurSel(CurrentSet->nUHD_Grab_Mode);
 	
@@ -973,7 +974,11 @@ UINT CGrabPage::GrabImageThread_UHD(LPVOID pParam)
 					{
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
 					}
-					else if (CurrentSet->nUHD_Grab_Mode == 20) 
+					else if (CurrentSet->nUHD_Grab_Mode == 20)
+					{
+						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
+					}
+					else if (CurrentSet->nUHD_Grab_Mode == 21)
 					{
 						g_ImageProc.DFT3_UHDPuzzleLocal(CurrentSet->nUHD_Grab_Mode, pImgBuf8, pGrabPage->m_Image1.m_pImageData, nWidth, nHeight, CurrentSet->nImageRotation, CurrentSet->nUHD_Type);
 					}

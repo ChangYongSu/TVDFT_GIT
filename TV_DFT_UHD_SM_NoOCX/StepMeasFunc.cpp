@@ -2934,14 +2934,41 @@ double	_MNT_Proximity_Check()
 
 #ifdef SM_MODIFY_CODE__
 //2018.11.26 CYS
-BOOL Check_ToolOption(int nOptionNo, int nToolOption)
+//BOOL Check_ToolOption(int nOptionNo, int nToolOption)
+//{
+//	BOOL bResult = TRUE;
+//	//BOOL bResultTemp = TRUE;
+//	int  nI2cResult;
+//	int  i;
+//
+//
+//	if (CurrentSet->nTVControlType) {
+//		_Wait(100);
+//		bResult = I2cAdcCtrl.Check_Option(nOptionNo, nToolOption);
+//	}
+//	else {
+//		_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
+//		for (i = 0; i < 3; i++)
+//		{
+//			bResult = TVCommCtrl.Check_Option(nOptionNo, nToolOption);
+//			if (bResult) break;
+//			_Wait(200);
+//		}
+//	}
+//
+//
+//	return bResult;
+//}
+
+
+BOOL Check_ToolOption(int nOptionNo, unsigned long long nToolOption)
 {
 	BOOL bResult = TRUE;
 	//BOOL bResultTemp = TRUE;
 	int  nI2cResult;
 	int  i;
 
-		
+
 	if (CurrentSet->nTVControlType) {
 		_Wait(100);
 		bResult = I2cAdcCtrl.Check_Option(nOptionNo, nToolOption);
@@ -2955,8 +2982,8 @@ BOOL Check_ToolOption(int nOptionNo, int nToolOption)
 			_Wait(200);
 		}
 	}
-		
-	
+
+
 	return bResult;
 }
 
@@ -3045,6 +3072,7 @@ double	_Option_Check()
 	BOOL bResult10 = TRUE;
 	BOOL bResult11 = TRUE;
 	int nToolOption;
+	unsigned long long nToolOptionlong;
 	if(g_pView->m_UserColorMsgDlg.m_bOptionCheckEnable == TRUE)
 		ToolOption_WriteCheck();
 
@@ -3092,12 +3120,12 @@ double	_Option_Check()
 		bResult9 = Check_ToolOption(COMMERCIAL_OPTION1, nToolOption);
 	}
 	if (CurrentSet->sBoardOption != "") {
-		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
-		bResult10 = Check_ToolOption(BOARD_OPTION, nToolOption);
+		nToolOptionlong = hex64Str2DecNum(CurrentSet->sBoardOption.GetBuffer());
+		bResult10 = Check_ToolOption(BOARD_OPTION, nToolOptionlong);
 	}
 	if (CurrentSet->sCommercialBoardOption != "") {
-		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
-		bResult11 = Check_ToolOption(COMMERCIAL_BOARD_OPTION, nToolOption);
+		nToolOptionlong = hex64Str2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
+		bResult11 = Check_ToolOption(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
 	}
 
 	if(bResult1 && bResult2 && bResult3  && bResult4  

@@ -358,6 +358,13 @@ BOOL COptSpecPage::CheckToolCrc()
 	unsigned short val16;
 	CString sTemp;
 	CString sBuf;
+	//unsigned long long ltemp = 0x0000123412341234;
+	//sTemp.Format("%016x", ltemp);
+	//sTemp.Insert(4, ' ');
+	//sTemp.Insert(9, ' ');
+	//sTemp.Insert(14, ' ');
+
+
 
 	UpdateData(TRUE);
 #if 1
@@ -442,18 +449,31 @@ BOOL COptSpecPage::CheckToolCrc()
 	}
 
 
-	//if (m_szCommercialBoardOption != "") {
-	//	Hex64bit = hexStr2DecNum(m_szCommercialBoardOption.GetBuffer());
-	//	tool[10] = (Hex64bit >> 32) & 0xFFFFFFFF;
-	//	tool[11] = Hex64bit & 0xFFFFFFFF;
+	if (m_szCommercialBoardOption != "") {
+		Hex64bit = hex64Str2DecNum(m_szCommercialBoardOption.GetBuffer());
+		tool[12] = (Hex64bit >> 32) & 0xFFFFFFFF;
+		tool[13] = Hex64bit & 0xFFFFFFFF;
 
-	//}
-	//else {
-	//	tool[10] = 0;
-	//	tool[11] = 0;
-	//}
-
-	for (int i = 1; i < 14; i++)
+	}
+	else {
+		tool[12] = 0;
+		tool[13] = 0;
+	}
+	int CRC_Count = 0;
+	if (m_szBoardOption == "")
+	{
+		CRC_Count = 9;
+	}
+	else if (m_szCommercialBoardOption == "")
+	{
+		CRC_Count = 11;
+	}
+	else
+	{
+		CRC_Count = 13;
+	}
+		
+	for (int i = 1; i <= CRC_Count; i++)
 	{
 		if (tool[i] > 0xFFFF) { bCrcCheck32 = TRUE; }
 	}
@@ -477,7 +497,7 @@ BOOL COptSpecPage::CheckToolCrc()
 
 
 	if (bCrcCheck32) {
-		for (int t = 1; t <= 13; t++) {      // ToolOption 1~9번까지 모든 data들을 확인한다.
+		for (int t = 1; t <= CRC_Count; t++) {      // ToolOption 1~9번까지 모든 data들을 확인한다.
 			val32 = tool[t];          //해당 ToolOption값을 우선적으로 val값에 저장
 			vector<int> bitarray = makeBitArray(val32);         //해당 val를 bitarray로 바꿔주는 부분 vector<int> 는 int형 vector (array로 생각해도 무방)
 			for (int i = 0; i < 32; i++) {				 //32bit에 해당되는 모든 bit를 한 bit씩 순회 가장 큰 bit부터 확인

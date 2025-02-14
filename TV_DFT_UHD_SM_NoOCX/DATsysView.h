@@ -497,7 +497,7 @@ public :
 	BOOL GrabberOpen();
 	BOOL GrabberClose();
 	BOOL GrabberReset();
-	BOOL CheckToolCrc();
+//	BOOL CheckToolCrc();
 	BOOL Check_KeyDownload();
 	BOOL Check_InputDetect();
 #ifdef SM_MODIFY_CODE__

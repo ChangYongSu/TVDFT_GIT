@@ -219,8 +219,11 @@ public :
 	BOOL Send_TVControl_ACAS_ID(CString sCommand, CString &sRevString, int nWait);
 
 		//+add PSH 081119
-	BOOL Write_Option(int nIndex, int nOptionValue);
-	BOOL Check_Option(int nIndex, int nOptionValue);
+	//BOOL Write_Option(int nIndex, int nOptionValue);
+	//BOOL Check_Option(int nIndex, int nOptionValue);
+
+	BOOL Write_Option(int nIndex, unsigned long long nOptionValue);
+	BOOL Check_Option(int nIndex, unsigned long long nOptionValue);
 
 		//+add PSH 101011
 	BOOL Write_OptionAll(int nOption1, int nOption2, int nOption3, int nOption4, int nOption5, int nOption6, int nOption7);

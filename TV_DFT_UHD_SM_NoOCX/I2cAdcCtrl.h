@@ -123,7 +123,7 @@ public :
 	int WriteI2c2b_PageData(int nLAdd, CString sData);
 
 	int ReadOption(int nType, int nOptionNo);
-	int WriteOption(int nType, int nOptionNo,int nOptionValue);
+	int WriteOption(int nType, int nOptionNo,unsigned long long nOptionValue);
 	int ReadOptionAll();
 	int WriteOptionAll(int nOption1, int nOption2, int nOption3, int nOption4, int nOption5, int nOption6);
 	
@@ -149,8 +149,9 @@ public :
 	//+add 090420(Modification No1)
 	int	  SetExtAnalogGrabberMode(int nAnalogGrabberMode);
 
-	
-	BOOL Check_Option(int nIndex, int nOptionValue);
+	BOOL Check_Option(int nIndex, unsigned long long  nOptionValue);
+
+	//BOOL Check_Option(int nIndex, int nOptionValue);
 	BOOL Check_OptionAll(int nOption1, int nOption2, int nOption3, int nOption4, int nOption5, int nOption6);
 	int EDID_Download_ResultCheck();
 	int EDID_Download();

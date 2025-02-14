@@ -98,6 +98,7 @@ typedef enum
 #define			PACK_TYPE_UHDFULL_LOWSPEED		13
 #define			PACK_TYPE_QHD_FULL_SPEED		14
 #define			PACK_TYPE_120HZ_LOW_SPEED		15
+#define			PACK_TYPE_STANDBYME				16
 
 
 /*

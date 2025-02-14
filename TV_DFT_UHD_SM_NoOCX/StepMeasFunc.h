@@ -32,8 +32,9 @@ double  _MNT_ALS_Sensor_Check();
 double  _MNT_BLS_Sensor_Check();
 double  _MNT_Front_Sensor_Check();
 double  _MNT_Proximity_Check();
-
 BOOL	Check_ToolOption(int nOptionNo, int nOptionValue);
+
+BOOL	Check_ToolOption(int nOptionNo, unsigned long long nOptionValue);
 double	_Option_Check();
 double	_Option_CheckAll();
 

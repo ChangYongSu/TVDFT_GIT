@@ -1905,8 +1905,164 @@ BOOL CTVCommCtrl::Send_TVControl_Command(CString sCommand, int nWait)
 	
 	return TRUE;
 }
+//
+//BOOL CTVCommCtrl::Write_Option(int nIndex, int nOptionValue)
+//{
+//	CString sCmd;
+//	CString sData;
+//	CString sReadData;
+//	CString szMsg1 = _T("");
+//	CString szPrevMsg = _T("");
+//	CString sTemp1;
+//	CString sTemp2;
+//	int nI;
+//	int nReturnOptionValue = 0;
+//	BOOL bResult1 = TRUE;
+//	BOOL bResult2 = TRUE;
+//	BOOL bResult3 = TRUE;
+//	BOOL bCheckCrc = FALSE;
+//
+//	switch (nIndex)
+//	{
+//	case TOOL_OPTION1:
+//		sCmd = "ab";
+//		break;
+//
+//	case TOOL_OPTION2:
+//		sCmd = "ac";
+//		break;
+//	case TOOL_OPTION3:
+//		sCmd = "af";
+//		break;
+//	case TOOL_OPTION4:
+//		sCmd = "ag";
+//		break;
+//	case TOOL_OPTION5:   //091016
+//		sCmd = "aj";
+//		break;
+//	case TOOL_OPTION6:   //091016
+//		sCmd = "ap";
+//		break;
+//	case TOOL_OPTION7:   //091016
+//		sCmd = "aq";
+//		break;
+//	case TOOL_OPTION8:   //091016
+//		sCmd = "ay";
+//		break;
+//	case AREA_OPTION1:
+//		sCmd = "ah";
+//		break;
+//	case COMMERCIAL_OPTION1:
+//		sCmd = "ca";
+//		break;
+//
+//	case COUNTRY_GROUP:
+//		sCmd = "ak";
+//		break;
+//
+//	case COUNTRY:
+//		sCmd = "an";
+//		break;
+//
+//	default:
+//		return FALSE;
+//		break;
+//	}
+//
+//	if (nIndex == COUNTRY_GROUP) {
+//		sData.Format("%02x", nOptionValue);
+//	}
+//	else if (nIndex == COUNTRY) {
+//		sData.Format("%08x", nOptionValue);
+//		sData.Insert(2, ' ');
+//		sData.Insert(5, ' ');
+//		sData.Insert(8, ' ');
+//	}
+//	else {
+//		if (nOptionValue > 0xFFFF) {
+//			bCheckCrc = TRUE;
+//			sData.Format("%08x", nOptionValue);
+//			sData.Insert(2, ' ');
+//			sData.Insert(5, ' ');
+//			sData.Insert(8, ' ');
+//		}
+//		else {
+//			sData.Format("%04x", nOptionValue);
+//			sData.Insert(2, ' ');
+//		}
+//	}
+//
+//	m_strSendStr.Format("%s 00 %s%c", sCmd, sData, 0x0d);
+//
+//	PortClear();
+//	if (CurrentSet->bCommDisplay)
+//	{
+//		AddStringToStatus("TV-Com : " + m_strSendStr);
+//	}
+//	if (!SendCommString(m_strSendStr))
+//	{
+//		return FALSE;
+//	}
+//
+//	if (!ReceiveCommString(13, 3000, sReadData))
+//	{
+//		return FALSE;
+//	}
+//	nI = sReadData.Find(0x0d);
+//	if (nI != -1)
+//	{
+//		szMsg1 = sReadData.Left(nI + 1);
+//	}
+//	else {
+//		szMsg1 = sReadData;
+//	}
+//
+//	sReadData.MakeUpper();
+//	if (sReadData.Find("OK") == -1)
+//	{
+//		bResult1 = FALSE;
+//	}
+//
+//	sTemp1 = sCmd.Right(1);
+//	sTemp1.MakeUpper();
+//	sTemp2 = sReadData.Left(1);
+//	sTemp2.MakeUpper();
+//	if (sTemp1 != sTemp2) {
+//		bResult2 = FALSE;
+//	}
+//	if (nIndex == COUNTRY_GROUP) {
+//		if (sReadData.GetLength() < 9) { return FALSE; }
+//		sTemp1 = sReadData.Mid(7, 2);
+//	}
+//	else if (nIndex == COUNTRY) {
+//		if (sReadData.GetLength() < 15) { return FALSE; }
+//		sTemp1 = sReadData.Mid(7, 8);
+//	}
+//	else {
+//		if (bCheckCrc) {
+//			if (sReadData.GetLength() < 15) { return FALSE; }
+//			sTemp1 = sReadData.Mid(7, 8);
+//		}
+//		else {
+//			if (sReadData.GetLength() < 11) { return FALSE; }
+//			sTemp1 = sReadData.Mid(7, 4);
+//		}
+//	}
+//
+//	nReturnOptionValue = hexCstr2decNum(sTemp1);
+//	//	nReturnOptionValue = atoi(sTemp1);
+//	if (nReturnOptionValue != nOptionValue) {
+//		bResult3 = FALSE;
+//	}
+//	if (bResult1 && bResult2 && bResult3) {
+//		return TRUE;
+//	}
+//	else {
+//		return FALSE;
+//	}
+//}
 
-BOOL CTVCommCtrl::Write_Option(int nIndex, int nOptionValue)
+BOOL CTVCommCtrl::Write_Option(int nIndex, unsigned long long nOptionValue)
 {
 	CString sCmd;
 	CString sData;
@@ -1972,11 +2128,17 @@ BOOL CTVCommCtrl::Write_Option(int nIndex, int nOptionValue)
 	if(nIndex == COUNTRY_GROUP){
 		sData.Format("%02x", nOptionValue);
 	}
-	else if(nIndex == COUNTRY){
+	else if (nIndex == COUNTRY) {
 		sData.Format("%08x", nOptionValue);
 		sData.Insert(2, ' ');
 		sData.Insert(5, ' ');
 		sData.Insert(8, ' ');
+	}
+	else if ((nIndex == BOARD_OPTION)||(nIndex == COMMERCIAL_BOARD_OPTION)) {
+		sData.Format("%016x", nOptionValue);
+		sData.Insert(4, ' ');
+		sData.Insert(9, ' ');
+		sData.Insert(14, ' ');
 	}
 	else{
 		if(nOptionValue > 0xFFFF){
@@ -2126,8 +2288,188 @@ BOOL CTVCommCtrl::Write_OptionAll(int nOption1, int nOption2, int nOption3, int 
 	
 	return TRUE;
 }
+//
+//BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
+//{
+//	CString sCmd;
+//	CString sData;
+//	CString sReadData;
+//	//	int nTemp;
+//	CString szMsg1 = _T("");
+//	CString szPrevMsg = _T("");
+//	CString sTemp1;
+//	CString sTemp2;
+//	//	int nCountryGr;
+//	int nI;
+//	int nReturnOptionValue = 0;
+//	BOOL bResult1 = TRUE;
+//	BOOL bResult2 = TRUE;
+//	BOOL bResult3 = TRUE;
+//	BOOL bCheckCrc = FALSE;
+//
+//	switch (nIndex)
+//	{
+//	case TOOL_OPTION1:
+//		sCmd = "ab";
+//		break;
+//
+//	case TOOL_OPTION2:
+//		sCmd = "ac";
+//		break;
+//	case TOOL_OPTION3:
+//		sCmd = "af";
+//		break;
+//	case TOOL_OPTION4:
+//		sCmd = "ag";
+//		break;
+//	case TOOL_OPTION5:
+//		sCmd = "aj";
+//		break;
+//	case TOOL_OPTION6:
+//		sCmd = "ap";
+//		break;
+//	case TOOL_OPTION7:
+//		sCmd = "aq";
+//		break;
+//	case TOOL_OPTION8:
+//		sCmd = "ay";
+//		break;
+//	case AREA_OPTION1:
+//		sCmd = "ah";
+//		break;
+//	case COMMERCIAL_OPTION1:
+//		sCmd = "ca";
+//		break;
+//		//	
+//	case BOARD_OPTION:
+//		sCmd = "ba";
+//		break;
+//	case COMMERCIAL_BOARD_OPTION:
+//		sCmd = "bb";
+//		break;
+//	case COUNTRY_GROUP:
+//		sCmd = "ak";
+//		break;
+//
+//	case COUNTRY:
+//		sCmd = "an";
+//		break;
+//
+//	default:
+//		return FALSE;
+//		break;
+//	}
+//
+//	if (nIndex == COUNTRY_GROUP) {
+//		sData.Format("%02x", nOptionValue);
+//	}
+//	else if (nIndex == COUNTRY) {
+//
+//		sData.Format("%08x", nOptionValue);
+//	}
+//	else if ((nIndex == BOARD_OPTION) || (nIndex == COMMERCIAL_BOARD_OPTION))
+//	{
+//
+//		sData.Format("%08x", nOptionValue);
+//	}
+//	else {
+//		if (nOptionValue > 0xFFFF) {
+//			bCheckCrc = TRUE;
+//			sData.Format("%08x", nOptionValue);
+//		}
+//		else {
+//			sData.Format("%04x", nOptionValue);
+//		}
+//	}
+//
+//	//	sData.Format("%04X", nOptionValue);
+//	//	sData.Insert(2, ' ');
+//
+//	m_strSendStr.Format("%s 00 ff%c", sCmd, 0x0d);
+//
+//	if (CurrentSet->bCommDisplay)
+//	{
+//		AddStringToStatus("TV-Com : " + m_strSendStr);
+//	}
+//
+//	PortClear();
+//	if (!SendCommString(m_strSendStr))
+//	{
+//		return FALSE;
+//	}
+//
+//	if (!ReceiveCommString(13, 3000, sReadData))
+//	{
+//		return FALSE;
+//	}
+//	//090522
+//	nI = sReadData.Find(0x0d);
+//	if (nI != -1)
+//	{
+//		szMsg1 = sReadData.Left(nI + 1);
+//	}
+//	else {
+//		szMsg1 = sReadData;
+//	}
+//
+//
+//	sData.MakeUpper();
+//	AddStringToStatus("Com: " + sReadData + "," + sData);
+//
+//	sReadData.MakeUpper();
+//	if (sReadData.Find("NG") != -1)
+//	{
+//		bResult1 = FALSE;
+//	}
+//
+//	sTemp1 = sCmd.Right(1);
+//	sTemp1.MakeUpper();
+//	sTemp2 = sReadData.Left(1);
+//	sTemp2.MakeUpper();
+//
+//	if (sTemp1 != sTemp2) {
+//		bResult2 = FALSE;
+//	}
+//	if (nIndex == COUNTRY_GROUP) {
+//		if (sReadData.GetLength() < 9) { return FALSE; }
+//		sTemp1 = sReadData.Mid(7, 2);
+//	}
+//	else if (nIndex == COUNTRY) {
+//		if (sReadData.GetLength() < 15) { return FALSE; }
+//		sTemp1 = sReadData.Mid(7, 8);
+//	}
+//	else if ((nIndex == BOARD_OPTION) || (nIndex == COMMERCIAL_BOARD_OPTION))
+//	{
+//
+//		if (sReadData.GetLength() < 15) { return FALSE; }
+//		sTemp1 = sReadData.Mid(7, 8);
+//	}
+//	else {
+//		if (bCheckCrc) {
+//			if (sReadData.GetLength() < 15) { return FALSE; }
+//			sTemp1 = sReadData.Mid(7, 8);
+//		}
+//		else {
+//			if (sReadData.GetLength() < 11) { return FALSE; }
+//			sTemp1 = sReadData.Mid(7, 4);
+//		}
+//	}
+//
+//	//	nReturnOptionValue = atoi(sTemp1);
+//	nReturnOptionValue = hexCstr2decNum(sTemp1);
+//	if (nReturnOptionValue != nOptionValue) {
+//		bResult3 = FALSE;
+//	}
+//	if (bResult1 && bResult2 && bResult3) {
+//		return TRUE;
+//	}
+//	else {
+//		return FALSE;
+//	}
+//}
 
-BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
+
+BOOL CTVCommCtrl::Check_Option(int nIndex, unsigned long long nOptionValue)
 {
 	CString sCmd;
 	CString sData;
@@ -2139,7 +2481,7 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 	CString sTemp2;
 //	int nCountryGr;
 	int nI;
-	int nReturnOptionValue = 0;
+	unsigned long long  nReturnOptionValue = 0;
 	BOOL bResult1 = TRUE;
 	BOOL bResult2 = TRUE;
 	BOOL bResult3 = TRUE;
@@ -2208,7 +2550,7 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 	else if ((nIndex == BOARD_OPTION)||(nIndex == COMMERCIAL_BOARD_OPTION) )
 	{
 
-		sData.Format("%08x", nOptionValue);
+		sData.Format("%016x", nOptionValue);
 	}
 	else{
 		if(nOptionValue > 0xFFFF){
@@ -2279,8 +2621,8 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 	else if ((nIndex == BOARD_OPTION) || (nIndex == COMMERCIAL_BOARD_OPTION))
 	{
 
-		if (sReadData.GetLength() < 15) { return FALSE; }
-		sTemp1 = sReadData.Mid(7, 8);
+		if (sReadData.GetLength() < 23) { return FALSE; }
+		sTemp1 = sReadData.Mid(7, 16);
 	}
 	else{
 		if(bCheckCrc){
@@ -2294,7 +2636,15 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 	}
 
 //	nReturnOptionValue = atoi(sTemp1);
-	nReturnOptionValue = hexCstr2decNum(sTemp1);
+	if ((nIndex == BOARD_OPTION) || (nIndex == COMMERCIAL_BOARD_OPTION))
+	{
+		nReturnOptionValue = hex64Cstr2decNum(sTemp1);
+	}
+	else
+	{
+		nReturnOptionValue = hexCstr2decNum(sTemp1);
+	}
+
 	if(nReturnOptionValue != nOptionValue){
 		bResult3 = FALSE;
 	}
@@ -2305,6 +2655,8 @@ BOOL CTVCommCtrl::Check_Option(int nIndex, int nOptionValue)
 		return FALSE;
 	}
 }
+
+
 BOOL CTVCommCtrl:: Input_Detect_Check(int nIndex, int nOptionValue)
 {
 	CString sCmd;

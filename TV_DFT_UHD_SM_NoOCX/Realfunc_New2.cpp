@@ -6946,6 +6946,7 @@ BOOL _ToolOption_Write()
 	int  nI2cResult;
 	int  i;
 	int nToolOption;
+	unsigned long long nToolOptionlong;
 
 	if (CurrentSet->sToolOption1 != "") {
 		nToolOption = atoi(CurrentSet->sToolOption1);
@@ -7160,7 +7161,8 @@ BOOL _ToolOption_Write()
 	}
 
 	if (CurrentSet->sBoardOption != "") {
-		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
+//		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
+		nToolOptionlong = hex64Str2DecNum(CurrentSet->sBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			bResult10 = FALSE;
 		}
@@ -7168,14 +7170,15 @@ BOOL _ToolOption_Write()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOption);
+				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOptionlong);
 				if (bResult10) break;
 				_Wait(200);
 			}
 		}
 	}
 	if (CurrentSet->sCommercialBoardOption != "") {
-		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
+//		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
+		nToolOptionlong = hex64Str2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			bResult11 = FALSE;
 		}
@@ -7183,7 +7186,7 @@ BOOL _ToolOption_Write()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOption);
+				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
 				if (bResult11) break;
 				_Wait(200);
 			}
@@ -7450,9 +7453,9 @@ BOOL ToolOption_WriteCheck()
 			}
 		}
 	}
-
+	unsigned long long nToolOptionlong;
 	if (CurrentSet->sBoardOption != "") {
-		nToolOption = hexStr2DecNum(CurrentSet->sBoardOption.GetBuffer());
+		nToolOptionlong = hex64Str2DecNum(CurrentSet->sBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			
 			bResult10 = FALSE;
@@ -7462,7 +7465,7 @@ BOOL ToolOption_WriteCheck()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOption);
+				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOptionlong);
 				if (bResult10) break;
 				_Wait(200);
 			}
@@ -7470,7 +7473,7 @@ BOOL ToolOption_WriteCheck()
 	}
 
 	if (CurrentSet->sCommercialBoardOption != "") {
-		nToolOption = hexStr2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
+		nToolOptionlong = hex64Str2DecNum(CurrentSet->sCommercialBoardOption.GetBuffer());
 		if (CurrentSet->nTVControlType) {
 			bResult11 = FALSE;
 		}
@@ -7478,7 +7481,7 @@ BOOL ToolOption_WriteCheck()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOption);
+				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
 				if (bResult11) break;
 				_Wait(200);
 			}
