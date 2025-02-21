@@ -1448,10 +1448,10 @@ double CJigCtrl::DPMS_Read_Check( int Manual )
 		return  -1000;//FALSE;// FALSE;
 
 	}
-	//if (Manual == 1)
-	//{
-	//	return 1;
-	//}
+	if (Manual == 1)
+	{
+		return 1;
+	}
 
 	if (!DPMS_ReceiveString(7, 3000))
 	{

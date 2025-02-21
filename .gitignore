@@ -22,4 +22,4 @@ Release/
 *.log
 *.tlog
 *log
-*.vcxproj
+#*.vcxproj

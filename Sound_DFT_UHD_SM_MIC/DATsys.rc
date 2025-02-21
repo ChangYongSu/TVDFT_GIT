@@ -5637,7 +5637,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2024"
             VALUE "OriginalFilename", "DFT.EXE"
             VALUE "ProductName", "DFT Application Program"
-            VALUE "ProductVersion", "V25.02.08. USB MIC TEST"
+            VALUE "ProductVersion", "V25.02.21. USB MIC TEST"
             VALUE "SpecialBuild", "2025.02.08.293"
         END
     END
