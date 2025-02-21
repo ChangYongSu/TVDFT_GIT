@@ -6268,13 +6268,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "LG-PRI"
             VALUE "FileDescription", "DFT Application Program"
-            VALUE "FileVersion", "V250214"
+            VALUE "FileVersion", "V250221"
             VALUE "InternalName", "DATsys"
             VALUE "LegalCopyright", "Copyright (C) 2024"
             VALUE "OriginalFilename", "DFT.EXE"
             VALUE "ProductName", "DFT Application Program"
-            VALUE "ProductVersion", "V25.02.14.295"
-            VALUE "SpecialBuild", "2025.02.14.295"
+            VALUE "ProductVersion", "V25.02.21.299"
+            VALUE "SpecialBuild", "2025.02.21.295"
         END
     END
     BLOCK "VarFileInfo"

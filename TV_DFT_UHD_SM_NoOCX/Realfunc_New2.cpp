@@ -7170,7 +7170,7 @@ BOOL _ToolOption_Write()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOptionlong);
+				bResult10 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOptionlong);
 				if (bResult10) break;
 				_Wait(200);
 			}
@@ -7186,7 +7186,7 @@ BOOL _ToolOption_Write()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
+				bResult11 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
 				if (bResult11) break;
 				_Wait(200);
 			}
@@ -7465,7 +7465,7 @@ BOOL ToolOption_WriteCheck()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOptionlong);
+				bResult10 = TVCommCtrl.Write_Option(BOARD_OPTION, nToolOptionlong);
 				if (bResult10) break;
 				_Wait(200);
 			}
@@ -7481,7 +7481,7 @@ BOOL ToolOption_WriteCheck()
 			_Wait(CurrentSet->nToolOptionCheck_Delay * 100);
 			for (i = 0; i < 3; i++)
 			{
-				bResult9 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
+				bResult11 = TVCommCtrl.Write_Option(COMMERCIAL_BOARD_OPTION, nToolOptionlong);
 				if (bResult11) break;
 				_Wait(200);
 			}
